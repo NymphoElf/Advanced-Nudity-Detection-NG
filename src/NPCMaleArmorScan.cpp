@@ -3,588 +3,601 @@
 #include "Logger.h"
 #include "NPCArmorScan.h"
 
-bool NPCTopCurtainCover = false;
-bool NPCPelvicCurtainCover = false;
-bool NPCAssCurtainCover = false;
+namespace NPCMaleScan {
+	bool NPCTopCurtainCover = false;
+	bool NPCPelvicCurtainCover = false;
+	bool NPCAssCurtainCover = false;
 
-bool NPCChestCover = false;
-bool NPCBraCover = false;
+	bool NPCChestCover = false;
+	bool NPCBraCover = false;
 
-bool NPCAssCover = false;
-bool NPCGenitalCover = false;
-bool NPCUnderwearCover = false;
+	bool NPCAssCover = false;
+	bool NPCGenitalCover = false;
+	bool NPCUnderwearCover = false;
 
-RE::Actor* thisActor;
+	RE::Actor* thisActor;
 
-bool CurtainCheck(int Type, bool IsTransparent, int Level) {
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] START");
+	void ResetFlashingFactions() {
+		SetActorFactionRank(thisActor, FlashingChestCurtainFaction, 0);
+		SetActorFactionRank(thisActor, FlashingPelvicCurtainFaction, 0);
+		SetActorFactionRank(thisActor, FlashingAssCurtainFaction, 0);
 
-	int Roll = 0;
-	int Odds = 0;
-
-	std::string TypeString = "None";
-
-	if (Type == ChestType) {
-		TypeString = "Chest";
-		Roll = NPCTopCurtainRoll;
-		if (Level == RiskLow) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[TopCurtainOddsLow];
-			}
-			else {
-				Odds = FlashingOdds[TransparentTopCurtainOddsLow];
-			}
-		}
-		else if (Level == RiskNormal) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[TopCurtainOdds];
-			}
-			else {
-				Odds = FlashingOdds[TransparentTopCurtainOdds];
-			}
-		}
-		else if (Level == RiskHigh) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[TopCurtainOddsHigh];
-			}
-			else {
-				Odds = FlashingOdds[TransparentTopCurtainOddsHigh];
-			}
-		}
-		else if (Level == RiskExtreme) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[TopCurtainOddsExtreme];
-			}
-			else {
-				Odds = FlashingOdds[TransparentTopCurtainOddsExtreme];
-			}
-		}
-		else if (Level == RiskUltra) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[TopCurtainOddsUltra];
-			}
-			else {
-				Odds = FlashingOdds[TransparentTopCurtainOddsUltra];
-			}
-		}
-	}
-	else if (Type == PelvicType) {
-		TypeString = "Pelvic";
-		Roll = NPCPelvicCurtainRoll;
-		if (Level == RiskLow) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[PelvicCurtainOddsLow];
-			}
-			else {
-				Odds = FlashingOdds[TransparentPelvicCurtainOddsLow];
-			}
-		}
-		else if (Level == RiskNormal) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[PelvicCurtainOdds];
-			}
-			else {
-				Odds = FlashingOdds[TransparentPelvicCurtainOdds];
-			}
-		}
-		else if (Level == RiskHigh) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[PelvicCurtainOddsHigh];
-			}
-			else {
-				Odds = FlashingOdds[TransparentPelvicCurtainOddsHigh];
-			}
-		}
-		else if (Level == RiskExtreme) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[PelvicCurtainOddsExtreme];
-			}
-			else {
-				Odds = FlashingOdds[TransparentPelvicCurtainOddsExtreme];
-			}
-		}
-		else if (Level == RiskUltra) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[PelvicCurtainOddsUltra];
-			}
-			else {
-				Odds = FlashingOdds[TransparentPelvicCurtainOddsUltra];
-			}
-		}
-	}
-	else if (Type == AssType) {
-		TypeString = "Ass";
-		Roll = NPCAssCurtainRoll;
-		if (Level == RiskLow) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[AssCurtainOddsLow];
-			}
-			else {
-				Odds = FlashingOdds[TransparentAssCurtainOddsLow];
-			}
-		}
-		else if (Level == RiskNormal) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[AssCurtainOdds];
-			}
-			else {
-				Odds = FlashingOdds[TransparentAssCurtainOdds];
-			}
-		}
-		else if (Level == RiskHigh) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[AssCurtainOddsHigh];
-			}
-			else {
-				Odds = FlashingOdds[TransparentAssCurtainOddsHigh];
-			}
-		}
-		else if (Level == RiskExtreme) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[AssCurtainOddsExtreme];
-			}
-			else {
-				Odds = FlashingOdds[TransparentAssCurtainOddsExtreme];
-			}
-		}
-		else if (Level == RiskUltra) {
-			if (IsTransparent) {
-				Odds = FlashingOdds[AssCurtainOddsUltra];
-			}
-			else {
-				Odds = FlashingOdds[TransparentAssCurtainOddsUltra];
-			}
-		}
+		SetActorFactionRank(thisActor, FlashingTopArmorFaction, 0);
+		SetActorFactionRank(thisActor, FlashingBottomArmorFaction, 0);
+		SetActorFactionRank(thisActor, FlashingBraFaction, 0);
+		SetActorFactionRank(thisActor, FlashingUnderwearFaction, 0);
+		SetActorFactionRank(thisActor, FlashingCStringFaction, 0);
+		SetActorFactionRank(thisActor, FlashingHotpantsFaction, 0);
+		SetActorFactionRank(thisActor, FlashingShowgirlSkirtFaction, 0);
 	}
 
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] Roll = {}", Roll);
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] Odds = {}", Odds);
+	bool CurtainCheck(int Type, bool IsTransparent, int Level) {
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] START");
 
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] Type = {}", TypeString);
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] IsTransparent = {}", IsTransparent);
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] RiskLevel = {}", Level);
+		int Roll = 0;
+		int Odds = 0;
 
-	logs::info("<C++ NPCMaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? {}", (Roll > Odds));
+		std::string TypeString = "None";
 
-	return (Roll > Odds);
-}
-
-bool TransparentItemCheck(int Type, int Level) {
-	int Roll = 0;
-	int Odds = 0;
-
-	std::string TypeString = "None";
-
-	if (Type == TopType) {
-		TypeString = "Top";
-		Roll = NPCTopTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentTopArmorOdds_Low];
+		if (Type == FlashRiskType::Chest) {
+			TypeString = "Chest";
+			Roll = NPCChestCurtainRoll;
+			if (Level == FlashRiskLevel::Low) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[ChestCurtainOddsLow_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentChestCurtainOddsLow_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[ChestCurtainOdds_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentChestCurtainOdds_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::High) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[ChestCurtainOddsHigh_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentChestCurtainOddsHigh_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Extreme) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[ChestCurtainOddsExtreme_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentChestCurtainOddsExtreme_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Ultra) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[ChestCurtainOddsUltra_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentChestCurtainOddsUltra_Male];
+				}
+			}
 		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentTopArmorOdds];
+		else if (Type == FlashRiskType::Pelvic) {
+			TypeString = "Pelvic";
+			Roll = NPCPelvicCurtainRoll;
+			if (Level == FlashRiskLevel::Low) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[PelvicCurtainOddsLow_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentPelvicCurtainOddsLow_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[PelvicCurtainOdds_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentPelvicCurtainOdds_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::High) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[PelvicCurtainOddsHigh_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentPelvicCurtainOddsHigh_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Extreme) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[PelvicCurtainOddsExtreme_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentPelvicCurtainOddsExtreme_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Ultra) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[PelvicCurtainOddsUltra_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentPelvicCurtainOddsUltra_Male];
+				}
+			}
 		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentTopArmorOdds_High];
+		else if (Type == FlashRiskType::Ass) {
+			TypeString = "Ass";
+			Roll = NPCAssCurtainRoll;
+			if (Level == FlashRiskLevel::Low) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[AssCurtainOddsLow_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentAssCurtainOddsLow_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[AssCurtainOdds_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentAssCurtainOdds_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::High) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[AssCurtainOddsHigh_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentAssCurtainOddsHigh_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Extreme) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[AssCurtainOddsExtreme_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentAssCurtainOddsExtreme_Male];
+				}
+			}
+			else if (Level == FlashRiskLevel::Ultra) {
+				if (IsTransparent) {
+					Odds = Configuration::FlashingOdds[AssCurtainOddsUltra_Male];
+				}
+				else {
+					Odds = Configuration::FlashingOdds[TransparentAssCurtainOddsUltra_Male];
+				}
+			}
 		}
+
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Roll = " + std::to_string(Roll), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Type = " + TypeString, LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] IsTransparent = " + BoolToString(IsTransparent), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::NPCArmorScan);
+
+		bool Result = (Roll > Odds);
+
+		switch (Type) {
+		case FlashRiskType::Chest:
+			SetActorFactionRank(thisActor, FlashingChestCurtainFaction, !Result);
+			break;
+		case FlashRiskType::Pelvic:
+			SetActorFactionRank(thisActor, FlashingPelvicCurtainFaction, !Result);
+			break;
+		case FlashRiskType::Ass:
+			SetActorFactionRank(thisActor, FlashingAssCurtainFaction, !Result);
+			break;
+		default:
+			break;
+		}
+
+		return Result;
 	}
-	else if (Type == BottomType) {
-		TypeString = "Bottom";
-		Roll = NPCBottomTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentBottomArmorOdds_Low];
+
+	bool TransparentItemCheck(int Type, int Level) {
+		int Roll = 0;
+		int Odds = 0;
+
+		std::string TypeString = "None";
+
+		if (Type == FlashRiskType::Top) {
+			TypeString = "Top";
+			Roll = NPCTopTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentTopArmorOdds_Low_Male];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentTopArmorOdds_Male];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentTopArmorOdds_High_Male];
+			}
 		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentBottomArmorOdds];
+		else if (Type == FlashRiskType::Bottom) {
+			TypeString = "Bottom";
+			Roll = NPCBottomTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentBottomArmorOdds_Low_Male];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentBottomArmorOdds_Male];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentBottomArmorOdds_High_Male];
+			}
 		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentBottomArmorOdds_High];
+		else if (Type == FlashRiskType::Bra) {
+			TypeString = "Bra";
+			Roll = NPCBraTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentBraOdds_Low_Male];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentBraOdds_Male];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentBraOdds_High_Male];
+			}
 		}
+		else if (Type == FlashRiskType::Underwear || Type == FlashRiskType::Thong) {
+			if (Type == FlashRiskType::Underwear) {
+				TypeString = "Underwear";
+			}
+			else {
+				TypeString = "Thong";
+			}
+
+			Roll = NPCUnderwearTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentUnderwearOdds_Low_Male];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentUnderwearOdds_Male];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentUnderwearOdds_High_Male];
+			}
+		}
+		else if (Type == FlashRiskType::Hotpants) {
+			TypeString = "Hotpants";
+			Roll = NPCHotpantsTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentHotpantsOdds_Low_Male];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentHotpantsOdds_Male];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentHotpantsOdds_High_Male];
+			}
+		}
+		else if (Type == FlashRiskType::Himbo) {
+			TypeString = "Himbo";
+			Roll = NPCShowgirlTransparentRoll;
+			if (Level == FlashRiskLevel::Low) {
+				Odds = Configuration::FlashingOdds[TransparentHimboOdds_Low];
+			}
+			else if (Level == FlashRiskLevel::Normal) {
+				Odds = Configuration::FlashingOdds[TransparentHimboOdds];
+			}
+			else if (Level == FlashRiskLevel::High) {
+				Odds = Configuration::FlashingOdds[TransparentHimboOdds_High];
+			}
+		}
+
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Roll = " + std::to_string(Roll), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Type = " + TypeString, LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::NPCArmorScan);
+
+		bool Result = (Roll > Odds);
+
+		switch (Type) {
+		case FlashRiskType::Top:
+			SetActorFactionRank(thisActor, FlashingTopArmorFaction, !Result);
+			break;
+		case FlashRiskType::Bottom:
+			SetActorFactionRank(thisActor, FlashingBottomArmorFaction, !Result);
+			break;
+		case FlashRiskType::Bra:
+			SetActorFactionRank(thisActor, FlashingBraFaction, !Result);
+			break;
+		case FlashRiskType::Underwear:
+			SetActorFactionRank(thisActor, FlashingUnderwearFaction, !Result);
+			break;
+		case FlashRiskType::Thong:
+			SetActorFactionRank(thisActor, FlashingUnderwearFaction, !Result);
+			break;
+		case FlashRiskType::Hotpants:
+			SetActorFactionRank(thisActor, FlashingHotpantsFaction, !Result);
+			break;
+		case FlashRiskType::Himbo:
+			SetActorFactionRank(thisActor, FlashingShowgirlSkirtFaction, !Result);
+			break;
+		default:
+			break;
+		}
+
+		return Result;
 	}
-	else if (Type == BraType) {
-		TypeString = "Bra";
-		Roll = NPCBraTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentBraOdds_Low];
+
+	bool BananaHammockCheck(bool IsTransparent, int Level) {
+		int Odds = 0;
+
+		if (IsTransparent == false) {
+			Odds = Configuration::FlashingOdds[BananaHammockOdds];
 		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentBraOdds];
+		else if (Level == FlashRiskLevel::Low) {
+			Odds = Configuration::FlashingOdds[TransparentBananaHammockOdds_Low];
 		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentBraOdds_High];
+		else if (Level == FlashRiskLevel::Normal) {
+			Odds = Configuration::FlashingOdds[TransparentBananaHammockOdds];
 		}
+		else if (Level == FlashRiskLevel::High) {
+			Odds = Configuration::FlashingOdds[TransparentBananaHammockOdds_High];
+		}
+
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Roll = " + std::to_string(NPCCStringRoll), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] IsTransparent = " + BoolToString(IsTransparent), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? " + BoolToString(NPCCStringRoll > Odds), LogType::NPCArmorScan);
+
+		bool Result = (CStringRoll > Odds);
+
+		SetActorFactionRank(thisActor, FlashingCStringFaction, !Result);
+
+		return Result;
 	}
-	else if (Type == UnderwearType || Type == ThongType) {
-		if (Type == UnderwearType) {
-			TypeString = "Underwear";
+
+	void AnalyzeBra(bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover) {
+		if (HasBra) {
+			NPCBraCover = false;
+			NPCChestCover = true;
+		}
+		else if (HasBraT) {
+			NPCBraCover = false;
+			NPCChestCover = TransparentItemCheck(FlashRiskType::Bra, BraRiskLevel);
+		}
+		else if (HasBraNoCover) {
+			NPCBraCover = false;
+			NPCChestCover = false;
 		}
 		else {
-			TypeString = "Thong";
-		}
-
-		Roll = NPCUnderwearTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentUnderwearOdds_Low];
-		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentUnderwearOdds];
-		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentUnderwearOdds_High];
-		}
-	}
-	else if (Type == HotpantsType) {
-		TypeString = "Hotpants";
-		Roll = NPCHotpantsTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentHotpantsOdds_Low];
-		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentHotpantsOdds];
-		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentHotpantsOdds_High];
-		}
-	}
-	else if (Type == HimboType) {
-		TypeString = "Himbo";
-		Roll = NPCShowgirlTransparentRoll;
-		if (Level == RiskLow) {
-			Odds = FlashingOdds[TransparentHimboOdds_Low];
-		}
-		else if (Level == RiskNormal) {
-			Odds = FlashingOdds[TransparentHimboOdds];
-		}
-		else if (Level == RiskHigh) {
-			Odds = FlashingOdds[TransparentHimboOdds_High];
+			NPCBraCover = true;
+			NPCChestCover = false;
 		}
 	}
 
-	logs::info("<C++ NPCMaleArmorScan> [TransparentItemCheck] Roll = {}", Roll);
-	logs::info("<C++ NPCMaleArmorScan> [TransparentItemCheck] Odds = {}", Odds);
+	void AnalyzeTop
+	(
+		bool HasChestCurtain, bool HasChestCurtainT, int ChestRiskLevel,
+		bool HasArmorTop, bool HasArmorTopT, int TopRiskLevel,
+		bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover
+	) {
+		if (HasChestCurtain || HasChestCurtainT) {
+			NPCTopCurtainCover = CurtainCheck(FlashRiskType::Chest, HasChestCurtainT, ChestRiskLevel);
+		}
+		else {
+			NPCTopCurtainCover = false;
+		}
 
-	logs::info("<C++ NPCMaleArmorScan> [TransparentItemCheck] Type = {}", TypeString);
-	logs::info("<C++ NPCMaleArmorScan> [TransparentItemCheck] RiskLevel = {}", Level);
-
-	logs::info("<C++ NPCMaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? {}", (Roll > Odds));
-
-	return (Roll > Odds);
-}
-
-bool BananaHammockCheck(bool IsTransparent, int Level) {
-	int Odds = 0;
-
-	if (IsTransparent == false) {
-		Odds = FlashingOdds[BananaHammockOdds];
-	}
-	else if (Level == RiskLow) {
-		Odds = FlashingOdds[TransparentBananaHammockOdds_Low];
-	}
-	else if (Level == RiskNormal) {
-		Odds = FlashingOdds[TransparentBananaHammockOdds];
-	}
-	else if (Level == RiskHigh) {
-		Odds = FlashingOdds[TransparentBananaHammockOdds_High];
-	}
-
-	logs::info("<C++ NPCMaleArmorScan> [BananaHammockCheck] Roll = {}", NPCCStringRoll);
-	logs::info("<C++ NPCMaleArmorScan> [BananaHammockCheck] Odds = {}", Odds);
-
-	logs::info("<C++ NPCMaleArmorScan> [BananaHammockCheck] IsTransparent = {}", IsTransparent);
-	logs::info("<C++ NPCMaleArmorScan> [BananaHammockCheck] RiskLevel = {}", Level);
-
-	logs::info("<C++ NPCMaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? {}", (NPCCStringRoll > Odds));
-
-	return (NPCCStringRoll > Odds);
-}
-
-void AnalyzeBra(bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover) {
-	if (HasBra) {
-		NPCBraCover = false;
-		NPCChestCover = true;
-	}
-	else if (HasBraT) {
-		NPCBraCover = false;
-		NPCChestCover = TransparentItemCheck(BraType, BraRiskLevel);
-	}
-	else if (HasBraNoCover) {
-		NPCBraCover = false;
-		NPCChestCover = false;
-	}
-	else {
-		NPCBraCover = true;
-		NPCChestCover = false;
-	}
-}
-
-void AnalyzeTop
-(
-	bool HasChestCurtain, bool HasChestCurtainT, int ChestRiskLevel,
-	bool HasArmorTop, bool HasArmorTopT, int TopRiskLevel,
-	bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover
-) {
-	if (HasChestCurtain || HasChestCurtainT) {
-		NPCTopCurtainCover = CurtainCheck(ChestType, HasChestCurtainT, ChestRiskLevel);
-	}
-	else {
-		NPCTopCurtainCover = false;
-	}
-
-	if (HasArmorTop) {
-		NPCBraCover = true;
-		NPCChestCover = true;
-	}
-	else if (HasArmorTopT) {
-		bool TopCovering = TransparentItemCheck(TopType, TopRiskLevel);
-
-		if (TopCovering) {
+		if (HasArmorTop) {
 			NPCBraCover = true;
 			NPCChestCover = true;
+		}
+		else if (HasArmorTopT) {
+			bool TopCovering = TransparentItemCheck(FlashRiskType::Top, TopRiskLevel);
+
+			if (TopCovering) {
+				NPCBraCover = true;
+				NPCChestCover = true;
+			}
+			else {
+				AnalyzeBra(HasBra, HasBraT, BraRiskLevel, HasBraNoCover);
+			}
 		}
 		else {
 			AnalyzeBra(HasBra, HasBraT, BraRiskLevel, HasBraNoCover);
 		}
 	}
-	else {
-		AnalyzeBra(HasBra, HasBraT, BraRiskLevel, HasBraNoCover);
-	}
-}
 
-void AnalyzeBananaHammock(bool HasBananaHammockT, int BananaHammockRiskLevel) {
-	NPCGenitalCover = BananaHammockCheck(HasBananaHammockT, BananaHammockRiskLevel);
-	NPCUnderwearCover = !NPCGenitalCover;
-}
+	void AnalyzeBananaHammock(bool HasBananaHammockT, int BananaHammockRiskLevel) {
+		NPCGenitalCover = BananaHammockCheck(HasBananaHammockT, BananaHammockRiskLevel);
+		NPCUnderwearCover = !NPCGenitalCover;
+	}
 
-void AnalyzeUnderwear
-(
-	bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-	bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-	bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
-) {
-	if (HasUnderwear) {
-		NPCUnderwearCover = false;
-		NPCAssCover = true;
-		NPCGenitalCover = true;
-	}
-	else if (HasUnderwearT) {
-		NPCUnderwearCover = false;
-		NPCAssCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-		NPCGenitalCover = NPCAssCover;
-	}
-	else if (HasThong) {
-		NPCUnderwearCover = false;
-		NPCAssCover = false;
-		NPCGenitalCover = true;
-	}
-	else if (HasThongT) {
-		NPCUnderwearCover = false;
-		NPCAssCover = false;
-		NPCGenitalCover = TransparentItemCheck(ThongType, ThongRiskLevel);
-	}
-	else if (HasBananaHammock || HasBananaHammockT) {
-		NPCAssCover = false;
-		AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
-	}
-	else if (HasUnderwearNoCover || HasThongNoCover) {
-		NPCUnderwearCover = false;
-		NPCAssCover = false;
-		NPCGenitalCover = false;
-	}
-	else {
-		NPCUnderwearCover = true;
-		NPCAssCover = false;
-		NPCGenitalCover = false;
-	}
-}
-
-void SubAnalyzeBottom
-(
-	bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
-	bool HasHimbo, bool HasHimboT, int HimboRiskLevel,
-	bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-	bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-	bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
-) {
-	if (HasHotpants && HasHimbo) {
-		NPCAssCover = true;
-		NPCGenitalCover = true;
-		NPCUnderwearCover = true;
-	}
-	else if (HasHotpants && HasHimboT) {
-		NPCGenitalCover = true;
-
-		if (HasUnderwear) {
-			NPCAssCover = true;
-			NPCUnderwearCover = TransparentItemCheck(HimboType, HimboRiskLevel);
-		}
-		else if (HasUnderwearT) {
-			NPCUnderwearCover = TransparentItemCheck(HimboType, HimboRiskLevel);
-			if (NPCUnderwearCover) {
-				NPCAssCover = true;
-			}
-			else {
-				NPCAssCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-			}
-		}
-		else if (HasUnderwearNoCover) {
-			NPCUnderwearCover = TransparentItemCheck(HimboType, HimboRiskLevel);
-			NPCAssCover = NPCUnderwearCover;
-		}
-		else {
-			NPCUnderwearCover = true;
-			NPCAssCover = TransparentItemCheck(HimboType, HimboRiskLevel);
-		}
-	}
-	else if (HasHotpantsT && HasHimbo) {
-		NPCAssCover = true;
-
-		if (HasUnderwear || HasThong) {
-			NPCGenitalCover = true;
-			NPCUnderwearCover = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
-		}
-		else if (HasUnderwearT || HasThongT || HasBananaHammock || HasBananaHammockT) {
-			NPCUnderwearCover = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
-
-			if (NPCUnderwearCover) {
-				NPCGenitalCover = true;
-			}
-			else {
-				if (HasUnderwearT) {
-					NPCGenitalCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-				}
-				else if (HasThongT) {
-					NPCGenitalCover = TransparentItemCheck(ThongType, ThongRiskLevel);
-				}
-				else {
-					AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
-				}
-			}
-		}
-		else if (HasUnderwearNoCover || HasThongNoCover) {
-			NPCUnderwearCover = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
-			NPCGenitalCover = NPCUnderwearCover;
-		}
-		else {
-			NPCUnderwearCover = true;
-			NPCGenitalCover = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
-		}
-	}
-	else if (HasHotpantsT && HasHimboT) {
-		bool HotpantsCovering = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
-		bool HimboCovering = TransparentItemCheck(HimboType, HimboRiskLevel);
-
-		if (HotpantsCovering && HimboCovering) {
-			NPCAssCover = true;
-			NPCGenitalCover = true;
-			NPCUnderwearCover = true;
-		}
-		else if (HotpantsCovering && !HimboCovering) {
-			NPCGenitalCover = true;
-
-			if (HasUnderwear) {
-				NPCUnderwearCover = false;
-				NPCAssCover = true;
-			}
-			else if (HasUnderwearT) {
-				NPCUnderwearCover = false;
-				NPCAssCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-			}
-			else if (HasUnderwearNoCover) {
-				NPCUnderwearCover = false;
-				NPCAssCover = false;
-			}
-			else {
-				NPCUnderwearCover = true;
-				NPCAssCover = false;
-			}
-		}
-		else if (!HotpantsCovering && HimboCovering) {
-			NPCAssCover = true;
-
-			if (HasUnderwear || HasThong) {
-				NPCUnderwearCover = false;
-				NPCGenitalCover = true;
-			}
-			else if (HasUnderwearT) {
-				NPCUnderwearCover = false;
-				NPCGenitalCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-			}
-			else if (HasThongT) {
-				NPCUnderwearCover = false;
-				NPCGenitalCover = TransparentItemCheck(ThongType, ThongRiskLevel);
-			}
-			else if (HasBananaHammock || HasBananaHammockT) {
-				AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
-			}
-			else if (HasUnderwearNoCover || HasThongNoCover) {
-				NPCUnderwearCover = false;
-				NPCGenitalCover = false;
-			}
-			else {
-				NPCUnderwearCover = true;
-				NPCGenitalCover = false;
-			}
-		}
-		else {
-			AnalyzeUnderwear
-			(
-				HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
-				HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
-				HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
-			);
-		}
-	}
-	else if (HasHotpants) {
-		NPCGenitalCover = true;
-
+	void AnalyzeUnderwear
+	(
+		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
+		bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
+	) {
 		if (HasUnderwear) {
 			NPCUnderwearCover = false;
 			NPCAssCover = true;
-		}
-		else if (HasUnderwearT) {
-			NPCUnderwearCover = false;
-			NPCAssCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
-		}
-		else if (HasUnderwearNoCover) {
-			NPCUnderwearCover = false;
-			NPCAssCover = false;
-		}
-		else {
-			NPCUnderwearCover = true;
-			NPCAssCover = false;
-		}
-	}
-	else if (HasHimbo) {
-		NPCAssCover = true;
-
-		if (HasUnderwear || HasThong) {
-			NPCUnderwearCover = false;
 			NPCGenitalCover = true;
 		}
 		else if (HasUnderwearT) {
 			NPCUnderwearCover = false;
-			NPCGenitalCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
+			NPCAssCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+			NPCGenitalCover = NPCAssCover;
+		}
+		else if (HasThong) {
+			NPCUnderwearCover = false;
+			NPCAssCover = false;
+			NPCGenitalCover = true;
 		}
 		else if (HasThongT) {
 			NPCUnderwearCover = false;
-			NPCGenitalCover = TransparentItemCheck(ThongType, ThongRiskLevel);
+			NPCAssCover = false;
+			NPCGenitalCover = TransparentItemCheck(FlashRiskType::Thong, ThongRiskLevel);
 		}
 		else if (HasBananaHammock || HasBananaHammockT) {
+			NPCAssCover = false;
 			AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
 		}
 		else if (HasUnderwearNoCover || HasThongNoCover) {
 			NPCUnderwearCover = false;
+			NPCAssCover = false;
 			NPCGenitalCover = false;
 		}
 		else {
 			NPCUnderwearCover = true;
+			NPCAssCover = false;
 			NPCGenitalCover = false;
 		}
 	}
-	else if (HasHotpantsT) {
-		bool HotpantsCovering = TransparentItemCheck(HotpantsType, HotpantsRiskLevel);
 
-		if (HotpantsCovering) {
+	void SubAnalyzeBottom
+	(
+		bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
+		bool HasHimbo, bool HasHimboT, int HimboRiskLevel,
+		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
+		bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
+	) {
+		if (HasHotpants && HasHimbo) {
+			NPCAssCover = true;
+			NPCGenitalCover = true;
+			NPCUnderwearCover = true;
+		}
+		else if (HasHotpants && HasHimboT) {
+			NPCGenitalCover = true;
+
+			if (HasUnderwear) {
+				NPCAssCover = true;
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+			}
+			else if (HasUnderwearT) {
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+				if (NPCUnderwearCover) {
+					NPCAssCover = true;
+				}
+				else {
+					NPCAssCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+				}
+			}
+			else if (HasUnderwearNoCover) {
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+				NPCAssCover = NPCUnderwearCover;
+			}
+			else {
+				NPCUnderwearCover = true;
+				NPCAssCover = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+			}
+		}
+		else if (HasHotpantsT && HasHimbo) {
+			NPCAssCover = true;
+
+			if (HasUnderwear || HasThong) {
+				NPCGenitalCover = true;
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+			}
+			else if (HasUnderwearT || HasThongT || HasBananaHammock || HasBananaHammockT) {
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+
+				if (NPCUnderwearCover) {
+					NPCGenitalCover = true;
+				}
+				else {
+					if (HasUnderwearT) {
+						NPCGenitalCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+					}
+					else if (HasThongT) {
+						NPCGenitalCover = TransparentItemCheck(FlashRiskType::Thong, ThongRiskLevel);
+					}
+					else {
+						AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
+					}
+				}
+			}
+			else if (HasUnderwearNoCover || HasThongNoCover) {
+				NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+				NPCGenitalCover = NPCUnderwearCover;
+			}
+			else {
+				NPCUnderwearCover = true;
+				NPCGenitalCover = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+			}
+		}
+		else if (HasHotpantsT && HasHimboT) {
+			bool HotpantsCovering = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+			bool HimboCovering = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+
+			if (HotpantsCovering && HimboCovering) {
+				NPCAssCover = true;
+				NPCGenitalCover = true;
+				NPCUnderwearCover = true;
+			}
+			else if (HotpantsCovering && !HimboCovering) {
+				NPCGenitalCover = true;
+
+				if (HasUnderwear) {
+					NPCUnderwearCover = false;
+					NPCAssCover = true;
+				}
+				else if (HasUnderwearT) {
+					NPCUnderwearCover = false;
+					NPCAssCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+				}
+				else if (HasUnderwearNoCover) {
+					NPCUnderwearCover = false;
+					NPCAssCover = false;
+				}
+				else {
+					NPCUnderwearCover = true;
+					NPCAssCover = false;
+				}
+			}
+			else if (!HotpantsCovering && HimboCovering) {
+				NPCAssCover = true;
+
+				if (HasUnderwear || HasThong) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = true;
+				}
+				else if (HasUnderwearT) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+				}
+				else if (HasThongT) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = TransparentItemCheck(FlashRiskType::Thong, ThongRiskLevel);
+				}
+				else if (HasBananaHammock || HasBananaHammockT) {
+					AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
+				}
+				else if (HasUnderwearNoCover || HasThongNoCover) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = false;
+				}
+				else {
+					NPCUnderwearCover = true;
+					NPCGenitalCover = false;
+				}
+			}
+			else {
+				AnalyzeUnderwear
+				(
+					HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
+					HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
+					HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
+				);
+			}
+		}
+		else if (HasHotpants) {
 			NPCGenitalCover = true;
 
 			if (HasUnderwear) {
@@ -593,7 +606,7 @@ void SubAnalyzeBottom
 			}
 			else if (HasUnderwearT) {
 				NPCUnderwearCover = false;
-				NPCAssCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
+				NPCAssCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
 			}
 			else if (HasUnderwearNoCover) {
 				NPCUnderwearCover = false;
@@ -604,19 +617,7 @@ void SubAnalyzeBottom
 				NPCAssCover = false;
 			}
 		}
-		else {
-			AnalyzeUnderwear
-			(
-				HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
-				HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
-				HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
-			);
-		}
-	}
-	else if (HasHimboT) {
-		bool HimboCovering = TransparentItemCheck(HimboType, HimboRiskLevel);
-
-		if (HimboCovering) {
+		else if (HasHimbo) {
 			NPCAssCover = true;
 
 			if (HasUnderwear || HasThong) {
@@ -625,11 +626,11 @@ void SubAnalyzeBottom
 			}
 			else if (HasUnderwearT) {
 				NPCUnderwearCover = false;
-				NPCGenitalCover = TransparentItemCheck(UnderwearType, UnderwearRiskLevel);
+				NPCGenitalCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
 			}
 			else if (HasThongT) {
 				NPCUnderwearCover = false;
-				NPCGenitalCover = TransparentItemCheck(ThongType, ThongRiskLevel);
+				NPCGenitalCover = TransparentItemCheck(FlashRiskType::Thong, ThongRiskLevel);
 			}
 			else if (HasBananaHammock || HasBananaHammockT) {
 				AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
@@ -643,6 +644,77 @@ void SubAnalyzeBottom
 				NPCGenitalCover = false;
 			}
 		}
+		else if (HasHotpantsT) {
+			bool HotpantsCovering = TransparentItemCheck(FlashRiskType::Hotpants, HotpantsRiskLevel);
+
+			if (HotpantsCovering) {
+				NPCGenitalCover = true;
+
+				if (HasUnderwear) {
+					NPCUnderwearCover = false;
+					NPCAssCover = true;
+				}
+				else if (HasUnderwearT) {
+					NPCUnderwearCover = false;
+					NPCAssCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+				}
+				else if (HasUnderwearNoCover) {
+					NPCUnderwearCover = false;
+					NPCAssCover = false;
+				}
+				else {
+					NPCUnderwearCover = true;
+					NPCAssCover = false;
+				}
+			}
+			else {
+				AnalyzeUnderwear
+				(
+					HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
+					HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
+					HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
+				);
+			}
+		}
+		else if (HasHimboT) {
+			bool HimboCovering = TransparentItemCheck(FlashRiskType::Himbo, HimboRiskLevel);
+
+			if (HimboCovering) {
+				NPCAssCover = true;
+
+				if (HasUnderwear || HasThong) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = true;
+				}
+				else if (HasUnderwearT) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = TransparentItemCheck(FlashRiskType::Underwear, UnderwearRiskLevel);
+				}
+				else if (HasThongT) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = TransparentItemCheck(FlashRiskType::Thong, ThongRiskLevel);
+				}
+				else if (HasBananaHammock || HasBananaHammockT) {
+					AnalyzeBananaHammock(HasBananaHammockT, BananaHammockRiskLevel);
+				}
+				else if (HasUnderwearNoCover || HasThongNoCover) {
+					NPCUnderwearCover = false;
+					NPCGenitalCover = false;
+				}
+				else {
+					NPCUnderwearCover = true;
+					NPCGenitalCover = false;
+				}
+			}
+			else {
+				AnalyzeUnderwear
+				(
+					HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
+					HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
+					HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
+				);
+			}
+		}
 		else {
 			AnalyzeUnderwear
 			(
@@ -652,52 +724,54 @@ void SubAnalyzeBottom
 			);
 		}
 	}
-	else {
-		AnalyzeUnderwear
-		(
-			HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
-			HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
-			HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
-		);
-	}
-}
 
-void AnalyzeBottom
-(
-	bool HasPelvicCurtain, bool HasPelvicCurtainT, int PelvicRiskLevel,
-	bool HasAsscurtain, bool HasAssCurtainT, int AssRiskLevel,
-	bool HasArmorBottom, bool HasArmorBottomT, int BottomRiskLevel,
-	bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
-	bool HasHimbo, bool HasHimboT, int HimboRiskLevel,
-	bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-	bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-	bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
-) {
-	if (HasPelvicCurtain || HasPelvicCurtainT) {
-		NPCPelvicCurtainCover = CurtainCheck(PelvicType, HasPelvicCurtainT, PelvicRiskLevel);
-	}
-	else {
-		NPCPelvicCurtainCover = false;
-	}
+	void AnalyzeBottom
+	(
+		bool HasPelvicCurtain, bool HasPelvicCurtainT, int PelvicRiskLevel,
+		bool HasAsscurtain, bool HasAssCurtainT, int AssRiskLevel,
+		bool HasArmorBottom, bool HasArmorBottomT, int BottomRiskLevel,
+		bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
+		bool HasHimbo, bool HasHimboT, int HimboRiskLevel,
+		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
+		bool HasBananaHammock, bool HasBananaHammockT, int BananaHammockRiskLevel
+	) {
+		if (HasPelvicCurtain || HasPelvicCurtainT) {
+			NPCPelvicCurtainCover = CurtainCheck(FlashRiskType::Pelvic, HasPelvicCurtainT, PelvicRiskLevel);
+		}
+		else {
+			NPCPelvicCurtainCover = false;
+		}
 
-	if (HasAsscurtain || HasAssCurtainT) {
-		NPCAssCurtainCover = CurtainCheck(AssType, HasAssCurtainT, AssRiskLevel);
-	}
-	else {
-		NPCAssCurtainCover = false;
-	}
+		if (HasAsscurtain || HasAssCurtainT) {
+			NPCAssCurtainCover = CurtainCheck(FlashRiskType::Ass, HasAssCurtainT, AssRiskLevel);
+		}
+		else {
+			NPCAssCurtainCover = false;
+		}
 
-	if (HasArmorBottom) {
-		NPCAssCover = true;
-		NPCGenitalCover = true;
-		NPCUnderwearCover = true;
-	}
-	else if (HasArmorBottomT) {
-		NPCUnderwearCover = TransparentItemCheck(BottomType, BottomRiskLevel);
-
-		if (NPCUnderwearCover) {
-			NPCGenitalCover = true;
+		if (HasArmorBottom) {
 			NPCAssCover = true;
+			NPCGenitalCover = true;
+			NPCUnderwearCover = true;
+		}
+		else if (HasArmorBottomT) {
+			NPCUnderwearCover = TransparentItemCheck(FlashRiskType::Bottom, BottomRiskLevel);
+
+			if (NPCUnderwearCover) {
+				NPCGenitalCover = true;
+				NPCAssCover = true;
+			}
+			else {
+				SubAnalyzeBottom
+				(
+					HasHotpants, HasHotpantsT, HotpantsRiskLevel,
+					HasHimbo, HasHimboT, HimboRiskLevel,
+					HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
+					HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
+					HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
+				);
+			}
 		}
 		else {
 			SubAnalyzeBottom
@@ -710,366 +784,274 @@ void AnalyzeBottom
 			);
 		}
 	}
-	else {
-		SubAnalyzeBottom
-		(
-			HasHotpants, HasHotpantsT, HotpantsRiskLevel,
-			HasHimbo, HasHimboT, HimboRiskLevel,
-			HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
-			HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
-			HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
-		);
-	}
-}
 
-void Finalize() {
-	if (NPCTopCurtainCover) {
-		SetActorFactionRank(thisActor, ToplessFaction, 0);
-		SetActorFactionRank(thisActor, ShowingChestFaction, 0);
-		SetActorFactionRank(thisActor, ShowingBraFaction, 0);
-	}
-	else {
-		if (NPCBraCover && NPCChestCover) {
+	void Finalize() {
+		if (NPCTopCurtainCover) {
 			SetActorFactionRank(thisActor, ToplessFaction, 0);
+			SetActorFactionRank(thisActor, ShowingChestFaction, 0);
 			SetActorFactionRank(thisActor, ShowingBraFaction, 0);
-			SetActorFactionRank(thisActor, ShowingChestFaction, 0);
 		}
-		else if (!NPCBraCover && NPCChestCover) {
-			SetActorFactionRank(thisActor, ToplessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingBraFaction, 1);
-			SetActorFactionRank(thisActor, ShowingChestFaction, 0);
-		}
-		else if (!NPCBraCover && !NPCChestCover) {
-			SetActorFactionRank(thisActor, ToplessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingBraFaction, 1);
-			SetActorFactionRank(thisActor, ShowingChestFaction, 1);
-		}
-		else if (NPCBraCover && !NPCChestCover) {
-			if (ActorWornHasKeyword(thisActor, ArmorTopT_Low_Male) || ActorWornHasKeyword(thisActor, ArmorTopT_Male) || ActorWornHasKeyword(thisActor, ArmorTopT_High_Male)
-				|| ActorWornHasKeyword(thisActor, ArmorTop_NoCover_Male) || ActorWornHasKeyword(thisActor, NipplePasties_Male)) {
+		else {
+			if (NPCBraCover && NPCChestCover) {
 				SetActorFactionRank(thisActor, ToplessFaction, 0);
 				SetActorFactionRank(thisActor, ShowingBraFaction, 0);
+				SetActorFactionRank(thisActor, ShowingChestFaction, 0);
+			}
+			else if (!NPCBraCover && NPCChestCover) {
+				SetActorFactionRank(thisActor, ToplessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingBraFaction, 1);
+				SetActorFactionRank(thisActor, ShowingChestFaction, 0);
+			}
+			else if (!NPCBraCover && !NPCChestCover) {
+				SetActorFactionRank(thisActor, ToplessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingBraFaction, 1);
 				SetActorFactionRank(thisActor, ShowingChestFaction, 1);
 			}
-			else {
-				SetActorFactionRank(thisActor, ToplessFaction, 1);
-				SetActorFactionRank(thisActor, ShowingBraFaction, 0);
-				SetActorFactionRank(thisActor, ShowingChestFaction, 1);
+			else if (NPCBraCover && !NPCChestCover) {
+				if (ActorWornHasKeyword(thisActor, ArmorTopT_Low_Male) || ActorWornHasKeyword(thisActor, ArmorTopT_Male) || ActorWornHasKeyword(thisActor, ArmorTopT_High_Male)
+					|| ActorWornHasKeyword(thisActor, ArmorTop_NoCover_Male) || ActorWornHasKeyword(thisActor, NipplePasties_Male)) {
+					SetActorFactionRank(thisActor, ToplessFaction, 0);
+					SetActorFactionRank(thisActor, ShowingBraFaction, 0);
+					SetActorFactionRank(thisActor, ShowingChestFaction, 1);
+				}
+				else {
+					SetActorFactionRank(thisActor, ToplessFaction, 1);
+					SetActorFactionRank(thisActor, ShowingBraFaction, 0);
+					SetActorFactionRank(thisActor, ShowingChestFaction, 1);
+				}
 			}
 		}
-	}
 
-	if (NPCPelvicCurtainCover && NPCAssCurtainCover) {
-		SetActorFactionRank(thisActor, BottomlessFaction, 0);
-		SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-		SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-	}
-	else if (NPCPelvicCurtainCover && !NPCAssCurtainCover) {
-		SetActorFactionRank(thisActor, BottomlessFaction, 0);
-		SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-		if (NPCUnderwearCover && NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+		if (NPCPelvicCurtainCover && NPCAssCurtainCover) {
+			SetActorFactionRank(thisActor, BottomlessFaction, 0);
 			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
 		}
-		else if (!NPCUnderwearCover && NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+		else if (NPCPelvicCurtainCover && !NPCAssCurtainCover) {
+			SetActorFactionRank(thisActor, BottomlessFaction, 0);
+			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+			if (NPCUnderwearCover && NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			}
+			else if (!NPCUnderwearCover && NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			}
+			else if (!NPCUnderwearCover && !NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+			}
+			else if (NPCUnderwearCover && !NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+			}
+		}
+		else if (!NPCPelvicCurtainCover && NPCAssCurtainCover) {
+			SetActorFactionRank(thisActor, BottomlessFaction, 0);
 			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			if (NPCUnderwearCover && NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+			}
+			else if (!NPCUnderwearCover && NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+			}
+			else if (!NPCUnderwearCover && !NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+			}
+			else if (NPCUnderwearCover && !NPCAssCover) {
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+			}
 		}
-		else if (!NPCUnderwearCover && !NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 1);
-		}
-		else if (NPCUnderwearCover && !NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 1);
-		}
-	}
-	else if (!NPCPelvicCurtainCover && NPCAssCurtainCover) {
-		SetActorFactionRank(thisActor, BottomlessFaction, 0);
-		SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		if (NPCUnderwearCover && NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-		}
-		else if (!NPCUnderwearCover && NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-		}
-		else if (!NPCUnderwearCover && !NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-		}
-		else if (NPCUnderwearCover && !NPCAssCover) {
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-		}
-	}
-	else {
-		if (NPCUnderwearCover && NPCGenitalCover && NPCAssCover) { //True True True
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		}
-		else if (!NPCUnderwearCover && NPCGenitalCover && NPCAssCover) { //False True True
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		}
-		else if (!NPCUnderwearCover && !NPCGenitalCover && NPCAssCover) { //False False True
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		}
-		else if (!NPCUnderwearCover && NPCGenitalCover && !NPCAssCover) { //False True False
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 1);
-		}
-		else if (!NPCUnderwearCover && !NPCGenitalCover && !NPCAssCover) { //False False False
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 1);
-		}
-		else if (NPCUnderwearCover && !NPCGenitalCover && NPCAssCover) { //True False True
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 0);
-		}
-		else if (NPCUnderwearCover && NPCGenitalCover && !NPCAssCover) { //True True False
-			SetActorFactionRank(thisActor, BottomlessFaction, 0);
-			SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-			SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
-			SetActorFactionRank(thisActor, ShowingAssFaction, 1);
-		}
-		else if (NPCUnderwearCover && !NPCGenitalCover && !NPCAssCover) { //True False False
-			if (
-				ActorWornHasKeyword(thisActor, ArmorBottom_NoCover_Male) ||
-				ActorWornHasKeyword(thisActor, HotpantsT_Low_Male) || ActorWornHasKeyword(thisActor, HotpantsT_Male) || ActorWornHasKeyword(thisActor, HotpantsT_High_Male) ||
-				ActorWornHasKeyword(thisActor, HimboSkirtT_Low) || ActorWornHasKeyword(thisActor, HimboSkirtT) || ActorWornHasKeyword(thisActor, HimboSkirtT_High) ||
-				ActorWornHasKeyword(thisActor, Microskirt_Male)
-				) {
+		else {
+			if (NPCUnderwearCover && NPCGenitalCover && NPCAssCover) { //True True True
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			}
+			else if (!NPCUnderwearCover && NPCGenitalCover && NPCAssCover) { //False True True
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			}
+			else if (!NPCUnderwearCover && !NPCGenitalCover && NPCAssCover) { //False False True
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
+			}
+			else if (!NPCUnderwearCover && NPCGenitalCover && !NPCAssCover) { //False True False
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+			}
+			else if (!NPCUnderwearCover && !NPCGenitalCover && !NPCAssCover) { //False False False
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
+				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+			}
+			else if (NPCUnderwearCover && !NPCGenitalCover && NPCAssCover) { //True False True
 				SetActorFactionRank(thisActor, BottomlessFaction, 0);
 				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
 				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
-				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+				SetActorFactionRank(thisActor, ShowingAssFaction, 0);
 			}
-			else {
-				SetActorFactionRank(thisActor, BottomlessFaction, 1);
+			else if (NPCUnderwearCover && NPCGenitalCover && !NPCAssCover) { //True True False
+				SetActorFactionRank(thisActor, BottomlessFaction, 0);
 				SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
-				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+				SetActorFactionRank(thisActor, ShowingGenitalsFaction, 0);
 				SetActorFactionRank(thisActor, ShowingAssFaction, 1);
 			}
+			else if (NPCUnderwearCover && !NPCGenitalCover && !NPCAssCover) { //True False False
+				if (
+					ActorWornHasKeyword(thisActor, ArmorBottom_NoCover_Male) ||
+					ActorWornHasKeyword(thisActor, HotpantsT_Low_Male) || ActorWornHasKeyword(thisActor, HotpantsT_Male) || ActorWornHasKeyword(thisActor, HotpantsT_High_Male) ||
+					ActorWornHasKeyword(thisActor, HimboSkirtT_Low) || ActorWornHasKeyword(thisActor, HimboSkirtT) || ActorWornHasKeyword(thisActor, HimboSkirtT_High) ||
+					ActorWornHasKeyword(thisActor, Microskirt_Male)
+					) {
+					SetActorFactionRank(thisActor, BottomlessFaction, 0);
+					SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+					SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+					SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+				}
+				else {
+					SetActorFactionRank(thisActor, BottomlessFaction, 1);
+					SetActorFactionRank(thisActor, ShowingUnderwearFaction, 0);
+					SetActorFactionRank(thisActor, ShowingGenitalsFaction, 1);
+					SetActorFactionRank(thisActor, ShowingAssFaction, 1);
+				}
+			}
 		}
+
+		if (thisActor->GetFactionRank(ToplessFaction, true) == 1 && thisActor->GetFactionRank(BottomlessFaction, true) == 1 && !ActorWornHasKeyword(thisActor, NearlyNaked)) {
+			SetActorFactionRank(thisActor, NudeFaction, 1);
+		}
+		else {
+			SetActorFactionRank(thisActor, NudeFaction, 0);
+		}
+
+		Log("<C++ NPCMaleArmorScan> [Finalize] Nude Faction Rank: " + BoolToString(thisActor->GetFactionRank(NudeFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Topless Faction Rank: " + BoolToString(thisActor->GetFactionRank(ToplessFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Bottomless Faction Rank: " + BoolToString(thisActor->GetFactionRank(BottomlessFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Bra Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingBraFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Chest Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingChestFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Underwear Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingUnderwearFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingGenitalsFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Ass Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingAssFaction, true)), LogType::NPCArmorScan);
+
+		Log("<C++ NPCMaleArmorScan> [Finalize] NPC Male Scan Completed", LogType::NPCArmorScan);
 	}
 
-	if (thisActor->GetFactionRank(ToplessFaction, true) == 1 && thisActor->GetFactionRank(BottomlessFaction, true) == 1 && !ActorWornHasKeyword(thisActor, NearlyNaked)) {
-		SetActorFactionRank(thisActor, NudeFaction, 1);
-	}
-	else {
-		SetActorFactionRank(thisActor, NudeFaction, 0);
-	}
+	bool VanillaArmorCheck() {
+		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] START");
 
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Nude Faction Rank: {}", thisActor->GetFactionRank(NudeFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Topless Faction Rank: {}", thisActor->GetFactionRank(ToplessFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Bottomless Faction Rank: {}", thisActor->GetFactionRank(BottomlessFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Showing Bra Faction Rank: {}", thisActor->GetFactionRank(ShowingBraFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Showing Chest Faction Rank: {}", thisActor->GetFactionRank(ShowingChestFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Showing Underwear Faction Rank: {}", thisActor->GetFactionRank(ShowingUnderwearFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Showing Genitals Faction Rank: {}", thisActor->GetFactionRank(ShowingGenitalsFaction, true));
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Showing Ass Faction Rank: {}", thisActor->GetFactionRank(ShowingAssFaction, true));
+		RE::TESBoundObject* BodyArmor = thisActor->GetWornArmor(RE::BIPED_MODEL::BipedObjectSlot::kBody);
 
-	logs::info("<C++ NPCMaleArmorScan> [Finalize] Female Scan Completed");
-}
+		if (BodyArmor) {
+			const auto BodyItem = AsKeywordForm(BodyArmor);
 
-bool VanillaArmorCheck() {
-	logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] START");
+			bool HasCurtainKeyword =
+				(
+					BodyItem->HasKeyword(ChestCurtain_Male) || BodyItem->HasKeyword(ChestCurtainT_Male) ||
+					BodyItem->HasKeyword(PelvicCurtain_Male) || BodyItem->HasKeyword(PelvicCurtainT_Male) ||
+					BodyItem->HasKeyword(AssCurtain_Male) || BodyItem->HasKeyword(AssCurtainT_Male) ||
+					BodyItem->HasKeyword(Miniskirt_Male) || BodyItem->HasKeyword(MiniskirtT_Male)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), LogType::NPCArmorScan);
 
-	RE::TESBoundObject* BodyArmor = thisActor->GetWornArmor(RE::BIPED_MODEL::BipedObjectSlot::kBody);
+			bool HasTopKeyword =
+				(
+					BodyItem->HasKeyword(ArmorTop_Male) ||
+					BodyItem->HasKeyword(ArmorTopT_Low_Male) || BodyItem->HasKeyword(ArmorTopT_Male) || BodyItem->HasKeyword(ArmorTopT_High_Male) ||
+					BodyItem->HasKeyword(ArmorTop_NoCover_Male)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), LogType::NPCArmorScan);
 
-	if (BodyArmor) {
-		const auto BodyItem = AsKeywordForm(BodyArmor);
+			bool HasBottomKeyword =
+				(
+					BodyItem->HasKeyword(ArmorBottom_Male) ||
+					BodyItem->HasKeyword(ArmorBottomT_Low_Male) || BodyItem->HasKeyword(ArmorBottomT_Male) || BodyItem->HasKeyword(ArmorBottomT_High_Male) ||
+					BodyItem->HasKeyword(ArmorBottom_NoCover_Male) ||
+					BodyItem->HasKeyword(Hotpants_Male) ||
+					BodyItem->HasKeyword(HotpantsT_Low_Male) || BodyItem->HasKeyword(HotpantsT_Male) || BodyItem->HasKeyword(HotpantsT_High_Male) ||
+					BodyItem->HasKeyword(HimboSkirt) ||
+					BodyItem->HasKeyword(HimboSkirtT_Low) || BodyItem->HasKeyword(HimboSkirtT) || BodyItem->HasKeyword(HimboSkirtT_High)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), LogType::NPCArmorScan);
 
-		bool HasCurtainKeyword =
-			(
-				BodyItem->HasKeyword(ChestCurtain_Male) || BodyItem->HasKeyword(ChestCurtainT_Male) ||
-				BodyItem->HasKeyword(PelvicCurtain_Male) || BodyItem->HasKeyword(PelvicCurtainT_Male) ||
-				BodyItem->HasKeyword(AssCurtain_Male) || BodyItem->HasKeyword(AssCurtainT_Male) ||
-				BodyItem->HasKeyword(Miniskirt_Male) || BodyItem->HasKeyword(MiniskirtT_Male)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: {}", HasCurtainKeyword);
+			bool HasBraKeyword =
+				(
+					BodyItem->HasKeyword(Bra_Male) ||
+					BodyItem->HasKeyword(BraT_Low_Male) || BodyItem->HasKeyword(BraT_Male) || BodyItem->HasKeyword(BraT_High_Male) ||
+					BodyItem->HasKeyword(Bra_NoCover_Male)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), LogType::NPCArmorScan);
 
-		bool HasTopKeyword =
-			(
-				BodyItem->HasKeyword(ArmorTop_Male) ||
-				BodyItem->HasKeyword(ArmorTopT_Low_Male) || BodyItem->HasKeyword(ArmorTopT_Male) || BodyItem->HasKeyword(ArmorTopT_High_Male) ||
-				BodyItem->HasKeyword(ArmorTop_NoCover_Male)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: {}", HasTopKeyword);
+			bool HasUnderwearKeyword =
+				(
+					BodyItem->HasKeyword(Underwear_Male) ||
+					BodyItem->HasKeyword(UnderwearT_Low_Male) || BodyItem->HasKeyword(UnderwearT_Male) || BodyItem->HasKeyword(UnderwearT_High_Male) ||
+					BodyItem->HasKeyword(Underwear_NoCover_Male) ||
+					BodyItem->HasKeyword(Thong_Male) ||
+					BodyItem->HasKeyword(ThongT_Low_Male) || BodyItem->HasKeyword(ThongT_Male) || BodyItem->HasKeyword(ThongT_High_Male) ||
+					BodyItem->HasKeyword(Thong_NoCover_Male) ||
+					BodyItem->HasKeyword(BananaHammock) ||
+					BodyItem->HasKeyword(BananaHammockT_Low) || BodyItem->HasKeyword(BananaHammockT) || BodyItem->HasKeyword(BananaHammockT_High)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), LogType::NPCArmorScan);
 
-		bool HasBottomKeyword =
-			(
-				BodyItem->HasKeyword(ArmorBottom_Male) ||
-				BodyItem->HasKeyword(ArmorBottomT_Low_Male) || BodyItem->HasKeyword(ArmorBottomT_Male) || BodyItem->HasKeyword(ArmorBottomT_High_Male) ||
-				BodyItem->HasKeyword(ArmorBottom_NoCover_Male) ||
-				BodyItem->HasKeyword(Hotpants_Male) ||
-				BodyItem->HasKeyword(HotpantsT_Low_Male) || BodyItem->HasKeyword(HotpantsT_Male) || BodyItem->HasKeyword(HotpantsT_High_Male) ||
-				BodyItem->HasKeyword(HimboSkirt) ||
-				BodyItem->HasKeyword(HimboSkirtT_Low) || BodyItem->HasKeyword(HimboSkirtT) || BodyItem->HasKeyword(HimboSkirtT_High)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: {}", HasBottomKeyword);
+			bool HasExtraKeyword =
+				(
+					BodyItem->HasKeyword(NearlyNaked_Male) ||
+					BodyItem->HasKeyword(NipplePasties_Male) ||
+					BodyItem->HasKeyword(Microskirt_Male) ||
+					BodyItem->HasKeyword(EffectivelyNaked_Male)
+					);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), LogType::NPCArmorScan);
 
-		bool HasBraKeyword =
-			(
-				BodyItem->HasKeyword(Bra_Male) ||
-				BodyItem->HasKeyword(BraT_Low_Male) || BodyItem->HasKeyword(BraT_Male) || BodyItem->HasKeyword(BraT_High_Male) ||
-				BodyItem->HasKeyword(Bra_NoCover_Male)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: {}", HasBraKeyword);
-
-		bool HasUnderwearKeyword =
-			(
-				BodyItem->HasKeyword(Underwear_Male) ||
-				BodyItem->HasKeyword(UnderwearT_Low_Male) || BodyItem->HasKeyword(UnderwearT_Male) || BodyItem->HasKeyword(UnderwearT_High_Male) ||
-				BodyItem->HasKeyword(Underwear_NoCover_Male) ||
-				BodyItem->HasKeyword(Thong_Male) ||
-				BodyItem->HasKeyword(ThongT_Low_Male) || BodyItem->HasKeyword(ThongT_Male) || BodyItem->HasKeyword(ThongT_High_Male) ||
-				BodyItem->HasKeyword(Thong_NoCover_Male) ||
-				BodyItem->HasKeyword(BananaHammock) ||
-				BodyItem->HasKeyword(BananaHammockT_Low) || BodyItem->HasKeyword(BananaHammockT) || BodyItem->HasKeyword(BananaHammockT_High)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: {}", HasUnderwearKeyword);
-
-		bool HasExtraKeyword =
-			(
-				BodyItem->HasKeyword(NearlyNaked_Male) ||
-				BodyItem->HasKeyword(NipplePasties_Male) ||
-				BodyItem->HasKeyword(Microskirt_Male) ||
-				BodyItem->HasKeyword(EffectivelyNaked_Male)
-				);
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: {}", HasExtraKeyword);
-
-		logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? {}", (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword));
-		return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
-	}
-	logs::info("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? false");
-	return false;
-}
-
-void NPCMaleAnalyze(RE::Actor* akMale) {
-	logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] NPC Female Analysis Triggered!");
-
-	if (akMale == nullptr) {
-		logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] Actor is None/nullptr!!!");
-		return;
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), LogType::NPCArmorScan);
+			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
+		}
+		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", LogType::NPCArmorScan);
+		return false;
 	}
 
-	logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: {}", akMale->GetName());
+	void NPCMaleAnalyze(RE::Actor* akMale) {
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] NPC Male Analysis Triggered!");
 
-	if (akMale->GetActorBase()->IsFemale() == true) {
-		logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] ERROR: Actor {} is Female!", akMale->GetName());
-		return;
-	}
-
-	thisActor = akMale;
-
-	logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] Start analysis...");
-	if (ActorWornHasKeyword(thisActor, CoversAll_Male)) {
-		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Covers All keyword detected", info);
-
-		NPCTopCurtainCover = true;
-		NPCPelvicCurtainCover = true;
-		NPCTopCurtainCover = true;
-
-		NPCChestCover = true;
-		NPCBraCover = true;
-		NPCAssCover = true;
-		NPCGenitalCover = true;
-		NPCUnderwearCover = true;
-	}
-	else {
-		bool HasChestCurtain = ActorWornHasKeyword(thisActor, ChestCurtain_Male);
-		bool HasChestCurtainT = ActorWornHasKeyword(thisActor, ChestCurtainT_Male);
-
-		int ChestRiskLevel = RiskNone;
-		if (ActorWornHasKeyword(thisActor, ChestFlashRiskLow_Male)) {
-			ChestRiskLevel = RiskLow;
-		}
-		else if (ActorWornHasKeyword(thisActor, ChestFlashRisk_Male)) {
-			ChestRiskLevel = RiskNormal;
-		}
-		else if (ActorWornHasKeyword(thisActor, ChestFlashRiskHigh_Male)) {
-			ChestRiskLevel = RiskHigh;
-		}
-		else if (ActorWornHasKeyword(thisActor, ChestFlashRiskExtreme_Male)) {
-			ChestRiskLevel = RiskExtreme;
-		}
-		else if (ActorWornHasKeyword(thisActor, ChestFlashRiskUltra_Male)) {
-			ChestRiskLevel = RiskUltra;
+		if (akMale == nullptr) {
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Actor is None/Null Pointer!!!", LogType::NPCArmorScan, LoggingLevel::critical);
+			return;
 		}
 
-		bool HasPelvicCurtain = (ActorWornHasKeyword(thisActor, PelvicCurtain_Male) || ActorWornHasKeyword(thisActor, Miniskirt_Male));
-		bool HasPelvicCurtainT = (ActorWornHasKeyword(thisActor, PelvicCurtainT_Male) || ActorWornHasKeyword(thisActor, MiniskirtT_Male));
+		std::string akName = akMale->GetName();
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: " + akName + " | Form ID: (" + std::format("{:#x}", akMale->GetFormID()) + ")", LogType::NPCArmorScan);
 
-		int PelvicRiskLevel = RiskNone;
-		if (ActorWornHasKeyword(thisActor, PelvicFlashRiskLow_Male)) {
-			PelvicRiskLevel = RiskLow;
-		}
-		else if (ActorWornHasKeyword(thisActor, PelvicFlashRisk_Male)) {
-			PelvicRiskLevel = RiskNormal;
-		}
-		else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskHigh_Male)) {
-			PelvicRiskLevel = RiskHigh;
-		}
-		else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskExtreme_Male)) {
-			PelvicRiskLevel = RiskExtreme;
-		}
-		else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskUltra_Male)) {
-			PelvicRiskLevel = RiskUltra;
+		if (akMale->GetActorBase()->IsFemale() == true) {
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] CRITICAL ERROR: Actor " + akName + " is Female! This should not have happened!", LogType::NPCArmorScan, LoggingLevel::critical);
+			return;
 		}
 
-		bool HasAssCurtain = (ActorWornHasKeyword(thisActor, AssCurtain_Male) || ActorWornHasKeyword(thisActor, Miniskirt_Male));
-		bool HasAssCurtainT = (ActorWornHasKeyword(thisActor, AssCurtainT_Male) || ActorWornHasKeyword(thisActor, MiniskirtT_Male));
+		thisActor = akMale;
 
-		int AssRiskLevel = RiskNone;
-		if (ActorWornHasKeyword(thisActor, AssFlashRiskLow_Male)) {
-			AssRiskLevel = RiskLow;
-		}
-		else if (ActorWornHasKeyword(thisActor, AssFlashRisk_Male)) {
-			AssRiskLevel = RiskNormal;
-		}
-		else if (ActorWornHasKeyword(thisActor, AssFlashRiskHigh_Male)) {
-			AssRiskLevel = RiskHigh;
-		}
-		else if (ActorWornHasKeyword(thisActor, AssFlashRiskExtreme_Male)) {
-			AssRiskLevel = RiskExtreme;
-		}
-		else if (ActorWornHasKeyword(thisActor, AssFlashRiskUltra_Male)) {
-			AssRiskLevel = RiskUltra;
-		}
+		ResetFlashingFactions();
 
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtain = {}", HasChestCurtain);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtainT = {}", HasChestCurtainT);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] ChestRiskLevel = {}", ChestRiskLevel);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtain = {}", HasPelvicCurtain);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = {}", HasPelvicCurtainT);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] PelvicRiskLevel = {}", PelvicRiskLevel);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtain = {}", HasAssCurtain);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtainT = {}", HasAssCurtainT);
-		logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] AssRiskLevel = {}", AssRiskLevel);
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Start analysis...", LogType::NPCArmorScan);
+		if (ActorWornHasKeyword(thisActor, CoversAll_Male)) {
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Covers All keyword detected", LogType::NPCArmorScan);
 
-		if (VanillaArmorCheck() == true) {
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] Armor is considered vanilla");
-
-			NPCTopCurtainCover = CurtainCheck(ChestType, HasChestCurtainT, ChestRiskLevel);
-			NPCPelvicCurtainCover = CurtainCheck(PelvicType, HasPelvicCurtainT, PelvicRiskLevel);
-			NPCAssCurtainCover = CurtainCheck(AssType, HasAssCurtainT, AssRiskLevel);
+			NPCTopCurtainCover = true;
+			NPCPelvicCurtainCover = true;
+			NPCTopCurtainCover = true;
 
 			NPCChestCover = true;
 			NPCBraCover = true;
@@ -1078,190 +1060,275 @@ void NPCMaleAnalyze(RE::Actor* akMale) {
 			NPCUnderwearCover = true;
 		}
 		else {
-			/*
-			=============
-			TOP VAIRABLES
-			=============
-			*/
+			bool HasChestCurtain = ActorWornHasKeyword(thisActor, ChestCurtain_Male);
+			bool HasChestCurtainT = ActorWornHasKeyword(thisActor, ChestCurtainT_Male);
 
-			//Armor Top
-			bool HasArmorTop = ActorWornHasKeyword(thisActor, ArmorTop_Male);
-			int TopRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, ArmorTopT_Low_Male)) {
-				TopRiskLevel = RiskLow;
+			int ChestRiskLevel = FlashRiskLevel::None;
+			if (ActorWornHasKeyword(thisActor, ChestFlashRiskLow_Male)) {
+				ChestRiskLevel = FlashRiskLevel::Low;
 			}
-			else if (ActorWornHasKeyword(thisActor, ArmorTopT_Male)) {
-				TopRiskLevel = RiskNormal;
+			else if (ActorWornHasKeyword(thisActor, ChestFlashRisk_Male)) {
+				ChestRiskLevel = FlashRiskLevel::Normal;
 			}
-			else if (ActorWornHasKeyword(thisActor, ArmorTopT_High_Male)) {
-				TopRiskLevel = RiskHigh;
+			else if (ActorWornHasKeyword(thisActor, ChestFlashRiskHigh_Male)) {
+				ChestRiskLevel = FlashRiskLevel::High;
 			}
-			bool HasArmorTopT = TopRiskLevel > RiskNone;
+			else if (ActorWornHasKeyword(thisActor, ChestFlashRiskExtreme_Male)) {
+				ChestRiskLevel = FlashRiskLevel::Extreme;
+			}
+			else if (ActorWornHasKeyword(thisActor, ChestFlashRiskUltra_Male)) {
+				ChestRiskLevel = FlashRiskLevel::Ultra;
+			}
 
-			//Bra
-			bool HasBra = ActorWornHasKeyword(thisActor, Bra_Male);
-			int BraRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, BraT_Low_Male)) {
-				BraRiskLevel = RiskLow;
-			}
-			else if (ActorWornHasKeyword(thisActor, BraT_Male)) {
-				BraRiskLevel = RiskNormal;
-			}
-			else if (ActorWornHasKeyword(thisActor, BraT_High_Male)) {
-				BraRiskLevel = RiskHigh;
-			}
-			bool HasBraT = BraRiskLevel > RiskNone;
-			bool HasBraNoCover = ActorWornHasKeyword(thisActor, Bra_NoCover_Male);
+			bool HasPelvicCurtain = (ActorWornHasKeyword(thisActor, PelvicCurtain_Male) || ActorWornHasKeyword(thisActor, Miniskirt_Male));
+			bool HasPelvicCurtainT = (ActorWornHasKeyword(thisActor, PelvicCurtainT_Male) || ActorWornHasKeyword(thisActor, MiniskirtT_Male));
 
-			/*
-			================
-			BOTTOM VARIABLES
-			================
-			*/
+			int PelvicRiskLevel = FlashRiskLevel::None;
+			if (ActorWornHasKeyword(thisActor, PelvicFlashRiskLow_Male)) {
+				PelvicRiskLevel = FlashRiskLevel::Low;
+			}
+			else if (ActorWornHasKeyword(thisActor, PelvicFlashRisk_Male)) {
+				PelvicRiskLevel = FlashRiskLevel::Normal;
+			}
+			else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskHigh_Male)) {
+				PelvicRiskLevel = FlashRiskLevel::High;
+			}
+			else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskExtreme_Male)) {
+				PelvicRiskLevel = FlashRiskLevel::Extreme;
+			}
+			else if (ActorWornHasKeyword(thisActor, PelvicFlashRiskUltra_Male)) {
+				PelvicRiskLevel = FlashRiskLevel::Ultra;
+			}
 
-			//Bottom Armor
-			bool HasArmorBottom = ActorWornHasKeyword(thisActor, ArmorBottom_Male);
-			int BottomRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, ArmorBottomT_Low_Male)) {
-				BottomRiskLevel = RiskLow;
-			}
-			else if (ActorWornHasKeyword(thisActor, ArmorBottomT_Male)) {
-				BottomRiskLevel = RiskNormal;
-			}
-			else if (ActorWornHasKeyword(thisActor, ArmorBottomT_High_Male)) {
-				BottomRiskLevel = RiskHigh;
-			}
-			bool HasArmorBottomT = BottomRiskLevel > RiskNone;
+			bool HasAssCurtain = (ActorWornHasKeyword(thisActor, AssCurtain_Male) || ActorWornHasKeyword(thisActor, Miniskirt_Male));
+			bool HasAssCurtainT = (ActorWornHasKeyword(thisActor, AssCurtainT_Male) || ActorWornHasKeyword(thisActor, MiniskirtT_Male));
 
-			//Hotpants
-			bool HasHotpants = ActorWornHasKeyword(thisActor, Hotpants_Male);
-			int HotpantsRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, HotpantsT_Low_Male)) {
-				HotpantsRiskLevel = RiskLow;
+			int AssRiskLevel = FlashRiskLevel::None;
+			if (ActorWornHasKeyword(thisActor, AssFlashRiskLow_Male)) {
+				AssRiskLevel = FlashRiskLevel::Low;
 			}
-			else if (ActorWornHasKeyword(thisActor, HotpantsT_Male)) {
-				HotpantsRiskLevel = RiskNormal;
+			else if (ActorWornHasKeyword(thisActor, AssFlashRisk_Male)) {
+				AssRiskLevel = FlashRiskLevel::Normal;
 			}
-			else if (ActorWornHasKeyword(thisActor, HotpantsT_High_Male)) {
-				HotpantsRiskLevel = RiskHigh;
+			else if (ActorWornHasKeyword(thisActor, AssFlashRiskHigh_Male)) {
+				AssRiskLevel = FlashRiskLevel::High;
 			}
-			bool HasHotpantsT = HotpantsRiskLevel > RiskNone;
+			else if (ActorWornHasKeyword(thisActor, AssFlashRiskExtreme_Male)) {
+				AssRiskLevel = FlashRiskLevel::Extreme;
+			}
+			else if (ActorWornHasKeyword(thisActor, AssFlashRiskUltra_Male)) {
+				AssRiskLevel = FlashRiskLevel::Ultra;
+			}
 
-			//Himbo Skirt
-			bool HasHimbo = ActorWornHasKeyword(thisActor, HimboSkirt);
-			int HimboRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, HimboSkirtT_Low)) {
-				HimboRiskLevel = RiskLow;
-			}
-			else if (ActorWornHasKeyword(thisActor, HimboSkirtT)) {
-				HimboRiskLevel = RiskNormal;
-			}
-			else if (ActorWornHasKeyword(thisActor, HimboSkirtT_High)) {
-				HimboRiskLevel = RiskHigh;
-			}
-			bool HasHimboT = HimboRiskLevel > RiskNone;
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ChestRiskLevel = " + BoolToString(ChestRiskLevel), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtain = " + BoolToString(HasPelvicCurtain), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = " + BoolToString(HasPelvicCurtainT), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] PelvicRiskLevel = " + BoolToString(PelvicRiskLevel), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtain = " + BoolToString(HasAssCurtain), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtainT = " + BoolToString(HasAssCurtainT), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] AssRiskLevel = " + BoolToString(AssRiskLevel), LogType::NPCArmorScan);
 
-			//Underwear
-			bool HasUnderwear = ActorWornHasKeyword(thisActor, Underwear_Male);
-			int UnderwearRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, UnderwearT_Low_Male)) {
-				UnderwearRiskLevel = RiskLow;
-			}
-			else if (ActorWornHasKeyword(thisActor, UnderwearT_Male)) {
-				UnderwearRiskLevel = RiskNormal;
-			}
-			else if (ActorWornHasKeyword(thisActor, UnderwearT_High_Male)) {
-				UnderwearRiskLevel = RiskHigh;
-			}
-			bool HasUnderwearT = UnderwearRiskLevel > RiskNone;
-			bool HasUnderwearNoCover = ActorWornHasKeyword(thisActor, Underwear_NoCover_Male);
+			if (VanillaArmorCheck() == true) {
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Armor is considered vanilla.", LogType::NPCArmorScan);
 
-			//Thong
-			bool HasThong = ActorWornHasKeyword(thisActor, Thong_Male);
-			int ThongRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, ThongT_Low_Male)) {
-				ThongRiskLevel = RiskLow;
-			}
-			else if (ActorWornHasKeyword(thisActor, ThongT_Male)) {
-				ThongRiskLevel = RiskNormal;
-			}
-			else if (ActorWornHasKeyword(thisActor, ThongT_High_Male)) {
-				ThongRiskLevel = RiskHigh;
-			}
-			bool HasThongT = ThongRiskLevel > RiskNone;
-			bool HasThongNoCover = ActorWornHasKeyword(thisActor, Thong_NoCover_Male);
+				NPCTopCurtainCover = CurtainCheck(FlashRiskType::Chest, HasChestCurtainT, ChestRiskLevel);
+				NPCPelvicCurtainCover = CurtainCheck(FlashRiskType::Pelvic, HasPelvicCurtainT, PelvicRiskLevel);
+				NPCAssCurtainCover = CurtainCheck(FlashRiskType::Ass, HasAssCurtainT, AssRiskLevel);
 
-			//BananaHammock
-			bool HasBananaHammock = ActorWornHasKeyword(thisActor, BananaHammock);
-			int BananaHammockRiskLevel = RiskNone;
-			if (ActorWornHasKeyword(thisActor, BananaHammockT_Low)) {
-				BananaHammockRiskLevel = RiskLow;
+				NPCChestCover = true;
+				NPCBraCover = true;
+				NPCAssCover = true;
+				NPCGenitalCover = true;
+				NPCUnderwearCover = true;
 			}
-			else if (ActorWornHasKeyword(thisActor, BananaHammockT)) {
-				BananaHammockRiskLevel = RiskNormal;
+			else {
+				/*
+				=============
+				TOP VAIRABLES
+				=============
+				*/
+
+				//Armor Top
+				bool HasArmorTop = ActorWornHasKeyword(thisActor, ArmorTop_Male);
+				int TopRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, ArmorTopT_Low_Male)) {
+					TopRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, ArmorTopT_Male)) {
+					TopRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, ArmorTopT_High_Male)) {
+					TopRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasArmorTopT = TopRiskLevel > FlashRiskLevel::None;
+
+				//Bra
+				bool HasBra = ActorWornHasKeyword(thisActor, Bra_Male);
+				int BraRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, BraT_Low_Male)) {
+					BraRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, BraT_Male)) {
+					BraRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, BraT_High_Male)) {
+					BraRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasBraT = BraRiskLevel > FlashRiskLevel::None;
+				bool HasBraNoCover = ActorWornHasKeyword(thisActor, Bra_NoCover_Male);
+
+				/*
+				================
+				BOTTOM VARIABLES
+				================
+				*/
+
+				//Bottom Armor
+				bool HasArmorBottom = ActorWornHasKeyword(thisActor, ArmorBottom_Male);
+				int BottomRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, ArmorBottomT_Low_Male)) {
+					BottomRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, ArmorBottomT_Male)) {
+					BottomRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, ArmorBottomT_High_Male)) {
+					BottomRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasArmorBottomT = BottomRiskLevel > FlashRiskLevel::None;
+
+				//Hotpants
+				bool HasHotpants = ActorWornHasKeyword(thisActor, Hotpants_Male);
+				int HotpantsRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, HotpantsT_Low_Male)) {
+					HotpantsRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, HotpantsT_Male)) {
+					HotpantsRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, HotpantsT_High_Male)) {
+					HotpantsRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasHotpantsT = HotpantsRiskLevel > FlashRiskLevel::None;
+
+				//Himbo Skirt
+				bool HasHimbo = ActorWornHasKeyword(thisActor, HimboSkirt);
+				int HimboRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, HimboSkirtT_Low)) {
+					HimboRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, HimboSkirtT)) {
+					HimboRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, HimboSkirtT_High)) {
+					HimboRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasHimboT = HimboRiskLevel > FlashRiskLevel::None;
+
+				//Underwear
+				bool HasUnderwear = ActorWornHasKeyword(thisActor, Underwear_Male);
+				int UnderwearRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, UnderwearT_Low_Male)) {
+					UnderwearRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, UnderwearT_Male)) {
+					UnderwearRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, UnderwearT_High_Male)) {
+					UnderwearRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasUnderwearT = UnderwearRiskLevel > FlashRiskLevel::None;
+				bool HasUnderwearNoCover = ActorWornHasKeyword(thisActor, Underwear_NoCover_Male);
+
+				//Thong
+				bool HasThong = ActorWornHasKeyword(thisActor, Thong_Male);
+				int ThongRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, ThongT_Low_Male)) {
+					ThongRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, ThongT_Male)) {
+					ThongRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, ThongT_High_Male)) {
+					ThongRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasThongT = ThongRiskLevel > FlashRiskLevel::None;
+				bool HasThongNoCover = ActorWornHasKeyword(thisActor, Thong_NoCover_Male);
+
+				//BananaHammock
+				bool HasBananaHammock = ActorWornHasKeyword(thisActor, BananaHammock);
+				int BananaHammockRiskLevel = FlashRiskLevel::None;
+				if (ActorWornHasKeyword(thisActor, BananaHammockT_Low)) {
+					BananaHammockRiskLevel = FlashRiskLevel::Low;
+				}
+				else if (ActorWornHasKeyword(thisActor, BananaHammockT)) {
+					BananaHammockRiskLevel = FlashRiskLevel::Normal;
+				}
+				else if (ActorWornHasKeyword(thisActor, BananaHammockT_High)) {
+					BananaHammockRiskLevel = FlashRiskLevel::High;
+				}
+				bool HasBananaHammockT = BananaHammockRiskLevel > FlashRiskLevel::None;
+
+				//Debug Results
+				//Top
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTop = " + BoolToString(HasArmorTop), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTopT = " + BoolToString(HasArmorTopT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] TopRiskLevel = " + BoolToString(TopRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBra = " + BoolToString(HasBra), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraT = " + BoolToString(HasBraT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BraRiskLevel = " + BoolToString(BraRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraNoCover = " + BoolToString(HasBraNoCover), LogType::NPCArmorScan);
+
+				//Bottom
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottom = " + BoolToString(HasArmorBottom), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottomT = " + BoolToString(HasArmorBottomT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BottomRiskLevel = " + BoolToString(BottomRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpants = " + BoolToString(HasHotpants), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpantsT = " + BoolToString(HasHotpantsT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = " + BoolToString(HotpantsRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimbo = " + BoolToString(HasHimbo), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimboT = " + BoolToString(HasHimboT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HimboRiskLevel = " + BoolToString(HimboRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwear = " + BoolToString(HasUnderwear), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearT = " + BoolToString(HasUnderwearT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = " + BoolToString(UnderwearRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = " + BoolToString(HasUnderwearNoCover), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThong = " + BoolToString(HasThong), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongT = " + BoolToString(HasThongT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ThongRiskLevel = " + BoolToString(ThongRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongNoCover = " + BoolToString(HasThongNoCover), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammock = " + BoolToString(HasBananaHammock), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammockT = " + BoolToString(HasBananaHammockT), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = " + BoolToString(BananaHammockRiskLevel), LogType::NPCArmorScan);
+
+				AnalyzeTop
+				(
+					HasChestCurtain, HasChestCurtainT, ChestRiskLevel,
+					HasArmorTop, HasArmorTopT, TopRiskLevel,
+					HasBra, HasBraT, BraRiskLevel, HasBraNoCover
+				);
+
+				AnalyzeBottom
+				(
+					HasPelvicCurtain, HasPelvicCurtainT, PelvicRiskLevel,
+					HasAssCurtain, HasAssCurtainT, AssRiskLevel,
+					HasArmorBottom, HasArmorBottomT, BottomRiskLevel,
+					HasHotpants, HasHotpantsT, HotpantsRiskLevel,
+					HasHimbo, HasHimboT, HimboRiskLevel,
+					HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
+					HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
+					HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
+				);
 			}
-			else if (ActorWornHasKeyword(thisActor, BananaHammockT_High)) {
-				BananaHammockRiskLevel = RiskHigh;
-			}
-			bool HasBananaHammockT = BananaHammockRiskLevel > RiskNone;
-
-			//Debug Results
-			//Top
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTop = {}", HasArmorTop);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTopT = {}", HasArmorTopT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] TopRiskLevel = {}", TopRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBra = {}", HasBra);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraT = {}", HasBraT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] BraRiskLevel = {}", BraRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraNoCover = {}", HasBraNoCover);
-
-			//Bottom
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottom = {}", HasArmorBottom);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottomT = {}", HasArmorBottomT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] BottomRiskLevel = {}", BottomRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpants = {}", HasHotpants);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpantsT = {}", HasHotpantsT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = {}", HotpantsRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimbo = {}", HasHimbo);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimboT = {}", HasHimboT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HimboRiskLevel = {}", HimboRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwear = {}", HasUnderwear);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearT = {}", HasUnderwearT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = {}", UnderwearRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = {}", HasUnderwearNoCover);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThong = {}", HasThong);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongT = {}", HasThongT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] ThongRiskLevel = {}", ThongRiskLevel);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongNoCover = {}", HasThongNoCover);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammock = {}", HasBananaHammock);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammockT = {}", HasBananaHammockT);
-			logs::info("<C++ NPCMaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = {}", BananaHammockRiskLevel);
-
-			AnalyzeTop
-			(
-				HasChestCurtain, HasChestCurtainT, ChestRiskLevel,
-				HasArmorTop, HasArmorTopT, TopRiskLevel,
-				HasBra, HasBraT, BraRiskLevel, HasBraNoCover
-			);
-
-			AnalyzeBottom
-			(
-				HasPelvicCurtain, HasPelvicCurtainT, PelvicRiskLevel,
-				HasAssCurtain, HasAssCurtainT, AssRiskLevel,
-				HasArmorBottom, HasArmorBottomT, BottomRiskLevel,
-				HasHotpants, HasHotpantsT, HotpantsRiskLevel,
-				HasHimbo, HasHimboT, HimboRiskLevel,
-				HasUnderwear, HasUnderwearT, UnderwearRiskLevel, HasUnderwearNoCover,
-				HasThong, HasThongT, ThongRiskLevel, HasThongNoCover,
-				HasBananaHammock, HasBananaHammockT, BananaHammockRiskLevel
-			);
 		}
-	}
 
-	Finalize();
-	logs::critical("<C++ NPCMaleArmorScan> [MaleAnalyze] Analysis Succeeded!");
+		Finalize();
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analysis Succeeded!", LogType::NPCArmorScan);
+	}
 }
 
 void ExternalNPCMaleAnalyze(RE::StaticFunctionTag*, RE::Actor* akMale) {
-	NPCMaleAnalyze(akMale);
+	NPCMaleScan::NPCMaleAnalyze(akMale);
 }

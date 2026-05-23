@@ -1,33 +1,738 @@
 #include "NPCData.h"
+#include "Logger.h"
+#include "Core.h"
+#include "Config.h"
+#include "SaveLoad.h"
 
-bool FemaleExists(RE::Actor* akFemale) {
-	int FemaleForm = akFemale->GetFormID();
-	std::string FemaleBaseEditorID = akFemale->GetActorBase()->GetFormEditorID();
-	
-	int index = 0;
-	while (index < std::size(ActorFormID)) {
-		if (FemaleForm == ActorFormID.at(index)) {
-			return true;
-		}
-		index++;
-	}
-	return false;
+enum FunctionEnd {
+	Success,
+	FailWarn,
+	FailError,
+	FailCritical
+};
+
+int GetInternalFemaleID(RE::Actor* akFemale) {
+	RE::FormID FemaleForm = akFemale->GetFormID();
+	std::string FemaleName = akFemale->GetName();
+
+	Log("<C++ NPCData> [GetInternalFemaleID] Female Form ID: " + std::format("{:#x}", FemaleForm), LogType::NPCData);
+	Log("<C++ NPCData> [GetInternalFemaleID] Female Name: " + FemaleName, LogType::NPCData);
+
+	return FindInVector(RegisteredFemales::FemaleFormID, FemaleForm);
 }
 
-void RegisterFemale(RE::Actor* akFemale) {
+int GetInternalPermanentFemaleID(RE::Actor* akFemale) {
+	int Index = 0;
+	bool IndexFound = false;
+	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+	RE::FormID ConstructedID;
+	RE::FormID PermFileIndex;
+	std::optional<uint32_t> OptPermFileIndex;
+
+	while (Index < PermanentFemales::TotalFemales && IndexFound == false) {
+		if (PermanentFemales::IsInLightPlugin[Index]) {
+			OptPermFileIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]);
+			
+		}
+		else {
+			OptPermFileIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]);
+		}
+
+		if (OptPermFileIndex.has_value()) {
+			PermFileIndex = OptPermFileIndex.value();
+			ConstructedID = PermFileIndex & PermanentFemales::FemaleLocalID[Index];
+
+			if (ConstructedID == akFemale->GetFormID()) {
+				IndexFound = true;
+			}
+		}
+		else {
+			Log("<C++ NPCData> [GetInternalPermanentFemaleID] Plugin " + static_cast<std::string>(PermanentFemales::FemalePlugin[Index]) + " is not loaded!", LogType::NPCData, LoggingLevel::warning);
+		}
+
+		if (IndexFound == false) {
+			Index++;
+		}
+	}
+
+	if (IndexFound == false) {
+		Index = -1;
+		std::string akName = akFemale->GetName();
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + akName + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
+	}
+	
+	return Index;
+}
+
+void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
 	int FemaleForm = akFemale->GetFormID();
-	int FemaleBaseForm = akFemale->GetActorBase()->GetFormID();
-	std::string FemaleEditorID = akFemale->GetFormEditorID();
-	std::string FemaleBaseEditorID = akFemale->GetActorBase()->GetFormEditorID();
 	std::string FemaleName = akFemale->GetName();
-	std::string FemaleBaseName = akFemale->GetActorBase()->GetName();
 
-	logs::critical("Female Form ID: {}", FemaleForm);
-	logs::critical("Female Base Form ID: {}", FemaleBaseForm);
-	logs::critical("Female Editor ID: {}", FemaleEditorID);
-	logs::critical("Female Base Editor ID: {}", FemaleBaseEditorID);
-	logs::critical("Female Name: {}", FemaleName);
-	logs::critical("Female base Name: {}", FemaleBaseName);
+	Log("<C++ NPCData> [RegisterFemale] Female Form ID: " + std::format("{:08X}", FemaleForm), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterFemale] Female Name: " + FemaleName, LogType::NPCData);
 
-	//ActorFormID.emplace_back(FemaleForm);
+	if (FemaleName == "") {
+		Log("<C++ NPCData> [RegisterFemale] Cannot Register Unnamed Female!", LogType::NPCData, LoggingLevel::warning);
+		return;
+	}
+
+	int ShynessMode = ShySex::Men; //Default to Men (zero) if no shyness otherwise found
+	int StrictModesty = GetRandomizedModesty(akFemale, false);
+	int TopModesty = SimpleModestyLevel::Modest;
+	int BottomModesty = TopModesty;
+
+	switch (StrictModesty) {
+		case StrictModestyLevel::Reasonable:
+			TopModesty = SimpleModestyLevel::Comfortable;
+			break;
+		case StrictModestyLevel::Relaxed:
+			TopModesty = SimpleModestyLevel::Comfortable;
+			BottomModesty = TopModesty;
+			break;
+		case StrictModestyLevel::Comfortable:
+			TopModesty = SimpleModestyLevel::Brazen;
+			BottomModesty = SimpleModestyLevel::Comfortable;
+			break;
+		case StrictModestyLevel::Tease:
+			TopModesty = SimpleModestyLevel::Brazen;
+			BottomModesty = TopModesty;
+			break;
+		case StrictModestyLevel::Brazen:
+			TopModesty = SimpleModestyLevel::Immodest;
+			BottomModesty = SimpleModestyLevel::Brazen;
+			break;
+		case StrictModestyLevel::Immodest:
+			TopModesty = SimpleModestyLevel::Immodest;
+			BottomModesty = TopModesty;
+			break;
+		default:
+			TopModesty = SimpleModestyLevel::Modest;
+			BottomModesty = TopModesty;
+			break;
+	}
+
+	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictModesty));
+	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopModesty));
+	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomModesty));
+
+	//Establish Shyness
+	if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
+		if (SexualityScore > 65) {
+			//Straight
+			SetActorFactionRank(akFemale, ShyWithMale, 1);
+			SetActorFactionRank(akFemale, ShyWithFemale, 0);
+			ShynessMode = ShySex::Men;
+		}
+		else if (SexualityScore < 35) {
+			//Gay
+			SetActorFactionRank(akFemale, ShyWithMale, 0);
+			SetActorFactionRank(akFemale, ShyWithFemale, 1);
+			ShynessMode = ShySex::Women;
+		}
+		else {
+			//Bisexual
+			SetActorFactionRank(akFemale, ShyWithMale, 1);
+			SetActorFactionRank(akFemale, ShyWithFemale, 1);
+			ShynessMode = ShySex::Both;
+		}
+	}
+	else if (Configuration::DefaultNPCShyness == ShySex::Random) {
+		int ShyRoll = Randomizer(0,2);
+		if (ShyRoll == ShySex::Men) {
+			//Straight
+			SetActorFactionRank(akFemale, ShyWithMale, 1);
+			SetActorFactionRank(akFemale, ShyWithFemale, 0);
+		}
+		else if (ShyRoll == ShySex::Women) {
+			//Gay
+			SetActorFactionRank(akFemale, ShyWithMale, 0);
+			SetActorFactionRank(akFemale, ShyWithFemale, 1);
+		}
+		else {
+			//Bisexual
+			SetActorFactionRank(akFemale, ShyWithMale, 1);
+			SetActorFactionRank(akFemale, ShyWithFemale, 1);
+		}
+		ShynessMode = ShyRoll;
+	}
+	else if (Configuration::DefaultNPCShyness == ShySex::Both) {
+		SetActorFactionRank(akFemale, ShyWithMale, 1);
+		SetActorFactionRank(akFemale, ShyWithFemale, 1);
+		ShynessMode = ShySex::Both;
+	}
+	else if (Configuration::DefaultNPCShyness == ShySex::Women) {
+		SetActorFactionRank(akFemale, ShyWithMale, 0);
+		SetActorFactionRank(akFemale, ShyWithFemale, 1);
+		ShynessMode = ShySex::Women;
+	}
+	else {
+		SetActorFactionRank(akFemale, ShyWithMale, 1);
+		SetActorFactionRank(akFemale, ShyWithFemale, 0);
+	}
+
+	RegisteredFemales::FemaleName.emplace_back(FemaleName);
+	//RegisteredFemales::FemaleBaseEditorID.emplace_back(FemaleBaseEditorID);
+	RegisteredFemales::FemaleFormID.emplace_back(FemaleForm);
+
+	RegisteredFemales::ModestyTimer0.emplace_back(0);
+	RegisteredFemales::ModestyTimer1.emplace_back(0);
+	RegisteredFemales::ModestyTimer2.emplace_back(0);
+	RegisteredFemales::ModestyTimer3.emplace_back(0);
+	RegisteredFemales::ModestyTimer4.emplace_back(0);
+	RegisteredFemales::ModestyTimer5.emplace_back(0);
+	RegisteredFemales::ModestyTimer6.emplace_back(0);
+
+	RegisteredFemales::DefaultRankStrict.emplace_back(StrictModesty);
+	RegisteredFemales::CurrentRankStrict.emplace_back(StrictModesty);
+	RegisteredFemales::MinimumRankStrict.emplace_back(0);
+
+	RegisteredFemales::TopModestyTimer0.emplace_back(0);
+	RegisteredFemales::TopModestyTimer1.emplace_back(0);
+	RegisteredFemales::TopModestyTimer2.emplace_back(0);
+	RegisteredFemales::TopModestyTimer3.emplace_back(0);
+
+	RegisteredFemales::DefaultRankTop.emplace_back(TopModesty);
+	RegisteredFemales::CurrentRankTop.emplace_back(TopModesty);
+	RegisteredFemales::MinimumRankTop.emplace_back(0);
+
+	RegisteredFemales::BottomModestyTimer0.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer1.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer2.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+
+	RegisteredFemales::DefaultRankBottom.emplace_back(BottomModesty);
+	RegisteredFemales::CurrentRankBottom.emplace_back(BottomModesty);
+	RegisteredFemales::MinimumRankBottom.emplace_back(0);
+
+	RegisteredFemales::ShynessMode.emplace_back(ShynessMode);
+	RegisteredFemales::SexualityScore.emplace_back(SexualityScore);
+
+	RegisteredFemales::AllowShameless.emplace_back(Configuration::NPCShamelessByDefault);
+	RegisteredFemales::AllowCorruption.emplace_back(Configuration::NPCCorruptionByDefault);
+	RegisteredFemales::StrictRules.emplace_back(Configuration::NPCStrictRulesByDefault);
+	RegisteredFemales::UpgradeBlocked.emplace_back(false);
+
+	RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
+
+	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:#x}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemales::TotalFemales), LogType::Core, LoggingLevel::info);
+
+	RegisteredFemales::TotalFemales++;
+}
+
+void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale) {
+	int FemaleID = FindInVector(RegisteredFemales::FemaleFormID, akfemale->GetFormID());
+
+	RegisteredFemales::FemaleName.erase(RegisteredFemales::FemaleName.begin() + FemaleID);
+	//RegisteredFemales::FemaleBaseEditorID.erase(RegisteredFemales::FemaleBaseEditorID.begin() + FemaleID);
+	RegisteredFemales::FemaleFormID.erase(RegisteredFemales::FemaleFormID.begin() + FemaleID);
+
+	RegisteredFemales::ModestyTimer0.erase(RegisteredFemales::ModestyTimer0.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer1.erase(RegisteredFemales::ModestyTimer1.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer2.erase(RegisteredFemales::ModestyTimer2.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer3.erase(RegisteredFemales::ModestyTimer3.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer4.erase(RegisteredFemales::ModestyTimer4.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer5.erase(RegisteredFemales::ModestyTimer5.begin() + FemaleID);
+	RegisteredFemales::ModestyTimer6.erase(RegisteredFemales::ModestyTimer6.begin() + FemaleID);
+
+	RegisteredFemales::DefaultRankStrict.erase(RegisteredFemales::DefaultRankStrict.begin() + FemaleID);
+	RegisteredFemales::CurrentRankStrict.erase(RegisteredFemales::CurrentRankStrict.begin() + FemaleID);
+	RegisteredFemales::MinimumRankStrict.erase(RegisteredFemales::MinimumRankStrict.begin() + FemaleID);
+
+	RegisteredFemales::TopModestyTimer0.erase(RegisteredFemales::TopModestyTimer0.begin() + FemaleID);
+	RegisteredFemales::TopModestyTimer1.erase(RegisteredFemales::TopModestyTimer1.begin() + FemaleID);
+	RegisteredFemales::TopModestyTimer2.erase(RegisteredFemales::TopModestyTimer2.begin() + FemaleID);
+	RegisteredFemales::TopModestyTimer3.erase(RegisteredFemales::TopModestyTimer3.begin() + FemaleID);
+
+	RegisteredFemales::DefaultRankTop.erase(RegisteredFemales::DefaultRankTop.begin() + FemaleID);
+	RegisteredFemales::CurrentRankTop.erase(RegisteredFemales::CurrentRankTop.begin() + FemaleID);
+	RegisteredFemales::MinimumRankTop.erase(RegisteredFemales::MinimumRankTop.begin() + FemaleID);
+
+	RegisteredFemales::BottomModestyTimer0.erase(RegisteredFemales::BottomModestyTimer0.begin() + FemaleID);
+	RegisteredFemales::BottomModestyTimer1.erase(RegisteredFemales::BottomModestyTimer1.begin() + FemaleID);
+	RegisteredFemales::BottomModestyTimer2.erase(RegisteredFemales::BottomModestyTimer2.begin() + FemaleID);
+	RegisteredFemales::BottomModestyTimer3.erase(RegisteredFemales::BottomModestyTimer3.begin() + FemaleID);
+
+	RegisteredFemales::DefaultRankBottom.erase(RegisteredFemales::DefaultRankBottom.begin() + FemaleID);
+	RegisteredFemales::CurrentRankBottom.erase(RegisteredFemales::CurrentRankBottom.begin() + FemaleID);
+	RegisteredFemales::MinimumRankBottom.erase(RegisteredFemales::MinimumRankBottom.begin() + FemaleID);
+
+	RegisteredFemales::ShynessMode.erase(RegisteredFemales::ShynessMode.begin() + FemaleID);
+	RegisteredFemales::ShynessMode.erase(RegisteredFemales::SexualityScore.begin() + FemaleID);
+
+	RegisteredFemales::AllowShameless.erase(RegisteredFemales::AllowShameless.begin() + FemaleID);
+	RegisteredFemales::AllowCorruption.erase(RegisteredFemales::AllowCorruption.begin() + FemaleID);
+	RegisteredFemales::StrictRules.erase(RegisteredFemales::StrictRules.begin() + FemaleID);
+	RegisteredFemales::UpgradeBlocked.erase(RegisteredFemales::UpgradeBlocked.begin() + FemaleID);
+
+	RegisteredFemales::LastUpdateTime.erase(RegisteredFemales::LastUpdateTime.begin() + FemaleID);
+
+	RegisteredFemales::TotalFemales--;
+}
+
+void DeleteAllFemales(RE::StaticFunctionTag*) {
+	RegisteredFemales::FemaleName.clear();
+	RegisteredFemales::FemaleFormID.clear();
+
+	RegisteredFemales::ModestyTimer0.clear();
+	RegisteredFemales::ModestyTimer1.clear();
+	RegisteredFemales::ModestyTimer2.clear();
+	RegisteredFemales::ModestyTimer3.clear();
+	RegisteredFemales::ModestyTimer4.clear();
+	RegisteredFemales::ModestyTimer5.clear();
+	RegisteredFemales::ModestyTimer6.clear();
+
+	RegisteredFemales::DefaultRankStrict.clear();
+	RegisteredFemales::CurrentRankStrict.clear();
+	RegisteredFemales::MinimumRankStrict.clear();
+
+	RegisteredFemales::TopModestyTimer0.clear();
+	RegisteredFemales::TopModestyTimer1.clear();
+	RegisteredFemales::TopModestyTimer2.clear();
+	RegisteredFemales::TopModestyTimer3.clear();
+
+	RegisteredFemales::DefaultRankTop.clear();
+	RegisteredFemales::CurrentRankTop.clear();
+	RegisteredFemales::MinimumRankTop.clear();
+
+	RegisteredFemales::BottomModestyTimer0.clear();
+	RegisteredFemales::BottomModestyTimer1.clear();
+	RegisteredFemales::BottomModestyTimer2.clear();
+	RegisteredFemales::BottomModestyTimer3.clear();
+
+	RegisteredFemales::DefaultRankBottom.clear();
+	RegisteredFemales::CurrentRankBottom.clear();
+	RegisteredFemales::MinimumRankBottom.clear();
+
+	RegisteredFemales::ShynessMode.clear();
+	RegisteredFemales::ShynessMode.clear();
+
+	RegisteredFemales::AllowShameless.clear();
+	RegisteredFemales::AllowCorruption.clear();
+	RegisteredFemales::StrictRules.clear();
+	RegisteredFemales::UpgradeBlocked.clear();
+
+	RegisteredFemales::LastUpdateTime.clear();
+
+	RegisteredFemales::TotalFemales = 0;
+}
+
+void RegisterRosa(float CurrentGameTime, int SexualityScore) {
+	int RosaForm = Rosa->GetFormID();
+	int RosaBaseForm = Rosa->GetActorBase()->GetFormID();
+	std::string RosaEditorID = Rosa->GetFormEditorID();
+	std::string RosaBaseEditorID = Rosa->GetActorBase()->GetFormEditorID();
+	std::string RosaName = Rosa->GetName();
+	std::string RosaBaseName = Rosa->GetActorBase()->GetFormEditorID();
+
+	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:#x}", RosaForm), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:#x}", RosaBaseForm), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + static_cast<std::string>(RosaEditorID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + static_cast<std::string>(RosaBaseEditorID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, LogType::NPCData);
+
+	int ShynessMode;
+
+	if (SexualityScore > 65) {
+		//Straight
+		Rosa->AddToFaction(ShyWithMale, 1);
+		Rosa->AddToFaction(ShyWithFemale, 0);
+		ShynessMode = ShySex::Men;
+	}
+	else if (SexualityScore < 35) {
+		//Gay
+		Rosa->AddToFaction(ShyWithMale, 0);
+		Rosa->AddToFaction(ShyWithFemale, 1);
+		ShynessMode = ShySex::Women;
+	}
+	else {
+		//Bisexual
+		Rosa->AddToFaction(ShyWithMale, 1);
+		Rosa->AddToFaction(ShyWithFemale, 1);
+		ShynessMode = ShySex::Both;
+	}
+
+
+	RegisteredFemales::FemaleName.emplace_back(RosaName);
+	//RegisteredFemales::FemaleBaseEditorID.emplace_back(RosaBaseEditorID);
+	RegisteredFemales::FemaleFormID.emplace_back(RosaForm);
+
+	RegisteredFemales::ModestyTimer0.emplace_back(0);
+	RegisteredFemales::ModestyTimer1.emplace_back(0);
+	RegisteredFemales::ModestyTimer2.emplace_back(0);
+	RegisteredFemales::ModestyTimer3.emplace_back(0);
+	RegisteredFemales::ModestyTimer4.emplace_back(0);
+	RegisteredFemales::ModestyTimer5.emplace_back(0);
+	RegisteredFemales::ModestyTimer6.emplace_back(0);
+
+	RegisteredFemales::DefaultRankStrict.emplace_back(StrictModestyLevel::Immodest);
+	RegisteredFemales::CurrentRankStrict.emplace_back(StrictModestyLevel::Immodest);
+	RegisteredFemales::MinimumRankStrict.emplace_back(StrictModestyLevel::Immodest);
+
+	RegisteredFemales::TopModestyTimer0.emplace_back(0);
+	RegisteredFemales::TopModestyTimer1.emplace_back(0);
+	RegisteredFemales::TopModestyTimer2.emplace_back(0);
+	RegisteredFemales::TopModestyTimer3.emplace_back(0);
+
+	RegisteredFemales::DefaultRankTop.emplace_back(SimpleModestyLevel::Immodest);
+	RegisteredFemales::CurrentRankTop.emplace_back(SimpleModestyLevel::Immodest);
+	RegisteredFemales::MinimumRankTop.emplace_back(SimpleModestyLevel::Immodest);
+
+	RegisteredFemales::BottomModestyTimer0.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer1.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer2.emplace_back(0);
+	RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+
+	RegisteredFemales::DefaultRankBottom.emplace_back(SimpleModestyLevel::Immodest);
+	RegisteredFemales::CurrentRankBottom.emplace_back(SimpleModestyLevel::Immodest);
+	RegisteredFemales::MinimumRankBottom.emplace_back(SimpleModestyLevel::Immodest);
+
+	RegisteredFemales::ShynessMode.emplace_back(ShynessMode);
+	RegisteredFemales::SexualityScore.emplace_back(SexualityScore);
+
+	RegisteredFemales::AllowShameless.emplace_back(Configuration::NPCShamelessByDefault);
+	RegisteredFemales::AllowCorruption.emplace_back(Configuration::NPCCorruptionByDefault);
+	RegisteredFemales::StrictRules.emplace_back(Configuration::StrictModestyRules);
+	RegisteredFemales::UpgradeBlocked.emplace_back(false);
+
+	RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
+
+	RegisteredFemales::TotalFemales++;
+}
+
+int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	int FemaleID = GetInternalFemaleID(akFemale);
+	std::string akName = akFemale->GetName();
+
+	if (FemaleID < 0) {
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		return FunctionEnd::FailCritical;
+	}
+	
+	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+	
+	RE::FormID FemaleFormID = akFemale->GetFormID();
+	//RE::FormID PluginID = FemaleFormID >> 24;
+	uint8_t PluginID = FemaleFormID >> 24;
+	uint16_t LightPluginID = static_cast<uint16_t>(FemaleFormID >> 12);
+
+	bool IsLightPlugin = false;
+
+	if (PluginID == 0xFF) {
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:#x}", FemaleFormID) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
+		return FunctionEnd::FailError;
+	}
+	else if (PluginID == 0xFE) {
+		IsLightPlugin = true;
+	}
+
+	const RE::TESFile* FemalePluginFile;
+
+	if (!IsLightPlugin) {
+		FemalePluginFile = DataHandler->LookupLoadedModByIndex(PluginID);
+	}
+	else {
+		FemalePluginFile = DataHandler->LookupLoadedLightModByIndex(LightPluginID);
+	}
+	
+	std::string_view FemalePluginName = FemalePluginFile->GetFilename();
+	RE::FormID FemaleLocalID = akFemale->GetLocalFormID();
+
+	if (FindInVector(PermanentFemales::FemalePlugin, FemalePluginName) >= 0 && FindInVector(PermanentFemales::FemaleLocalID, FemaleLocalID) >= 0) {
+		Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(FemalePluginName) + " with Form IDs: (Full ID | " + std::format("{:#x}", FemaleFormID) + ") (Local ID | " + std::format("{:#x}", FemaleLocalID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
+		return FunctionEnd::FailWarn;
+	}
+
+	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:#x}", FemaleFormID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:#x}", FemaleLocalID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(FemalePluginName), LogType::NPCData);
+
+	PermanentFemales::FemaleLocalID.emplace_back(FemaleLocalID);
+	PermanentFemales::IsInLightPlugin.emplace_back(IsLightPlugin);
+	PermanentFemales::FemalePlugin.emplace_back(FemalePluginName);
+	PermanentFemales::FemaleName.emplace_back(RegisteredFemales::FemaleName[FemaleID]);
+
+	PermanentFemales::DefaultRankStrict.emplace_back(RegisteredFemales::DefaultRankStrict[FemaleID]);
+	PermanentFemales::MinimumRankStrict.emplace_back(RegisteredFemales::MinimumRankStrict[FemaleID]);
+
+	PermanentFemales::DefaultRankTop.emplace_back(RegisteredFemales::DefaultRankTop[FemaleID]);
+	PermanentFemales::MinimumRankTop.emplace_back(RegisteredFemales::MinimumRankTop[FemaleID]);
+
+	PermanentFemales::DefaultRankBottom.emplace_back(RegisteredFemales::DefaultRankBottom[FemaleID]);
+	PermanentFemales::MinimumRankBottom.emplace_back(RegisteredFemales::MinimumRankBottom[FemaleID]);
+
+	PermanentFemales::ShynessMode.emplace_back(RegisteredFemales::ShynessMode[FemaleID]);
+	PermanentFemales::SexualityScore.emplace_back(RegisteredFemales::SexualityScore[FemaleID]);
+
+	PermanentFemales::AllowShameless.emplace_back(RegisteredFemales::AllowShameless[FemaleID]);
+	PermanentFemales::AllowCorruption.emplace_back(RegisteredFemales::AllowCorruption[FemaleID]);
+	PermanentFemales::StrictRules.emplace_back(RegisteredFemales::StrictRules[FemaleID]);
+
+	PermanentFemales::TotalFemales++;
+
+	return FunctionEnd::Success;
+}
+
+int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
+	if (PermFemaleID < 0) {
+		std::string akName = akFemale->GetName();
+		RE::FormID akFormID = akFemale->GetFormID();
+		Log("<C++ NPCData> [RemovePermanent] Female " + akName + " (" + std::format("{:#x}", akFormID) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		return FunctionEnd::FailCritical;
+	}
+
+	PermanentFemales::FemaleLocalID.erase(PermanentFemales::FemaleLocalID.begin() + PermFemaleID);
+	PermanentFemales::FemalePlugin.erase(PermanentFemales::FemalePlugin.begin() + PermFemaleID);
+	PermanentFemales::IsInLightPlugin.erase(PermanentFemales::IsInLightPlugin.begin() + PermFemaleID);
+	PermanentFemales::FemaleName.erase(PermanentFemales::FemaleName.begin() + PermFemaleID);
+
+	PermanentFemales::DefaultRankStrict.erase(PermanentFemales::DefaultRankStrict.begin() + PermFemaleID);
+	PermanentFemales::MinimumRankStrict.erase(PermanentFemales::MinimumRankStrict.begin() + PermFemaleID);
+
+	PermanentFemales::DefaultRankTop.erase(PermanentFemales::DefaultRankTop.begin() + PermFemaleID);
+	PermanentFemales::MinimumRankTop.erase(PermanentFemales::MinimumRankTop.begin() + PermFemaleID);
+
+	PermanentFemales::DefaultRankBottom.erase(PermanentFemales::DefaultRankBottom.begin() + PermFemaleID);
+	PermanentFemales::MinimumRankBottom.erase(PermanentFemales::MinimumRankBottom.begin() + PermFemaleID);
+
+	PermanentFemales::ShynessMode.erase(PermanentFemales::ShynessMode.begin() + PermFemaleID);
+	PermanentFemales::SexualityScore.erase(PermanentFemales::SexualityScore.begin() + PermFemaleID);
+
+	PermanentFemales::AllowShameless.erase(PermanentFemales::AllowShameless.begin() + PermFemaleID);
+	PermanentFemales::AllowCorruption.erase(PermanentFemales::AllowCorruption.begin() + PermFemaleID);
+	PermanentFemales::StrictRules.erase(PermanentFemales::StrictRules.begin() + PermFemaleID);
+
+	PermanentFemales::TotalFemales--;
+
+	return FunctionEnd::Success;
+}
+
+void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) {
+	if (PermanentFemales::TotalFemales < 1) {
+		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
+		return;
+	}
+	
+	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+	int Index = 0;
+
+	std::optional<uint32_t> OptPermFileIndex;
+	RE::FormID PermFileIndex;
+	RE::FormID FemaleFormID;
+
+	while (Index < PermanentFemales::TotalFemales) {
+		if (PermanentFemales::IsInLightPlugin[Index]) {
+			OptPermFileIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]);
+		}
+		else {
+			OptPermFileIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]);
+		}
+
+		if (OptPermFileIndex.has_value()) {
+			PermFileIndex = OptPermFileIndex.value();
+			FemaleFormID = PermFileIndex & PermanentFemales::FemaleLocalID[Index];
+			RE::Actor* FemaleActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
+			if (FemaleActor != nullptr) {
+				RegisteredFemales::FemaleFormID.emplace_back(FemaleFormID);
+				RegisteredFemales::FemaleName.emplace_back(PermanentFemales::FemaleName[Index]);
+
+				RegisteredFemales::ModestyTimer0.emplace_back(0);
+				RegisteredFemales::ModestyTimer1.emplace_back(0);
+				RegisteredFemales::ModestyTimer2.emplace_back(0);
+				RegisteredFemales::ModestyTimer3.emplace_back(0);
+				RegisteredFemales::ModestyTimer4.emplace_back(0);
+				RegisteredFemales::ModestyTimer5.emplace_back(0);
+				RegisteredFemales::ModestyTimer6.emplace_back(0);
+
+				RegisteredFemales::CurrentRankStrict.emplace_back(PermanentFemales::DefaultRankStrict[Index]);
+				RegisteredFemales::DefaultRankStrict.emplace_back(PermanentFemales::DefaultRankStrict[Index]);
+				RegisteredFemales::MinimumRankStrict.emplace_back(PermanentFemales::MinimumRankStrict[Index]);
+
+				RegisteredFemales::TopModestyTimer0.emplace_back(0);
+				RegisteredFemales::TopModestyTimer1.emplace_back(0);
+				RegisteredFemales::TopModestyTimer2.emplace_back(0);
+				RegisteredFemales::TopModestyTimer3.emplace_back(0);
+
+				RegisteredFemales::CurrentRankTop.emplace_back(PermanentFemales::DefaultRankTop[Index]);
+				RegisteredFemales::DefaultRankTop.emplace_back(PermanentFemales::DefaultRankTop[Index]);
+				RegisteredFemales::MinimumRankTop.emplace_back(PermanentFemales::MinimumRankTop[Index]);
+
+				RegisteredFemales::BottomModestyTimer0.emplace_back(0);
+				RegisteredFemales::BottomModestyTimer1.emplace_back(0);
+				RegisteredFemales::BottomModestyTimer2.emplace_back(0);
+				RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+
+				RegisteredFemales::CurrentRankBottom.emplace_back(PermanentFemales::DefaultRankBottom[Index]);
+				RegisteredFemales::DefaultRankBottom.emplace_back(PermanentFemales::DefaultRankBottom[Index]);
+				RegisteredFemales::MinimumRankBottom.emplace_back(PermanentFemales::MinimumRankBottom[Index]);
+
+				RegisteredFemales::ShynessMode.emplace_back(PermanentFemales::ShynessMode[Index]);
+				RegisteredFemales::SexualityScore.emplace_back(PermanentFemales::SexualityScore[Index]);
+
+				RegisteredFemales::AllowShameless.emplace_back(PermanentFemales::AllowShameless[Index]);
+				RegisteredFemales::AllowCorruption.emplace_back(PermanentFemales::AllowCorruption[Index]);
+				RegisteredFemales::StrictRules.emplace_back(PermanentFemales::StrictRules[Index]);
+				RegisteredFemales::UpgradeBlocked.emplace_back(false);
+
+				RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
+
+				RegisteredFemales::TotalFemales++;
+			}
+			else {
+				Log("<C++ NPCData> [ImportPermanents] Could not import female " + PermanentFemales::FemaleName[Index] + " because their Form ID (" + std::format("{:#x}", FemaleFormID) + ") returns a null pointer!");
+			}
+		}
+		else {
+			Log("<C++ NPCData> [ImportPermanents] Plugin " + static_cast<std::string>(PermanentFemales::FemalePlugin[Index]) + " is not loaded! Cannot import female: " + PermanentFemales::FemaleName[Index], LogType::NPCData, LoggingLevel::warning);
+		}
+
+		Index++;
+	}
+}
+
+void TweakFemaleData
+(
+	RE::StaticFunctionTag*,
+	RE::Actor* akFemale, 
+	int StrictRank, int TopRank, int BottomRank, int MinimumStrict, int MinimumTop, int MinimumBottom, int ShynessMode, 
+	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked,
+	float CurrentGameTime
+) {
+	RE::FormID FemaleFormID = akFemale->GetFormID();
+	int FemaleID = FindInVector(RegisteredFemales::FemaleFormID, FemaleFormID);
+	if (FemaleID < 0) {
+		std::string akName = akFemale->GetName();
+		Log("<C++ NPCData> [TweakFemaleData] Female " + akName + " (" + std::format("{:#x}", FemaleFormID) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+		return;
+	}
+	
+	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictRank));
+	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopRank));
+	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomRank));
+
+	RegisteredFemales::ModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer3[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer4[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer5[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer6[FemaleID] = 0;
+
+	RegisteredFemales::TopModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer3[FemaleID] = 0;
+
+	RegisteredFemales::BottomModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer3[FemaleID] = 0;
+
+	RegisteredFemales::CurrentRankStrict[FemaleID] = StrictRank;
+	RegisteredFemales::CurrentRankTop[FemaleID] = TopRank;
+	RegisteredFemales::CurrentRankBottom[FemaleID] = BottomRank;
+
+	RegisteredFemales::MinimumRankStrict[FemaleID] = MinimumStrict;
+	RegisteredFemales::MinimumRankTop[FemaleID] = MinimumTop;
+	RegisteredFemales::MinimumRankBottom[FemaleID] = MinimumBottom;
+
+	if (MakeDefault) {
+		RegisteredFemales::DefaultRankStrict[FemaleID] = StrictRank;
+		RegisteredFemales::DefaultRankTop[FemaleID] = TopRank;
+		RegisteredFemales::DefaultRankBottom[FemaleID] = BottomRank;
+	}
+
+	RegisteredFemales::AllowShameless[FemaleID] = EnableShameless;
+	RegisteredFemales::AllowCorruption[FemaleID] = EnableCorrupt;
+	RegisteredFemales::StrictRules[FemaleID] = IsStrictRules;
+	RegisteredFemales::UpgradeBlocked[FemaleID] = IsUpgradeBlocked;
+
+	RegisteredFemales::ShynessMode[FemaleID] = ShynessMode;
+
+	RegisteredFemales::LastUpdateTime[FemaleID] = CurrentGameTime;
+
+	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
+	if (PermFemaleID >= 0) {
+		PermanentFemales::MinimumRankStrict[PermFemaleID] = MinimumStrict;
+		PermanentFemales::MinimumRankTop[PermFemaleID] = MinimumTop;
+		PermanentFemales::MinimumRankBottom[PermFemaleID] = MinimumBottom;
+
+		if (MakeDefault) {
+			PermanentFemales::DefaultRankStrict[PermFemaleID] = StrictRank;
+			PermanentFemales::DefaultRankTop[PermFemaleID] = TopRank;
+			PermanentFemales::DefaultRankBottom[PermFemaleID] = BottomRank;
+		}
+
+		PermanentFemales::AllowShameless[PermFemaleID] = EnableShameless;
+		PermanentFemales::AllowCorruption[PermFemaleID] = EnableCorrupt;
+		PermanentFemales::StrictRules[PermFemaleID] = IsStrictRules;
+
+		PermanentFemales::ShynessMode[PermFemaleID] = ShynessMode;
+	}
+}
+
+void ResetFemale(RE::Actor* akFemale) {
+	int FemaleIndex = FindInVector(RegisteredFemales::FemaleFormID, akFemale->GetFormID());
+
+	if (FemaleIndex < 0) {
+		std::string akName = akFemale->GetName();
+		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + akName + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Registered Females list!");
+		return;
+	}
+
+	RegisteredFemales::CurrentRankStrict[FemaleIndex] = RegisteredFemales::DefaultRankStrict[FemaleIndex];
+	RegisteredFemales::CurrentRankTop[FemaleIndex] = RegisteredFemales::DefaultRankTop[FemaleIndex];
+	RegisteredFemales::CurrentRankBottom[FemaleIndex] = RegisteredFemales::DefaultRankBottom[FemaleIndex];
+
+	RegisteredFemales::ModestyTimer0[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer1[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer2[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer3[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer4[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer5[FemaleIndex] = 0;
+	RegisteredFemales::ModestyTimer6[FemaleIndex] = 0;
+
+	RegisteredFemales::TopModestyTimer0[FemaleIndex] = 0;
+	RegisteredFemales::TopModestyTimer1[FemaleIndex] = 0;
+	RegisteredFemales::TopModestyTimer2[FemaleIndex] = 0;
+	RegisteredFemales::TopModestyTimer3[FemaleIndex] = 0;
+
+	RegisteredFemales::BottomModestyTimer0[FemaleIndex] = 0;
+	RegisteredFemales::BottomModestyTimer1[FemaleIndex] = 0;
+	RegisteredFemales::BottomModestyTimer2[FemaleIndex] = 0;
+	RegisteredFemales::BottomModestyTimer3[FemaleIndex] = 0;
+}
+
+void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	ResetFemale(akFemale);
+}
+
+void ResetAllFemales(RE::StaticFunctionTag*) {
+	int FemaleIndex = 0;
+	while (FemaleIndex < RegisteredFemales::TotalFemales) {
+		RegisteredFemales::CurrentRankStrict[FemaleIndex] = RegisteredFemales::DefaultRankStrict[FemaleIndex];
+		RegisteredFemales::CurrentRankTop[FemaleIndex] = RegisteredFemales::DefaultRankTop[FemaleIndex];
+		RegisteredFemales::CurrentRankBottom[FemaleIndex] = RegisteredFemales::DefaultRankBottom[FemaleIndex];
+
+		RegisteredFemales::ModestyTimer0[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer1[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer2[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer3[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer4[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer5[FemaleIndex] = 0;
+		RegisteredFemales::ModestyTimer6[FemaleIndex] = 0;
+
+		RegisteredFemales::TopModestyTimer0[FemaleIndex] = 0;
+		RegisteredFemales::TopModestyTimer1[FemaleIndex] = 0;
+		RegisteredFemales::TopModestyTimer2[FemaleIndex] = 0;
+		RegisteredFemales::TopModestyTimer3[FemaleIndex] = 0;
+
+		RegisteredFemales::BottomModestyTimer0[FemaleIndex] = 0;
+		RegisteredFemales::BottomModestyTimer1[FemaleIndex] = 0;
+		RegisteredFemales::BottomModestyTimer2[FemaleIndex] = 0;
+		RegisteredFemales::BottomModestyTimer3[FemaleIndex] = 0;
+
+		FemaleIndex++;
+	}
 }

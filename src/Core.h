@@ -1,35 +1,99 @@
 #pragma once
 
-enum RiskLevel {
-	RiskNone,
-	RiskLow,
-	RiskNormal,
-	RiskHigh,
-	RiskExtreme,
-	RiskUltra
+namespace FlashRiskLevel {
+	enum FlashRiskLevel {
+		None,
+		Low,
+		Normal,
+		High,
+		Extreme,
+		Ultra
+	};
+}
+
+namespace FlashRiskType {
+	enum FlashRiskType {
+		Chest,
+		Pelvic,
+		Ass,
+		Top,
+		Bottom,
+		Bra,
+		Underwear,
+		Thong,
+		Hotpants,
+		Showgirl,
+		Himbo
+	};
+}
+
+namespace StrictModestyLevel {
+	enum StrictModestyLevel {
+		Modest,
+		Reasonable,
+		Relaxed,
+		Comfortable,
+		Tease,
+		Brazen,
+		Immodest,
+		Shameless
+	};
+}
+
+namespace SimpleModestyLevel {
+	enum SimpleModestyLevel {
+		Modest,
+		Comfortable,
+		Brazen,
+		Immodest,
+		Shameless
+	};
+}
+
+enum ConfidenceLevel {
+	Cowardly,
+	Cautious,
+	Average,
+	Brave,
+	Foolhardy,
+	Randomized
 };
 
-enum Type {
-	ChestType,
-	PelvicType,
-	AssType,
-	TopType,
-	BottomType,
-	BraType,
-	UnderwearType,
-	ThongType,
-	HotpantsType,
-	ShowgirlType,
-	HimboType
+enum VanillaRaceIndex {
+	Altmer,
+	AltmerVampire,
+	Argonian,
+	ArgonianVampire,
+	Breton,
+	BretonVampire,
+	Bosmer,
+	BosmerVampire,
+	Dunmer,
+	DunmerVampire,
+	Imperial,
+	ImperialVampire,
+	Khajiit,
+	KhajiitVampire,
+	Nord,
+	NordVampire,
+	Orsimer,
+	OrsimerVampire,
+	Redguard,
+	RedguardVampire
 };
 
 //Actors
 
 inline RE::Actor* Player;
+inline RE::Actor* Rosa;
 
 //Actor Bases
 
 inline RE::TESActorBase* PlayerBase;
+
+//Races
+
+inline RE::TESRace* VanillaRaces[20];
 
 //Factions
 
@@ -49,9 +113,21 @@ inline RE::TESFaction* BottomModestyFaction;
 inline RE::TESFaction* ShyWithMale;
 inline RE::TESFaction* ShyWithFemale;
 
-inline RE::TESFaction* FollowerFaction;
+//inline RE::TESFaction* FollowerFaction;
 
 inline RE::TESFaction* ArousalFaction;
+
+inline RE::TESFaction* FlashingChestCurtainFaction;
+inline RE::TESFaction* FlashingPelvicCurtainFaction;
+inline RE::TESFaction* FlashingAssCurtainFaction;
+
+inline RE::TESFaction* FlashingTopArmorFaction;
+inline RE::TESFaction* FlashingBottomArmorFaction;
+inline RE::TESFaction* FlashingBraFaction;
+inline RE::TESFaction* FlashingUnderwearFaction;
+inline RE::TESFaction* FlashingCStringFaction;
+inline RE::TESFaction* FlashingHotpantsFaction;
+inline RE::TESFaction* FlashingShowgirlSkirtFaction;
 
 //Universal Keywords
 
@@ -231,9 +307,11 @@ inline RE::BGSKeyword* UnderwearT_Low_Male;
 inline RE::BGSKeyword* UnderwearT_Male;
 inline RE::BGSKeyword* UnderwearT_High_Male;
 
+//inline RE::SpellItem* NPCScanSpell;
+
 //Player Rolls
 
-inline int TopCurtainRoll;
+inline int ChestCurtainRoll;
 inline int PelvicCurtainRoll;
 inline int AssCurtainRoll;
 inline int CStringRoll;
@@ -247,7 +325,7 @@ inline int ShowgirlTransparentRoll;
 
 //NPC Rolls
 
-inline int NPCTopCurtainRoll;
+inline int NPCChestCurtainRoll;
 inline int NPCPelvicCurtainRoll;
 inline int NPCAssCurtainRoll;
 inline int NPCCStringRoll;
@@ -262,7 +340,7 @@ inline int NPCShowgirlTransparentRoll;
 //Convering States
 namespace PlayerCoverage {
 	
-	inline bool TopCurtainCover;
+	inline bool ChestCurtainCoverage;
 	inline bool PelvicCurtainCover;
 	inline bool AssCurtainCover;
 
@@ -273,6 +351,17 @@ namespace PlayerCoverage {
 	inline bool GenitalCover;
 	inline bool UnderwearCover;
 
+}
+
+//Mod Detection Status
+
+namespace InstalledMods {
+	inline bool Sexlab;
+	//inline bool SLSFR;
+	inline bool DFFMA;
+	//inline bool OSLAroused;
+
+	inline bool RosaRoundBottom;
 }
 
 //Functions
@@ -288,7 +377,40 @@ bool ActorWornHasKeyword(RE::Actor* akActor, RE::BGSKeyword* Keyword);
 void SetActorFactionRank(RE::Actor* akActor, RE::TESFaction* akFaction, int8_t factionRank);
 void SetPlayerFactionRank(RE::TESFaction* akFaction, int8_t factionRank);
 
+int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer);
+int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor);
+
+int Randomizer(int MinRoll, int MaxRoll);
+
+//template<typename VectorGeneric>
+//int FindInVector(std::vector<VectorGeneric> SearchVector, VectorGeneric SearchTarget);
+
+int FindInVector(std::vector<int> SearchVector, int SearchTarget);
+int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget);
+
+int FindInVector(std::vector<RE::FormID> SearchVector, RE::FormID SearchTarget);
+
+int FindInVector(std::vector<std::string> SearchVector, std::string SearchTarget);
+int FindInVector(std::vector<std::string_view> SearchVector, std::string_view SearchTarget);
+
+uint8_t HandleInteger(int iValue);
+
+std::string BoolToString(bool True);
+std::string FlashRiskToString(int RiskLevel);
+
+void CheckMods();
+
+/*
+int GetCurtainOdds(float BaseRisk, float RiskModifier);
+*/
+
 //Static Functions (Papyrus calls)
 
 void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning);
 void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting);
+
+void OverrideCurtainRoll(RE::StaticFunctionTag*, int CurtainType, int RollOverride);
+
+bool PlayerIsWearingChestCurtain(RE::StaticFunctionTag*);
+bool PlayerIsWearingPelvicCurtain(RE::StaticFunctionTag*);
+bool PlayerIsWearingAssCurtain(RE::StaticFunctionTag*);

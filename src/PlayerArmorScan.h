@@ -1,7 +1,12 @@
 #pragma once
 
 void ExternalFemaleAnalyze(RE::StaticFunctionTag*);
-void FemaleAnalyze();
+namespace FemaleArmorScan {
+	void FemaleAnalyze();
+}
 
 void ExternalMaleAnalyze(RE::StaticFunctionTag*);
-void MaleAnalyze();
+
+namespace MaleArmorScan {
+	void MaleAnalyze();
+}

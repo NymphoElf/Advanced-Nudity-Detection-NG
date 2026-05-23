@@ -2,10 +2,26 @@
 
 enum LoggingLevel {info, warning, error, critical};
 
-bool doLogging = false;
-int logLevel = 1;
+enum LogType {
+	Misc,
+	Core,
+	PlayerArmorScan,
+	PlayerModesty,
+	NPCData,
+	NPCArmorScan,
+	NPCModesty,
+	Config,
 
-void EnableLogging(RE::StaticFunctionTag*, bool loggingEnabled);
-void SetLogLevel(RE::StaticFunctionTag*, int loggingLevel);
-void ExternalLog(RE::StaticFunctionTag*, std::string logString, int severity);
-void Log(std::string logString, int severity);
+	TotalTypes
+};
+
+inline bool LogTypeEnabled[LogType::TotalTypes] = {true, true, true, true, true, true, true, true};
+inline bool LogLevelEnabled[4] = { true, true, true, true };
+
+void Log(std::string logString, int loggingType = LogType::Misc, int severity = LoggingLevel::info);
+
+void ExternalLog(RE::StaticFunctionTag*, std::string logString, int loggingType = LogType::Misc, int severity = LoggingLevel::info);
+void UpdateLoggingType(RE::StaticFunctionTag*, int LogTypeIndex, bool Enabled);
+void UpdateLoggingLevel(RE::StaticFunctionTag*, int LogLevelIndex, bool Enabled);
+
+std::vector<bool> GetLogSettings(RE::StaticFunctionTag*);

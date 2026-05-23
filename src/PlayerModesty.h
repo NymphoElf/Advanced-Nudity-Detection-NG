@@ -1,6 +1,6 @@
 #pragma once
 
-inline bool ModestyUpgradeBlocked = false;
+//inline bool ModestyUpgradeBlocked = false;
 
 inline float LastTimeChecked = 0.0;
 
@@ -12,3 +12,6 @@ inline int BottomModestyTimer[4] = {0,0,0,0};
 
 void ExternalStrictModesty(RE::StaticFunctionTag*, float CurrentGameTime);
 void ExternalSimpleModesty(RE::StaticFunctionTag*, float CurrentGameTime);
+void ExternalRankJump(RE::StaticFunctionTag*, int RankValue);
+void ExternalTopRankJump(RE::StaticFunctionTag*, int RankValue);
+void ExternalBottomRankJump(RE::StaticFunctionTag*, int RankValue);

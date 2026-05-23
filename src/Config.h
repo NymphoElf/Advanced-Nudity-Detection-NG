@@ -3,11 +3,11 @@
 enum FlashingIndex {
 	//Curtain Odds
 	
-	TopCurtainOddsLow,
-	TopCurtainOdds,
-	TopCurtainOddsHigh,
-	TopCurtainOddsExtreme,
-	TopCurtainOddsUltra,
+	ChestCurtainOddsLow,
+	ChestCurtainOdds,
+	ChestCurtainOddsHigh,
+	ChestCurtainOddsExtreme,
+	ChestCurtainOddsUltra,
 
 	PelvicCurtainOddsLow,
 	PelvicCurtainOdds,
@@ -21,11 +21,11 @@ enum FlashingIndex {
 	AssCurtainOddsExtreme,
 	AssCurtainOddsUltra,
 
-	TransparentTopCurtainOddsLow,
-	TransparentTopCurtainOdds,
-	TransparentTopCurtainOddsHigh,
-	TransparentTopCurtainOddsExtreme,
-	TransparentTopCurtainOddsUltra,
+	TransparentChestCurtainOddsLow,
+	TransparentChestCurtainOdds,
+	TransparentChestCurtainOddsHigh,
+	TransparentChestCurtainOddsExtreme,
+	TransparentChestCurtainOddsUltra,
 
 	TransparentPelvicCurtainOddsLow,
 	TransparentPelvicCurtainOdds,
@@ -74,11 +74,11 @@ enum FlashingIndex {
 
 	//Curtain Odds MALE
 
-	TopCurtainOddsLow_Male,
-	TopCurtainOdds_Male,
-	TopCurtainOddsHigh_Male,
-	TopCurtainOddsExtreme_Male,
-	TopCurtainOddsUltra_Male,
+	ChestCurtainOddsLow_Male,
+	ChestCurtainOdds_Male,
+	ChestCurtainOddsHigh_Male,
+	ChestCurtainOddsExtreme_Male,
+	ChestCurtainOddsUltra_Male,
 
 	PelvicCurtainOddsLow_Male,
 	PelvicCurtainOdds_Male,
@@ -92,11 +92,11 @@ enum FlashingIndex {
 	AssCurtainOddsExtreme_Male,
 	AssCurtainOddsUltra_Male,
 
-	TransparentTopCurtainOddsLow_Male,
-	TransparentTopCurtainOdds_Male,
-	TransparentTopCurtainOddsHigh_Male,
-	TransparentTopCurtainOddsExtreme_Male,
-	TransparentTopCurtainOddsUltra_Male,
+	TransparentChestCurtainOddsLow_Male,
+	TransparentChestCurtainOdds_Male,
+	TransparentChestCurtainOddsHigh_Male,
+	TransparentChestCurtainOddsExtreme_Male,
+	TransparentChestCurtainOddsUltra_Male,
 
 	TransparentPelvicCurtainOddsLow_Male,
 	TransparentPelvicCurtainOdds_Male,
@@ -148,25 +148,76 @@ enum FlashingIndex {
 	FlashingOddsLength
 };
 
-inline int FlashingOdds[FlashingOddsLength] = {};
+//Integers
+namespace Configuration {
+	inline int FlashingOdds[FlashingOddsLength];
 
-inline int ImmodestyTimeNeeded;
-inline int MinimumModestyRank;
-inline int MinimumTopModestyRank;
-inline int MinimumBottomModestyRank;
+	inline int ImmodestyTimeNeeded;
 
-//Modifiers
+	inline int MinimumStrictModestyRank;
+	inline int MinimumTopModestyRank;
+	inline int MinimumBottomModestyRank;
 
-inline bool MotionFlashEnabled;
-inline bool DynamicModestyEnabled;
+	inline int DefaultNPCShyness;
 
-inline bool PermanentShameless;
-inline bool Corruption;
-inline bool StrictModestyRules;
+	inline int SprintingMod;
+	inline int RunningMod;
 
-inline int SprintingMod;
-inline int RunningMod;
+	inline int PlayerConfidenceLevel;
+
+	//Booleans
+
+	inline bool MotionFlashEnabled;
+	inline bool DynamicModestyEnabled;
+
+	inline bool AllowPlayerShameless;
+	inline bool NPCShamelessByDefault;
+
+	inline bool AllowPlayerCorruption;
+	inline bool NPCCorruptionByDefault;
+
+	inline bool StrictModestyRules;
+	inline bool NPCStrictRulesByDefault;
+
+	inline bool HardcoreModeEnabled;
+	//inline bool HardcoreLockdown;
+
+	inline bool ModestyUpgradeBlocked;
+
+	//Skyrim Global Variables
+	inline RE::TESGlobal* DynamicModestyMode;
+}
 
 //Functions
 
 void InitializeConfigData();
+
+std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*);
+void UpdateFlashingOdds(RE::StaticFunctionTag*, int FlashOddsIndex, int OddsValue);
+
+std::vector<int> GetFlashRolls(RE::StaticFunctionTag*);
+
+std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*);
+
+std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*);
+std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*);
+
+std::vector<std::string> GetPermanentFemaleNames(RE::StaticFunctionTag*);
+std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*);
+
+std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale);
+
+std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*);
+std::vector<bool> MaleWornKeywordList(RE::StaticFunctionTag*);
+std::vector<bool> NPCFemaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor);
+std::vector<bool> NPCMaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor);
+
+std::vector<int> GetPlayerFactionRanks(RE::StaticFunctionTag*);
+std::vector<int> GetPlayerStrictModestyTimers(RE::StaticFunctionTag*);
+std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*);
+
+std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*);
+void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options);
+
+std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*);
+void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options);
