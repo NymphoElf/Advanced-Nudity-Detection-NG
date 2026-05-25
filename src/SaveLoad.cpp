@@ -50,14 +50,14 @@ void LoadPermanentNPCs()
 
 	file.seekg(0, std::ios::end);
 	size_t size = file.tellg();
-	file.seekg(0, std::ios::beg)
+	file.seekg(0, std::ios::beg);
 
 	for(size_t i = 0; i < (size / sizeof(PermanentFemales)); ++i)
 	{
 		PermanentFemales female;
 		file.read(reinterpret_cast<char*>(&female), sizeof(female));
 
-		permanentfemales.emblace_back(female);
+		permanentfemales.emplace_back(female);
 	}
 
 	file.close();
@@ -138,34 +138,6 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 			serializer->WriteRecordData(&RegisteredFemales::LastUpdateTime[index], sizeof(float));
 		}
-
-		const std::uint32_t pCount = PermanentFemales::TotalFemales;
-
-		serializer->WriteRecordData(&pCount, sizeof(pCount));
-
-		for (std::uint32_t index = 0; index < pCount; ++index) {
-			serializer->WriteRecordData(&PermanentFemales::FemaleLocalID[index], sizeof(RE::FormID));
-			serializer->WriteRecordData(&PermanentFemales::FemalePlugin[index], sizeof(std::string_view));
-			serializer->WriteRecordData(&PermanentFemales::IsInLightPlugin[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&PermanentFemales::FemaleName[index], sizeof(std::string));
-
-			serializer->WriteRecordData(&PermanentFemales::DefaultRankStrict[index], sizeof(int));
-			serializer->WriteRecordData(&PermanentFemales::MinimumRankStrict[index], sizeof(int));
-
-			serializer->WriteRecordData(&PermanentFemales::DefaultRankTop[index], sizeof(int));
-			serializer->WriteRecordData(&PermanentFemales::MinimumRankTop[index], sizeof(int));
-
-			serializer->WriteRecordData(&PermanentFemales::DefaultRankBottom[index], sizeof(int));
-			serializer->WriteRecordData(&PermanentFemales::MinimumRankBottom[index], sizeof(int));
-
-			serializer->WriteRecordData(&PermanentFemales::ShynessMode[index], sizeof(int));
-			serializer->WriteRecordData(&PermanentFemales::SexualityScore[index], sizeof(int));
-
-			serializer->WriteRecordData(&PermanentFemales::AllowShameless[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&PermanentFemales::AllowCorruption[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&PermanentFemales::StrictRules[index], sizeof(uint8_t));
-		}
-
 	}
 
 	// --- MCM record ---
@@ -349,62 +321,6 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 				}
 
 				RegisteredFemales::TotalFemales = count;
-
-				std::uint32_t pCount = 0;
-				serializer->ReadRecordData(&pCount, sizeof(pCount));
-
-				for (std::uint32_t index = 0; index < pCount; ++index) {
-					
-					RE::FormID formValue = 0;
-					
-					serializer->ReadRecordData(&formValue, sizeof(formValue));
-					PermanentFemales::FemaleLocalID.emplace_back(formValue);
-
-					std::string_view sviewValue = "";
-
-					serializer->ReadRecordData(&sviewValue, sizeof(sviewValue));
-					PermanentFemales::FemalePlugin.emplace_back(sviewValue);
-
-					uint8_t bValue;
-
-					serializer->ReadRecordData(&bValue, sizeof(bValue));
-					PermanentFemales::IsInLightPlugin.emplace_back(bValue);
-					
-					std::string FemaleName;
-					ReadString(serializer, FemaleName);
-					PermanentFemales::FemaleName.emplace_back(FemaleName);
-
-					int iValue = 0;
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::DefaultRankStrict.emplace_back(iValue);
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::MinimumRankStrict.emplace_back(iValue);
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::DefaultRankTop.emplace_back(iValue);
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::MinimumRankTop.emplace_back(iValue);
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::DefaultRankBottom.emplace_back(iValue);
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::MinimumRankBottom.emplace_back(iValue);
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::ShynessMode.emplace_back(iValue);
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					PermanentFemales::SexualityScore.emplace_back(iValue);
-					
-					serializer->ReadRecordData(&bValue, sizeof(bValue));
-					PermanentFemales::AllowShameless.emplace_back(bValue);
-					serializer->ReadRecordData(&bValue, sizeof(bValue));
-					PermanentFemales::AllowCorruption.emplace_back(bValue);
-					serializer->ReadRecordData(&bValue, sizeof(bValue));
-					PermanentFemales::StrictRules.emplace_back(bValue);
-				}
-
-				PermanentFemales::TotalFemales = pCount;
 
 				break;
 			}
