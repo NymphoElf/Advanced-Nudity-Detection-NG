@@ -430,8 +430,13 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), LogType::NPCData);
 
 	female.LocalID = localID;
-	plugin->GetFilename().copy(female.Plugin, sizeof(female.Plugin));
-	akName.copy(female.Name, sizeof(female.Name));
+
+	const std::string_view plugin_name = plugin->GetFilename();
+	memset(female.Plugin, 0, sizeof(female.Plugin));
+	// if plugin_name.size() is larger than sizeof(female.Plugin) we write over the buffer length.
+	// if plugin_name.size() if equal to 256 then the string will not be null terminated
+	memcpy(female.Plugin, plugin_name.data(), plugin_name.size());
+	strncpy_s(female.Name, sizeof(female.Name), akName.c_str(), sizeof(female.Name));
 
 	female.DefaultRankStrict = RegisteredFemales::DefaultRankStrict[FemaleID];
 	female.MinimumRankStrict = RegisteredFemales::MinimumRankStrict[FemaleID];
