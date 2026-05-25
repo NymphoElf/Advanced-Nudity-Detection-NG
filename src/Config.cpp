@@ -316,8 +316,15 @@ std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
 	return RegisteredFemales::FemaleName;
 }
 
-std::vector<std::string> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
-	return PermanentFemales::FemaleName;
+std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
+	std::vector<RE::BSFixedString> names;
+
+	for(auto& female : permanentfemales)
+	{
+		names.emplace_back(female.Name);
+	}
+
+	return names;
 }
 
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
