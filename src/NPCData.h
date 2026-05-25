@@ -10,30 +10,34 @@ enum ShySex {
 	Sexuality
 };
 
-namespace PermanentFemales {
-	inline std::vector<RE::FormID> FemaleLocalID;
-	inline std::vector<std::string_view> FemalePlugin;
-	inline std::vector<uint8_t> IsInLightPlugin;
-	inline std::vector<std::string> FemaleName;
+struct PermanentFemales
+{
+	RE::FormID LocalID;
+	char Plugin[256];
+	char Name[256];
 
-	inline std::vector<int> DefaultRankStrict;
-	inline std::vector<int> MinimumRankStrict;
+	int DefaultRankStrict;
+	int MinimumRankStrict;
 
-	inline std::vector<int> DefaultRankTop;
-	inline std::vector<int> MinimumRankTop;
+	int DefaultRankTop;
+	int MinimumRankTop;
 
-	inline std::vector<int> DefaultRankBottom;
-	inline std::vector<int> MinimumRankBottom;
+	int DefaultRankBottom;
+	int MinimumRankBottom;
 
-	inline std::vector<int> ShynessMode;
-	inline std::vector<int> SexualityScore;
+	int ShynessMode;
+	int SexualityScore;
 
-	inline std::vector<uint8_t> AllowShameless;
-	inline std::vector<uint8_t> AllowCorruption;
-	inline std::vector<uint8_t> StrictRules;
+	bool LightPlugin;
+	bool AllowShameless;
+	bool AllowCorruption;
+	bool StrictRules;
 
-	inline int TotalFemales = 0;
-}
+	std::string_view GetPlugin(void) const { return std::string_view(Plugin); }
+	std::string_view GetName(void) const { return std::string_view(Name); }
+};
+
+std::vector<PermanentFemales> permanentfemales;
 
 namespace RegisteredFemales {
 	inline std::vector<std::string> FemaleName;
