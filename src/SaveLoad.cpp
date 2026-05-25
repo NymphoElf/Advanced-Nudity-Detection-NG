@@ -25,7 +25,7 @@ void SavePermanentNPCs()
 		return;
 	}
 
-	std::ofstream file(path);
+	std::ofstream file(path, std::ios::binary);
 
 	for(auto& female : permanentfemales)
 	{
@@ -35,57 +35,32 @@ void SavePermanentNPCs()
 	file.close();
 }
 
-void LoadPermanentNPCs() {
-	std::string FilePath = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
-	
-	if (std::filesystem::exists(FilePath)) {
-		logs::critical("SAVELOAD | LoadPermanentNPCs - File Path Found");
-		PermanentNPCData LoadData;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - LoadData Struct Initialized");
-		std::ifstream LoadFile(FilePath);
-		logs::critical("SAVELOAD | LoadPermanentNPCs - File Stream Initialized");
-		LoadData.Deserialize(LoadFile);
-		logs::critical("SAVELOAD | LoadPermanentNPCs - File Deserialized");
-		LoadFile.close();
-		logs::critical("SAVELOAD | LoadPermanentNPCs - File Closed");
+void LoadPermanentNPCs()
+{
+	const char path[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
 
-		PermanentFemales::FemaleLocalID = LoadData.FemaleLocalID;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Local Form IDs Loaded");
-		PermanentFemales::FemalePlugin = LoadData.FemalePlugin;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Plugins Loaded");
-		PermanentFemales::IsInLightPlugin = LoadData.IsInLightPlugin;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - IsInLightPlugin Flags Loaded");
-		PermanentFemales::FemaleName = LoadData.FemaleName;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Names Loaded");
-
-		PermanentFemales::DefaultRankStrict = LoadData.DefaultRankStrict;
-		PermanentFemales::MinimumRankStrict = LoadData.MinimumRankStrict;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Strict Ranks Loaded");
-
-		PermanentFemales::DefaultRankTop = LoadData.DefaultRankTop;
-		PermanentFemales::MinimumRankTop = LoadData.MinimumRankTop;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Top Ranks Loaded");
-
-		PermanentFemales::DefaultRankBottom = LoadData.DefaultRankBottom;
-		PermanentFemales::MinimumRankBottom = LoadData.MinimumRankBottom;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Bottom Ranks Loaded");
-
-		PermanentFemales::ShynessMode = LoadData.ShynessMode;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Shyness Modes Loaded");
-		PermanentFemales::SexualityScore = LoadData.SexualityScore;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Sexuality Loaded");
-
-		PermanentFemales::AllowShameless = LoadData.AllowShameless;
-		PermanentFemales::AllowCorruption = LoadData.AllowCorruption;
-		PermanentFemales::StrictRules = LoadData.StrictRules;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Rule Sets loaded");
-
-		PermanentFemales::TotalFemales = LoadData.TotalFemales;
-		logs::critical("SAVELOAD | LoadPermanentNPCs - Total Females Loaded");
-	}
-	else {
+	if (!std::filesystem::exists(path))
+	{
 		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", LogType::Core, LoggingLevel::warning);
+
+		return;
 	}
+
+	std::ifstream file(path, std::ios::binary);
+
+	file.seekg(0, std::ios::end);
+	size_t size = file.tellg();
+	file.seekg(0, std::ios::beg)
+
+	for(size_t i = 0; i < (size / sizeof(PermanentFemales)); ++i)
+	{
+		PermanentFemales female;
+		file.read(reinterpret_cast<char*>(&female), sizeof(female));
+
+		permanentfemales.emblace_back(female);
+	}
+
+	file.close();
 }
 
 // 4-char record tags. Must be unique within your plugin.
