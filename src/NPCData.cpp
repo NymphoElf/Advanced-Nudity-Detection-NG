@@ -27,9 +27,9 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 
 	for(int i = 0; i < permanentfemales.size(); ++i)
 	{
-		std::optional<uint16_t> modindex = permanentfemales[i].LightPlugin ? DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin()) : DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin());
+		std::optional<uint32_t> modindex = permanentfemales[i].LightPlugin ? DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin()) : DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin());
 
-		RE::FormID id = modindex.value_or(0xFF) | permanentfemales[i].LocalID;
+		RE::FormID id = (modindex.value_or(0xFF) << 24) | permanentfemales[i].LocalID;
 		if(id == akFemale->GetFormID()) { return i; }
 	}
 
