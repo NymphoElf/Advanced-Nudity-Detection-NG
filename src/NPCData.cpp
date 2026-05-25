@@ -602,22 +602,24 @@ void TweakFemaleData
 	RegisteredFemales::LastUpdateTime[FemaleID] = CurrentGameTime;
 
 	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
-	if (PermFemaleID >= 0) {
-		PermanentFemales::MinimumRankStrict[PermFemaleID] = MinimumStrict;
-		PermanentFemales::MinimumRankTop[PermFemaleID] = MinimumTop;
-		PermanentFemales::MinimumRankBottom[PermFemaleID] = MinimumBottom;
+	if (PermFemaleID >= 0)
+	{
+		permanentfemales[PermFemaleID].MinimumRankStrict  = MinimumStrict;
+		permanentfemales[PermFemaleID].MinimumRankTop = MinimumTop;
+		permanentfemales[PermFemaleID].MinimumRankBottom = MinimumBottom;
 
-		if (MakeDefault) {
-			PermanentFemales::DefaultRankStrict[PermFemaleID] = StrictRank;
-			PermanentFemales::DefaultRankTop[PermFemaleID] = TopRank;
-			PermanentFemales::DefaultRankBottom[PermFemaleID] = BottomRank;
+		if (MakeDefault)
+		{
+			permanentfemales[PermFemaleID].DefaultRankStrict = StrictRank;
+			permanentfemales[PermFemaleID].DefaultRankTop = TopRank;
+			permanentfemales[PermFemaleID].DefaultRankBottom = BottomRank;
 		}
 
-		PermanentFemales::AllowShameless[PermFemaleID] = EnableShameless;
-		PermanentFemales::AllowCorruption[PermFemaleID] = EnableCorrupt;
-		PermanentFemales::StrictRules[PermFemaleID] = IsStrictRules;
+		permanentfemales[PermFemaleID].AllowShameless = EnableShameless;
+		permanentfemales[PermFemaleID].AllowCorruption = EnableCorrupt;
+		permanentfemales[PermFemaleID].StrictRules = IsStrictRules;
 
-		PermanentFemales::ShynessMode[PermFemaleID] = ShynessMode;
+		permanentfemales[PermFemaleID].ShynessMode = ShynessMode;
 	}
 }
 
