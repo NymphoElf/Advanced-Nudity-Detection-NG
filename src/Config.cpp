@@ -757,35 +757,24 @@ std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
 	return FemaleActors;
 }
 
-std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*) {
-	std::vector<RE::Actor*> PermanentFemales;
-	int Index = 0;
+std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
+{
+	std::vector<RE::Actor*> females;
+	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
-	while (Index < PermanentFemales::TotalFemales) {
-		RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-		RE::FormID PluginIndex = 0xFF;
-		
-		if (PermanentFemales::IsInLightPlugin[Index]) {
-			if (DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]).has_value()) {
-				PluginIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]).value();
-			}
-		}
-		else {
-			if (DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]).has_value()) {
-				PluginIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]).value();
-			}
-		}
-		
-		if (PluginIndex != 0xFF) {
-			RE::FormID FullFormID = PluginIndex & PermanentFemales::FemaleLocalID[Index];
-			
-			PermanentFemales.emplace_back(RE::TESForm::LookupByID<RE::Actor>(FullFormID));
-		}
-		Index++;
+	for(auto& female : permanentfemales)
+	{
+		std::optional<uint32_t> modindex = female.LightPlugin ? DataHandler->GetLoadedLightModIndex(female.GetPlugin()) : DataHandler->GetLoadedModIndex(female.GetPlugin());
+
+		if(!modindex.has_value()) { continue; }
+
+		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex << 24) | female.LocalID);
+		if(!actor) { continue; }
+
+		females.emplace_back(actor);
 	}
 
-
-	return PermanentFemales;
+	return females;
 }
 
 std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale) {
