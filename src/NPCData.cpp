@@ -21,47 +21,21 @@ int GetInternalFemaleID(RE::Actor* akFemale) {
 	return FindInVector(RegisteredFemales::FemaleFormID, FemaleForm);
 }
 
-int GetInternalPermanentFemaleID(RE::Actor* akFemale) {
-	int Index = 0;
-	bool IndexFound = false;
+int GetInternalPermanentFemaleID(RE::Actor* akFemale)
+{
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-	RE::FormID ConstructedID;
-	RE::FormID PermFileIndex;
-	std::optional<uint32_t> OptPermFileIndex;
 
-	while (Index < PermanentFemales::TotalFemales && IndexFound == false) {
-		if (PermanentFemales::IsInLightPlugin[Index]) {
-			OptPermFileIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]);
-			
-		}
-		else {
-			OptPermFileIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]);
-		}
+	for(int i = 0; i < permanentfemales.size(); ++i)
+	{
+		std::optional<uint16_t> modindex = permanentfemales[i].LightPlugin ? DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin()) : DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin());
 
-		if (OptPermFileIndex.has_value()) {
-			PermFileIndex = OptPermFileIndex.value();
-			ConstructedID = PermFileIndex & PermanentFemales::FemaleLocalID[Index];
-
-			if (ConstructedID == akFemale->GetFormID()) {
-				IndexFound = true;
-			}
-		}
-		else {
-			Log("<C++ NPCData> [GetInternalPermanentFemaleID] Plugin " + static_cast<std::string>(PermanentFemales::FemalePlugin[Index]) + " is not loaded!", LogType::NPCData, LoggingLevel::warning);
-		}
-
-		if (IndexFound == false) {
-			Index++;
-		}
+		RE::FormID id = modindex.value_or(0xFF) | permanentfemales[i].LocalID;
+		if(id == akFemale->GetFormID()) { return i; }
 	}
 
-	if (IndexFound == false) {
-		Index = -1;
-		std::string akName = akFemale->GetName();
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + akName + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
-	}
-	
-	return Index;
+	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + akFemale->GetName() + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
+
+	return -1;
 }
 
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
