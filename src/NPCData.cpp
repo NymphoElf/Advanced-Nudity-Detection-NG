@@ -374,75 +374,82 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 	RegisteredFemales::TotalFemales++;
 }
 
-int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) 
+{
+	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+
 	int FemaleID = GetInternalFemaleID(akFemale);
 	std::string akName = akFemale->GetName();
 
-	if (FemaleID < 0) {
+	if (FemaleID == -1) 
+	{
 		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+
 		return FunctionEnd::FailCritical;
 	}
-	
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-	
-	RE::FormID FemaleFormID = akFemale->GetFormID();
-	//RE::FormID PluginID = FemaleFormID >> 24;
-	uint8_t PluginID = FemaleFormID >> 24;
-	uint16_t LightPluginID = static_cast<uint16_t>(FemaleFormID >> 12);
 
-	bool IsLightPlugin = false;
+	PermanentFemales female;
+	uint32_t pluginID;
 
-	if (PluginID == 0xFF) {
-		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:#x}", FemaleFormID) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
+	RE::FormID id = akFemale->GetFormID();
+
+	switch(id >> 24)
+	{
+		case 0xFF:
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:#x}", id) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
 		return FunctionEnd::FailError;
-	}
-	else if (PluginID == 0xFE) {
-		IsLightPlugin = true;
-	}
 
-	const RE::TESFile* FemalePluginFile;
+		case 0xFE:
+		female.LightPlugin = true;
+		plugin = id >> 12;
+		break;
 
-	if (!IsLightPlugin) {
-		FemalePluginFile = DataHandler->LookupLoadedModByIndex(PluginID);
-	}
-	else {
-		FemalePluginFile = DataHandler->LookupLoadedLightModByIndex(LightPluginID);
-	}
-	
-	std::string_view FemalePluginName = FemalePluginFile->GetFilename();
-	RE::FormID FemaleLocalID = akFemale->GetLocalFormID();
-
-	if (FindInVector(PermanentFemales::FemalePlugin, FemalePluginName) >= 0 && FindInVector(PermanentFemales::FemaleLocalID, FemaleLocalID) >= 0) {
-		Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(FemalePluginName) + " with Form IDs: (Full ID | " + std::format("{:#x}", FemaleFormID) + ") (Local ID | " + std::format("{:#x}", FemaleLocalID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
-		return FunctionEnd::FailWarn;
+		default: plugin = id >> 24; break;
 	}
 
-	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:#x}", FemaleFormID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:#x}", FemaleLocalID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(FemalePluginName), LogType::NPCData);
+	const RE::TESFile* plugin = DataHandler->LookupLoadedModByIndex(pluginID);
+	if(!plugin)
+	{
+		Log("<C++ NPCData> [RegisterPermanent] <TODO>", LogType::NPCData, LoggingLevel::error);
+		return FunctionEnd::FailError; 
+	}
 
-	PermanentFemales::FemaleLocalID.emplace_back(FemaleLocalID);
-	PermanentFemales::IsInLightPlugin.emplace_back(IsLightPlugin);
-	PermanentFemales::FemalePlugin.emplace_back(FemalePluginName);
-	PermanentFemales::FemaleName.emplace_back(RegisteredFemales::FemaleName[FemaleID]);
+	RE::FormID localID = akFemale->GetLocalFormID();
 
-	PermanentFemales::DefaultRankStrict.emplace_back(RegisteredFemales::DefaultRankStrict[FemaleID]);
-	PermanentFemales::MinimumRankStrict.emplace_back(RegisteredFemales::MinimumRankStrict[FemaleID]);
+	for(size_t i = 0; i < permanentfemales.size(); ++i)
+	{
+		if(permanentfemales[i].LocalID == localID)
+		{
+			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:#x}", id) + ") (Local ID | " + std::format("{:#x}", localID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
+			return FunctionEnd::FailWarn;
+		}
+	}
 
-	PermanentFemales::DefaultRankTop.emplace_back(RegisteredFemales::DefaultRankTop[FemaleID]);
-	PermanentFemales::MinimumRankTop.emplace_back(RegisteredFemales::MinimumRankTop[FemaleID]);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:#x}", id), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:#x}", localID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), LogType::NPCData);
 
-	PermanentFemales::DefaultRankBottom.emplace_back(RegisteredFemales::DefaultRankBottom[FemaleID]);
-	PermanentFemales::MinimumRankBottom.emplace_back(RegisteredFemales::MinimumRankBottom[FemaleID]);
+	female.LocalID = localID;
+	plugin->GetFilename().copy(female.Plugin, sizeof(female.Plugin));
+	akName.copy(female.Name, sizeof(female.Name));
 
-	PermanentFemales::ShynessMode.emplace_back(RegisteredFemales::ShynessMode[FemaleID]);
-	PermanentFemales::SexualityScore.emplace_back(RegisteredFemales::SexualityScore[FemaleID]);
+	female.DefaultRankStrict = RegisteredFemales::DefaultRankStrict[FemaleID];
+	female.MinimumRankStrict = RegisteredFemales::MinimumRankStrict[FemaleID];
 
-	PermanentFemales::AllowShameless.emplace_back(RegisteredFemales::AllowShameless[FemaleID]);
-	PermanentFemales::AllowCorruption.emplace_back(RegisteredFemales::AllowCorruption[FemaleID]);
-	PermanentFemales::StrictRules.emplace_back(RegisteredFemales::StrictRules[FemaleID]);
+	female.DefaultRankTop = RegisteredFemales::DefaultRankTop[FemaleID];
+	female.MinimumRankTop = RegisteredFemales::MinimumRankTop[FemaleID];
 
-	PermanentFemales::TotalFemales++;
+	female.DefaultRankBottom = RegisteredFemales::DefaultRankBottom[FemaleID];
+	female.MinimumRankBottom = RegisteredFemales::MinimumRankBottom[FemaleID];
+
+	female.ShynessMode = RegisteredFemales::ShynessMode[FemaleID];
+	female.SexualityScore = RegisteredFemales::SexualityScore[FemaleID];
+
+	female.AllowShameless = RegisteredFemales::AllowShameless[FemaleID];
+	female.AllowCorruption = RegisteredFemales::AllowCorruption[FemaleID];
+	female.StrictRules = RegisteredFemales::StrictRules[FemaleID];
+
+	permanentfemales.emplace_back(female);
 
 	return FunctionEnd::Success;
 }
