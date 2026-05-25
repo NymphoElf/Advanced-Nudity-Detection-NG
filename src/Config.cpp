@@ -315,9 +315,9 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
 	std::vector<RE::BSFixedString> names;
 
-	for(auto& name : RegisteredFemales::FemaleName)
+	for(auto& female : registeredfemales)
 	{
-		names.emplace_back(name);
+		names.emplace_back(female.GetName());
 	}
 
 	return names;
@@ -753,15 +753,14 @@ std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 }
 
 std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
-	std::vector<RE::Actor*> FemaleActors;
-	int Index = 0;
+	std::vector<RE::Actor*> actors;
 
-	while (Index < RegisteredFemales::TotalFemales) {
-		FemaleActors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(RegisteredFemales::FemaleFormID[Index]));
-		Index++;
+	for(auto& female : registeredfemales)
+	{
+		actors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(female.id));
 	}
 
-	return FemaleActors;
+	return actors;
 }
 
 std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
@@ -787,6 +786,9 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale) {
 	RE::FormID akFormID = akFemale->GetFormID();
 	int FemaleIndex = FindInVector(RegisteredFemales::FemaleFormID, akFormID);
+
+	
+
 	std::vector<int> FemaleData;
 
 	if (FemaleIndex < 0) {
