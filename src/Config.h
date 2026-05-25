@@ -199,7 +199,7 @@ std::vector<int> GetFlashRolls(RE::StaticFunctionTag*);
 
 std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*);
 
-std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*);
+std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*);
 std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*);
 
 std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*);
