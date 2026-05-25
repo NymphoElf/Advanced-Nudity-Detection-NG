@@ -9,47 +9,30 @@
 #include "ModEventHandler.h"
 #include "PlayerModesty.h"
 
-void SavePermanentNPCs() {
-	std::string FilePath = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
-	
-	if (PermanentFemales::TotalFemales < 1) {
-		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", LogType::Core, LoggingLevel::warning);
+void SavePermanentNPCs() 
+{
+	const char path[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
 
-		if (std::filesystem::exists(FilePath)) {
+	if(!permanentfemales.size())
+	{
+		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", LogType::Core, LoggingLevel::warning);
+		if (std::filesystem::exists(path)) 
+		{
 			Log("<C++ SaveLoad> [SavePermanentNPCs] Deleting Permanent NPC file since no Permanent NPCs exist!", LogType::Core, LoggingLevel::warning);
-			std::filesystem::remove(FilePath);
+			std::filesystem::remove(path);
 		}
+
 		return;
 	}
-	
-	PermanentNPCData SaveData;
 
-	SaveData.FemaleLocalID = PermanentFemales::FemaleLocalID;
-	SaveData.FemalePlugin = PermanentFemales::FemalePlugin;
-	SaveData.IsInLightPlugin = PermanentFemales::IsInLightPlugin;
-	SaveData.FemaleName = PermanentFemales::FemaleName;
+	std::ofstream file(path);
 
-	SaveData.DefaultRankStrict = PermanentFemales::DefaultRankStrict;
-	SaveData.MinimumRankStrict = PermanentFemales::MinimumRankStrict;
+	for(auto& female : permanentfemales)
+	{
+		file.write(reinterpret_cast<char*>(&female), sizeof(female));
+	}
 
-	SaveData.DefaultRankTop = PermanentFemales::DefaultRankTop;
-	SaveData.MinimumRankTop = PermanentFemales::MinimumRankTop;
-
-	SaveData.DefaultRankBottom = PermanentFemales::DefaultRankBottom;
-	SaveData.MinimumRankBottom = PermanentFemales::MinimumRankBottom;
-
-	SaveData.ShynessMode = PermanentFemales::ShynessMode;
-	SaveData.SexualityScore = PermanentFemales::SexualityScore;
-
-	SaveData.AllowShameless = PermanentFemales::AllowShameless;
-	SaveData.AllowCorruption = PermanentFemales::AllowCorruption;
-	SaveData.StrictRules = PermanentFemales::StrictRules;
-
-	SaveData.TotalFemales = PermanentFemales::TotalFemales;
-
-	std::ofstream SaveFile(FilePath);
-	SaveData.Serialize(SaveFile);
-	SaveFile.close();
+	file.close();
 }
 
 void LoadPermanentNPCs() {
