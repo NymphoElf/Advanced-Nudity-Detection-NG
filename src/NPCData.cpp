@@ -454,37 +454,18 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	return FunctionEnd::Success;
 }
 
-int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) {
-	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
-	if (PermFemaleID < 0) {
-		std::string akName = akFemale->GetName();
-		RE::FormID akFormID = akFemale->GetFormID();
-		Log("<C++ NPCData> [RemovePermanent] Female " + akName + " (" + std::format("{:#x}", akFormID) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
+{
+	int index = GetInternalPermanentFemaleID(akFemale);
+
+	if (PermFemaleID < 0)
+	{
+		Log("<C++ NPCData> [RemovePermanent] Female " + akFemale->GetName() + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+
 		return FunctionEnd::FailCritical;
 	}
 
-	PermanentFemales::FemaleLocalID.erase(PermanentFemales::FemaleLocalID.begin() + PermFemaleID);
-	PermanentFemales::FemalePlugin.erase(PermanentFemales::FemalePlugin.begin() + PermFemaleID);
-	PermanentFemales::IsInLightPlugin.erase(PermanentFemales::IsInLightPlugin.begin() + PermFemaleID);
-	PermanentFemales::FemaleName.erase(PermanentFemales::FemaleName.begin() + PermFemaleID);
-
-	PermanentFemales::DefaultRankStrict.erase(PermanentFemales::DefaultRankStrict.begin() + PermFemaleID);
-	PermanentFemales::MinimumRankStrict.erase(PermanentFemales::MinimumRankStrict.begin() + PermFemaleID);
-
-	PermanentFemales::DefaultRankTop.erase(PermanentFemales::DefaultRankTop.begin() + PermFemaleID);
-	PermanentFemales::MinimumRankTop.erase(PermanentFemales::MinimumRankTop.begin() + PermFemaleID);
-
-	PermanentFemales::DefaultRankBottom.erase(PermanentFemales::DefaultRankBottom.begin() + PermFemaleID);
-	PermanentFemales::MinimumRankBottom.erase(PermanentFemales::MinimumRankBottom.begin() + PermFemaleID);
-
-	PermanentFemales::ShynessMode.erase(PermanentFemales::ShynessMode.begin() + PermFemaleID);
-	PermanentFemales::SexualityScore.erase(PermanentFemales::SexualityScore.begin() + PermFemaleID);
-
-	PermanentFemales::AllowShameless.erase(PermanentFemales::AllowShameless.begin() + PermFemaleID);
-	PermanentFemales::AllowCorruption.erase(PermanentFemales::AllowCorruption.begin() + PermFemaleID);
-	PermanentFemales::StrictRules.erase(PermanentFemales::StrictRules.begin() + PermFemaleID);
-
-	PermanentFemales::TotalFemales--;
+	permanentfemales.erase(permanentfemales.begin() + index);
 
 	return FunctionEnd::Success;
 }
