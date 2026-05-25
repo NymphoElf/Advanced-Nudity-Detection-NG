@@ -202,7 +202,7 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*);
 std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*);
 std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*);
 
-std::vector<std::string> GetPermanentFemaleNames(RE::StaticFunctionTag*);
+std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*);
 std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*);
 
 std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale);
