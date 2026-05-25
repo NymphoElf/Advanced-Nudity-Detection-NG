@@ -312,8 +312,15 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 	return CurtainVector;
 }
 
-std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
-	return RegisteredFemales::FemaleName;
+std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
+	std::vector<RE::BSFixedString> names;
+
+	for(auto& name : RegisteredFemales::FemaleName)
+	{
+		names.emplace_back(name);
+	}
+
+	return names;
 }
 
 std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
