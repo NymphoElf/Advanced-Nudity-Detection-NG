@@ -27,13 +27,13 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 
 	for(int i = 0; i < permanentfemales.size(); ++i)
 	{
-		std::optional<uint32_t> modindex = permanentfemales[i].LightPlugin ? DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin()) : DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin());
+		std::optional<uint32_t> modindex = permanentfemales[i].LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin()));
 
 		RE::FormID id = (modindex.value_or(0xFF) << 24) | permanentfemales[i].LocalID;
 		if(id == akFemale->GetFormID()) { return i; }
 	}
 
-	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + akFemale->GetName() + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
+	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
 
 	return -1;
 }
@@ -401,13 +401,13 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 		case 0xFE:
 		female.LightPlugin = true;
-		plugin = id >> 12;
+		pluginID = id >> 12;
 		break;
 
-		default: plugin = id >> 24; break;
+		default: pluginID = id >> 24; break;
 	}
 
-	const RE::TESFile* plugin = DataHandler->LookupLoadedModByIndex(pluginID);
+	const RE::TESFile* plugin = DataHandler->LookupLoadedModByIndex((uint8_t)pluginID);
 	if(!plugin)
 	{
 		Log("<C++ NPCData> [RegisterPermanent] <TODO>", LogType::NPCData, LoggingLevel::error);
@@ -458,9 +458,9 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 {
 	int index = GetInternalPermanentFemaleID(akFemale);
 
-	if (PermFemaleID < 0)
+	if(index < 0)
 	{
-		Log("<C++ NPCData> [RemovePermanent] Female " + akFemale->GetName() + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
 
 		return FunctionEnd::FailCritical;
 	}
@@ -483,12 +483,12 @@ void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime)
 
 	for(PermanentFemales& female : permanentfemales)
 	{
-		RE::FormID id = (female.LightPlugin ? DataHandler->GetLoadedLightModIndex(female.GetPlugin()) : DataHandler->GetLoadedModIndex(female.GetPlugin())).value_or(0xFF) << 24 | female.LocalID;
+		RE::FormID id = (female.LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(female.GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(female.GetPlugin()))).value_or(0xFF) << 24 | female.LocalID;
 
 		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>(id);
 		if(!actor)
 		{
-			Log("<C++ NPCData> [ImportPermanents] Could not import female " + female.GetName() + " because their Form ID (" + std::format("{:#x}", id) + ") returns a null pointer!");
+			Log("<C++ NPCData> [ImportPermanents] Could not import female " + std::string(female.GetName()) + " because their Form ID (" + std::format("{:#x}", id) + ") returns a null pointer!");
 
 			continue;
 		}

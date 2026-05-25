@@ -764,11 +764,11 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 
 	for(auto& female : permanentfemales)
 	{
-		std::optional<uint32_t> modindex = female.LightPlugin ? DataHandler->GetLoadedLightModIndex(female.GetPlugin()) : DataHandler->GetLoadedModIndex(female.GetPlugin());
+		std::optional<uint32_t> modindex = female.LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(female.GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(female.GetPlugin()));
 
 		if(!modindex.has_value()) { continue; }
 
-		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex << 24) | female.LocalID);
+		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex.value() << 24) | female.LocalID);
 		if(!actor) { continue; }
 
 		females.emplace_back(actor);

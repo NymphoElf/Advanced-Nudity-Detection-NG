@@ -37,7 +37,7 @@ struct PermanentFemales
 	std::string_view GetName(void) const { return std::string_view(Name); }
 };
 
-std::vector<PermanentFemales> permanentfemales;
+inline std::vector<PermanentFemales> permanentfemales;
 
 namespace RegisteredFemales {
 	inline std::vector<std::string> FemaleName;
