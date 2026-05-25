@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
 
 enum ShySex {
 	Men,
@@ -39,57 +40,55 @@ struct PermanentFemales
 
 inline std::vector<PermanentFemales> permanentfemales;
 
-namespace RegisteredFemales {
-	inline std::vector<std::string> FemaleName;
-	inline std::vector<RE::FormID> FemaleFormID;
+struct RegisteredFemales
+{
+	char Name[256];
+	RE::FormID id;
 
-	inline std::vector<int> ModestyTimer0; //Modest
-	inline std::vector<int> ModestyTimer1; //Reasonable
-	inline std::vector<int> ModestyTimer2; //Relaxed
-	inline std::vector<int> ModestyTimer3; //Comfortable
-	inline std::vector<int> ModestyTimer4; //Tease
-	inline std::vector<int> ModestyTimer5; //Brazen
-	inline std::vector<int> ModestyTimer6; //Immodest
+	int ModestyTimer0; //Modest
+	int ModestyTimer1; //Reasonable
+	int ModestyTimer2; //Relaxed
+	int ModestyTimer3; //Comfortable
+	int ModestyTimer4; //Tease
+	int ModestyTimer5; //Brazen
+	int ModestyTimer6; //Immodest
 
-	inline std::vector<int> DefaultRankStrict;
-	inline std::vector<int> CurrentRankStrict;
-	inline std::vector<int> MinimumRankStrict;
+	int DefaultRankStrict;
+	int CurrentRankStrict;
+	int MinimumRankStrict;
 
-	inline std::vector<int> TopModestyTimer0; //Modest
-	inline std::vector<int> TopModestyTimer1; //Comfortable
-	inline std::vector<int> TopModestyTimer2; //Brazen
-	inline std::vector<int> TopModestyTimer3; //Immodest
+	int TopModestyTimer0; //Modest
+	int TopModestyTimer1; //Comfortable
+	int TopModestyTimer2; //Brazen
+	int TopModestyTimer3; //Immodest
 
-	inline std::vector<int> DefaultRankTop;
-	inline std::vector<int> CurrentRankTop;
-	inline std::vector<int> MinimumRankTop;
+	int DefaultRankTop;
+	int CurrentRankTop;
+	int MinimumRankTop;
 
-	inline std::vector<int> BottomModestyTimer0; //Modest
-	inline std::vector<int> BottomModestyTimer1; //Comfortable
-	inline std::vector<int> BottomModestyTimer2; //Brazen
-	inline std::vector<int> BottomModestyTimer3; //Immodest
+	int BottomModestyTimer0; //Modest
+	int BottomModestyTimer1; //Comfortable
+	int BottomModestyTimer2; //Brazen
+	int BottomModestyTimer3; //Immodest
 
-	inline std::vector<int> DefaultRankBottom;
-	inline std::vector<int> CurrentRankBottom;
-	inline std::vector<int> MinimumRankBottom;
+	int DefaultRankBottom;
+	int CurrentRankBottom;
+	int MinimumRankBottom;
 
-	inline std::vector<int> ShynessMode;
-	inline std::vector<int> SexualityScore;
+	int ShynessMode;
+	int SexualityScore;
 
-	//inline std::vector<bool> AllowShameless;
-	//inline std::vector<bool> AllowCorruption;
-	//inline std::vector<bool> StrictRules;
-	//inline std::vector<bool> UpgradeBlocked;
+	bool AllowShameless;
+	bool AllowCorruption;
+	bool StrictRules;
+	bool UpgradeBlocked;
 
-	inline std::vector<uint8_t> AllowShameless; //BOOL
-	inline std::vector<uint8_t> AllowCorruption; //BOOL
-	inline std::vector<uint8_t> StrictRules; //BOOL
-	inline std::vector<uint8_t> UpgradeBlocked; //BOOL
+	float LastUpdateTime;
 
-	inline std::vector<float> LastUpdateTime;
-
-	inline int TotalFemales = 0;
+	std::string GetName(void) const { return std::string(Name); }
 }
+
+inline std::unordered_map<RegisteredFemales> registeredfemales;
 
 //Functions
 
