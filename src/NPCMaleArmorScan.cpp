@@ -1034,7 +1034,7 @@ namespace NPCMaleScan {
 		}
 
 		std::string akName = akMale->GetName();
-		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: " + akName + " | Form ID: (" + std::format("{:#x}", akMale->GetFormID()) + ")", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: " + akName + " | Form ID: (" + std::format("{:08X}", akMale->GetFormID()) + ")", LogType::NPCArmorScan);
 
 		if (akMale->GetActorBase()->IsFemale() == true) {
 			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] CRITICAL ERROR: Actor " + akName + " is Female! This should not have happened!", LogType::NPCArmorScan, LoggingLevel::critical);

@@ -39,7 +39,7 @@ void ProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTim
 				RegisterRosa(CurrentGameTime, SexualityScore);
 			}
 			else {
-				Log("<C++ NPCScanner> [ProcessNPC] Registering New Female " + akName + " (" + std::format("{0:#x}", akActor->GetFormID()) + ")", LogType::Core);
+				Log("<C++ NPCScanner> [ProcessNPC] Registering New Female " + akName + " (" + std::format("{:08X}", akActor->GetFormID()) + ")", LogType::Core);
 				RegisterFemale(akActor, CurrentGameTime, SexualityScore);
 			}
 		}

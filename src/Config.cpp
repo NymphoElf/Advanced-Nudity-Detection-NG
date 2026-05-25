@@ -317,7 +317,14 @@ std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
 }
 
 std::vector<std::string> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
-	return PermanentFemales::FemaleName;
+	std::vector<std::string> NameVector;
+	
+	int Index = 0;
+	while (Index < PermanentFemales::TotalFemales) {
+		NameVector.emplace_back(PermanentFemales::FemaleName[Index].data());
+		Index++;
+	}
+	return NameVector;
 }
 
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
@@ -759,13 +766,13 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*) {
 		RE::FormID PluginIndex = 0xFF;
 		
 		if (PermanentFemales::IsInLightPlugin[Index]) {
-			if (DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]).has_value()) {
-				PluginIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]).value();
+			if (DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index].data()).has_value()) {
+				PluginIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index].data()).value();
 			}
 		}
 		else {
-			if (DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]).has_value()) {
-				PluginIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]).value();
+			if (DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index].data()).has_value()) {
+				PluginIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index].data()).value();
 			}
 		}
 		
@@ -788,7 +795,7 @@ std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	if (FemaleIndex < 0) {
 		std::string akName = akFemale->GetName();
-		Log("<C++ Config> [GetFemaleActorData] Female " + akName + " (" + std::format("{:#x}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		Log("<C++ Config> [GetFemaleActorData] Female " + akName + " (" + std::format("{:08X}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
 		return FemaleData;
 	}
 	

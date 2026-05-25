@@ -37,7 +37,7 @@ void ChangeBottomRank(RE::Actor* akFemale, int FemaleID, int Rank) {
 }
 
 void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
 	int CurrentRank = RegisteredFemales::CurrentRankStrict[FemaleID];
 	int MinimumRank = RegisteredFemales::MinimumRankStrict[FemaleID];
@@ -232,7 +232,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID,
 }
 
 void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
 	int CurrentTopRank = RegisteredFemales::CurrentRankTop[FemaleID];
 	int MinimumTopRank = RegisteredFemales::MinimumRankTop[FemaleID];
@@ -399,7 +399,7 @@ void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, in
 }
 
 void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
 	int CurrentBottomRank = RegisteredFemales::CurrentRankBottom[FemaleID];
 	int MinimumBottomRank = RegisteredFemales::MinimumRankBottom[FemaleID];

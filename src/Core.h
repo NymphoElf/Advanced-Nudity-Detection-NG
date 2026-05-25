@@ -385,6 +385,8 @@ int Randomizer(int MinRoll, int MaxRoll);
 //template<typename VectorGeneric>
 //int FindInVector(std::vector<VectorGeneric> SearchVector, VectorGeneric SearchTarget);
 
+//int FindInVector(std::vector<std::array<char, 256>> SearchVector, std::string_view SearchTarget);
+
 int FindInVector(std::vector<int> SearchVector, int SearchTarget);
 int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget);
 
