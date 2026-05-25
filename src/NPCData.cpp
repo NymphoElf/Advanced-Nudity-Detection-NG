@@ -470,86 +470,73 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	return FunctionEnd::Success;
 }
 
-void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) {
-	if (PermanentFemales::TotalFemales < 1) {
+void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
+{
+	if (!permanentfemales.size())
+	{
 		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
+
 		return;
 	}
-	
+
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-	int Index = 0;
 
-	std::optional<uint32_t> OptPermFileIndex;
-	RE::FormID PermFileIndex;
-	RE::FormID FemaleFormID;
+	for(PermanentFemales& female : permanentfemales)
+	{
+		RE::FormID id = (female.LightPlugin ? DataHandler->GetLoadedLightModIndex(female.GetPlugin()) : DataHandler->GetLoadedModIndex(female.GetPlugin())).value_or(0xFF) << 24 | female.LocalID;
 
-	while (Index < PermanentFemales::TotalFemales) {
-		if (PermanentFemales::IsInLightPlugin[Index]) {
-			OptPermFileIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index]);
-		}
-		else {
-			OptPermFileIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index]);
-		}
+		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>(id);
+		if(!actor)
+		{
+			Log("<C++ NPCData> [ImportPermanents] Could not import female " + female.GetName() + " because their Form ID (" + std::format("{:#x}", id) + ") returns a null pointer!");
 
-		if (OptPermFileIndex.has_value()) {
-			PermFileIndex = OptPermFileIndex.value();
-			FemaleFormID = PermFileIndex & PermanentFemales::FemaleLocalID[Index];
-			RE::Actor* FemaleActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
-			if (FemaleActor != nullptr) {
-				RegisteredFemales::FemaleFormID.emplace_back(FemaleFormID);
-				RegisteredFemales::FemaleName.emplace_back(PermanentFemales::FemaleName[Index]);
-
-				RegisteredFemales::ModestyTimer0.emplace_back(0);
-				RegisteredFemales::ModestyTimer1.emplace_back(0);
-				RegisteredFemales::ModestyTimer2.emplace_back(0);
-				RegisteredFemales::ModestyTimer3.emplace_back(0);
-				RegisteredFemales::ModestyTimer4.emplace_back(0);
-				RegisteredFemales::ModestyTimer5.emplace_back(0);
-				RegisteredFemales::ModestyTimer6.emplace_back(0);
-
-				RegisteredFemales::CurrentRankStrict.emplace_back(PermanentFemales::DefaultRankStrict[Index]);
-				RegisteredFemales::DefaultRankStrict.emplace_back(PermanentFemales::DefaultRankStrict[Index]);
-				RegisteredFemales::MinimumRankStrict.emplace_back(PermanentFemales::MinimumRankStrict[Index]);
-
-				RegisteredFemales::TopModestyTimer0.emplace_back(0);
-				RegisteredFemales::TopModestyTimer1.emplace_back(0);
-				RegisteredFemales::TopModestyTimer2.emplace_back(0);
-				RegisteredFemales::TopModestyTimer3.emplace_back(0);
-
-				RegisteredFemales::CurrentRankTop.emplace_back(PermanentFemales::DefaultRankTop[Index]);
-				RegisteredFemales::DefaultRankTop.emplace_back(PermanentFemales::DefaultRankTop[Index]);
-				RegisteredFemales::MinimumRankTop.emplace_back(PermanentFemales::MinimumRankTop[Index]);
-
-				RegisteredFemales::BottomModestyTimer0.emplace_back(0);
-				RegisteredFemales::BottomModestyTimer1.emplace_back(0);
-				RegisteredFemales::BottomModestyTimer2.emplace_back(0);
-				RegisteredFemales::BottomModestyTimer3.emplace_back(0);
-
-				RegisteredFemales::CurrentRankBottom.emplace_back(PermanentFemales::DefaultRankBottom[Index]);
-				RegisteredFemales::DefaultRankBottom.emplace_back(PermanentFemales::DefaultRankBottom[Index]);
-				RegisteredFemales::MinimumRankBottom.emplace_back(PermanentFemales::MinimumRankBottom[Index]);
-
-				RegisteredFemales::ShynessMode.emplace_back(PermanentFemales::ShynessMode[Index]);
-				RegisteredFemales::SexualityScore.emplace_back(PermanentFemales::SexualityScore[Index]);
-
-				RegisteredFemales::AllowShameless.emplace_back(PermanentFemales::AllowShameless[Index]);
-				RegisteredFemales::AllowCorruption.emplace_back(PermanentFemales::AllowCorruption[Index]);
-				RegisteredFemales::StrictRules.emplace_back(PermanentFemales::StrictRules[Index]);
-				RegisteredFemales::UpgradeBlocked.emplace_back(false);
-
-				RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
-
-				RegisteredFemales::TotalFemales++;
-			}
-			else {
-				Log("<C++ NPCData> [ImportPermanents] Could not import female " + PermanentFemales::FemaleName[Index] + " because their Form ID (" + std::format("{:#x}", FemaleFormID) + ") returns a null pointer!");
-			}
-		}
-		else {
-			Log("<C++ NPCData> [ImportPermanents] Plugin " + static_cast<std::string>(PermanentFemales::FemalePlugin[Index]) + " is not loaded! Cannot import female: " + PermanentFemales::FemaleName[Index], LogType::NPCData, LoggingLevel::warning);
+			continue;
 		}
 
-		Index++;
+		RegisteredFemales::FemaleFormID.emplace_back(id);
+		RegisteredFemales::FemaleName.emplace_back(female.GetName());
+
+		RegisteredFemales::ModestyTimer0.emplace_back(0);
+		RegisteredFemales::ModestyTimer1.emplace_back(0);
+		RegisteredFemales::ModestyTimer2.emplace_back(0);
+		RegisteredFemales::ModestyTimer3.emplace_back(0);
+		RegisteredFemales::ModestyTimer4.emplace_back(0);
+		RegisteredFemales::ModestyTimer5.emplace_back(0);
+		RegisteredFemales::ModestyTimer6.emplace_back(0);
+
+		RegisteredFemales::CurrentRankStrict.emplace_back(female.DefaultRankStrict);
+		RegisteredFemales::DefaultRankStrict.emplace_back(female.DefaultRankStrict);
+		RegisteredFemales::MinimumRankStrict.emplace_back(female.MinimumRankStrict);
+
+		RegisteredFemales::TopModestyTimer0.emplace_back(0);
+		RegisteredFemales::TopModestyTimer1.emplace_back(0);
+		RegisteredFemales::TopModestyTimer2.emplace_back(0);
+		RegisteredFemales::TopModestyTimer3.emplace_back(0);
+
+		RegisteredFemales::CurrentRankTop.emplace_back(female.DefaultRankTop);
+		RegisteredFemales::DefaultRankTop.emplace_back(female.DefaultRankTop);
+		RegisteredFemales::MinimumRankTop.emplace_back(female.MinimumRankTop);
+
+		RegisteredFemales::BottomModestyTimer0.emplace_back(0);
+		RegisteredFemales::BottomModestyTimer1.emplace_back(0);
+		RegisteredFemales::BottomModestyTimer2.emplace_back(0);
+		RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+
+		RegisteredFemales::CurrentRankBottom.emplace_back(female.DefaultRankBottom);
+		RegisteredFemales::DefaultRankBottom.emplace_back(female.DefaultRankBottom);
+		RegisteredFemales::MinimumRankBottom.emplace_back(female.MinimumRankBottom);
+
+		RegisteredFemales::ShynessMode.emplace_back(female.ShynessMode);
+		RegisteredFemales::SexualityScore.emplace_back(female.SexualityScore);
+
+		RegisteredFemales::AllowShameless.emplace_back(female.AllowShameless);
+		RegisteredFemales::AllowCorruption.emplace_back(female.AllowCorruption);
+		RegisteredFemales::StrictRules.emplace_back(female.StrictRules);
+		RegisteredFemales::UpgradeBlocked.emplace_back(false);
+
+		RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
+
+		RegisteredFemales::TotalFemales++;
 	}
 }
 
