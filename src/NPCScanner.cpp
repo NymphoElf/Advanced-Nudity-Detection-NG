@@ -27,11 +27,11 @@ void ProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTim
 	else {
 		NPCFemaleScan::NPCFemaleAnalyze(akActor);
 
-		int FemaleID = GetInternalFemaleID(akActor);
-		if (FemaleID >= 0) {
+		if (registeredfemales.count(akActor->GetFormID()))
+		{
 			Log("<C++ NPCScanner> [ProcessNPC] Female " + akName + " already exists in registered actor list.", LogType::Core);
 			if (Configuration::DynamicModestyEnabled) {
-				ProcessNPCModesty(akActor, FemaleID, CurrentGameTime);
+				ProcessNPCModesty(akActor, CurrentGameTime);
 			}
 		}
 		else {

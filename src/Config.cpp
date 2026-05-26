@@ -790,12 +790,12 @@ std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	RE::FormID id = akFemale->GetFormID();
 	if(!registeredfemales.count(id))
 	{
-		Log("<C++ Config> [GetFemaleActorData] Female " + std:.string(akFemale->GetName()) + " (" + std::format("{:#x}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		Log("<C++ Config> [GetFemaleActorData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", id) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
 		
 		return data;
 	}
 
-	RegistedFemale& female = registeredfemales[id];
+	RegisteredFemales& female = registeredfemales[id];
 	
 	data.emplace_back(female.CurrentRankStrict);
 	data.emplace_back(female.MinimumRankStrict);

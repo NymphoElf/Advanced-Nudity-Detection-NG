@@ -91,52 +91,22 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 	// --- NPC record ---
 	if (serializer->OpenRecord(kNPCsRecord, kVersion)) {
 
-		const std::uint32_t count = RegisteredFemales::TotalFemales;
+		const uint32_t count = (uint32_t)registeredfemales.size();
 
 		serializer->WriteRecordData(&count, sizeof(count));
 
-		for (std::uint32_t index = 0; index < count; ++index) {
-			WriteString(serializer, RegisteredFemales::FemaleName[index]);
-			serializer->WriteRecordData(&RegisteredFemales::FemaleFormID[index], sizeof(RE::FormID));
+		for (auto& [id, female] : registeredfemales)
+		{
+			serializer->WriteRecordData(reinterpret_cast<const char*>(&female), sizeof(female));
+		}
 
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer0[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer1[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer2[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer3[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer4[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer5[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::ModestyTimer6[index], sizeof(int));
+		const uint32_t permanent_count = (uint32_t)permanentfemales.size();
 
-			serializer->WriteRecordData(&RegisteredFemales::DefaultRankStrict[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::CurrentRankStrict[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::MinimumRankStrict[index], sizeof(int));
+		serializer->WriteRecordData(&permanent_count, sizeof(permanent_count));
 
-			serializer->WriteRecordData(&RegisteredFemales::TopModestyTimer0[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::TopModestyTimer1[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::TopModestyTimer2[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::TopModestyTimer3[index], sizeof(int));
-
-			serializer->WriteRecordData(&RegisteredFemales::DefaultRankTop[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::CurrentRankTop[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::MinimumRankTop[index], sizeof(int));
-
-			serializer->WriteRecordData(&RegisteredFemales::BottomModestyTimer0[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::BottomModestyTimer1[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::BottomModestyTimer2[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::BottomModestyTimer3[index], sizeof(int));
-
-			serializer->WriteRecordData(&RegisteredFemales::DefaultRankBottom[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::CurrentRankBottom[index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredFemales::MinimumRankBottom[index], sizeof(int));
-
-			serializer->WriteRecordData(&RegisteredFemales::ShynessMode[index], sizeof(int));
-
-			serializer->WriteRecordData(&RegisteredFemales::AllowShameless[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredFemales::AllowCorruption[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredFemales::StrictRules[index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredFemales::UpgradeBlocked[index], sizeof(uint8_t));
-
-			serializer->WriteRecordData(&RegisteredFemales::LastUpdateTime[index], sizeof(float));
+		for(auto& female : permanentfemales)
+		{
+			serializer->WriteRecordData(reinterpret_cast<const char*>(&female), sizeof(female));
 		}
 	}
 
@@ -224,103 +194,39 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 	while (serializer->GetNextRecordInfo(type, version, length)) {
 		switch (type) {
 
-			case kNPCsRecord: {
-				std::uint32_t count = 0;
+			case kNPCsRecord: 
+			{
+				uint32_t count = 0;
 				serializer->ReadRecordData(&count, sizeof(count));
 				
-				for (std::uint32_t index = 0; index < count; ++index) {
-					std::string FemaleName;
-					RE::FormID  rawID = 0;
-					ReadString(serializer, FemaleName);
-					serializer->ReadRecordData(&rawID, sizeof(rawID));
+				for (uint32_t i = 0; i < count; ++i)
+				{
+					RegisteredFemales female;
+					serializer->ReadRecordData(reinterpret_cast<char*>(&female), sizeof(female));
 
-					// CRITICAL: remap FormIDs across load-order changes
 					RE::FormID resolvedID = 0;
-					if (!serializer->ResolveFormID(rawID, resolvedID)) {
-						logs::warn("Dropping unresolved FormID {:08X}", rawID);
+					if (!serializer->ResolveFormID(female.id, resolvedID)) 
+					{
+						logs::warn("Dropping unresolved FormID {:08X}", female.id);
+
 						continue;
 					}
 
-					RegisteredFemales::FemaleName.emplace_back(FemaleName);
-					RegisteredFemales::FemaleFormID.emplace_back(resolvedID);
+					female.id = resolvedID;
 
-					int StrictTimer[7];
-
-					serializer->ReadRecordData(StrictTimer, sizeof(StrictTimer));
-					RegisteredFemales::ModestyTimer0.emplace_back(StrictTimer[0]);
-					RegisteredFemales::ModestyTimer1.emplace_back(StrictTimer[1]);
-					RegisteredFemales::ModestyTimer2.emplace_back(StrictTimer[2]);
-					RegisteredFemales::ModestyTimer3.emplace_back(StrictTimer[3]);
-					RegisteredFemales::ModestyTimer4.emplace_back(StrictTimer[4]);
-					RegisteredFemales::ModestyTimer5.emplace_back(StrictTimer[5]);
-					RegisteredFemales::ModestyTimer6.emplace_back(StrictTimer[6]);
-
-					int StrictRanks[3];
-
-					serializer->ReadRecordData(StrictRanks, sizeof(StrictRanks));
-					RegisteredFemales::DefaultRankStrict.emplace_back(StrictRanks[0]);
-					RegisteredFemales::CurrentRankStrict.emplace_back(StrictRanks[1]);
-					RegisteredFemales::MinimumRankStrict.emplace_back(StrictRanks[2]);
-
-					int TopTimer[4];
-
-					serializer->ReadRecordData(TopTimer, sizeof(TopTimer));
-					RegisteredFemales::TopModestyTimer0.emplace_back(TopTimer[0]);
-					RegisteredFemales::TopModestyTimer1.emplace_back(TopTimer[1]);
-					RegisteredFemales::TopModestyTimer2.emplace_back(TopTimer[2]);
-					RegisteredFemales::TopModestyTimer3.emplace_back(TopTimer[3]);
-
-					int TopRanks[3];
-
-					serializer->ReadRecordData(TopRanks, sizeof(TopRanks));
-					RegisteredFemales::DefaultRankTop.emplace_back(TopRanks[0]);
-					RegisteredFemales::CurrentRankTop.emplace_back(TopRanks[1]);
-					RegisteredFemales::MinimumRankTop.emplace_back(TopRanks[2]);
-
-					int BottomTimer[4];
-
-					serializer->ReadRecordData(BottomTimer, sizeof(BottomTimer));
-					RegisteredFemales::BottomModestyTimer0.emplace_back(BottomTimer[0]);
-					RegisteredFemales::BottomModestyTimer1.emplace_back(BottomTimer[1]);
-					RegisteredFemales::BottomModestyTimer2.emplace_back(BottomTimer[2]);
-					RegisteredFemales::BottomModestyTimer3.emplace_back(BottomTimer[3]);
-
-					int BottomRanks[3];
-
-					serializer->ReadRecordData(BottomRanks, sizeof(BottomRanks));
-					RegisteredFemales::DefaultRankBottom.emplace_back(BottomRanks[0]);
-					RegisteredFemales::CurrentRankBottom.emplace_back(BottomRanks[1]);
-					RegisteredFemales::MinimumRankBottom.emplace_back(BottomRanks[2]);
-
-					int iValue;
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					RegisteredFemales::ShynessMode.emplace_back(iValue);
-
-					serializer->ReadRecordData(&iValue, sizeof(iValue));
-					RegisteredFemales::SexualityScore.emplace_back(iValue);
-
-					bool bValue;
-
-					serializer->ReadRecordData(&bValue, sizeof(uint8_t));
-					RegisteredFemales::AllowShameless.emplace_back(bValue);
-
-					serializer->ReadRecordData(&bValue, sizeof(uint8_t));
-					RegisteredFemales::AllowCorruption.emplace_back(bValue);
-
-					serializer->ReadRecordData(&bValue, sizeof(uint8_t));
-					RegisteredFemales::StrictRules.emplace_back(bValue);
-
-					serializer->ReadRecordData(&bValue, sizeof(uint8_t));
-					RegisteredFemales::UpgradeBlocked.emplace_back(bValue);
-
-					float fValue;
-
-					serializer->ReadRecordData(&fValue, sizeof(fValue));
-					RegisteredFemales::LastUpdateTime.emplace_back(fValue);
+					registeredfemales[female.id] = female;
 				}
 
-				RegisteredFemales::TotalFemales = count;
+				uint32_t permanent_count = 0;
+				serializer->ReadRecordData(&permanent_count, sizeof(permanent_count));
+	
+				for (uint32_t i = 0; i < permanent_count; ++i)
+				{
+					PermanentFemales female;
+					serializer->ReadRecordData(reinterpret_cast<char*>(&female), sizeof(female));
+
+					permanentfemales.emplace_back(female);
+				}
 
 				break;
 			}

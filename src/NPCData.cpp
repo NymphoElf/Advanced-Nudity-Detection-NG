@@ -305,7 +305,7 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	memcpy(female.Plugin, plugin_name.data(), plugin_name.size());
 	strncpy_s(female.Name, sizeof(female.Name), akName.c_str(), sizeof(female.Name));
 
-	RegisteredFemales& reg = registeredfemales[FemaleID];
+	RegisteredFemales& reg = registeredfemales[id];
 
 	female.DefaultRankStrict = reg.DefaultRankStrict;
 	female.MinimumRankStrict = reg.MinimumRankStrict;
@@ -412,7 +412,7 @@ void TweakFemaleData
 
 	if (!registeredfemales.count(id)) 
 	{
-		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", FemaleFormID) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", id) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
 		
 		return;
 	}
@@ -530,7 +530,7 @@ void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 void ResetAllFemales(RE::StaticFunctionTag*)
 {
-	for(auto& female : registeredfemales)
+	for(auto& [id, female] : registeredfemales)
 	{
 		female.CurrentRankStrict = female.DefaultRankStrict;
 		female.CurrentRankTop = female.DefaultRankTop;

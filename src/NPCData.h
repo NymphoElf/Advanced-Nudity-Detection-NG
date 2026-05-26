@@ -86,7 +86,7 @@ struct RegisteredFemales
 	float LastUpdateTime;
 
 	std::string GetName(void) const { return std::string(Name); }
-}
+};
 
 inline std::unordered_map<RE::FormID, RegisteredFemales> registeredfemales;
 
@@ -96,7 +96,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 void RegisterRosa(float CurrentGameTime, int SexualityScore);
 int GetInternalFemaleID(RE::Actor* akFemale);
 
-void ProcessNPCModesty(RE::Actor* akFemale, int FemaleID, float CurrentGameTime);
+void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime);
 
 void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale);
 void DeleteAllFemales(RE::StaticFunctionTag*);
