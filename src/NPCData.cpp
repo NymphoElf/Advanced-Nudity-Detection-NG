@@ -11,16 +11,6 @@ enum FunctionEnd {
 	FailCritical
 };
 
-int GetInternalFemaleID(RE::Actor* akFemale) {
-	RE::FormID FemaleForm = akFemale->GetFormID();
-	std::string FemaleName = akFemale->GetName();
-
-	Log("<C++ NPCData> [GetInternalFemaleID] Female Form ID: " + std::format("{:#x}", FemaleForm), LogType::NPCData);
-	Log("<C++ NPCData> [GetInternalFemaleID] Female Name: " + FemaleName, LogType::NPCData);
-
-	return FindInVector(RegisteredFemales::FemaleFormID, FemaleForm);
-}
-
 int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 {
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
@@ -144,150 +134,45 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 		SetActorFactionRank(akFemale, ShyWithFemale, 0);
 	}
 
-	RegisteredFemales::FemaleName.emplace_back(FemaleName);
-	//RegisteredFemales::FemaleBaseEditorID.emplace_back(FemaleBaseEditorID);
-	RegisteredFemales::FemaleFormID.emplace_back(FemaleForm);
+	RegisteredFemales female;
+	memset(&female, 0, sizeof(female)); // intialize all data as 0
 
-	RegisteredFemales::ModestyTimer0.emplace_back(0);
-	RegisteredFemales::ModestyTimer1.emplace_back(0);
-	RegisteredFemales::ModestyTimer2.emplace_back(0);
-	RegisteredFemales::ModestyTimer3.emplace_back(0);
-	RegisteredFemales::ModestyTimer4.emplace_back(0);
-	RegisteredFemales::ModestyTimer5.emplace_back(0);
-	RegisteredFemales::ModestyTimer6.emplace_back(0);
+	strncpy_s(female.Name, sizeof(female.Name), FemaleName.c_str(), sizeof(female.Name));
 
-	RegisteredFemales::DefaultRankStrict.emplace_back(StrictModesty);
-	RegisteredFemales::CurrentRankStrict.emplace_back(StrictModesty);
-	RegisteredFemales::MinimumRankStrict.emplace_back(0);
+	female.id = FemaleForm;
 
-	RegisteredFemales::TopModestyTimer0.emplace_back(0);
-	RegisteredFemales::TopModestyTimer1.emplace_back(0);
-	RegisteredFemales::TopModestyTimer2.emplace_back(0);
-	RegisteredFemales::TopModestyTimer3.emplace_back(0);
+	female.DefaultRankStrict = StrictModesty;
+	female.CurrentRankStrict = StrictModesty;
 
-	RegisteredFemales::DefaultRankTop.emplace_back(TopModesty);
-	RegisteredFemales::CurrentRankTop.emplace_back(TopModesty);
-	RegisteredFemales::MinimumRankTop.emplace_back(0);
+	female.DefaultRankTop = TopModesty;
+	female.CurrentRankTop = TopModesty;
 
-	RegisteredFemales::BottomModestyTimer0.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer1.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer2.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+	female.DefaultRankBottom = BottomModesty;
+	female.CurrentRankBottom = BottomModesty;
 
-	RegisteredFemales::DefaultRankBottom.emplace_back(BottomModesty);
-	RegisteredFemales::CurrentRankBottom.emplace_back(BottomModesty);
-	RegisteredFemales::MinimumRankBottom.emplace_back(0);
+	female.ShynessMode = ShynessMode;
+	female.SexualityScore = SexualityScore;
 
-	RegisteredFemales::ShynessMode.emplace_back(ShynessMode);
-	RegisteredFemales::SexualityScore.emplace_back(SexualityScore);
+	female.AllowShameless = Configuration::NPCShamelessByDefault;
+	female.AllowCorruption = Configuration::NPCCorruptionByDefault;
+	female.StrictRules = Configuration::NPCStrictRulesByDefault;
+	female.UpgradeBlocked = false;
 
-	RegisteredFemales::AllowShameless.emplace_back(Configuration::NPCShamelessByDefault);
-	RegisteredFemales::AllowCorruption.emplace_back(Configuration::NPCCorruptionByDefault);
-	RegisteredFemales::StrictRules.emplace_back(Configuration::NPCStrictRulesByDefault);
-	RegisteredFemales::UpgradeBlocked.emplace_back(false);
+	female.LastUpdateTime = CurrentGameTime;
 
-	RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
+	registeredfemales[FemaleForm] = female;
 
-	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:#x}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemales::TotalFemales), LogType::Core, LoggingLevel::info);
-
-	RegisteredFemales::TotalFemales++;
+	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:#x}", FemaleForm) + " | Internal ID: " + std::to_string(registeredfemales.size()), LogType::Core, LoggingLevel::info);
 }
 
-void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale) {
-	int FemaleID = FindInVector(RegisteredFemales::FemaleFormID, akfemale->GetFormID());
-
-	RegisteredFemales::FemaleName.erase(RegisteredFemales::FemaleName.begin() + FemaleID);
-	//RegisteredFemales::FemaleBaseEditorID.erase(RegisteredFemales::FemaleBaseEditorID.begin() + FemaleID);
-	RegisteredFemales::FemaleFormID.erase(RegisteredFemales::FemaleFormID.begin() + FemaleID);
-
-	RegisteredFemales::ModestyTimer0.erase(RegisteredFemales::ModestyTimer0.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer1.erase(RegisteredFemales::ModestyTimer1.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer2.erase(RegisteredFemales::ModestyTimer2.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer3.erase(RegisteredFemales::ModestyTimer3.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer4.erase(RegisteredFemales::ModestyTimer4.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer5.erase(RegisteredFemales::ModestyTimer5.begin() + FemaleID);
-	RegisteredFemales::ModestyTimer6.erase(RegisteredFemales::ModestyTimer6.begin() + FemaleID);
-
-	RegisteredFemales::DefaultRankStrict.erase(RegisteredFemales::DefaultRankStrict.begin() + FemaleID);
-	RegisteredFemales::CurrentRankStrict.erase(RegisteredFemales::CurrentRankStrict.begin() + FemaleID);
-	RegisteredFemales::MinimumRankStrict.erase(RegisteredFemales::MinimumRankStrict.begin() + FemaleID);
-
-	RegisteredFemales::TopModestyTimer0.erase(RegisteredFemales::TopModestyTimer0.begin() + FemaleID);
-	RegisteredFemales::TopModestyTimer1.erase(RegisteredFemales::TopModestyTimer1.begin() + FemaleID);
-	RegisteredFemales::TopModestyTimer2.erase(RegisteredFemales::TopModestyTimer2.begin() + FemaleID);
-	RegisteredFemales::TopModestyTimer3.erase(RegisteredFemales::TopModestyTimer3.begin() + FemaleID);
-
-	RegisteredFemales::DefaultRankTop.erase(RegisteredFemales::DefaultRankTop.begin() + FemaleID);
-	RegisteredFemales::CurrentRankTop.erase(RegisteredFemales::CurrentRankTop.begin() + FemaleID);
-	RegisteredFemales::MinimumRankTop.erase(RegisteredFemales::MinimumRankTop.begin() + FemaleID);
-
-	RegisteredFemales::BottomModestyTimer0.erase(RegisteredFemales::BottomModestyTimer0.begin() + FemaleID);
-	RegisteredFemales::BottomModestyTimer1.erase(RegisteredFemales::BottomModestyTimer1.begin() + FemaleID);
-	RegisteredFemales::BottomModestyTimer2.erase(RegisteredFemales::BottomModestyTimer2.begin() + FemaleID);
-	RegisteredFemales::BottomModestyTimer3.erase(RegisteredFemales::BottomModestyTimer3.begin() + FemaleID);
-
-	RegisteredFemales::DefaultRankBottom.erase(RegisteredFemales::DefaultRankBottom.begin() + FemaleID);
-	RegisteredFemales::CurrentRankBottom.erase(RegisteredFemales::CurrentRankBottom.begin() + FemaleID);
-	RegisteredFemales::MinimumRankBottom.erase(RegisteredFemales::MinimumRankBottom.begin() + FemaleID);
-
-	RegisteredFemales::ShynessMode.erase(RegisteredFemales::ShynessMode.begin() + FemaleID);
-	RegisteredFemales::ShynessMode.erase(RegisteredFemales::SexualityScore.begin() + FemaleID);
-
-	RegisteredFemales::AllowShameless.erase(RegisteredFemales::AllowShameless.begin() + FemaleID);
-	RegisteredFemales::AllowCorruption.erase(RegisteredFemales::AllowCorruption.begin() + FemaleID);
-	RegisteredFemales::StrictRules.erase(RegisteredFemales::StrictRules.begin() + FemaleID);
-	RegisteredFemales::UpgradeBlocked.erase(RegisteredFemales::UpgradeBlocked.begin() + FemaleID);
-
-	RegisteredFemales::LastUpdateTime.erase(RegisteredFemales::LastUpdateTime.begin() + FemaleID);
-
-	RegisteredFemales::TotalFemales--;
+void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale) 
+{
+	registeredfemales.erase(akfemale->GetFormID());
 }
 
-void DeleteAllFemales(RE::StaticFunctionTag*) {
-	RegisteredFemales::FemaleName.clear();
-	RegisteredFemales::FemaleFormID.clear();
-
-	RegisteredFemales::ModestyTimer0.clear();
-	RegisteredFemales::ModestyTimer1.clear();
-	RegisteredFemales::ModestyTimer2.clear();
-	RegisteredFemales::ModestyTimer3.clear();
-	RegisteredFemales::ModestyTimer4.clear();
-	RegisteredFemales::ModestyTimer5.clear();
-	RegisteredFemales::ModestyTimer6.clear();
-
-	RegisteredFemales::DefaultRankStrict.clear();
-	RegisteredFemales::CurrentRankStrict.clear();
-	RegisteredFemales::MinimumRankStrict.clear();
-
-	RegisteredFemales::TopModestyTimer0.clear();
-	RegisteredFemales::TopModestyTimer1.clear();
-	RegisteredFemales::TopModestyTimer2.clear();
-	RegisteredFemales::TopModestyTimer3.clear();
-
-	RegisteredFemales::DefaultRankTop.clear();
-	RegisteredFemales::CurrentRankTop.clear();
-	RegisteredFemales::MinimumRankTop.clear();
-
-	RegisteredFemales::BottomModestyTimer0.clear();
-	RegisteredFemales::BottomModestyTimer1.clear();
-	RegisteredFemales::BottomModestyTimer2.clear();
-	RegisteredFemales::BottomModestyTimer3.clear();
-
-	RegisteredFemales::DefaultRankBottom.clear();
-	RegisteredFemales::CurrentRankBottom.clear();
-	RegisteredFemales::MinimumRankBottom.clear();
-
-	RegisteredFemales::ShynessMode.clear();
-	RegisteredFemales::ShynessMode.clear();
-
-	RegisteredFemales::AllowShameless.clear();
-	RegisteredFemales::AllowCorruption.clear();
-	RegisteredFemales::StrictRules.clear();
-	RegisteredFemales::UpgradeBlocked.clear();
-
-	RegisteredFemales::LastUpdateTime.clear();
-
-	RegisteredFemales::TotalFemales = 0;
+void DeleteAllFemales(RE::StaticFunctionTag*)
+{
+	registeredfemales.clear();
 }
 
 void RegisterRosa(float CurrentGameTime, int SexualityScore) {
@@ -326,62 +211,46 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 		ShynessMode = ShySex::Both;
 	}
 
+	RegisteredFemales female;
+	memset(&female, 0, sizeof(female)); // intialize all data as 0
 
-	RegisteredFemales::FemaleName.emplace_back(RosaName);
-	//RegisteredFemales::FemaleBaseEditorID.emplace_back(RosaBaseEditorID);
-	RegisteredFemales::FemaleFormID.emplace_back(RosaForm);
+	strncpy_s(female.Name, sizeof(female.Name), RosaName.c_str(), sizeof(female.Name));
 
-	RegisteredFemales::ModestyTimer0.emplace_back(0);
-	RegisteredFemales::ModestyTimer1.emplace_back(0);
-	RegisteredFemales::ModestyTimer2.emplace_back(0);
-	RegisteredFemales::ModestyTimer3.emplace_back(0);
-	RegisteredFemales::ModestyTimer4.emplace_back(0);
-	RegisteredFemales::ModestyTimer5.emplace_back(0);
-	RegisteredFemales::ModestyTimer6.emplace_back(0);
+	female.id = RosaForm;
 
-	RegisteredFemales::DefaultRankStrict.emplace_back(StrictModestyLevel::Immodest);
-	RegisteredFemales::CurrentRankStrict.emplace_back(StrictModestyLevel::Immodest);
-	RegisteredFemales::MinimumRankStrict.emplace_back(StrictModestyLevel::Immodest);
+	female.DefaultRankStrict = StrictModestyLevel::Immodest;
+	female.CurrentRankStrict = StrictModestyLevel::Immodest;
+	female.MinimumRankStrict = StrictModestyLevel::Immodest;
 
-	RegisteredFemales::TopModestyTimer0.emplace_back(0);
-	RegisteredFemales::TopModestyTimer1.emplace_back(0);
-	RegisteredFemales::TopModestyTimer2.emplace_back(0);
-	RegisteredFemales::TopModestyTimer3.emplace_back(0);
+	female.DefaultRankTop = SimpleModestyLevel::Immodest;
+	female.CurrentRankTop = SimpleModestyLevel::Immodest;
+	female.MinimumRankTop = SimpleModestyLevel::Immodest;
 
-	RegisteredFemales::DefaultRankTop.emplace_back(SimpleModestyLevel::Immodest);
-	RegisteredFemales::CurrentRankTop.emplace_back(SimpleModestyLevel::Immodest);
-	RegisteredFemales::MinimumRankTop.emplace_back(SimpleModestyLevel::Immodest);
+	female.DefaultRankBottom = SimpleModestyLevel::Immodest;
+	female.CurrentRankBottom = SimpleModestyLevel::Immodest;
+	female.MinimumRankBottom = SimpleModestyLevel::Immodest;
 
-	RegisteredFemales::BottomModestyTimer0.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer1.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer2.emplace_back(0);
-	RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+	female.ShynessMode = ShynessMode;
+	female.SexualityScore = SexualityScore;
 
-	RegisteredFemales::DefaultRankBottom.emplace_back(SimpleModestyLevel::Immodest);
-	RegisteredFemales::CurrentRankBottom.emplace_back(SimpleModestyLevel::Immodest);
-	RegisteredFemales::MinimumRankBottom.emplace_back(SimpleModestyLevel::Immodest);
+	female.AllowShameless = Configuration::NPCShamelessByDefault;
+	female.AllowCorruption = Configuration::NPCCorruptionByDefault;
+	female.StrictRules = Configuration::StrictModestyRules;
+	female.UpgradeBlocked = false;
 
-	RegisteredFemales::ShynessMode.emplace_back(ShynessMode);
-	RegisteredFemales::SexualityScore.emplace_back(SexualityScore);
+	female.LastUpdateTime = CurrentGameTime;
 
-	RegisteredFemales::AllowShameless.emplace_back(Configuration::NPCShamelessByDefault);
-	RegisteredFemales::AllowCorruption.emplace_back(Configuration::NPCCorruptionByDefault);
-	RegisteredFemales::StrictRules.emplace_back(Configuration::StrictModestyRules);
-	RegisteredFemales::UpgradeBlocked.emplace_back(false);
-
-	RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
-
-	RegisteredFemales::TotalFemales++;
+	registeredfemales[RosaForm] = female;
 }
 
 int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) 
 {
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
-	int FemaleID = GetInternalFemaleID(akFemale);
 	std::string akName = akFemale->GetName();
+	RE::FormID id = akFemale->GetFormID();
 
-	if (FemaleID == -1) 
+	if (!registeredfemales.count(id)) 
 	{
 		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
 
@@ -390,8 +259,6 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	PermanentFemales female;
 	uint32_t pluginID;
-
-	RE::FormID id = akFemale->GetFormID();
 
 	switch(id >> 24)
 	{
@@ -438,21 +305,23 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	memcpy(female.Plugin, plugin_name.data(), plugin_name.size());
 	strncpy_s(female.Name, sizeof(female.Name), akName.c_str(), sizeof(female.Name));
 
-	female.DefaultRankStrict = RegisteredFemales::DefaultRankStrict[FemaleID];
-	female.MinimumRankStrict = RegisteredFemales::MinimumRankStrict[FemaleID];
+	RegisteredFemales& reg = registeredfemales[FemaleID];
 
-	female.DefaultRankTop = RegisteredFemales::DefaultRankTop[FemaleID];
-	female.MinimumRankTop = RegisteredFemales::MinimumRankTop[FemaleID];
+	female.DefaultRankStrict = reg.DefaultRankStrict;
+	female.MinimumRankStrict = reg.MinimumRankStrict;
 
-	female.DefaultRankBottom = RegisteredFemales::DefaultRankBottom[FemaleID];
-	female.MinimumRankBottom = RegisteredFemales::MinimumRankBottom[FemaleID];
+	female.DefaultRankTop = reg.DefaultRankTop;
+	female.MinimumRankTop = reg.MinimumRankTop;
 
-	female.ShynessMode = RegisteredFemales::ShynessMode[FemaleID];
-	female.SexualityScore = RegisteredFemales::SexualityScore[FemaleID];
+	female.DefaultRankBottom = reg.DefaultRankBottom;
+	female.MinimumRankBottom = reg.MinimumRankBottom;
 
-	female.AllowShameless = RegisteredFemales::AllowShameless[FemaleID];
-	female.AllowCorruption = RegisteredFemales::AllowCorruption[FemaleID];
-	female.StrictRules = RegisteredFemales::StrictRules[FemaleID];
+	female.ShynessMode = reg.ShynessMode;
+	female.SexualityScore = reg.SexualityScore;
+
+	female.AllowShameless = reg.AllowShameless;
+	female.AllowCorruption = reg.AllowCorruption;
+	female.StrictRules = reg.StrictRules;
 
 	permanentfemales.emplace_back(female);
 
@@ -498,50 +367,36 @@ void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime)
 			continue;
 		}
 
-		RegisteredFemales::FemaleFormID.emplace_back(id);
-		RegisteredFemales::FemaleName.emplace_back(female.GetName());
+		RegisteredFemales f;
+		memset(&f, 0, sizeof(f));
 
-		RegisteredFemales::ModestyTimer0.emplace_back(0);
-		RegisteredFemales::ModestyTimer1.emplace_back(0);
-		RegisteredFemales::ModestyTimer2.emplace_back(0);
-		RegisteredFemales::ModestyTimer3.emplace_back(0);
-		RegisteredFemales::ModestyTimer4.emplace_back(0);
-		RegisteredFemales::ModestyTimer5.emplace_back(0);
-		RegisteredFemales::ModestyTimer6.emplace_back(0);
+		memcpy(f.Name, female.Name, sizeof(f.Name));
 
-		RegisteredFemales::CurrentRankStrict.emplace_back(female.DefaultRankStrict);
-		RegisteredFemales::DefaultRankStrict.emplace_back(female.DefaultRankStrict);
-		RegisteredFemales::MinimumRankStrict.emplace_back(female.MinimumRankStrict);
+		f.id = id;
 
-		RegisteredFemales::TopModestyTimer0.emplace_back(0);
-		RegisteredFemales::TopModestyTimer1.emplace_back(0);
-		RegisteredFemales::TopModestyTimer2.emplace_back(0);
-		RegisteredFemales::TopModestyTimer3.emplace_back(0);
+		f.CurrentRankStrict = female.DefaultRankStrict;
+		f.DefaultRankStrict = female.DefaultRankStrict;
+		f.MinimumRankStrict = female.MinimumRankStrict;
 
-		RegisteredFemales::CurrentRankTop.emplace_back(female.DefaultRankTop);
-		RegisteredFemales::DefaultRankTop.emplace_back(female.DefaultRankTop);
-		RegisteredFemales::MinimumRankTop.emplace_back(female.MinimumRankTop);
+		f.CurrentRankTop = female.DefaultRankTop;
+		f.DefaultRankTop = female.DefaultRankTop;
+		f.MinimumRankTop = female.MinimumRankTop;
 
-		RegisteredFemales::BottomModestyTimer0.emplace_back(0);
-		RegisteredFemales::BottomModestyTimer1.emplace_back(0);
-		RegisteredFemales::BottomModestyTimer2.emplace_back(0);
-		RegisteredFemales::BottomModestyTimer3.emplace_back(0);
+		f.CurrentRankBottom = female.DefaultRankBottom;
+		f.DefaultRankBottom = female.DefaultRankBottom;
+		f.MinimumRankBottom = female.MinimumRankBottom;
 
-		RegisteredFemales::CurrentRankBottom.emplace_back(female.DefaultRankBottom);
-		RegisteredFemales::DefaultRankBottom.emplace_back(female.DefaultRankBottom);
-		RegisteredFemales::MinimumRankBottom.emplace_back(female.MinimumRankBottom);
+		f.ShynessMode = female.ShynessMode;
+		f.SexualityScore = female.SexualityScore;
 
-		RegisteredFemales::ShynessMode.emplace_back(female.ShynessMode);
-		RegisteredFemales::SexualityScore.emplace_back(female.SexualityScore);
+		f.AllowShameless = female.AllowShameless;
+		f.AllowCorruption = female.AllowCorruption;
+		f.StrictRules = female.StrictRules;
+		f.UpgradeBlocked = false;
 
-		RegisteredFemales::AllowShameless.emplace_back(female.AllowShameless);
-		RegisteredFemales::AllowCorruption.emplace_back(female.AllowCorruption);
-		RegisteredFemales::StrictRules.emplace_back(female.StrictRules);
-		RegisteredFemales::UpgradeBlocked.emplace_back(false);
+		f.LastUpdateTime = CurrentGameTime;
 
-		RegisteredFemales::LastUpdateTime.emplace_back(CurrentGameTime);
-
-		RegisteredFemales::TotalFemales++;
+		registeredfemales[id] = f;
 	}
 }
 
@@ -553,58 +408,62 @@ void TweakFemaleData
 	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked,
 	float CurrentGameTime
 ) {
-	RE::FormID FemaleFormID = akFemale->GetFormID();
-	int FemaleID = FindInVector(RegisteredFemales::FemaleFormID, FemaleFormID);
-	if (FemaleID < 0) {
-		std::string akName = akFemale->GetName();
-		Log("<C++ NPCData> [TweakFemaleData] Female " + akName + " (" + std::format("{:#x}", FemaleFormID) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+	RE::FormID id = akFemale->GetFormID();
+
+	if (!registeredfemales.count(id)) 
+	{
+		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", FemaleFormID) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+		
 		return;
 	}
-	
+
 	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictRank));
 	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopRank));
 	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomRank));
 
-	RegisteredFemales::ModestyTimer0[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer1[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer2[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer3[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer4[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer5[FemaleID] = 0;
-	RegisteredFemales::ModestyTimer6[FemaleID] = 0;
+	RegisteredFemales& female = registeredfemales[id];
 
-	RegisteredFemales::TopModestyTimer0[FemaleID] = 0;
-	RegisteredFemales::TopModestyTimer1[FemaleID] = 0;
-	RegisteredFemales::TopModestyTimer2[FemaleID] = 0;
-	RegisteredFemales::TopModestyTimer3[FemaleID] = 0;
+	female.ModestyTimer0 = 0;
+	female.ModestyTimer1 = 0;
+	female.ModestyTimer2 = 0;
+	female.ModestyTimer3 = 0;
+	female.ModestyTimer4 = 0;
+	female.ModestyTimer5 = 0;
+	female.ModestyTimer6 = 0;
 
-	RegisteredFemales::BottomModestyTimer0[FemaleID] = 0;
-	RegisteredFemales::BottomModestyTimer1[FemaleID] = 0;
-	RegisteredFemales::BottomModestyTimer2[FemaleID] = 0;
-	RegisteredFemales::BottomModestyTimer3[FemaleID] = 0;
+	female.TopModestyTimer0 = 0;
+	female.TopModestyTimer1 = 0;
+	female.TopModestyTimer2 = 0;
+	female.TopModestyTimer3 = 0;
 
-	RegisteredFemales::CurrentRankStrict[FemaleID] = StrictRank;
-	RegisteredFemales::CurrentRankTop[FemaleID] = TopRank;
-	RegisteredFemales::CurrentRankBottom[FemaleID] = BottomRank;
+	female.BottomModestyTimer0 = 0;
+	female.BottomModestyTimer1 = 0;
+	female.BottomModestyTimer2 = 0;
+	female.BottomModestyTimer3 = 0;
 
-	RegisteredFemales::MinimumRankStrict[FemaleID] = MinimumStrict;
-	RegisteredFemales::MinimumRankTop[FemaleID] = MinimumTop;
-	RegisteredFemales::MinimumRankBottom[FemaleID] = MinimumBottom;
+	female.CurrentRankStrict = StrictRank;
+	female.CurrentRankTop = TopRank;
+	female.CurrentRankBottom = BottomRank;
 
-	if (MakeDefault) {
-		RegisteredFemales::DefaultRankStrict[FemaleID] = StrictRank;
-		RegisteredFemales::DefaultRankTop[FemaleID] = TopRank;
-		RegisteredFemales::DefaultRankBottom[FemaleID] = BottomRank;
+	female.MinimumRankStrict = MinimumStrict;
+	female.MinimumRankTop = MinimumTop;
+	female.MinimumRankBottom = MinimumBottom;
+
+	if (MakeDefault)
+	{
+		female.DefaultRankStrict = StrictRank;
+		female.DefaultRankTop = TopRank;
+		female.DefaultRankBottom = BottomRank;
 	}
 
-	RegisteredFemales::AllowShameless[FemaleID] = EnableShameless;
-	RegisteredFemales::AllowCorruption[FemaleID] = EnableCorrupt;
-	RegisteredFemales::StrictRules[FemaleID] = IsStrictRules;
-	RegisteredFemales::UpgradeBlocked[FemaleID] = IsUpgradeBlocked;
+	female.AllowShameless = EnableShameless;
+	female.AllowCorruption = EnableCorrupt;
+	female.StrictRules = IsStrictRules;
+	female.UpgradeBlocked = IsUpgradeBlocked;
 
-	RegisteredFemales::ShynessMode[FemaleID] = ShynessMode;
+	female.ShynessMode = ShynessMode;
 
-	RegisteredFemales::LastUpdateTime[FemaleID] = CurrentGameTime;
+	female.LastUpdateTime = CurrentGameTime;
 
 	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
 	if (PermFemaleID >= 0)
@@ -628,67 +487,71 @@ void TweakFemaleData
 	}
 }
 
-void ResetFemale(RE::Actor* akFemale) {
-	int FemaleIndex = FindInVector(RegisteredFemales::FemaleFormID, akFemale->GetFormID());
+void ResetFemale(RE::Actor* akFemale)
+{
+	RE::FormID id = akFemale->GetFormID();
 
-	if (FemaleIndex < 0) {
-		std::string akName = akFemale->GetName();
-		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + akName + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Registered Females list!");
+	if (!registeredfemales.count(id))
+	{
+		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Registered Females list!");
+
 		return;
 	}
 
-	RegisteredFemales::CurrentRankStrict[FemaleIndex] = RegisteredFemales::DefaultRankStrict[FemaleIndex];
-	RegisteredFemales::CurrentRankTop[FemaleIndex] = RegisteredFemales::DefaultRankTop[FemaleIndex];
-	RegisteredFemales::CurrentRankBottom[FemaleIndex] = RegisteredFemales::DefaultRankBottom[FemaleIndex];
+	RegisteredFemales& female = registeredfemales[id];
 
-	RegisteredFemales::ModestyTimer0[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer1[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer2[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer3[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer4[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer5[FemaleIndex] = 0;
-	RegisteredFemales::ModestyTimer6[FemaleIndex] = 0;
+	female.CurrentRankStrict = female.DefaultRankStrict;
+	female.CurrentRankTop = female.DefaultRankTop;
+	female.CurrentRankBottom = female.DefaultRankBottom;
 
-	RegisteredFemales::TopModestyTimer0[FemaleIndex] = 0;
-	RegisteredFemales::TopModestyTimer1[FemaleIndex] = 0;
-	RegisteredFemales::TopModestyTimer2[FemaleIndex] = 0;
-	RegisteredFemales::TopModestyTimer3[FemaleIndex] = 0;
+	female.ModestyTimer0 = 0;
+	female.ModestyTimer1 = 0;
+	female.ModestyTimer2 = 0;
+	female.ModestyTimer3 = 0;
+	female.ModestyTimer4 = 0;
+	female.ModestyTimer5 = 0;
+	female.ModestyTimer6 = 0;
 
-	RegisteredFemales::BottomModestyTimer0[FemaleIndex] = 0;
-	RegisteredFemales::BottomModestyTimer1[FemaleIndex] = 0;
-	RegisteredFemales::BottomModestyTimer2[FemaleIndex] = 0;
-	RegisteredFemales::BottomModestyTimer3[FemaleIndex] = 0;
+	female.TopModestyTimer0 = 0;
+	female.TopModestyTimer1 = 0;
+	female.TopModestyTimer2 = 0;
+	female.TopModestyTimer3 = 0;
+
+	female.BottomModestyTimer0 = 0;
+	female.BottomModestyTimer1 = 0;
+	female.BottomModestyTimer2 = 0;
+	female.BottomModestyTimer3 = 0;
 }
 
-void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
+{
 	ResetFemale(akFemale);
 }
 
-void ResetAllFemales(RE::StaticFunctionTag*) {
-	int FemaleIndex = 0;
-	while (FemaleIndex < RegisteredFemales::TotalFemales) {
-		RegisteredFemales::CurrentRankStrict[FemaleIndex] = RegisteredFemales::DefaultRankStrict[FemaleIndex];
-		RegisteredFemales::CurrentRankTop[FemaleIndex] = RegisteredFemales::DefaultRankTop[FemaleIndex];
-		RegisteredFemales::CurrentRankBottom[FemaleIndex] = RegisteredFemales::DefaultRankBottom[FemaleIndex];
+void ResetAllFemales(RE::StaticFunctionTag*)
+{
+	for(auto& female : registeredfemales)
+	{
+		female.CurrentRankStrict = female.DefaultRankStrict;
+		female.CurrentRankTop = female.DefaultRankTop;
+		female.CurrentRankBottom = female.DefaultRankBottom;
 
-		RegisteredFemales::ModestyTimer0[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer1[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer2[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer3[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer4[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer5[FemaleIndex] = 0;
-		RegisteredFemales::ModestyTimer6[FemaleIndex] = 0;
+		female.ModestyTimer0 = 0;
+		female.ModestyTimer1 = 0;
+		female.ModestyTimer2 = 0;
+		female.ModestyTimer3 = 0;
+		female.ModestyTimer4 = 0;
+		female.ModestyTimer5 = 0;
+		female.ModestyTimer6 = 0;
 
-		RegisteredFemales::TopModestyTimer0[FemaleIndex] = 0;
-		RegisteredFemales::TopModestyTimer1[FemaleIndex] = 0;
-		RegisteredFemales::TopModestyTimer2[FemaleIndex] = 0;
-		RegisteredFemales::TopModestyTimer3[FemaleIndex] = 0;
+		female.TopModestyTimer0 = 0;
+		female.TopModestyTimer1 = 0;
+		female.TopModestyTimer2 = 0;
+		female.TopModestyTimer3 = 0;
 
-		RegisteredFemales::BottomModestyTimer0[FemaleIndex] = 0;
-		RegisteredFemales::BottomModestyTimer1[FemaleIndex] = 0;
-		RegisteredFemales::BottomModestyTimer2[FemaleIndex] = 0;
-		RegisteredFemales::BottomModestyTimer3[FemaleIndex] = 0;
-
-		FemaleIndex++;
+		female.BottomModestyTimer0 = 0;
+		female.BottomModestyTimer1 = 0;
+		female.BottomModestyTimer2 = 0;
+		female.BottomModestyTimer3 = 0;
 	}
 }

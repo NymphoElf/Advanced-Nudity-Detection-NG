@@ -88,7 +88,7 @@ struct RegisteredFemales
 	std::string GetName(void) const { return std::string(Name); }
 }
 
-inline std::unordered_map<RegisteredFemales> registeredfemales;
+inline std::unordered_map<RE::FormID, RegisteredFemales> registeredfemales;
 
 //Functions
 
