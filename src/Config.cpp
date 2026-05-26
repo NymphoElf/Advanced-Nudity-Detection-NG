@@ -315,7 +315,7 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
 	std::vector<RE::BSFixedString> names;
 
-	for(auto& female : registeredfemales)
+	for(auto& [id, female] : registeredfemales)
 	{
 		names.emplace_back(female.GetName());
 	}
@@ -755,7 +755,7 @@ std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
 	std::vector<RE::Actor*> actors;
 
-	for(auto& female : registeredfemales)
+	for(auto& [id, female] : registeredfemales)
 	{
 		actors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(female.id));
 	}
@@ -783,37 +783,37 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 	return females;
 }
 
-std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale) {
-	RE::FormID akFormID = akFemale->GetFormID();
-	int FemaleIndex = FindInVector(RegisteredFemales::FemaleFormID, akFormID);
+std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
+{
+	std::vector<int> data;
 
-	
-
-	std::vector<int> FemaleData;
-
-	if (FemaleIndex < 0) {
-		std::string akName = akFemale->GetName();
-		Log("<C++ Config> [GetFemaleActorData] Female " + akName + " (" + std::format("{:#x}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
-		return FemaleData;
+	RE::FormID id = akFemale->GetFormID();
+	if(!registeredfemales.count(id))
+	{
+		Log("<C++ Config> [GetFemaleActorData] Female " + std:.string(akFemale->GetName()) + " (" + std::format("{:#x}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		
+		return data;
 	}
+
+	RegistedFemale& female = registeredfemales[id];
 	
-	FemaleData.emplace_back(RegisteredFemales::CurrentRankStrict[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::MinimumRankStrict[FemaleIndex]);
+	data.emplace_back(female.CurrentRankStrict);
+	data.emplace_back(female.MinimumRankStrict);
 
-	FemaleData.emplace_back(RegisteredFemales::CurrentRankTop[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::MinimumRankTop[FemaleIndex]);
+	data.emplace_back(female.CurrentRankTop);
+	data.emplace_back(female.MinimumRankTop);
 
-	FemaleData.emplace_back(RegisteredFemales::CurrentRankBottom[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::MinimumRankBottom[FemaleIndex]);
+	data.emplace_back(female.CurrentRankBottom);
+	data.emplace_back(female.MinimumRankBottom);
 
-	FemaleData.emplace_back(RegisteredFemales::AllowShameless[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::AllowCorruption[FemaleIndex]);
+	data.emplace_back(female.AllowShameless);
+	data.emplace_back(female.AllowCorruption);
 
-	FemaleData.emplace_back(RegisteredFemales::ShynessMode[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::StrictRules[FemaleIndex]);
-	FemaleData.emplace_back(RegisteredFemales::UpgradeBlocked[FemaleIndex]);
+	data.emplace_back(female.ShynessMode);
+	data.emplace_back(female.StrictRules);
+	data.emplace_back(female.UpgradeBlocked);
 
-	return FemaleData;
+	return data;
 }
 
 std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*) {
