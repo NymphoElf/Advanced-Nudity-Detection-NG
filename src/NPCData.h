@@ -48,7 +48,7 @@ struct PermanentFemales
 		}
 		else
 		{
-			modindex = DataHandler->GetLoadedModIndex(GetPlugin())
+			modindex = DataHandler->GetLoadedModIndex(GetPlugin());
 		}
 
 		return modindex.value_or(0xFF);
