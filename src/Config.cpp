@@ -771,7 +771,7 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 	{
 		uint32_t modindex = female.GetModIndex();
 
-		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex.value() << 24) | female.LocalID);
+		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex << 24) | female.LocalID);
 		if(!actor) { continue; }
 
 		females.emplace_back(actor);
