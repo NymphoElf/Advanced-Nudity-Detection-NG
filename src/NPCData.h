@@ -44,11 +44,11 @@ struct PermanentFemales
 
 		if(LightPlugin)
 		{
-			modindex = DataHandler->GetLoadedLightModIndex(female.GetPlugin());
+			modindex = DataHandler->GetLoadedLightModIndex(GetPlugin());
 		}
 		else
 		{
-			modindex = DataHandler->GetLoadedModIndex(female.GetPlugin())
+			modindex = DataHandler->GetLoadedModIndex(GetPlugin())
 		}
 
 		return modindex.value_or(0xFF);
