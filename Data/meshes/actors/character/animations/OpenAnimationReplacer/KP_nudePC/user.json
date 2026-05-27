@@ -1,0 +1,3252 @@
+{
+    "name": "Dynamic Female MODESTY conditional idles PC",
+    "author": "edits Kahvipannu84 - Based on Gunslicers and vanilla animations",
+    "description": "Variants:\n\n+ in the beginning of Submods name indicates it has VARIANTS to choose from.\nFound under \"Replacement animations\" drop down menu.\nRemember to save SUBMOD configs to save changes.\n\nTo preview variant animation, you need to have character selected with console.\n\nConditions customization:\n\nYou can edit and add conditions under the \"Condition presets\" drop down menu.\nRemember to save MOD config to save changes to PRESETS.\n\nGeneric info:\n\nMain slots:\n\nBody:\n32 = Body\n\nBottoms:\n52 = ModPelvisSecondary\n49 = ModPelvisPrimary\n\nFor more detailed info on slots, and keywords check articles at the mod page.",
+    "conditionPresets": [
+        {
+            "name": "Modesty PC Detection settings",
+            "description": "Main settings for Modesty detection",
+            "conditions": [
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Conditions": [
+                        {
+                            "condition": "IsReplacerEnabled",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                            "Submod name": "Female PC Detection ON/OFF"
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DETECTS",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<=",
+                                                    "Distance": {
+                                                        "value": 1600.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": false,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "AND",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionFaction"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "OR",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Conditions": [
+                                                                        {
+                                                                            "condition": "HasKeyword",
+                                                                            "requiredVersion": "1.0.0.0",
+                                                                            "Keyword": {
+                                                                                "editorID": "ModestyDetectionOn"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "condition": "HasKeyword",
+                                                                            "requiredVersion": "1.0.0.0",
+                                                                            "Keyword": {
+                                                                                "editorID": "ModestyDetectionPC"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true,
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionForceOff"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true,
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionForceOffPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOn"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOnPC"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "AND",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "IsFemale",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true
+                                                                },
+                                                                {
+                                                                    "condition": "IsActorBase",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Actor base": {
+                                                                        "pluginName": "Skyrim.esm",
+                                                                        "formID": "7"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "13798"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "13795"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "10EAD7"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "LifeState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Life state": {
+                                                                "value": 3.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "LifeState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Life state": {
+                                                                "value": 2.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "SitSleepState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Sit/Sleep state": {
+                                                                "value": 7.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "IsChild",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true
+                                                },
+                                                {
+                                                    "condition": "IsInFaction",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Faction": {
+                                                        "pluginName": "Skyrim.esm",
+                                                        "formID": "5C84E"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LightLevel",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<=",
+                                                    "Numeric value": {
+                                                        "value": 40.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "DETECTED_BY",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<=",
+                                                    "Distance": {
+                                                        "value": 1600.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": true,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "OR",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "AND",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionFaction"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "OR",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Conditions": [
+                                                                        {
+                                                                            "condition": "HasKeyword",
+                                                                            "requiredVersion": "1.0.0.0",
+                                                                            "Keyword": {
+                                                                                "editorID": "ModestyDetectionOn"
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            "condition": "HasKeyword",
+                                                                            "requiredVersion": "1.0.0.0",
+                                                                            "Keyword": {
+                                                                                "editorID": "ModestyDetectionPC"
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true,
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionForceOff"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true,
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionForceOffPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOn"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOnPC"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "AND",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "IsFemale",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "negated": true
+                                                                },
+                                                                {
+                                                                    "condition": "IsActorBase",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Actor base": {
+                                                                        "pluginName": "Skyrim.esm",
+                                                                        "formID": "7"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "13798"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "13795"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "disabled": true,
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "form": {
+                                                                    "pluginName": "Skyrim.esm",
+                                                                    "formID": "10EAD7"
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "LifeState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Life state": {
+                                                                "value": 3.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "LifeState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Life state": {
+                                                                "value": 2.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "SitSleepState",
+                                                            "requiredVersion": "2.1.0.0",
+                                                            "negated": true,
+                                                            "Comparison": "==",
+                                                            "Sit/Sleep state": {
+                                                                "value": 7.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "IsChild",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "IsInFaction",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Faction": {
+                                                        "pluginName": "Skyrim.esm",
+                                                        "formID": "5C84E"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Type": {
+                                        "value": 18.0
+                                    },
+                                    "Left hand": true
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "DETECTS",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 1600.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": false,
+                                            "Comparison": "<",
+                                            "Angle in degrees": {
+                                                "value": 80.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "LightLevel",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": ">",
+                                            "Numeric value": {
+                                                "value": 40.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "DETECTED_BY",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 1600.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": true,
+                                            "Comparison": "<",
+                                            "Angle in degrees": {
+                                                "value": 80.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "LightLevel",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": ">",
+                                            "Numeric value": {
+                                                "value": 40.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "DETECTS",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 1000.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": false,
+                                            "Comparison": "<",
+                                            "Angle in degrees": {
+                                                "value": 80.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "LightLevel",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Numeric value": {
+                                                "value": 40.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "DETECTED_BY",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 1000.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": true,
+                                            "Comparison": "<",
+                                            "Angle in degrees": {
+                                                "value": 80.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "LightLevel",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Numeric value": {
+                                                "value": 40.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "DETECTS",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 120.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": false,
+                                            "Comparison": "<",
+                                            "Angle in degrees": {
+                                                "value": 90.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "DETECTED_BY",
+                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                    "requiredVersion": "2.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DetectionRelationship",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<",
+                                            "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionDistance",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Comparison": "<=",
+                                            "Distance": {
+                                                "value": 500.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "DetectionAngle",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.3.0",
+                                            "Swap actor": false,
+                                            "Comparison": ">",
+                                            "Angle in degrees": {
+                                                "value": 90.0
+                                            },
+                                            "Limit detection to right side": false,
+                                            "Limit detection to left side": false
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionFaction"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "OR",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Conditions": [
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionOn"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "condition": "HasKeyword",
+                                                                    "requiredVersion": "1.0.0.0",
+                                                                    "Keyword": {
+                                                                        "editorID": "ModestyDetectionPC"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOff"
+                                                            }
+                                                        },
+                                                        {
+                                                            "condition": "HasKeyword",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true,
+                                                            "Keyword": {
+                                                                "editorID": "ModestyDetectionForceOffPC"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOn"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Keyword": {
+                                                        "editorID": "ModestyDetectionForceOnPC"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "AND",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Conditions": [
+                                                        {
+                                                            "condition": "IsFemale",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "negated": true
+                                                        },
+                                                        {
+                                                            "condition": "IsActorBase",
+                                                            "requiredVersion": "1.0.0.0",
+                                                            "Actor base": {
+                                                                "pluginName": "Skyrim.esm",
+                                                                "formID": "7"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "disabled": true,
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 3.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 2.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "SitSleepState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "negated": true,
+                                                    "Comparison": "==",
+                                                    "Sit/Sleep state": {
+                                                        "value": 7.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "IsChild",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "IsInFaction",
+                                            "requiredVersion": "1.0.0.0",
+                                            "disabled": true,
+                                            "negated": true,
+                                            "Faction": {
+                                                "pluginName": "Skyrim.esm",
+                                                "formID": "5C84E"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsReplacerEnabled",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                            "Submod name": "Female PC Detection ON/OFF"
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DETECTED_BY",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "editorID": "ActorTypeCreature"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Distance": {
+                                                        "value": 1000.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": false,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 0.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "870"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "DETECTED_BY",
+                                            "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                            "requiredVersion": "2.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0"
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "editorID": "ActorTypeCreature"
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionDistance",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Distance": {
+                                                        "value": 1000.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionRelationship",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.0.0",
+                                                    "Comparison": "<",
+                                                    "Relationship [-4 = Archnemesis, .., 4 = Lover]": {
+                                                        "value": 4.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "DetectionAngle",
+                                                    "requiredPlugin": "OpenAnimationReplacer-DetectionPlugin",
+                                                    "requiredVersion": "2.0.3.0",
+                                                    "Swap actor": false,
+                                                    "Comparison": "<",
+                                                    "Angle in degrees": {
+                                                        "value": 80.0
+                                                    },
+                                                    "Limit detection to right side": false,
+                                                    "Limit detection to left side": false
+                                                },
+                                                {
+                                                    "condition": "LifeState",
+                                                    "requiredVersion": "2.1.0.0",
+                                                    "Comparison": "==",
+                                                    "Life state": {
+                                                        "value": 0.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "871"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Modesty PC Master settings",
+            "description": "Main settings for Modesty.",
+            "conditions": [
+                {
+                    "condition": "IsReplacerEnabled",
+                    "requiredVersion": "1.0.0.0",
+                    "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                    "Submod name": "Female PC Modesty ON/OFF"
+                },
+                {
+                    "condition": "IsActorBase",
+                    "requiredVersion": "1.0.0.0",
+                    "Actor base": {
+                        "pluginName": "Skyrim.esm",
+                        "formID": "7"
+                    }
+                },
+                {
+                    "condition": "IsFemale",
+                    "requiredVersion": "1.0.0.0"
+                },
+                {
+                    "condition": "IsChild",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true
+                },
+                {
+                    "condition": "IsMenuOpen",
+                    "requiredVersion": "1.3.0.0",
+                    "negated": true,
+                    "Menu name": "Racesex menu"
+                },
+                {
+                    "condition": "HasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "LifeState",
+                    "requiredVersion": "2.1.0.0",
+                    "Comparison": "==",
+                    "Life state": {
+                        "value": 0.0
+                    }
+                },
+                {
+                    "condition": "SitSleepState",
+                    "requiredVersion": "2.1.0.0",
+                    "negated": true,
+                    "Comparison": "==",
+                    "Sit/Sleep state": {
+                        "value": 7.0
+                    }
+                },
+                {
+                    "condition": "LocationHasKeyword",
+                    "requiredVersion": "2.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "82F"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "830"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "CompareValues",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Value A": {
+                                        "form": {
+                                            "pluginName": "Advanced Nudity Detection.esp",
+                                            "formID": "86F"
+                                        }
+                                    },
+                                    "Comparison": "==",
+                                    "Value B": {
+                                        "value": 0.0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "FactionRank",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Faction": {
+                                        "pluginName": "Advanced Nudity Detection.esp",
+                                        "formID": "86D"
+                                    },
+                                    "Comparison": "<",
+                                    "Numeric value": {
+                                        "value": 6.0
+                                    }
+                                },
+                                {
+                                    "condition": "CompareValues",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Value A": {
+                                        "form": {
+                                            "pluginName": "Advanced Nudity Detection.esp",
+                                            "formID": "86F"
+                                        }
+                                    },
+                                    "Comparison": "==",
+                                    "Value B": {
+                                        "value": 1.0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "CompareValues",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Value A": {
+                                        "form": {
+                                            "pluginName": "Advanced Nudity Detection.esp",
+                                            "formID": "86F"
+                                        }
+                                    },
+                                    "Comparison": "==",
+                                    "Value B": {
+                                        "value": 2.0
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A3"
+                                            },
+                                            "Comparison": "<",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A4"
+                                            },
+                                            "Comparison": "<",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "FactionRank",
+                    "requiredVersion": "1.0.0.0",
+                    "Faction": {
+                        "pluginName": "Advanced Nudity Detection.esp",
+                        "formID": "8A5"
+                    },
+                    "Comparison": "<=",
+                    "Numeric value": {
+                        "form": {
+                            "pluginName": "Advanced Nudity Detection.esp",
+                            "formID": "86E"
+                        }
+                    }
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Assets.esm",
+                                    "formID": "3DF9"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Assets.esm",
+                                    "formID": "CA3A"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Integration.esm",
+                                    "formID": "63AD9"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Devious Devices - Integration.esm",
+                                    "formID": "62539"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Modesty PC Sneaking settings",
+            "conditions": [
+                {
+                    "condition": "IsSneaking",
+                    "requiredVersion": "1.0.0.0"
+                },
+                {
+                    "condition": "IsReplacerEnabled",
+                    "requiredVersion": "1.0.0.0",
+                    "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                    "Submod name": "Female PC Modesty Sneaking ON/OFF"
+                }
+            ]
+        },
+        {
+            "name": "Modesty PC User settings",
+            "description": "User conditions.",
+            "conditions": [
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "10760A"
+                            }
+                        },
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "67CD8"
+                            }
+                        },
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "A82BA"
+                            }
+                        },
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "13740"
+                            }
+                        },
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "13745"
+                            }
+                        },
+                        {
+                            "condition": "IsRace",
+                            "requiredVersion": "1.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Race": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "13747"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "IsCombatState",
+                    "requiredVersion": "1.1.0.0",
+                    "Combat state": {
+                        "value": 0.0
+                    }
+                },
+                {
+                    "condition": "HasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Keyword": {
+                        "form": {
+                            "pluginName": "Skyrim.esm",
+                            "formID": "10EAD7"
+                        }
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Value A": {
+                        "form": {
+                            "pluginName": "EVGConditionalIdles.esp",
+                            "formID": "D67"
+                        }
+                    },
+                    "Comparison": "==",
+                    "Value B": {
+                        "value": 1.0
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Value A": {
+                        "form": {
+                            "pluginName": "EVGConditionalIdles.esp",
+                            "formID": "D64"
+                        }
+                    },
+                    "Comparison": "==",
+                    "Value B": {
+                        "value": 0.0
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Value A": {
+                        "actorValue": 24,
+                        "actorValueType": "Percentage"
+                    },
+                    "Comparison": ">",
+                    "Value B": {
+                        "value": 0.5
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Value A": {
+                        "actorValue": 25,
+                        "actorValueType": "Percentage"
+                    },
+                    "Comparison": ">",
+                    "Value B": {
+                        "value": 0.5
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Value A": {
+                        "actorValue": 26,
+                        "actorValueType": "Percentage"
+                    },
+                    "Comparison": ">",
+                    "Value B": {
+                        "value": 0.5
+                    }
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Conditions": [
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "1F86F"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "1F313"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "20555"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "20098"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "Skyrim.esm",
+                                "formID": "5E0FD"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "HearthFires.esm",
+                                "formID": "3092"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "HearthFires.esm",
+                                "formID": "BE0A"
+                            }
+                        },
+                        {
+                            "condition": "IsInLocation",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Location": {
+                                "pluginName": "HearthFires.esm",
+                                "formID": "BE1D"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "IsMenuOpen",
+                    "requiredVersion": "1.3.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Menu name": "inventorymenu"
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Conditions": [
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "disabled": true,
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Skyrim.esm",
+                                    "formID": "F5E80"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Skyrim.esm",
+                                    "formID": "FC1A3"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "negated": true,
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Skyrim.esm",
+                                    "formID": "130DB"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "FactionRank",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Faction": {
+                        "pluginName": "SexLabAroused.esm",
+                        "formID": "3FC36"
+                    },
+                    "Comparison": "<=",
+                    "Numeric value": {
+                        "value": 80.0
+                    }
+                },
+                {
+                    "condition": "IsInFaction",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Faction": {
+                        "pluginName": "SexLabAroused.esm",
+                        "formID": "713DA"
+                    }
+                },
+                {
+                    "condition": "IsInFaction",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Faction": {
+                        "pluginName": "AnimatedCarriage.esm",
+                        "formID": "98B"
+                    }
+                },
+                {
+                    "condition": "IsInFaction",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Faction": {
+                        "pluginName": "Skyrim.esm",
+                        "formID": "656EA"
+                    }
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Conditions": [
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "disabled": true,
+                            "Keyword": {
+                                "editorID": "LocSetOutdoor"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocSetMilitaryCamp"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocSetMilitaryFort"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeBarracks"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeCastle"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeCemetery"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeCity"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeDwelling"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeFarm"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeGuild"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHabitation"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHabitationHasInn"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHold"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHoldCapital"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHoldMajor"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeHoldMinor"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeTypeHouse"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeInn"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeJail"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeLumberMill"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeMilitaryCamp"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeMilitaryFort"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "disabled": true,
+                            "Keyword": {
+                                "editorID": "LocTypeMine"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeOrcStronghold"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeSettlement"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeShip"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeStewardsDwelling"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeStore"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeTemple"
+                            }
+                        },
+                        {
+                            "condition": "LocationHasKeyword",
+                            "requiredVersion": "2.0.0.0",
+                            "Keyword": {
+                                "editorID": "LocTypeTown"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "IsInLocation",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Location": {
+                        "pluginName": "DarkDesiresCircleOfLust.esp",
+                        "formID": "208556"
+                    }
+                },
+                {
+                    "condition": "IsInLocation",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Location": {
+                        "pluginName": "Keep It Clean.esp",
+                        "formID": "3669"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Modesty PC Weapon and Magic settings",
+            "conditions": [
+                {
+                    "condition": "IsWeaponDrawn",
+                    "requiredVersion": "1.0.0.0"
+                },
+                {
+                    "condition": "IsReplacerEnabled",
+                    "requiredVersion": "1.0.0.0",
+                    "Replacer mod name": "Dynamic Female MODESTY conditional idles PC",
+                    "Submod name": "Female PC Weapon Modesty ON/OFF"
+                },
+                {
+                    "condition": "IsCombatState",
+                    "requiredVersion": "1.1.0.0",
+                    "Combat state": {
+                        "value": 0.0
+                    }
+                },
+                {
+                    "condition": "IsSneaking",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true
+                },
+                {
+                    "condition": "IsBlocking",
+                    "requiredVersion": "1.1.0.0",
+                    "negated": true
+                },
+                {
+                    "condition": "IsMovementDirection",
+                    "requiredVersion": "1.0.0.0",
+                    "Direction": {
+                        "value": 0.0
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Value A": {
+                        "graphVariable": "ISCastingRight",
+                        "graphVariableType": "Bool"
+                    },
+                    "Comparison": "==",
+                    "Value B": {
+                        "value": 1.0
+                    }
+                },
+                {
+                    "condition": "CompareValues",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true,
+                    "Value A": {
+                        "graphVariable": "ISCastingLeft",
+                        "graphVariableType": "Bool"
+                    },
+                    "Comparison": "==",
+                    "Value B": {
+                        "value": 1.0
+                    }
+                },
+                {
+                    "condition": "IsAttacking",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "negated": true
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "disabled": true,
+                    "Conditions": [
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 12.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 13.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 14.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 15.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 16.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 17.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 11.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 1.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 2.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 3.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 4.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 8.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 0.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 5.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 6.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 7.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 9.0
+                                    },
+                                    "Left hand": true
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 10.0
+                                    },
+                                    "Left hand": true
+                                }
+                            ]
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 12.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 13.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 14.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 15.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 16.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 17.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 1.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 2.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 3.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 4.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 8.0
+                                    },
+                                    "Left hand": false
+                                },
+                                {
+                                    "condition": "IsEquippedType",
+                                    "requiredVersion": "1.0.0.0",
+                                    "disabled": true,
+                                    "negated": true,
+                                    "Type": {
+                                        "value": 0.0
+                                    },
+                                    "Left hand": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -168,6 +168,11 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		break;
 	case SKSE::MessagingInterface::kDataLoaded: //After PLUGIN (esp/esm/esl) files are loaded
 		logs::info("Data Loaded");
+
+		InitializeCoreData();
+		CheckMods();
+		InitializeConfigData();
+
 		break;
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads
 		logs::info("Post Load");
@@ -178,10 +183,6 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 	case SKSE::MessagingInterface::kNewGame:
 		logs::info("New Game");
 
-		InitializeCoreData();
-		CheckMods();
-		InitializeConfigData();
-
 		LoadPermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kSaveGame:
@@ -189,8 +190,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		essPath = std::string{ (char*)message->data, message->dataLen };
 		logs::info("Saving Game: {}", essPath);
 		
-		SavePermanentNPCs();
-
+		//SavePermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kPreLoadGame:
 		logs::info("Pre Load Game");
@@ -200,10 +200,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 	case SKSE::MessagingInterface::kPostLoadGame:
 		logs::info("Post Load Game");
 
-		InitializeCoreData();
-		CheckMods();
-
-		LoadPermanentNPCs();
+		//LoadPermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:
 		logs::info("Deleted Game");

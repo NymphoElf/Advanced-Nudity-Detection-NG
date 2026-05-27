@@ -355,6 +355,7 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
 {
+	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
 	if (!PermanentFemaleVector.size())
 	{
 		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
@@ -484,6 +485,18 @@ void TweakFemaleData
 			PermanentFemaleVector[PermFemaleID].DefaultRankStrict = StrictRank;
 			PermanentFemaleVector[PermFemaleID].DefaultRankTop = TopRank;
 			PermanentFemaleVector[PermFemaleID].DefaultRankBottom = BottomRank;
+		}
+
+		if (PermanentFemaleVector[PermFemaleID].MinimumRankStrict > PermanentFemaleVector[PermFemaleID].DefaultRankStrict) {
+			PermanentFemaleVector[PermFemaleID].DefaultRankStrict = PermanentFemaleVector[PermFemaleID].MinimumRankStrict;
+		}
+
+		if (PermanentFemaleVector[PermFemaleID].MinimumRankTop > PermanentFemaleVector[PermFemaleID].DefaultRankTop) {
+			PermanentFemaleVector[PermFemaleID].DefaultRankTop = PermanentFemaleVector[PermFemaleID].MinimumRankTop;
+		}
+
+		if (PermanentFemaleVector[PermFemaleID].MinimumRankBottom > PermanentFemaleVector[PermFemaleID].DefaultRankBottom) {
+			PermanentFemaleVector[PermFemaleID].DefaultRankBottom = PermanentFemaleVector[PermFemaleID].MinimumRankBottom;
 		}
 
 		PermanentFemaleVector[PermFemaleID].AllowShameless = EnableShameless;

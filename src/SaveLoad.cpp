@@ -9,9 +9,18 @@
 #include "ModEventHandler.h"
 #include "PlayerModesty.h"
 
+// 4-char record tags. Must be unique within your plugin.
+static constexpr std::uint32_t kPluginID = 'AND4'; // Set any unique id for your plugin here
+static constexpr std::uint32_t kNPCsRecord = 'NPC0';
+static constexpr std::uint32_t kMCMRecord = 'MCM0';
+static constexpr std::uint32_t kLogRecord = 'LOG0';
+static constexpr std::uint32_t kModEventHandlerRecord = 'MEH0';
+static constexpr std::uint32_t kPlayerRecord = 'PLY0';
+static constexpr std::uint32_t kVersion = 1;
+
 void SavePermanentNPCs() 
 {
-	const char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
 
 	if(!PermanentFemaleVector.size())
 	{
@@ -25,7 +34,7 @@ void SavePermanentNPCs()
 		return;
 	}
 
-	std::ofstream ActorFile(FilePath, std::ios::binary);
+	std::ofstream ActorFile(FilePath, std::ios::trunc | std::ios::binary);
 
 	for(auto& Female : PermanentFemaleVector)
 	{
@@ -37,7 +46,9 @@ void SavePermanentNPCs()
 
 void LoadPermanentNPCs()
 {
-	const char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+	Log("<C++ NPCData> [LoadPermanentNPCs] - Function Triggered", LogType::Core);
+	
+	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
 
 	if (!std::filesystem::exists(FilePath))
 	{
@@ -56,21 +67,18 @@ void LoadPermanentNPCs()
 	{
 		PermanentFemales Female;
 		ActorFile.read(reinterpret_cast<char*>(&Female), sizeof(Female));
-
+		
 		PermanentFemaleVector.emplace_back(Female);
+
+		/*
+		if (FindInVector(PermanentFemaleVector, Female) == -1) {
+			PermanentFemaleVector.emplace_back(Female);
+		}
+		*/
 	}
 
 	ActorFile.close();
 }
-
-// 4-char record tags. Must be unique within your plugin.
-constexpr std::uint32_t kPluginID = 'AND4'; // Set any unique id for your plugin here
-constexpr std::uint32_t kNPCsRecord = 'NPC0';
-constexpr std::uint32_t kMCMRecord = 'MCM0';
-constexpr std::uint32_t kLogRecord = 'LOG0';
-constexpr std::uint32_t kModEventHandlerRecord = 'MEH0';
-constexpr std::uint32_t kPlayerRecord = 'PLY0';
-constexpr std::uint32_t kVersion = 1;
 
 // Helpers for variable-size types
 inline bool WriteString(SKSE::SerializationInterface* serializer, const std::string& stringInput) {
@@ -100,6 +108,10 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
 		}
 
+
+		SavePermanentNPCs();
+
+		/*
 		const uint32_t PermanentCount = (uint32_t)PermanentFemaleVector.size();
 
 		serializer->WriteRecordData(&PermanentCount, sizeof(PermanentCount));
@@ -108,6 +120,7 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 		{
 			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
 		}
+		*/
 	}
 
 	// --- MCM record ---
@@ -190,6 +203,8 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 inline void LoadCallback(SKSE::SerializationInterface* serializer)
 {
+	Log("<C++ NPCData> [LoadCallback] - Function Triggered", LogType::Core);
+	
 	std::uint32_t type, version, length;
 	while (serializer->GetNextRecordInfo(type, version, length)) {
 		switch (type) {
@@ -218,6 +233,9 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 					RegisteredFemaleMap[ThisFemale.FemaleFormID] = ThisFemale;
 				}
 
+				LoadPermanentNPCs();
+
+				/*
 				uint32_t PermanentCount = 0;
 				serializer->ReadRecordData(&PermanentCount, sizeof(PermanentCount));
 	
@@ -228,6 +246,7 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 					PermanentFemaleVector.emplace_back(ThisFemale);
 				}
+				*/
 
 				break;
 			}
@@ -346,6 +365,33 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 inline void RevertCallback(SKSE::SerializationInterface*) {
 	logs::critical("SAVELOAD | RevertCallback");
 	NPCDataOnRevertCallback();
+
+	InitializeConfigData();
+
+	//Clear Flash Rolls
+	ChestCurtainRoll = -1;
+	PelvicCurtainRoll = -1;
+	AssCurtainRoll = -1;
+	CStringRoll = -1;
+
+	TopTransparentRoll = -1;
+	BottomTransparentRoll = -1;
+	BraTransparentRoll = -1;
+	UnderwearTransparentRoll = -1;
+	HotpantsTransparentRoll = -1;
+	ShowgirlTransparentRoll = -1;
+
+	NPCChestCurtainRoll = -1;
+	NPCPelvicCurtainRoll = -1;
+	NPCAssCurtainRoll = -1;
+	NPCCStringRoll = -1;
+
+	NPCTopTransparentRoll = -1;
+	NPCBottomTransparentRoll = -1;
+	NPCBraTransparentRoll = -1;
+	NPCUnderwearTransparentRoll = -1;
+	NPCHotpantsTransparentRoll = -1;
+	NPCShowgirlTransparentRoll = -1;
 }
 
 void RegisterCoSaveSerializer()

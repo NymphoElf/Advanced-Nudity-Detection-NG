@@ -1,0 +1,1542 @@
+{
+    "priority": 2123100993,
+    "hasCustomBlendTimeOnLoop": true,
+    "blendTimeOnLoop": 1.0,
+    "conditions": [
+        {
+            "condition": "PRESET",
+            "requiredVersion": "2.2.0.0",
+            "Preset": "Modesty NPC Detection settings"
+        },
+        {
+            "condition": "PRESET",
+            "requiredVersion": "2.2.0.0",
+            "Preset": "Modesty NPC Master settings"
+        },
+        {
+            "condition": "PRESET",
+            "requiredVersion": "2.2.0.0",
+            "Preset": "Modesty NPC User settings"
+        },
+        {
+            "condition": "HasKeyword",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "negated": true,
+            "Keyword": {
+                "editorID": "NoModestyTop"
+            }
+        },
+        {
+            "condition": "IsEquippedType",
+            "requiredVersion": "1.0.0.0",
+            "Type": {
+                "value": 11.0
+            },
+            "Left hand": true
+        },
+        {
+            "condition": "IsReplacerEnabled",
+            "requiredVersion": "1.0.0.0",
+            "negated": true,
+            "Replacer mod name": "Dynamic Female MODESTY conditional idles NPC",
+            "Submod name": "NPC Shield on back ON/OFF"
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Slot": {
+                        "value": 2.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 2.0
+                    },
+                    "Keyword": {
+                        "editorID": "Modesty"
+                    }
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Skyrim.esm",
+                                    "formID": "6C0EC"
+                                }
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "form": {
+                                    "pluginName": "Skyrim.esm",
+                                    "formID": "A8657"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 22.0
+                    },
+                    "Keyword": {
+                        "form": {
+                            "pluginName": "Skyrim.esm",
+                            "formID": "A8657"
+                        }
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 22.0
+                    },
+                    "Keyword": {
+                        "form": {
+                            "pluginName": "Skyrim.esm",
+                            "formID": "6C0EC"
+                        }
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 22.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 19.0
+                    },
+                    "Keyword": {
+                        "form": {
+                            "pluginName": "Skyrim.esm",
+                            "formID": "A8657"
+                        }
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 19.0
+                    },
+                    "Keyword": {
+                        "form": {
+                            "pluginName": "Skyrim.esm",
+                            "formID": "6C0EC"
+                        }
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "Slot": {
+                        "value": 19.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 15.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 23.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 24.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 14.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "OR",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Keyword": {
+                                "editorID": "NoModestyBottom"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 2.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 22.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 19.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 22.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 19.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 19.0
+                            },
+                            "Keyword": {
+                                "editorID": "NoModesty"
+                            }
+                        },
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 22.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 19.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsWornInSlotHasKeyword",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Slot": {
+                                        "value": 22.0
+                                    },
+                                    "Keyword": {
+                                        "editorID": "NoModesty"
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 22.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "A8657"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 22.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "6C0EC"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 23.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 24.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 15.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 19.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsWornInSlotHasKeyword",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Slot": {
+                                        "value": 22.0
+                                    },
+                                    "Keyword": {
+                                        "editorID": "NoModesty"
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 22.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "A8657"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 22.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "6C0EC"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 23.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 24.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 15.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "negated": true,
+                            "Slot": {
+                                "value": 22.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsWornInSlotHasKeyword",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Slot": {
+                                        "value": 19.0
+                                    },
+                                    "Keyword": {
+                                        "editorID": "NoModesty"
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 19.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "A8657"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 19.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "6C0EC"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 23.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 24.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 15.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsWornInSlotHasKeyword",
+                            "requiredVersion": "1.0.0.0",
+                            "Slot": {
+                                "value": 22.0
+                            },
+                            "Keyword": {
+                                "editorID": "Modesty"
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "IsWornInSlotHasKeyword",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Slot": {
+                                        "value": 19.0
+                                    },
+                                    "Keyword": {
+                                        "editorID": "NoModesty"
+                                    }
+                                },
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 19.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "A8657"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 19.0
+                                            },
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "6C0EC"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 23.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 24.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        },
+                                        {
+                                            "condition": "IsWornInSlotHasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Slot": {
+                                                "value": 15.0
+                                            },
+                                            "Keyword": {
+                                                "editorID": "NoModesty"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "TARGET",
+                    "requiredVersion": "1.3.0.0",
+                    "Target type": {
+                        "value": 6.0
+                    },
+                    "Conditions": [
+                        {
+                            "condition": "AND",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "OR",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "CurrentTargetLineOfSight",
+                                                    "requiredVersion": "1.2.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Evaluate target": false
+                                                },
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "CurrentTargetRelationship",
+                                                    "requiredVersion": "1.1.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Comparison": "<",
+                                                    "Numeric value": {
+                                                        "value": 4.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "CurrentTargetLineOfSight",
+                                                    "requiredVersion": "1.2.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Evaluate target": true
+                                                },
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "CurrentTargetRelationship",
+                                                    "requiredVersion": "1.1.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Comparison": "<",
+                                                    "Numeric value": {
+                                                        "value": 4.0
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "CurrentTargetDistance",
+                                                    "requiredVersion": "1.1.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Comparison": "<",
+                                                    "Numeric value": {
+                                                        "value": 250.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "IsFemale",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true
+                                                },
+                                                {
+                                                    "condition": "CurrentTargetRelationship",
+                                                    "requiredVersion": "1.1.0.0",
+                                                    "Target type": {
+                                                        "value": 6.0
+                                                    },
+                                                    "Comparison": "<",
+                                                    "Numeric value": {
+                                                        "value": 4.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "HasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "negated": true,
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "13798"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "HasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "negated": true,
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "13795"
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "condition": "HasKeyword",
+                                            "requiredVersion": "1.0.0.0",
+                                            "negated": true,
+                                            "Keyword": {
+                                                "form": {
+                                                    "pluginName": "Skyrim.esm",
+                                                    "formID": "10EAD7"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "IsMenuOpen",
+                            "requiredVersion": "1.3.0.0",
+                            "Menu name": "dialogue menu"
+                        },
+                        {
+                            "condition": "TARGET",
+                            "requiredVersion": "1.3.0.0",
+                            "Target type": {
+                                "value": 2.0
+                            },
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "AND",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13798"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "13795"
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "HasKeyword",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "negated": true,
+                                                    "Keyword": {
+                                                        "form": {
+                                                            "pluginName": "Skyrim.esm",
+                                                            "formID": "10EAD7"
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "condition": "IsFemale",
+                                            "requiredVersion": "1.0.0.0",
+                                            "negated": true
+                                        },
+                                        {
+                                            "condition": "CurrentTargetRelationship",
+                                            "requiredVersion": "1.1.0.0",
+                                            "Target type": {
+                                                "value": 2.0
+                                            },
+                                            "Comparison": "<",
+                                            "Numeric value": {
+                                                "value": 4.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "condition": "AND",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Slot": {
+                        "value": 26.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Slot": {
+                        "value": 16.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Slot": {
+                        "value": 18.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                },
+                {
+                    "condition": "IsWornInSlotHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Slot": {
+                        "value": 29.0
+                    },
+                    "Keyword": {
+                        "editorID": "NoModesty"
+                    }
+                }
+            ]
+        },
+        {
+            "condition": "AND",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Conditions": [
+                {
+                    "condition": "IsWornHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Keyword": {
+                        "editorID": "NoModestyTop"
+                    }
+                },
+                {
+                    "condition": "IsWornHasKeyword",
+                    "requiredVersion": "1.0.0.0",
+                    "negated": true,
+                    "Keyword": {
+                        "editorID": "NoModestyAll"
+                    }
+                }
+            ]
+        },
+        {
+            "condition": "FactionRank",
+            "requiredVersion": "1.0.0.0",
+            "disabled": true,
+            "Faction": {
+                "pluginName": "Advanced Nudity Detection.esp",
+                "formID": "82F"
+            },
+            "Comparison": "==",
+            "Numeric value": {
+                "value": 1.0
+            }
+        },
+        {
+            "condition": "OR",
+            "requiredVersion": "1.0.0.0",
+            "Conditions": [
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "FactionRank",
+                            "requiredVersion": "1.0.0.0",
+                            "Faction": {
+                                "pluginName": "Advanced Nudity Detection.esp",
+                                "formID": "82F"
+                            },
+                            "Comparison": "==",
+                            "Numeric value": {
+                                "value": 1.0
+                            }
+                        },
+                        {
+                            "condition": "CompareValues",
+                            "requiredVersion": "1.0.0.0",
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
+                            },
+                            "Comparison": "==",
+                            "Value B": {
+                                "value": 0.0
+                            }
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "CompareValues",
+                            "requiredVersion": "1.0.0.0",
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
+                            },
+                            "Comparison": "==",
+                            "Value B": {
+                                "value": 1.0
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 0.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "82F"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "834"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "82F"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 2.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "82F"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 3.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "832"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "86D"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 4.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "832"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "condition": "AND",
+                    "requiredVersion": "1.0.0.0",
+                    "Conditions": [
+                        {
+                            "condition": "CompareValues",
+                            "requiredVersion": "1.0.0.0",
+                            "Value A": {
+                                "form": {
+                                    "pluginName": "Advanced Nudity Detection.esp",
+                                    "formID": "86F"
+                                }
+                            },
+                            "Comparison": "==",
+                            "Value B": {
+                                "value": 2.0
+                            }
+                        },
+                        {
+                            "condition": "OR",
+                            "requiredVersion": "1.0.0.0",
+                            "Conditions": [
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A3"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 2.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "832"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A3"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 1.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "82F"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "condition": "AND",
+                                    "requiredVersion": "1.0.0.0",
+                                    "Conditions": [
+                                        {
+                                            "condition": "FactionRank",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Faction": {
+                                                "pluginName": "Advanced Nudity Detection.esp",
+                                                "formID": "8A3"
+                                            },
+                                            "Comparison": "==",
+                                            "Numeric value": {
+                                                "value": 0.0
+                                            }
+                                        },
+                                        {
+                                            "condition": "OR",
+                                            "requiredVersion": "1.0.0.0",
+                                            "Conditions": [
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "834"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "82F"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                },
+                                                {
+                                                    "condition": "FactionRank",
+                                                    "requiredVersion": "1.0.0.0",
+                                                    "Faction": {
+                                                        "pluginName": "Advanced Nudity Detection.esp",
+                                                        "formID": "832"
+                                                    },
+                                                    "Comparison": "==",
+                                                    "Numeric value": {
+                                                        "value": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
