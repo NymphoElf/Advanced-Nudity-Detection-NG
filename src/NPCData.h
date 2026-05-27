@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <unordered_map>
 
 enum ShySex {
 	Men,
@@ -11,101 +10,82 @@ enum ShySex {
 	Sexuality
 };
 
-struct PermanentFemales
-{
-	RE::FormID LocalID;
-	char Plugin[256];
-	char Name[256];
+namespace PermanentFemales {
+	inline std::vector<RE::FormID> FemaleLocalID;
+	inline std::vector<std::string_view> FemalePlugin;
+	inline std::vector<uint8_t> IsInLightPlugin;
+	inline std::vector<std::string> FemaleName;
 
-	int DefaultRankStrict;
-	int MinimumRankStrict;
+	inline std::vector<int> DefaultRankStrict;
+	inline std::vector<int> MinimumRankStrict;
 
-	int DefaultRankTop;
-	int MinimumRankTop;
+	inline std::vector<int> DefaultRankTop;
+	inline std::vector<int> MinimumRankTop;
 
-	int DefaultRankBottom;
-	int MinimumRankBottom;
+	inline std::vector<int> DefaultRankBottom;
+	inline std::vector<int> MinimumRankBottom;
 
-	int ShynessMode;
-	int SexualityScore;
+	inline std::vector<int> ShynessMode;
+	inline std::vector<int> SexualityScore;
 
-	bool LightPlugin;
-	bool AllowShameless;
-	bool AllowCorruption;
-	bool StrictRules;
+	inline std::vector<uint8_t> AllowShameless;
+	inline std::vector<uint8_t> AllowCorruption;
+	inline std::vector<uint8_t> StrictRules;
 
-	std::string_view GetPlugin(void) const { return std::string_view(Plugin); }
-	std::string_view GetName(void) const { return std::string_view(Name); }
+	inline int TotalFemales = 0;
+}
 
-	uint32_t GetModIndex(void) const
-	{
-		std::optional<uint32_t> modindex;
-		RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+namespace RegisteredFemales {
+	inline std::vector<std::string> FemaleName;
+	inline std::vector<RE::FormID> FemaleFormID;
 
-		if(LightPlugin)
-		{
-			modindex = DataHandler->GetLoadedLightModIndex(GetPlugin());
-		}
-		else
-		{
-			modindex = DataHandler->GetLoadedModIndex(GetPlugin());
-		}
+	inline std::vector<int> ModestyTimer0; //Modest
+	inline std::vector<int> ModestyTimer1; //Reasonable
+	inline std::vector<int> ModestyTimer2; //Relaxed
+	inline std::vector<int> ModestyTimer3; //Comfortable
+	inline std::vector<int> ModestyTimer4; //Tease
+	inline std::vector<int> ModestyTimer5; //Brazen
+	inline std::vector<int> ModestyTimer6; //Immodest
 
-		return modindex.value_or(0xFF);
-	}
-};
+	inline std::vector<int> DefaultRankStrict;
+	inline std::vector<int> CurrentRankStrict;
+	inline std::vector<int> MinimumRankStrict;
 
-inline std::vector<PermanentFemales> permanentfemales;
+	inline std::vector<int> TopModestyTimer0; //Modest
+	inline std::vector<int> TopModestyTimer1; //Comfortable
+	inline std::vector<int> TopModestyTimer2; //Brazen
+	inline std::vector<int> TopModestyTimer3; //Immodest
 
-struct RegisteredFemales
-{
-	char Name[256];
-	RE::FormID id;
+	inline std::vector<int> DefaultRankTop;
+	inline std::vector<int> CurrentRankTop;
+	inline std::vector<int> MinimumRankTop;
 
-	int ModestyTimer0; //Modest
-	int ModestyTimer1; //Reasonable
-	int ModestyTimer2; //Relaxed
-	int ModestyTimer3; //Comfortable
-	int ModestyTimer4; //Tease
-	int ModestyTimer5; //Brazen
-	int ModestyTimer6; //Immodest
+	inline std::vector<int> BottomModestyTimer0; //Modest
+	inline std::vector<int> BottomModestyTimer1; //Comfortable
+	inline std::vector<int> BottomModestyTimer2; //Brazen
+	inline std::vector<int> BottomModestyTimer3; //Immodest
 
-	int DefaultRankStrict;
-	int CurrentRankStrict;
-	int MinimumRankStrict;
+	inline std::vector<int> DefaultRankBottom;
+	inline std::vector<int> CurrentRankBottom;
+	inline std::vector<int> MinimumRankBottom;
 
-	int TopModestyTimer0; //Modest
-	int TopModestyTimer1; //Comfortable
-	int TopModestyTimer2; //Brazen
-	int TopModestyTimer3; //Immodest
+	inline std::vector<int> ShynessMode;
+	inline std::vector<int> SexualityScore;
 
-	int DefaultRankTop;
-	int CurrentRankTop;
-	int MinimumRankTop;
+	//inline std::vector<bool> AllowShameless;
+	//inline std::vector<bool> AllowCorruption;
+	//inline std::vector<bool> StrictRules;
+	//inline std::vector<bool> UpgradeBlocked;
 
-	int BottomModestyTimer0; //Modest
-	int BottomModestyTimer1; //Comfortable
-	int BottomModestyTimer2; //Brazen
-	int BottomModestyTimer3; //Immodest
+	inline std::vector<uint8_t> AllowShameless; //BOOL
+	inline std::vector<uint8_t> AllowCorruption; //BOOL
+	inline std::vector<uint8_t> StrictRules; //BOOL
+	inline std::vector<uint8_t> UpgradeBlocked; //BOOL
 
-	int DefaultRankBottom;
-	int CurrentRankBottom;
-	int MinimumRankBottom;
+	inline std::vector<float> LastUpdateTime;
 
-	int ShynessMode;
-	int SexualityScore;
-
-	bool AllowShameless;
-	bool AllowCorruption;
-	bool StrictRules;
-	bool UpgradeBlocked;
-
-	float LastUpdateTime;
-
-	std::string GetName(void) const { return std::string(Name); }
-};
-
-inline std::unordered_map<RE::FormID, RegisteredFemales> registeredfemales;
+	inline int TotalFemales = 0;
+}
 
 //Functions
 void NPCDataOnRevertCallback();
@@ -114,7 +94,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 void RegisterRosa(float CurrentGameTime, int SexualityScore);
 int GetInternalFemaleID(RE::Actor* akFemale);
 
-void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime);
+void ProcessNPCModesty(RE::Actor* akFemale, int FemaleID, float CurrentGameTime);
 
 void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale);
 void DeleteAllFemales(RE::StaticFunctionTag*);

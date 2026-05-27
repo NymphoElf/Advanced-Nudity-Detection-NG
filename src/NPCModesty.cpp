@@ -3,53 +3,44 @@
 #include "Core.h"
 #include "Logger.h"
 
-void ChangeStrictRank(RE::Actor* akFemale, int Rank)
-{
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
+void ChangeStrictRank(RE::Actor* akFemale, int FemaleID, int Rank) {
 	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(Rank));
-	female.CurrentRankStrict = HandleInteger(Rank);
+	RegisteredFemales::CurrentRankStrict[FemaleID] = HandleInteger(Rank);
 
-	female.ModestyTimer0 = 0;
-	female.ModestyTimer1 = 0;
-	female.ModestyTimer2 = 0;
-	female.ModestyTimer3 = 0;
-	female.ModestyTimer4 = 0;
-	female.ModestyTimer5 = 0;
-	female.ModestyTimer6 = 0;
+	RegisteredFemales::ModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer3[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer4[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer5[FemaleID] = 0;
+	RegisteredFemales::ModestyTimer6[FemaleID] = 0;
 }
 
-void ChangeTopRank(RE::Actor* akFemale, int Rank)
-{
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
+void ChangeTopRank(RE::Actor* akFemale, int FemaleID, int Rank) {
 	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(Rank));
-	female.CurrentRankTop = HandleInteger(Rank);
+	RegisteredFemales::CurrentRankTop[FemaleID] = HandleInteger(Rank);
 
-	female.TopModestyTimer0 = 0;
-	female.TopModestyTimer1 = 0;
-	female.TopModestyTimer2 = 0;
-	female.TopModestyTimer3 = 0;
+	RegisteredFemales::TopModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::TopModestyTimer3[FemaleID] = 0;
 }
 
-void ChangeBottomRank(RE::Actor* akFemale, int Rank)
-{
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
+void ChangeBottomRank(RE::Actor* akFemale, int FemaleID, int Rank) {
 	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(Rank));
-	female.CurrentRankBottom = HandleInteger(Rank);
+	RegisteredFemales::CurrentRankBottom[FemaleID] = HandleInteger(Rank);
 
-	female.BottomModestyTimer0 = 0;
-	female.BottomModestyTimer1 = 0;
-	female.BottomModestyTimer2 = 0;
-	female.BottomModestyTimer3 = 0;
+	RegisteredFemales::BottomModestyTimer0[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer1[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer2[FemaleID] = 0;
+	RegisteredFemales::BottomModestyTimer3[FemaleID] = 0;
 }
 
-void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless)
-{
-	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
+	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
-
-	int CurrentRank = female.CurrentRankStrict;
-	int MinimumRank = female.MinimumRankStrict;
+	int CurrentRank = RegisteredFemales::CurrentRankStrict[FemaleID];
+	int MinimumRank = RegisteredFemales::MinimumRankStrict[FemaleID];
 
 	bool IsShowingBra = akFemale->GetFactionRank(ShowingBraFaction, false) == 1;
 	bool IsShowingChest = akFemale->GetFactionRank(ShowingChestFaction, false) == 1;
@@ -62,285 +53,283 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	bool IsNude = akFemale->GetFactionRank(NudeFaction, false) == 1;
 
 	if (MinimumRank > CurrentRank) {
-		ChangeStrictRank(akFemale, MinimumRank);
+		ChangeStrictRank(akFemale, FemaleID, MinimumRank);
 	}
 
 	if (CurrentRank == StrictModestyLevel::Modest) {
 		if (IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
-			female.ModestyTimer0 += HoursPassed;
+			RegisteredFemales::ModestyTimer0[FemaleID] += HoursPassed;
 			
-			if (female.ModestyTimer0 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer0[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer0 = UpgradeTime;
+					RegisteredFemales::ModestyTimer0[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
-			if (female.ModestyTimer0 > 0) {
-				female.ModestyTimer0 -= HoursPassed;
+			if (RegisteredFemales::ModestyTimer0[FemaleID] > 0) {
+				RegisteredFemales::ModestyTimer0[FemaleID] -= HoursPassed;
 			}
 
-			if (female.ModestyTimer0 < 0) {
-				female.ModestyTimer0 = 0;
+			if (RegisteredFemales::ModestyTimer0[FemaleID] < 0) {
+				RegisteredFemales::ModestyTimer0[FemaleID] = 0;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Reasonable) {
 		if (IsShowingUnderwear && IsShowingBra && !IsShowingGenitals && !IsShowingChest) {
-			female.ModestyTimer1 += HoursPassed;
+			RegisteredFemales::ModestyTimer1[FemaleID] += HoursPassed;
 
-			if (female.ModestyTimer1 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer1[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer1 = UpgradeTime;
+					RegisteredFemales::ModestyTimer1[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
-			female.ModestyTimer1 -= HoursPassed;
+			RegisteredFemales::ModestyTimer1[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.ModestyTimer1 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer1[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer1 < -UpgradeTime) {
-				female.ModestyTimer1 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer1[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer1[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Relaxed) {
 		if (IsShowingChest && IsShowingUnderwear && !IsTopless && !IsShowingGenitals) {
-			female.ModestyTimer2 += HoursPassed;
+			RegisteredFemales::ModestyTimer2[FemaleID] += HoursPassed;
 
-			if (female.ModestyTimer2 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer2[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer2 = UpgradeTime;
+					RegisteredFemales::ModestyTimer2[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if ((!IsShowingBra && !IsShowingChest) || (!IsShowingUnderwear && !IsShowingGenitals)) {
-			female.ModestyTimer2 -= HoursPassed;
+			RegisteredFemales::ModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.BottomModestyTimer2 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer2[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer2 < -UpgradeTime) {
-				female.ModestyTimer2 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer2[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer2[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Comfortable) {
 		if (IsShowingGenitals && IsShowingChest && !IsTopless && !IsBottomless) {
-			female.ModestyTimer3 += HoursPassed;
+			RegisteredFemales::ModestyTimer3[FemaleID] += HoursPassed;
 
-			if (female.ModestyTimer3 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer3[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer3 = UpgradeTime;
+					RegisteredFemales::ModestyTimer3[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if ((!IsShowingChest && !IsTopless) || (!IsShowingUnderwear && !IsShowingGenitals)) {
-			female.ModestyTimer3 -= HoursPassed;
+			RegisteredFemales::ModestyTimer3[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.ModestyTimer3 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer3[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer3 < -UpgradeTime) {
-				female.ModestyTimer3 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer3[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer3[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Tease) {
 		if (IsTopless && IsShowingGenitals && !IsBottomless) {
-			female.ModestyTimer4 += HoursPassed;
+			RegisteredFemales::ModestyTimer4[FemaleID] += HoursPassed;
 
-			if (female.ModestyTimer4 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer4[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer4 = UpgradeTime;
+					RegisteredFemales::ModestyTimer4[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if (!IsShowingChest || !IsShowingGenitals) {
-			female.ModestyTimer4 -= HoursPassed;
+			RegisteredFemales::ModestyTimer4[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.ModestyTimer4 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer4[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer4 < -UpgradeTime) {
-				female.ModestyTimer4 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer4[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer4[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Brazen) {
 		if (IsTopless && IsBottomless) {
-			female.ModestyTimer5 += HoursPassed;
+			RegisteredFemales::ModestyTimer5[FemaleID] += HoursPassed;
 
-			if (female.ModestyTimer5 >= UpgradeTime) {
+			if (RegisteredFemales::ModestyTimer5[FemaleID] >= UpgradeTime) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer5 = UpgradeTime;
+					RegisteredFemales::ModestyTimer5[FemaleID] = UpgradeTime;
 				}
 			}
 		}
 		else if (!IsShowingGenitals || !IsTopless) {
-			female.ModestyTimer5 -= HoursPassed;
+			RegisteredFemales::ModestyTimer5[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.ModestyTimer5 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer5[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer5 < -UpgradeTime) {
-				female.ModestyTimer5 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer5[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer5[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Immodest) {
 		if (IsNude) {
-			female.ModestyTimer6 += HoursPassed;
+			RegisteredFemales::ModestyTimer6[FemaleID] += HoursPassed;
 			
-			if (AllowShameless && female.ModestyTimer6 >= UpgradeTime * 2) {
+			if (AllowShameless && RegisteredFemales::ModestyTimer6[FemaleID] >= UpgradeTime * 2) {
 				if (!Blocked) {
-					ChangeStrictRank(akFemale, CurrentRank + 1);
+					ChangeStrictRank(akFemale, FemaleID, CurrentRank + 1);
 				}
 				else {
-					female.ModestyTimer6 = UpgradeTime * 2;
+					RegisteredFemales::ModestyTimer6[FemaleID] = UpgradeTime * 2;
 				}
 			}
-			else if (female.ModestyTimer6 > UpgradeTime) {
-				female.ModestyTimer6 = UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer6[FemaleID] > UpgradeTime) {
+				RegisteredFemales::ModestyTimer6[FemaleID] = UpgradeTime;
 			}
 		}
 		else if (!IsTopless || !IsBottomless) {
-			female.ModestyTimer6 -= HoursPassed;
+			RegisteredFemales::ModestyTimer6[FemaleID] -= HoursPassed;
 
-			if (!Corruption && female.ModestyTimer6 <= -UpgradeTime) {
-				ChangeStrictRank(akFemale, CurrentRank - 1);
+			if (!Corruption && RegisteredFemales::ModestyTimer6[FemaleID] <= -UpgradeTime) {
+				ChangeStrictRank(akFemale, FemaleID, CurrentRank - 1);
 			}
-			else if (female.ModestyTimer6 < -UpgradeTime) {
-				female.ModestyTimer6 = -UpgradeTime;
+			else if (RegisteredFemales::ModestyTimer6[FemaleID] < -UpgradeTime) {
+				RegisteredFemales::ModestyTimer6[FemaleID] = -UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentRank >= StrictModestyLevel::Shameless && !AllowShameless) {
-		ChangeStrictRank(akFemale, StrictModestyLevel::Immodest);
+		ChangeStrictRank(akFemale, FemaleID, StrictModestyLevel::Immodest);
 	}
 }
 
-void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
+	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
-
-	int CurrentTopRank = female.CurrentRankTop;
-	int MinimumTopRank = female.MinimumRankTop;
+	int CurrentTopRank = RegisteredFemales::CurrentRankTop[FemaleID];
+	int MinimumTopRank = RegisteredFemales::MinimumRankTop[FemaleID];
 
 	bool IsShowingBra = akFemale->GetFactionRank(ShowingBraFaction, false) == 1;
 	bool IsShowingChest = akFemale->GetFactionRank(ShowingChestFaction, false) == 1;
 	bool IsTopless = akFemale->GetFactionRank(ToplessFaction, false) == 1;
 
 	if (MinimumTopRank > CurrentTopRank) {
-		ChangeTopRank(akFemale, MinimumTopRank);
+		ChangeTopRank(akFemale, FemaleID, MinimumTopRank);
 	}
 
 	//Modest (Previously 'Shy')
 	if (CurrentTopRank == SimpleModestyLevel::Modest && IsShowingBra && !IsShowingChest) {
-		female.TopModestyTimer0 += HoursPassed;
+		RegisteredFemales::TopModestyTimer0[FemaleID] += HoursPassed;
 	}
 	//Comfortable
 	else if (CurrentTopRank <= SimpleModestyLevel::Comfortable && IsShowingChest && !IsTopless) {
-		female.TopModestyTimer1 += HoursPassed;
+		RegisteredFemales::TopModestyTimer1[FemaleID] += HoursPassed;
 	}
 	else if (CurrentTopRank == SimpleModestyLevel::Comfortable && IsShowingBra && !IsShowingChest) {
 		//Do Nothing
 	}
 	//Brazen (Previously 'Bold')
 	else if (CurrentTopRank <= SimpleModestyLevel::Brazen && IsTopless) {
-		female.TopModestyTimer2 += HoursPassed;
+		RegisteredFemales::TopModestyTimer2[FemaleID] += HoursPassed;
 	}
 	else if (CurrentTopRank == SimpleModestyLevel::Brazen && IsShowingChest && !IsTopless) {
 		//Do Nothing
 	}
 	//Immodest (Previously 'Shameless')
 	else if (CurrentTopRank == SimpleModestyLevel::Immodest && IsTopless) {
-		female.TopModestyTimer3 += HoursPassed;
+		RegisteredFemales::TopModestyTimer3[FemaleID] += HoursPassed;
 	}
 	else if (CurrentTopRank > SimpleModestyLevel::Immodest) {
 		if (!AllowShameless) {
-			ChangeTopRank(akFemale, SimpleModestyLevel::Immodest);
+			ChangeTopRank(akFemale, FemaleID, SimpleModestyLevel::Immodest);
 		}
 		return;
 	}
 	else {
 
 		if (CurrentTopRank <= SimpleModestyLevel::Modest) {
-			female.TopModestyTimer0 -= HoursPassed;
-			female.TopModestyTimer1 -= HoursPassed;
-			female.TopModestyTimer2 -= HoursPassed;
+			RegisteredFemales::TopModestyTimer0[FemaleID] -= HoursPassed;
+			RegisteredFemales::TopModestyTimer1[FemaleID] -= HoursPassed;
+			RegisteredFemales::TopModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.TopModestyTimer0 <= 0) {
-				female.TopModestyTimer0 = 0;
+			if (RegisteredFemales::TopModestyTimer0[FemaleID] <= 0) {
+				RegisteredFemales::TopModestyTimer0[FemaleID] = 0;
 			}
 
-			if (female.TopModestyTimer1 <= 0) {
-				female.TopModestyTimer1 = 0;
+			if (RegisteredFemales::TopModestyTimer1[FemaleID] <= 0) {
+				RegisteredFemales::TopModestyTimer1[FemaleID] = 0;
 			}
 
-			if (female.TopModestyTimer2 <= 0) {
-				female.TopModestyTimer2 = 0;
+			if (RegisteredFemales::TopModestyTimer2[FemaleID] <= 0) {
+				RegisteredFemales::TopModestyTimer2[FemaleID] = 0;
 			}
 		}
 		else if (CurrentTopRank == SimpleModestyLevel::Comfortable) {
-			female.TopModestyTimer1 -= HoursPassed;
-			female.TopModestyTimer2 -= HoursPassed;
+			RegisteredFemales::TopModestyTimer1[FemaleID] -= HoursPassed;
+			RegisteredFemales::TopModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.TopModestyTimer2 <= 0) {
-				female.TopModestyTimer2 = 0;
+			if (RegisteredFemales::TopModestyTimer2[FemaleID] <= 0) {
+				RegisteredFemales::TopModestyTimer2[FemaleID] = 0;
 			}
 
-			if (female.TopModestyTimer1 <= -UpgradeTime) {
+			if (RegisteredFemales::TopModestyTimer1[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeTopRank(akFemale, CurrentTopRank - 1);
+					ChangeTopRank(akFemale, FemaleID, CurrentTopRank - 1);
 				}
 				else {
-					female.TopModestyTimer1 = -UpgradeTime;
+					RegisteredFemales::TopModestyTimer1[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
 		else if (CurrentTopRank == SimpleModestyLevel::Brazen) {
-			female.TopModestyTimer2 -= HoursPassed;
+			RegisteredFemales::TopModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.TopModestyTimer2 <= -UpgradeTime) {
+			if (RegisteredFemales::TopModestyTimer2[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeTopRank(akFemale, CurrentTopRank - 1);
+					ChangeTopRank(akFemale, FemaleID, CurrentTopRank - 1);
 				}
 				else {
-					female.TopModestyTimer2 = -UpgradeTime;
+					RegisteredFemales::TopModestyTimer2[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
 		else if (CurrentTopRank == SimpleModestyLevel::Immodest) {
-			female.TopModestyTimer3 -= HoursPassed;
+			RegisteredFemales::TopModestyTimer3[FemaleID] -= HoursPassed;
 
-			if (female.TopModestyTimer3 <= -UpgradeTime) {
+			if (RegisteredFemales::TopModestyTimer3[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeTopRank(akFemale, CurrentTopRank - 1);
+					ChangeTopRank(akFemale, FemaleID, CurrentTopRank - 1);
 				}
 				else {
-					female.TopModestyTimer3 = -UpgradeTime;
+					RegisteredFemales::TopModestyTimer3[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
@@ -349,167 +338,165 @@ void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime,
 	}
 
 	if (CurrentTopRank == SimpleModestyLevel::Modest) {
-		if ((female.TopModestyTimer0 + (female.TopModestyTimer1 / 2) + (female.TopModestyTimer2 / 4)) >= UpgradeTime) {
+		if ((RegisteredFemales::TopModestyTimer0[FemaleID] + (RegisteredFemales::TopModestyTimer1[FemaleID] / 2) + (RegisteredFemales::TopModestyTimer2[FemaleID] / 4)) >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeTopRank(akFemale, CurrentTopRank + 1);
+				ChangeTopRank(akFemale, FemaleID, CurrentTopRank + 1);
 			}
 			else {
-				if (female.TopModestyTimer0 > UpgradeTime) {
-					female.TopModestyTimer0 = UpgradeTime;
+				if (RegisteredFemales::TopModestyTimer0[FemaleID] > UpgradeTime) {
+					RegisteredFemales::TopModestyTimer0[FemaleID] = UpgradeTime;
 				}
 
-				if (female.TopModestyTimer1 > (UpgradeTime * 2)) {
-					female.TopModestyTimer1 = (UpgradeTime * 2);
+				if (RegisteredFemales::TopModestyTimer1[FemaleID] > (UpgradeTime * 2)) {
+					RegisteredFemales::TopModestyTimer1[FemaleID] = (UpgradeTime * 2);
 				}
 
-				if (female.TopModestyTimer2 > (UpgradeTime * 4)) {
-					female.TopModestyTimer2 = (UpgradeTime * 4);
+				if (RegisteredFemales::TopModestyTimer2[FemaleID] > (UpgradeTime * 4)) {
+					RegisteredFemales::TopModestyTimer2[FemaleID] = (UpgradeTime * 4);
 				}
 			}
 		}
 	}
 	else if (CurrentTopRank == SimpleModestyLevel::Comfortable) {
-		if ((female.TopModestyTimer1 + (female.TopModestyTimer2 / 2)) >= UpgradeTime) {
+		if ((RegisteredFemales::TopModestyTimer1[FemaleID] + (RegisteredFemales::TopModestyTimer2[FemaleID] / 2)) >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeTopRank(akFemale, CurrentTopRank + 1);
+				ChangeTopRank(akFemale, FemaleID, CurrentTopRank + 1);
 			}
 			else {
-				if (female.TopModestyTimer1 > UpgradeTime) {
-					female.TopModestyTimer1 = UpgradeTime;
+				if (RegisteredFemales::TopModestyTimer1[FemaleID] > UpgradeTime) {
+					RegisteredFemales::TopModestyTimer1[FemaleID] = UpgradeTime;
 				}
 
-				if (female.TopModestyTimer2 > (UpgradeTime * 2)) {
-					female.TopModestyTimer2 = (UpgradeTime * 2);
+				if (RegisteredFemales::TopModestyTimer2[FemaleID] > (UpgradeTime * 2)) {
+					RegisteredFemales::TopModestyTimer2[FemaleID] = (UpgradeTime * 2);
 				}
 			}
 		}
 	}
 	else if (CurrentTopRank == SimpleModestyLevel::Brazen) {
-		if (female.TopModestyTimer2 >= UpgradeTime) {
+		if (RegisteredFemales::TopModestyTimer2[FemaleID] >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeTopRank(akFemale, CurrentTopRank + 1);
+				ChangeTopRank(akFemale, FemaleID, CurrentTopRank + 1);
 			}
 			else {
-				female.TopModestyTimer2 = UpgradeTime;
+				RegisteredFemales::TopModestyTimer2[FemaleID] = UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentTopRank == SimpleModestyLevel::Immodest) {
-		if (AllowShameless && female.TopModestyTimer3 >= (UpgradeTime * 2)) {
+		if (AllowShameless && RegisteredFemales::TopModestyTimer3[FemaleID] >= (UpgradeTime * 2)) {
 			if (!Blocked) {
-				ChangeTopRank(akFemale, CurrentTopRank + 1);
+				ChangeTopRank(akFemale, FemaleID, CurrentTopRank + 1);
 			}
 			else {
-				female.TopModestyTimer3 = (UpgradeTime * 2);
+				RegisteredFemales::TopModestyTimer3[FemaleID] = (UpgradeTime * 2);
 			}
 		}
-		else if (female.TopModestyTimer3 > UpgradeTime) {
-			female.TopModestyTimer3 = UpgradeTime;
+		else if (RegisteredFemales::TopModestyTimer3[FemaleID] > UpgradeTime) {
+			RegisteredFemales::TopModestyTimer3[FemaleID] = UpgradeTime;
 		}
 	}
 }
 
-void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{0:#x}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int FemaleID, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
+	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
 	
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
-
-	int CurrentBottomRank = female.CurrentRankBottom;
-	int MinimumBottomRank = female.MinimumRankBottom;
+	int CurrentBottomRank = RegisteredFemales::CurrentRankBottom[FemaleID];
+	int MinimumBottomRank = RegisteredFemales::MinimumRankBottom[FemaleID];
 
 	bool IsShowingUnderwear = akFemale->GetFactionRank(ShowingUnderwearFaction, false) == 1;
 	bool IsShowingGenitals = akFemale->GetFactionRank(ShowingGenitalsFaction, false) == 1;
 	bool IsBottomless = akFemale->GetFactionRank(BottomlessFaction, false) == 1;
 
 	if (MinimumBottomRank > CurrentBottomRank) {
-		ChangeBottomRank(akFemale, MinimumBottomRank);
+		ChangeBottomRank(akFemale, FemaleID, MinimumBottomRank);
 	}
 
 	//Modest (Previously 'Shy')
 	if (CurrentBottomRank == SimpleModestyLevel::Modest && IsShowingUnderwear && !IsShowingGenitals) {
-		female.BottomModestyTimer0 += HoursPassed;
+		RegisteredFemales::BottomModestyTimer0[FemaleID] += HoursPassed;
 	}
 	//Comfortable
 	else if (CurrentBottomRank <= SimpleModestyLevel::Comfortable && IsShowingGenitals && !IsBottomless) {
-		female.BottomModestyTimer1 += HoursPassed;
+		RegisteredFemales::BottomModestyTimer1[FemaleID] += HoursPassed;
 	}
 	else if (CurrentBottomRank == SimpleModestyLevel::Comfortable && IsShowingUnderwear && !IsShowingGenitals) {
 		//Do Nothing
 	}
 	//Brazen (Previously 'Bold')
 	else if (CurrentBottomRank <= SimpleModestyLevel::Brazen && IsBottomless) {
-		female.BottomModestyTimer2 += HoursPassed;
+		RegisteredFemales::BottomModestyTimer2[FemaleID] += HoursPassed;
 	}
 	else if (CurrentBottomRank == SimpleModestyLevel::Brazen && IsShowingGenitals && !IsBottomless) {
 		//Do Nothing
 	}
 	//Immodest (Previously 'Shameless')
 	else if (CurrentBottomRank == SimpleModestyLevel::Immodest && IsBottomless) {
-		female.BottomModestyTimer3 += HoursPassed;
+		RegisteredFemales::BottomModestyTimer3[FemaleID] += HoursPassed;
 	}
 	else if (CurrentBottomRank > SimpleModestyLevel::Immodest) {
 		if (!AllowShameless) {
-			ChangeBottomRank(akFemale, SimpleModestyLevel::Immodest);
+			ChangeBottomRank(akFemale, FemaleID, SimpleModestyLevel::Immodest);
 		}
 		return;
 	}
 	else {
 
 		if (CurrentBottomRank <= SimpleModestyLevel::Modest) {
-			female.BottomModestyTimer0 -= HoursPassed;
-			female.BottomModestyTimer1 -= HoursPassed;
-			female.BottomModestyTimer2 -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer0[FemaleID] -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer1[FemaleID] -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.BottomModestyTimer0 <= 0) {
-				female.BottomModestyTimer0 = 0;
+			if (RegisteredFemales::BottomModestyTimer0[FemaleID] <= 0) {
+				RegisteredFemales::BottomModestyTimer0[FemaleID] = 0;
 			}
 
-			if (female.BottomModestyTimer1 <= 0) {
-				female.BottomModestyTimer1 = 0;
+			if (RegisteredFemales::BottomModestyTimer1[FemaleID] <= 0) {
+				RegisteredFemales::BottomModestyTimer1[FemaleID] = 0;
 			}
 
-			if (female.BottomModestyTimer2 <= 0) {
-				female.BottomModestyTimer2 = 0;
+			if (RegisteredFemales::BottomModestyTimer2[FemaleID] <= 0) {
+				RegisteredFemales::BottomModestyTimer2[FemaleID] = 0;
 			}
 		}
 		else if (CurrentBottomRank == SimpleModestyLevel::Comfortable) {
-			female.BottomModestyTimer1 -= HoursPassed;
-			female.BottomModestyTimer2 -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer1[FemaleID] -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.BottomModestyTimer2 <= 0) {
-				female.BottomModestyTimer2 = 0;
+			if (RegisteredFemales::BottomModestyTimer2[FemaleID] <= 0) {
+				RegisteredFemales::BottomModestyTimer2[FemaleID] = 0;
 			}
 
-			if (female.BottomModestyTimer1 <= -UpgradeTime) {
+			if (RegisteredFemales::BottomModestyTimer1[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeBottomRank(akFemale, CurrentBottomRank - 1);
+					ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank - 1);
 				}
 				else {
-					female.BottomModestyTimer1 = -UpgradeTime;
+					RegisteredFemales::BottomModestyTimer1[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
 		else if (CurrentBottomRank == SimpleModestyLevel::Brazen) {
-			female.BottomModestyTimer2 -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer2[FemaleID] -= HoursPassed;
 
-			if (female.BottomModestyTimer2 <= -UpgradeTime) {
+			if (RegisteredFemales::BottomModestyTimer2[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeBottomRank(akFemale, CurrentBottomRank - 1);
+					ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank - 1);
 				}
 				else {
-					female.BottomModestyTimer2 = -UpgradeTime;
+					RegisteredFemales::BottomModestyTimer2[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
 		else if (CurrentBottomRank == SimpleModestyLevel::Immodest) {
-			female.BottomModestyTimer3 -= HoursPassed;
+			RegisteredFemales::BottomModestyTimer3[FemaleID] -= HoursPassed;
 
-			if (female.BottomModestyTimer3 <= -UpgradeTime) {
+			if (RegisteredFemales::BottomModestyTimer3[FemaleID] <= -UpgradeTime) {
 				if (!Corruption) {
-					ChangeBottomRank(akFemale, CurrentBottomRank - 1);
+					ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank - 1);
 				}
 				else {
-					female.BottomModestyTimer3 = -UpgradeTime;
+					RegisteredFemales::BottomModestyTimer3[FemaleID] = -UpgradeTime;
 				}
 			}
 		}
@@ -518,100 +505,97 @@ void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	}
 
 	if (CurrentBottomRank == SimpleModestyLevel::Modest) {
-		if ((female.BottomModestyTimer0 + (female.BottomModestyTimer1 / 2) + (female.BottomModestyTimer2 / 4)) >= UpgradeTime) {
+		if ((RegisteredFemales::BottomModestyTimer0[FemaleID] + (RegisteredFemales::BottomModestyTimer1[FemaleID] / 2) + (RegisteredFemales::BottomModestyTimer2[FemaleID] / 4)) >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeBottomRank(akFemale, CurrentBottomRank + 1);
+				ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank + 1);
 			}
 			else {
-				if (female.BottomModestyTimer0 > UpgradeTime) {
-					female.BottomModestyTimer0 = UpgradeTime;
+				if (RegisteredFemales::BottomModestyTimer0[FemaleID] > UpgradeTime) {
+					RegisteredFemales::BottomModestyTimer0[FemaleID] = UpgradeTime;
 				}
 
-				if (female.BottomModestyTimer1 > (UpgradeTime * 2)) {
-					female.BottomModestyTimer1 = (UpgradeTime * 2);
+				if (RegisteredFemales::BottomModestyTimer1[FemaleID] > (UpgradeTime * 2)) {
+					RegisteredFemales::BottomModestyTimer1[FemaleID] = (UpgradeTime * 2);
 				}
 
-				if (female.BottomModestyTimer2 > (UpgradeTime * 4)) {
-					female.BottomModestyTimer2 = (UpgradeTime * 4);
+				if (RegisteredFemales::BottomModestyTimer2[FemaleID] > (UpgradeTime * 4)) {
+					RegisteredFemales::BottomModestyTimer2[FemaleID] = (UpgradeTime * 4);
 				}
 			}
 		}
 	}
 	else if (CurrentBottomRank == SimpleModestyLevel::Comfortable) {
-		if ((female.BottomModestyTimer1 + (female.BottomModestyTimer2 / 2)) >= UpgradeTime) {
+		if ((RegisteredFemales::BottomModestyTimer1[FemaleID] + (RegisteredFemales::BottomModestyTimer2[FemaleID] / 2)) >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeBottomRank(akFemale, CurrentBottomRank + 1);
+				ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank + 1);
 			}
 			else {
-				if (female.BottomModestyTimer1 > UpgradeTime) {
-					female.BottomModestyTimer1 = UpgradeTime;
+				if (RegisteredFemales::BottomModestyTimer1[FemaleID] > UpgradeTime) {
+					RegisteredFemales::BottomModestyTimer1[FemaleID] = UpgradeTime;
 				}
 
-				if (female.BottomModestyTimer2 > (UpgradeTime * 2)) {
-					female.BottomModestyTimer2 = (UpgradeTime * 2);
+				if (RegisteredFemales::BottomModestyTimer2[FemaleID] > (UpgradeTime * 2)) {
+					RegisteredFemales::BottomModestyTimer2[FemaleID] = (UpgradeTime * 2);
 				}
 			}
 		}
 	}
 	else if (CurrentBottomRank == SimpleModestyLevel::Brazen) {
-		if (female.BottomModestyTimer2 >= UpgradeTime) {
+		if (RegisteredFemales::BottomModestyTimer2[FemaleID] >= UpgradeTime) {
 			if (!Blocked) {
-				ChangeBottomRank(akFemale, CurrentBottomRank + 1);
+				ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank + 1);
 			}
 			else {
-				female.BottomModestyTimer2 = UpgradeTime;
+				RegisteredFemales::BottomModestyTimer2[FemaleID] = UpgradeTime;
 			}
 		}
 	}
 	else if (CurrentBottomRank == SimpleModestyLevel::Immodest) {
-		if (AllowShameless && female.BottomModestyTimer3 >= (UpgradeTime * 2)) {
+		if (AllowShameless && RegisteredFemales::BottomModestyTimer3[FemaleID] >= (UpgradeTime * 2)) {
 			if (!Blocked) {
-				ChangeBottomRank(akFemale, CurrentBottomRank + 1);
+				ChangeBottomRank(akFemale, FemaleID, CurrentBottomRank + 1);
 			}
 			else {
-				female.BottomModestyTimer3 = (UpgradeTime * 2);
+				RegisteredFemales::BottomModestyTimer3[FemaleID] = (UpgradeTime * 2);
 			}
 		}
-		else if (female.BottomModestyTimer3 > UpgradeTime) {
-			female.BottomModestyTimer3 = UpgradeTime;
+		else if (RegisteredFemales::BottomModestyTimer3[FemaleID] > UpgradeTime) {
+			RegisteredFemales::BottomModestyTimer3[FemaleID] = UpgradeTime;
 		}
 	}
 }
 
-void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
+void ProcessNPCModesty(RE::Actor* akFemale, int FemaleID, float CurrentGameTime) {
 	
 	std::string FemaleName = akFemale->GetName();
 
-	Log("<C++ NPCModesty> [ProcessNPCModesty] Actor is: " + FemaleName + " | FormID: (" + std::format("{0:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [ProcessNPCModesty] Actor is: " + FemaleName + " | FormID: (" + std::format("{0:08X}", akFemale->GetFormID()) + ")" + " | Internal ID: " + std::to_string(FemaleID), LogType::NPCModesty);
 
-	RegisteredFemales& female = registeredfemales[akFemale->GetFormID()];
+	bool Corruption = RegisteredFemales::AllowCorruption[FemaleID];
+	bool Blocked = RegisteredFemales::UpgradeBlocked[FemaleID];
 
-	bool Corruption = female.AllowCorruption;
-	bool Blocked = female.UpgradeBlocked;
+	int HoursPassed = static_cast<int>((CurrentGameTime - RegisteredFemales::LastUpdateTime[FemaleID]) / 0.041666);
 
-	int HoursPassed = static_cast<int>((CurrentGameTime - female.LastUpdateTime) / 0.041666);
+	Log("<C++ NPCModesty> [ProcessNPCModesty] RAW Hours passed for this actor: " + std::to_string(((CurrentGameTime - RegisteredFemales::LastUpdateTime[FemaleID]) / 0.041666)), LogType::NPCModesty);
 
-	Log("<C++ NPCModesty> [ProcessNPCModesty] RAW Hours passed for this actor: " + std::to_string(((CurrentGameTime - female.LastUpdateTime) / 0.041666)), LogType::NPCModesty);
-
-	if (HoursPassed < 1) 
-	{
+	if (HoursPassed < 1) {
 		Log("<C++ NPCModesty> [ProcessNPCModesty] Less than an hour has passed for this actor. Skipping update...", LogType::NPCModesty);
 		return;
 	}
 
 	int UpgradeTime = Configuration::ImmodestyTimeNeeded * 24;
 	
-	bool AllowShameless = female.AllowShameless;
+	bool AllowShameless = RegisteredFemales::AllowShameless[FemaleID];
 	
-	bool StrictRules = female.StrictRules;
+	bool StrictRules = RegisteredFemales::StrictRules[FemaleID];
 
 	if (StrictRules) {
-		StrictNPCModesty(akFemale, FemaleName, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
+		StrictNPCModesty(akFemale, FemaleName, FemaleID, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
 	}
 	else {
-		NPCTopModesty(akFemale, FemaleName, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
-		NPCBottomModesty(akFemale, FemaleName, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
+		NPCTopModesty(akFemale, FemaleName, FemaleID, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
+		NPCBottomModesty(akFemale, FemaleName, FemaleID, UpgradeTime, HoursPassed, Corruption, Blocked, AllowShameless);
 	}
 
-	female.LastUpdateTime = CurrentGameTime;
+	RegisteredFemales::LastUpdateTime[FemaleID] = CurrentGameTime;
 }

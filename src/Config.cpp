@@ -312,26 +312,19 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 	return CurtainVector;
 }
 
-std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
-	std::vector<RE::BSFixedString> names;
-
-	for(auto& [id, female] : registeredfemales)
-	{
-		names.emplace_back(female.GetName());
-	}
-
-	return names;
+std::vector<std::string> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
+	return RegisteredFemales::FemaleName;
 }
 
-std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
-	std::vector<RE::BSFixedString> names;
-
-	for(auto& female : permanentfemales)
-	{
-		names.emplace_back(female.Name);
+std::vector<std::string> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
+	std::vector<std::string> NameVector;
+	
+	int Index = 0;
+	while (Index < PermanentFemales::TotalFemales) {
+		NameVector.emplace_back(PermanentFemales::FemaleName[Index].data());
+		Index++;
 	}
-
-	return names;
+	return NameVector;
 }
 
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
@@ -753,64 +746,76 @@ std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 }
 
 std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
-	std::vector<RE::Actor*> actors;
+	std::vector<RE::Actor*> FemaleActors;
+	int Index = 0;
 
-	for(auto& [id, female] : registeredfemales)
-	{
-		actors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(female.id));
+	while (Index < RegisteredFemales::TotalFemales) {
+		FemaleActors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(RegisteredFemales::FemaleFormID[Index]));
+		Index++;
 	}
 
-	return actors;
+	return FemaleActors;
 }
 
-std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
-{
-	std::vector<RE::Actor*> females;
+std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*) {
+	std::vector<RE::Actor*> PermanentFemales;
+	int Index = 0;
 
-	for(auto& female : permanentfemales)
-	{
-		uint32_t modindex = female.GetModIndex();
-
-		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex << 24) | female.LocalID);
-		if(!actor) { continue; }
-
-		females.emplace_back(actor);
-	}
-
-	return females;
-}
-
-std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
-{
-	std::vector<int> data;
-
-	RE::FormID id = akFemale->GetFormID();
-	if(!registeredfemales.count(id))
-	{
-		Log("<C++ Config> [GetFemaleActorData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", id) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+	while (Index < PermanentFemales::TotalFemales) {
+		RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+		RE::FormID PluginIndex = 0xFF;
 		
-		return data;
+		if (PermanentFemales::IsInLightPlugin[Index]) {
+			if (DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index].data()).has_value()) {
+				PluginIndex = DataHandler->GetLoadedLightModIndex(PermanentFemales::FemalePlugin[Index].data()).value();
+			}
+		}
+		else {
+			if (DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index].data()).has_value()) {
+				PluginIndex = DataHandler->GetLoadedModIndex(PermanentFemales::FemalePlugin[Index].data()).value();
+			}
+		}
+		
+		if (PluginIndex != 0xFF) {
+			RE::FormID FullFormID = PluginIndex & PermanentFemales::FemaleLocalID[Index];
+			
+			PermanentFemales.emplace_back(RE::TESForm::LookupByID<RE::Actor>(FullFormID));
+		}
+		Index++;
 	}
 
-	RegisteredFemales& female = registeredfemales[id];
+
+	return PermanentFemales;
+}
+
+std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	RE::FormID akFormID = akFemale->GetFormID();
+	int FemaleIndex = FindInVector(RegisteredFemales::FemaleFormID, akFormID);
+	std::vector<int> FemaleData;
+
+	if (FemaleIndex < 0) {
+		std::string akName = akFemale->GetName();
+		Log("<C++ Config> [GetFemaleActorData] Female " + akName + " (" + std::format("{:08X}", akFormID) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		return FemaleData;
+	}
 	
-	data.emplace_back(female.CurrentRankStrict);
-	data.emplace_back(female.MinimumRankStrict);
+	FemaleData.emplace_back(RegisteredFemales::CurrentRankStrict[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::MinimumRankStrict[FemaleIndex]);
 
-	data.emplace_back(female.CurrentRankTop);
-	data.emplace_back(female.MinimumRankTop);
+	FemaleData.emplace_back(RegisteredFemales::CurrentRankTop[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::MinimumRankTop[FemaleIndex]);
 
-	data.emplace_back(female.CurrentRankBottom);
-	data.emplace_back(female.MinimumRankBottom);
+	FemaleData.emplace_back(RegisteredFemales::CurrentRankBottom[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::MinimumRankBottom[FemaleIndex]);
 
-	data.emplace_back(female.AllowShameless);
-	data.emplace_back(female.AllowCorruption);
+	FemaleData.emplace_back(RegisteredFemales::AllowShameless[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::AllowCorruption[FemaleIndex]);
 
-	data.emplace_back(female.ShynessMode);
-	data.emplace_back(female.StrictRules);
-	data.emplace_back(female.UpgradeBlocked);
+	FemaleData.emplace_back(RegisteredFemales::ShynessMode[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::StrictRules[FemaleIndex]);
+	FemaleData.emplace_back(RegisteredFemales::UpgradeBlocked[FemaleIndex]);
 
-	return data;
+	return FemaleData;
 }
 
 std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*) {
