@@ -11,231 +11,56 @@
 
 void SavePermanentNPCs() 
 {
-	const char path[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
+	const char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
 
-	if(!permanentfemales.size())
+	if(!PermanentFemaleVector.size())
 	{
 		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", LogType::Core, LoggingLevel::warning);
-		if (std::filesystem::exists(path)) 
+		if (std::filesystem::exists(FilePath))
 		{
 			Log("<C++ SaveLoad> [SavePermanentNPCs] Deleting Permanent NPC file since no Permanent NPCs exist!", LogType::Core, LoggingLevel::warning);
-			std::filesystem::remove(path);
+			std::filesystem::remove(FilePath);
 		}
 
 		return;
 	}
 
-	std::ofstream file(path, std::ios::binary);
+	std::ofstream ActorFile(FilePath, std::ios::binary);
 
-	for(auto& female : permanentfemales)
+	for(auto& Female : PermanentFemaleVector)
 	{
-		file.write(reinterpret_cast<char*>(&female), sizeof(female));
+		ActorFile.write(reinterpret_cast<char*>(&Female), sizeof(Female));
 	}
 
-	file.close();
+	ActorFile.close();
 }
 
 void LoadPermanentNPCs()
 {
-	const char path[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.txt";
+	const char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
 
-	if (!std::filesystem::exists(path))
+	if (!std::filesystem::exists(FilePath))
 	{
 		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", LogType::Core, LoggingLevel::warning);
 
 		return;
 	}
 
-	std::ifstream file(path, std::ios::binary);
+	std::ifstream ActorFile(FilePath, std::ios::binary);
 
-	file.seekg(0, std::ios::end);
-	size_t size = file.tellg();
-	file.seekg(0, std::ios::beg);
+	ActorFile.seekg(0, std::ios::end);
+	size_t FileSize = ActorFile.tellg();
+	ActorFile.seekg(0, std::ios::beg);
 
-	for(size_t i = 0; i < (size / sizeof(PermanentFemales)); ++i)
+	for(size_t Index = 0; Index < (FileSize / sizeof(PermanentFemales)); ++Index)
 	{
-		PermanentFemales female;
-		file.read(reinterpret_cast<char*>(&female), sizeof(female));
+		PermanentFemales Female;
+		ActorFile.read(reinterpret_cast<char*>(&Female), sizeof(Female));
 
-		permanentfemales.emplace_back(female);
+		PermanentFemaleVector.emplace_back(Female);
 	}
 
-	file.close();
-}
-*/
-
-void Serialize(std::ostream& output) {
-	logs::critical("SAVELOAD | Serialize - START");
-
-	logs::critical("SAVELOAD | Serialize - Writing TotalFemales...");
-	output.write(reinterpret_cast<const char*>(&PermanentFemales::TotalFemales), sizeof(int));
-
-	std::array<char, 256> tempCharArray;
-
-	//std::vector<std::array<char, 256>> tempPluginVector;
-	//std::vector<std::array<char, 256>> tempNameVector;
-
-	int Index = 0;
-
-	while (Index < PermanentFemales::TotalFemales) {
-		
-		logs::critical("SAVELOAD | Serialize - Writing LocalID. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::FemaleLocalID[Index]), sizeof(RE::FormID));
-
-		logs::critical("SAVELOAD | Serialize - Writing FemalePlugin. Index {}", Index);
-		//PermanentFemales::FemalePlugin[Index].copy(tempPluginVector[Index].data(), tempPluginVector[Index].size());
-		PermanentFemales::FemalePlugin[Index].copy(tempCharArray.data(), tempCharArray.size());
-		//output.write(reinterpret_cast<const char*>(tempPluginVector[Index].data()), sizeof(char[256]));
-		output.write(tempCharArray.data(), sizeof(char[256]));
-
-		logs::critical("SAVELOAD | Serialize - Writing IsInLightPlugin. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::IsInLightPlugin[Index]), sizeof(uint8_t));
-		
-		logs::critical("SAVELOAD | Serialize - Writing FemaleName. Index {}", Index);
-		PermanentFemales::FemaleName[Index].copy(tempCharArray.data(), tempCharArray.size());
-		output.write(tempCharArray.data(), sizeof(char[256]));
-
-		logs::critical("SAVELOAD | Serialize - Writing Strict Ranks. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::DefaultRankStrict[Index]), sizeof(int));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::MinimumRankStrict[Index]), sizeof(int));
-
-		logs::critical("SAVELOAD | Serialize - Writing Top Ranks. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::DefaultRankTop[Index]), sizeof(int));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::MinimumRankTop[Index]), sizeof(int));
-
-		logs::critical("SAVELOAD | Serialize - Writing BottomRanks. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::DefaultRankBottom[Index]), sizeof(int));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::MinimumRankBottom[Index]), sizeof(int));
-
-		logs::critical("SAVELOAD | Serialize - Writing Shyness and Sexuality. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::ShynessMode[Index]), sizeof(int));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::SexualityScore[Index]), sizeof(int));
-
-		logs::critical("SAVELOAD | Serialize - Writing Rulesets. Index {}", Index);
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::AllowShameless[Index]), sizeof(uint8_t));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::AllowCorruption[Index]), sizeof(uint8_t));
-		output.write(reinterpret_cast<const char*>(&PermanentFemales::StrictRules[Index]), sizeof(uint8_t));
-
-		Index++;
-	}
-	logs::critical("SAVELOAD | Serialize - COMPLETE");
-}
-
-void SavePermanentNPCs() {
-	std::string FilePath = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
-
-	if (PermanentFemales::TotalFemales < 1) {
-		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", LogType::Core, LoggingLevel::warning);
-
-		if (std::filesystem::exists(FilePath)) {
-			Log("<C++ SaveLoad> [SavePermanentNPCs] Deleting Permanent NPC file since no Permanent NPCs exist!", LogType::Core, LoggingLevel::warning);
-			std::filesystem::remove(FilePath);
-		}
-		return;
-	}
-
-	logs::critical("SAVELOAD | SavePermanentNPCs - Create OFSTREAM");
-	std::ofstream SaveFile(FilePath, std::ios::binary);
-
-	logs::critical("SAVELOAD | SavePermanentNPCs - SERIALIZE");
-	Serialize(SaveFile);
-	SaveFile.close();
-}
-
-void Deserialize(std::istream& input) {
-	logs::critical("SAVELOAD | Deserialize - START");
-	
-	logs::critical("SAVELOAD | Deserialize - Reading TotalFemales...");
-	input.read(reinterpret_cast<char*>(&PermanentFemales::TotalFemales), sizeof(int));
-
-	RE::FormID tempFormID;
-
-	uint8_t bValue;
-
-	int iValue;
-
-	std::array<char, 256> tempCharArray;
-
-	//std::vector<std::array<char, 256>> tempPluginVector;
-	//std::vector<std::array<char, 256>> tempNameVector;
-
-	int Index = 0;
-	while (Index < PermanentFemales::TotalFemales) {
-		logs::critical("SAVELOAD | Deserialize - Reading LocalID. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&tempFormID), sizeof(RE::FormID));
-		PermanentFemales::FemaleLocalID.emplace_back(tempFormID);
-
-		logs::critical("SAVELOAD | Deserialize - Reading FemalePlugin. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&tempCharArray), sizeof(char[256]));
-		PermanentFemales::FemalePlugin.emplace_back(tempCharArray.data());
-
-		logs::critical("SAVELOAD | Deserialize - Reading IsInLightPlugin. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&bValue), sizeof(uint8_t));
-		PermanentFemales::IsInLightPlugin.emplace_back(bValue);
-
-		logs::critical("SAVELOAD | Deserialize - Reading FemaleName. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&tempCharArray), sizeof(char[256]));
-		PermanentFemales::FemaleName.emplace_back(tempCharArray.data());
-
-		//Ranks
-
-		logs::critical("SAVELOAD | Deserialize - Reading Ranks. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::DefaultRankStrict.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::MinimumRankStrict.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::DefaultRankTop.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::MinimumRankTop.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::DefaultRankBottom.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::MinimumRankBottom.emplace_back(iValue);
-
-		//Shy & Sexuality
-
-		logs::critical("SAVELOAD | Deserialize - Reading Shyness and Sexuality. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::ShynessMode.emplace_back(iValue);
-
-		input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
-		PermanentFemales::SexualityScore.emplace_back(iValue);
-
-		//Rulesets
-
-		logs::critical("SAVELOAD | Deserialize - Reading Rulesets. Index {}", Index);
-		input.read(reinterpret_cast<char*>(&bValue), sizeof(uint8_t));
-		PermanentFemales::AllowShameless.emplace_back(bValue);
-
-		input.read(reinterpret_cast<char*>(&bValue), sizeof(uint8_t));
-		PermanentFemales::AllowCorruption.emplace_back(bValue);
-
-		input.read(reinterpret_cast<char*>(&bValue), sizeof(uint8_t));
-		PermanentFemales::StrictRules.emplace_back(bValue);
-
-		Index++;
-	}
-
-	logs::critical("SAVELOAD | Deserialize - COMPLETE");
-}
-
-void LoadPermanentNPCs() {
-	std::string FilePath = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
-
-	if (std::filesystem::exists(FilePath)) {
-		std::ifstream LoadFile(FilePath, std::ios::binary);
-		Deserialize(LoadFile);
-		LoadFile.close();
-	}
-	else {
-		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", LogType::Core, LoggingLevel::warning);
-	}
+	ActorFile.close();
 }
 
 // 4-char record tags. Must be unique within your plugin.
@@ -266,22 +91,22 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 	// --- NPC record ---
 	if (serializer->OpenRecord(kNPCsRecord, kVersion)) {
 
-		const uint32_t count = (uint32_t)registeredfemales.size();
+		const uint32_t RegisteredCount = (uint32_t)RegisteredFemaleMap.size();
 
-		serializer->WriteRecordData(&count, sizeof(count));
+		serializer->WriteRecordData(&RegisteredCount, sizeof(RegisteredCount));
 
-		for (auto& [id, female] : registeredfemales)
+		for (auto& [ID, Female] : RegisteredFemaleMap)
 		{
-			serializer->WriteRecordData(reinterpret_cast<const char*>(&female), sizeof(female));
+			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
 		}
 
-		const uint32_t permanent_count = (uint32_t)permanentfemales.size();
+		const uint32_t PermanentCount = (uint32_t)PermanentFemaleVector.size();
 
-		serializer->WriteRecordData(&permanent_count, sizeof(permanent_count));
+		serializer->WriteRecordData(&PermanentCount, sizeof(PermanentCount));
 
-		for(auto& female : permanentfemales)
+		for(auto& Female : PermanentFemaleVector)
 		{
-			serializer->WriteRecordData(reinterpret_cast<const char*>(&female), sizeof(female));
+			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
 		}
 	}
 
@@ -348,7 +173,6 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 			serializer->WriteRecordData(&RegisteredPlugins::ImmodestyTimeRequired[Index], sizeof(int));
 
-			//serializer->WriteRecordData(&RegisteredPlugins::Plugins[Index], sizeof(std::string));
 			WriteString(serializer, RegisteredPlugins::Plugins[Index]);
 			Index++;
 		}
@@ -372,42 +196,37 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 			case kNPCsRecord: 
 			{
-				uint32_t count = 0;
-				serializer->ReadRecordData(&count, sizeof(count));
-				logs::critical("Reading NPC Records. RegisteredFemales Record Count is {}", count);
-
-				int StrictTimer[7];
-				int SimpleTimer[4];
-
-				int Ranks[3];
+				uint32_t RegisteredCount = 0;
+				serializer->ReadRecordData(&RegisteredCount, sizeof(RegisteredCount));
+				logs::critical("Reading NPC Records. RegisteredFemales Record Count is {}", RegisteredCount);
 				
-				for (uint32_t i = 0; i < count; ++i)
+				for (uint32_t Index = 0; Index < RegisteredCount; ++Index)
 				{
-					RegisteredFemales female;
-					serializer->ReadRecordData(reinterpret_cast<char*>(&female), sizeof(female));
+					RegisteredFemales ThisFemale;
+					serializer->ReadRecordData(reinterpret_cast<char*>(&ThisFemale), sizeof(ThisFemale));
 
-					RE::FormID resolvedID = 0;
-					if (!serializer->ResolveFormID(female.id, resolvedID)) 
+					RE::FormID ResolvedID = 0;
+					if (!serializer->ResolveFormID(ThisFemale.FemaleFormID, ResolvedID))
 					{
-						logs::warn("Dropping unresolved FormID {:08X}", female.id);
+						logs::warn("Dropping unresolved FormID {:08X}", ThisFemale.FemaleFormID);
 
 						continue;
 					}
 
-					female.id = resolvedID;
+					ThisFemale.FemaleFormID = ResolvedID;
 
-					registeredfemales[female.id] = female;
+					RegisteredFemaleMap[ThisFemale.FemaleFormID] = ThisFemale;
 				}
 
-				uint32_t permanent_count = 0;
-				serializer->ReadRecordData(&permanent_count, sizeof(permanent_count));
+				uint32_t PermanentCount = 0;
+				serializer->ReadRecordData(&PermanentCount, sizeof(PermanentCount));
 	
-				for (uint32_t i = 0; i < permanent_count; ++i)
+				for (uint32_t Index = 0; Index < PermanentCount; ++Index)
 				{
-					PermanentFemales female;
-					serializer->ReadRecordData(reinterpret_cast<char*>(&female), sizeof(female));
+					PermanentFemales ThisFemale;
+					serializer->ReadRecordData(reinterpret_cast<char*>(&ThisFemale), sizeof(ThisFemale));
 
-					permanentfemales.emplace_back(female);
+					PermanentFemaleVector.emplace_back(ThisFemale);
 				}
 
 				break;
@@ -499,7 +318,6 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 					serializer->ReadRecordData(&iValue, sizeof(int));
 					RegisteredPlugins::ImmodestyTimeRequired.emplace_back(iValue);
 
-					//serializer->ReadRecordData(&sValue, sizeof(sValue));
 					ReadString(serializer, sValue);
 					RegisteredPlugins::Plugins.emplace_back(sValue);
 

@@ -11,17 +11,22 @@ enum FunctionEnd {
 	FailCritical
 };
 
+void NPCDataOnRevertCallback() {
+	PermanentFemaleVector.clear();
+	RegisteredFemaleMap.clear();
+}
+
 int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 {
-	for(int i = 0; i < permanentfemales.size(); ++i)
+	for(int Index = 0; Index < PermanentFemaleVector.size(); ++Index)
 	{
-		uint32_t modindex = permanentfemales[i].GetModIndex();
+		uint32_t ModIndex = PermanentFemaleVector[Index].GetModIndex();
 
-		RE::FormID id = (modindex << 24) | permanentfemales[i].LocalID;
-		if(id == akFemale->GetFormID()) { return i; }
+		RE::FormID PermanentFemaleFormID = ModIndex | PermanentFemaleVector[Index].LocalID;
+		if(PermanentFemaleFormID == akFemale->GetFormID()) { return Index; }
 	}
 
-	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
+	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
 
 	return -1;
 }
@@ -132,45 +137,45 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 		SetActorFactionRank(akFemale, ShyWithFemale, 0);
 	}
 
-	RegisteredFemales female;
-	memset(&female, 0, sizeof(female)); // intialize all data as 0
+	RegisteredFemales ThisFemale;
+	memset(&ThisFemale, 0, sizeof(ThisFemale)); // intialize all data as 0
 
-	strncpy_s(female.Name, sizeof(female.Name), FemaleName.c_str(), sizeof(female.Name));
+	strncpy_s(ThisFemale.Name, sizeof(ThisFemale.Name), FemaleName.c_str(), sizeof(ThisFemale.Name));
 
-	female.id = FemaleForm;
+	ThisFemale.FemaleFormID = FemaleForm;
 
-	female.DefaultRankStrict = StrictModesty;
-	female.CurrentRankStrict = StrictModesty;
+	ThisFemale.DefaultRankStrict = StrictModesty;
+	ThisFemale.CurrentRankStrict = StrictModesty;
 
-	female.DefaultRankTop = TopModesty;
-	female.CurrentRankTop = TopModesty;
+	ThisFemale.DefaultRankTop = TopModesty;
+	ThisFemale.CurrentRankTop = TopModesty;
 
-	female.DefaultRankBottom = BottomModesty;
-	female.CurrentRankBottom = BottomModesty;
+	ThisFemale.DefaultRankBottom = BottomModesty;
+	ThisFemale.CurrentRankBottom = BottomModesty;
 
-	female.ShynessMode = ShynessMode;
-	female.SexualityScore = SexualityScore;
+	ThisFemale.ShynessMode = ShynessMode;
+	ThisFemale.SexualityScore = SexualityScore;
 
-	female.AllowShameless = Configuration::NPCShamelessByDefault;
-	female.AllowCorruption = Configuration::NPCCorruptionByDefault;
-	female.StrictRules = Configuration::NPCStrictRulesByDefault;
-	female.UpgradeBlocked = false;
+	ThisFemale.AllowShameless = Configuration::NPCShamelessByDefault;
+	ThisFemale.AllowCorruption = Configuration::NPCCorruptionByDefault;
+	ThisFemale.StrictRules = Configuration::NPCStrictRulesByDefault;
+	ThisFemale.UpgradeBlocked = false;
 
-	female.LastUpdateTime = CurrentGameTime;
+	ThisFemale.LastUpdateTime = CurrentGameTime;
 
-	registeredfemales[FemaleForm] = female;
+	RegisteredFemaleMap[FemaleForm] = ThisFemale;
 
-	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:#x}", FemaleForm) + " | Internal ID: " + std::to_string(registeredfemales.size()), LogType::Core, LoggingLevel::info);
+	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:08X}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemaleMap.size()), LogType::Core, LoggingLevel::info);
 }
 
 void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale) 
 {
-	registeredfemales.erase(akfemale->GetFormID());
+	RegisteredFemaleMap.erase(akfemale->GetFormID());
 }
 
 void DeleteAllFemales(RE::StaticFunctionTag*)
 {
-	registeredfemales.clear();
+	RegisteredFemaleMap.clear();
 }
 
 void RegisterRosa(float CurrentGameTime, int SexualityScore) {
@@ -209,36 +214,36 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 		ShynessMode = ShySex::Both;
 	}
 
-	RegisteredFemales female;
-	memset(&female, 0, sizeof(female)); // intialize all data as 0
+	RegisteredFemales ThisFemale;
+	memset(&ThisFemale, 0, sizeof(ThisFemale)); // intialize all data as 0
 
-	strncpy_s(female.Name, sizeof(female.Name), RosaName.c_str(), sizeof(female.Name));
+	strncpy_s(ThisFemale.Name, sizeof(ThisFemale.Name), RosaName.c_str(), sizeof(ThisFemale.Name));
 
-	female.id = RosaForm;
+	ThisFemale.FemaleFormID = RosaForm;
 
-	female.DefaultRankStrict = StrictModestyLevel::Immodest;
-	female.CurrentRankStrict = StrictModestyLevel::Immodest;
-	female.MinimumRankStrict = StrictModestyLevel::Immodest;
+	ThisFemale.DefaultRankStrict = StrictModestyLevel::Immodest;
+	ThisFemale.CurrentRankStrict = StrictModestyLevel::Immodest;
+	ThisFemale.MinimumRankStrict = StrictModestyLevel::Immodest;
 
-	female.DefaultRankTop = SimpleModestyLevel::Immodest;
-	female.CurrentRankTop = SimpleModestyLevel::Immodest;
-	female.MinimumRankTop = SimpleModestyLevel::Immodest;
+	ThisFemale.DefaultRankTop = SimpleModestyLevel::Immodest;
+	ThisFemale.CurrentRankTop = SimpleModestyLevel::Immodest;
+	ThisFemale.MinimumRankTop = SimpleModestyLevel::Immodest;
 
-	female.DefaultRankBottom = SimpleModestyLevel::Immodest;
-	female.CurrentRankBottom = SimpleModestyLevel::Immodest;
-	female.MinimumRankBottom = SimpleModestyLevel::Immodest;
+	ThisFemale.DefaultRankBottom = SimpleModestyLevel::Immodest;
+	ThisFemale.CurrentRankBottom = SimpleModestyLevel::Immodest;
+	ThisFemale.MinimumRankBottom = SimpleModestyLevel::Immodest;
 
-	female.ShynessMode = ShynessMode;
-	female.SexualityScore = SexualityScore;
+	ThisFemale.ShynessMode = ShynessMode;
+	ThisFemale.SexualityScore = SexualityScore;
 
-	female.AllowShameless = Configuration::NPCShamelessByDefault;
-	female.AllowCorruption = Configuration::NPCCorruptionByDefault;
-	female.StrictRules = Configuration::StrictModestyRules;
-	female.UpgradeBlocked = false;
+	ThisFemale.AllowShameless = Configuration::NPCShamelessByDefault;
+	ThisFemale.AllowCorruption = Configuration::NPCCorruptionByDefault;
+	ThisFemale.StrictRules = Configuration::StrictModestyRules;
+	ThisFemale.UpgradeBlocked = false;
 
-	female.LastUpdateTime = CurrentGameTime;
+	ThisFemale.LastUpdateTime = CurrentGameTime;
 
-	registeredfemales[RosaForm] = female;
+	RegisteredFemaleMap[RosaForm] = ThisFemale;
 }
 
 int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) 
@@ -246,30 +251,36 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
 	std::string akName = akFemale->GetName();
-	RE::FormID id = akFemale->GetFormID();
+	RE::FormID FemaleFormID = akFemale->GetFormID();
 
-	if (!registeredfemales.count(id)) 
+	if (!RegisteredFemaleMap.count(FemaleFormID))
 	{
 		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
 
 		return FunctionEnd::FailCritical;
 	}
 
-	PermanentFemales female;
+	PermanentFemales ThisFemale;
+	memset(&ThisFemale, 0, sizeof(ThisFemale)); //force all new data to blank/false
+
 	uint32_t pluginID;
 
-	switch(id >> 24)
+	Log("DEBUG | REGISTER PERMANENT | Female Form ID (Pre-shift) is: " + std::format("{:08X}", FemaleFormID));
+	RE::FormID testID = FemaleFormID >> 24;
+	Log("DEBUG | REGISTER PERMANENT | Female Form ID (Post-shift) is: " + std::format("{:08X}", testID));
+
+	switch(FemaleFormID >> 24)
 	{
 		case 0xFF:
-		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:#x}", id) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
 		return FunctionEnd::FailError;
 
 		case 0xFE:
-		female.LightPlugin = true;
-		pluginID = id >> 12;
+		ThisFemale.LightPlugin = true;
+		pluginID = FemaleFormID >> 12;
 		break;
 
-		default: pluginID = id >> 24; break;
+		default: pluginID = FemaleFormID >> 24; break;
 	}
 
 	const RE::TESFile* plugin = DataHandler->LookupLoadedModByIndex((uint8_t)pluginID);
@@ -281,47 +292,47 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	RE::FormID localID = akFemale->GetLocalFormID();
 
-	for(size_t i = 0; i < permanentfemales.size(); ++i)
+	for(size_t i = 0; i < PermanentFemaleVector.size(); ++i)
 	{
-		if(permanentfemales[i].LocalID == localID)
+		if(PermanentFemaleVector[i].LocalID == localID)
 		{
-			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:#x}", id) + ") (Local ID | " + std::format("{:#x}", localID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
+			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:08X}", FemaleFormID) + ") (Local ID | " + std::format("{:08X}", localID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
 			return FunctionEnd::FailWarn;
 		}
 	}
 
-	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:#x}", id), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:#x}", localID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:08X}", FemaleFormID), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:08X}", localID), LogType::NPCData);
 	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), LogType::NPCData);
 
-	female.LocalID = localID;
+	ThisFemale.LocalID = localID;
 
 	const std::string_view plugin_name = plugin->GetFilename();
-	memset(female.Plugin, 0, sizeof(female.Plugin));
-	// if plugin_name.size() is larger than sizeof(female.Plugin) we write over the buffer length.
+	memset(ThisFemale.Plugin, 0, sizeof(ThisFemale.Plugin));
+	// if plugin_name.size() is larger than sizeof(ThisFemale.Plugin) we write over the buffer length.
 	// if plugin_name.size() if equal to 256 then the string will not be null terminated
-	memcpy(female.Plugin, plugin_name.data(), plugin_name.size());
-	strncpy_s(female.Name, sizeof(female.Name), akName.c_str(), sizeof(female.Name));
+	memcpy(ThisFemale.Plugin, plugin_name.data(), plugin_name.size());
+	strncpy_s(ThisFemale.Name, sizeof(ThisFemale.Name), akName.c_str(), sizeof(ThisFemale.Name));
 
-	RegisteredFemales& reg = registeredfemales[id];
+	RegisteredFemales& reg = RegisteredFemaleMap[FemaleFormID];
 
-	female.DefaultRankStrict = reg.DefaultRankStrict;
-	female.MinimumRankStrict = reg.MinimumRankStrict;
+	ThisFemale.DefaultRankStrict = reg.DefaultRankStrict;
+	ThisFemale.MinimumRankStrict = reg.MinimumRankStrict;
 
-	female.DefaultRankTop = reg.DefaultRankTop;
-	female.MinimumRankTop = reg.MinimumRankTop;
+	ThisFemale.DefaultRankTop = reg.DefaultRankTop;
+	ThisFemale.MinimumRankTop = reg.MinimumRankTop;
 
-	female.DefaultRankBottom = reg.DefaultRankBottom;
-	female.MinimumRankBottom = reg.MinimumRankBottom;
+	ThisFemale.DefaultRankBottom = reg.DefaultRankBottom;
+	ThisFemale.MinimumRankBottom = reg.MinimumRankBottom;
 
-	female.ShynessMode = reg.ShynessMode;
-	female.SexualityScore = reg.SexualityScore;
+	ThisFemale.ShynessMode = reg.ShynessMode;
+	ThisFemale.SexualityScore = reg.SexualityScore;
 
-	female.AllowShameless = reg.AllowShameless;
-	female.AllowCorruption = reg.AllowCorruption;
-	female.StrictRules = reg.StrictRules;
+	ThisFemale.AllowShameless = reg.AllowShameless;
+	ThisFemale.AllowCorruption = reg.AllowCorruption;
+	ThisFemale.StrictRules = reg.StrictRules;
 
-	permanentfemales.emplace_back(female);
+	PermanentFemaleVector.emplace_back(ThisFemale);
 
 	return FunctionEnd::Success;
 }
@@ -332,69 +343,67 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	if(index < 0)
 	{
-		Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
 
 		return FunctionEnd::FailCritical;
 	}
 
-	permanentfemales.erase(permanentfemales.begin() + index);
+	PermanentFemaleVector.erase(PermanentFemaleVector.begin() + index);
 
 	return FunctionEnd::Success;
 }
 
 void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
 {
-	if (!permanentfemales.size())
+	if (!PermanentFemaleVector.size())
 	{
 		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
 
 		return;
 	}
 
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-
-	for(PermanentFemales& female : permanentfemales)
+	for(PermanentFemales& ThisFemale : PermanentFemaleVector)
 	{
-		RE::FormID id = female.GetModIndex() << 24 | female.LocalID;
+		RE::FormID PermanentFemaleFormID = ThisFemale.GetModIndex() | ThisFemale.LocalID;
 
-		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>(id);
-		if(!actor)
+		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
+		if(!ValidActor)
 		{
-			Log("<C++ NPCData> [ImportPermanents] Could not import female " + std::string(female.GetName()) + " because their Form ID (" + std::format("{:#x}", id) + ") returns a null pointer!");
+			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThisFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!");
 
 			continue;
 		}
 
-		RegisteredFemales f;
-		memset(&f, 0, sizeof(f));
+		RegisteredFemales ImportThisFemale;
+		memset(&ImportThisFemale, 0, sizeof(ImportThisFemale));
 
-		memcpy(f.Name, female.Name, sizeof(f.Name));
+		memcpy(ImportThisFemale.Name, ThisFemale.Name, sizeof(ImportThisFemale.Name));
 
-		f.id = id;
+		ImportThisFemale.FemaleFormID = PermanentFemaleFormID;
 
-		f.CurrentRankStrict = female.DefaultRankStrict;
-		f.DefaultRankStrict = female.DefaultRankStrict;
-		f.MinimumRankStrict = female.MinimumRankStrict;
+		ImportThisFemale.CurrentRankStrict = ThisFemale.DefaultRankStrict;
+		ImportThisFemale.DefaultRankStrict = ThisFemale.DefaultRankStrict;
+		ImportThisFemale.MinimumRankStrict = ThisFemale.MinimumRankStrict;
 
-		f.CurrentRankTop = female.DefaultRankTop;
-		f.DefaultRankTop = female.DefaultRankTop;
-		f.MinimumRankTop = female.MinimumRankTop;
+		ImportThisFemale.CurrentRankTop = ThisFemale.DefaultRankTop;
+		ImportThisFemale.DefaultRankTop = ThisFemale.DefaultRankTop;
+		ImportThisFemale.MinimumRankTop = ThisFemale.MinimumRankTop;
 
-		f.CurrentRankBottom = female.DefaultRankBottom;
-		f.DefaultRankBottom = female.DefaultRankBottom;
-		f.MinimumRankBottom = female.MinimumRankBottom;
+		ImportThisFemale.CurrentRankBottom = ThisFemale.DefaultRankBottom;
+		ImportThisFemale.DefaultRankBottom = ThisFemale.DefaultRankBottom;
+		ImportThisFemale.MinimumRankBottom = ThisFemale.MinimumRankBottom;
 
-		f.ShynessMode = female.ShynessMode;
-		f.SexualityScore = female.SexualityScore;
+		ImportThisFemale.ShynessMode = ThisFemale.ShynessMode;
+		ImportThisFemale.SexualityScore = ThisFemale.SexualityScore;
 
-		f.AllowShameless = female.AllowShameless;
-		f.AllowCorruption = female.AllowCorruption;
-		f.StrictRules = female.StrictRules;
-		f.UpgradeBlocked = false;
+		ImportThisFemale.AllowShameless = ThisFemale.AllowShameless;
+		ImportThisFemale.AllowCorruption = ThisFemale.AllowCorruption;
+		ImportThisFemale.StrictRules = ThisFemale.StrictRules;
+		ImportThisFemale.UpgradeBlocked = false;
 
-		f.LastUpdateTime = CurrentGameTime;
+		ImportThisFemale.LastUpdateTime = CurrentGameTime;
 
-		registeredfemales[id] = f;
+		RegisteredFemaleMap[PermanentFemaleFormID] = ImportThisFemale;
 	}
 }
 
@@ -408,9 +417,9 @@ void TweakFemaleData
 ) {
 	RE::FormID id = akFemale->GetFormID();
 
-	if (!registeredfemales.count(id)) 
+	if (!RegisteredFemaleMap.count(id)) 
 	{
-		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", id) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", id) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
 		
 		return;
 	}
@@ -419,69 +428,69 @@ void TweakFemaleData
 	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopRank));
 	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomRank));
 
-	RegisteredFemales& female = registeredfemales[id];
+	RegisteredFemales& ThisFemale = RegisteredFemaleMap[id];
 
-	female.ModestyTimer0 = 0;
-	female.ModestyTimer1 = 0;
-	female.ModestyTimer2 = 0;
-	female.ModestyTimer3 = 0;
-	female.ModestyTimer4 = 0;
-	female.ModestyTimer5 = 0;
-	female.ModestyTimer6 = 0;
+	ThisFemale.ModestyTimer0 = 0;
+	ThisFemale.ModestyTimer1 = 0;
+	ThisFemale.ModestyTimer2 = 0;
+	ThisFemale.ModestyTimer3 = 0;
+	ThisFemale.ModestyTimer4 = 0;
+	ThisFemale.ModestyTimer5 = 0;
+	ThisFemale.ModestyTimer6 = 0;
 
-	female.TopModestyTimer0 = 0;
-	female.TopModestyTimer1 = 0;
-	female.TopModestyTimer2 = 0;
-	female.TopModestyTimer3 = 0;
+	ThisFemale.TopModestyTimer0 = 0;
+	ThisFemale.TopModestyTimer1 = 0;
+	ThisFemale.TopModestyTimer2 = 0;
+	ThisFemale.TopModestyTimer3 = 0;
 
-	female.BottomModestyTimer0 = 0;
-	female.BottomModestyTimer1 = 0;
-	female.BottomModestyTimer2 = 0;
-	female.BottomModestyTimer3 = 0;
+	ThisFemale.BottomModestyTimer0 = 0;
+	ThisFemale.BottomModestyTimer1 = 0;
+	ThisFemale.BottomModestyTimer2 = 0;
+	ThisFemale.BottomModestyTimer3 = 0;
 
-	female.CurrentRankStrict = StrictRank;
-	female.CurrentRankTop = TopRank;
-	female.CurrentRankBottom = BottomRank;
+	ThisFemale.CurrentRankStrict = StrictRank;
+	ThisFemale.CurrentRankTop = TopRank;
+	ThisFemale.CurrentRankBottom = BottomRank;
 
-	female.MinimumRankStrict = MinimumStrict;
-	female.MinimumRankTop = MinimumTop;
-	female.MinimumRankBottom = MinimumBottom;
+	ThisFemale.MinimumRankStrict = MinimumStrict;
+	ThisFemale.MinimumRankTop = MinimumTop;
+	ThisFemale.MinimumRankBottom = MinimumBottom;
 
 	if (MakeDefault)
 	{
-		female.DefaultRankStrict = StrictRank;
-		female.DefaultRankTop = TopRank;
-		female.DefaultRankBottom = BottomRank;
+		ThisFemale.DefaultRankStrict = StrictRank;
+		ThisFemale.DefaultRankTop = TopRank;
+		ThisFemale.DefaultRankBottom = BottomRank;
 	}
 
-	female.AllowShameless = EnableShameless;
-	female.AllowCorruption = EnableCorrupt;
-	female.StrictRules = IsStrictRules;
-	female.UpgradeBlocked = IsUpgradeBlocked;
+	ThisFemale.AllowShameless = EnableShameless;
+	ThisFemale.AllowCorruption = EnableCorrupt;
+	ThisFemale.StrictRules = IsStrictRules;
+	ThisFemale.UpgradeBlocked = IsUpgradeBlocked;
 
-	female.ShynessMode = ShynessMode;
+	ThisFemale.ShynessMode = ShynessMode;
 
-	female.LastUpdateTime = CurrentGameTime;
+	ThisFemale.LastUpdateTime = CurrentGameTime;
 
 	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
 	if (PermFemaleID >= 0)
 	{
-		permanentfemales[PermFemaleID].MinimumRankStrict  = MinimumStrict;
-		permanentfemales[PermFemaleID].MinimumRankTop = MinimumTop;
-		permanentfemales[PermFemaleID].MinimumRankBottom = MinimumBottom;
+		PermanentFemaleVector[PermFemaleID].MinimumRankStrict  = MinimumStrict;
+		PermanentFemaleVector[PermFemaleID].MinimumRankTop = MinimumTop;
+		PermanentFemaleVector[PermFemaleID].MinimumRankBottom = MinimumBottom;
 
 		if (MakeDefault)
 		{
-			permanentfemales[PermFemaleID].DefaultRankStrict = StrictRank;
-			permanentfemales[PermFemaleID].DefaultRankTop = TopRank;
-			permanentfemales[PermFemaleID].DefaultRankBottom = BottomRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankStrict = StrictRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankTop = TopRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankBottom = BottomRank;
 		}
 
-		permanentfemales[PermFemaleID].AllowShameless = EnableShameless;
-		permanentfemales[PermFemaleID].AllowCorruption = EnableCorrupt;
-		permanentfemales[PermFemaleID].StrictRules = IsStrictRules;
+		PermanentFemaleVector[PermFemaleID].AllowShameless = EnableShameless;
+		PermanentFemaleVector[PermFemaleID].AllowCorruption = EnableCorrupt;
+		PermanentFemaleVector[PermFemaleID].StrictRules = IsStrictRules;
 
-		permanentfemales[PermFemaleID].ShynessMode = ShynessMode;
+		PermanentFemaleVector[PermFemaleID].ShynessMode = ShynessMode;
 	}
 }
 
@@ -489,36 +498,36 @@ void ResetFemale(RE::Actor* akFemale)
 {
 	RE::FormID id = akFemale->GetFormID();
 
-	if (!registeredfemales.count(id))
+	if (!RegisteredFemaleMap.count(id))
 	{
-		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + std::string(akFemale->GetName()) + " (" + std::format("{:#x}", akFemale->GetFormID()) + ") in Registered Females list!");
+		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Registered Females list!");
 
 		return;
 	}
 
-	RegisteredFemales& female = registeredfemales[id];
+	RegisteredFemales& ThisFemale = RegisteredFemaleMap[id];
 
-	female.CurrentRankStrict = female.DefaultRankStrict;
-	female.CurrentRankTop = female.DefaultRankTop;
-	female.CurrentRankBottom = female.DefaultRankBottom;
+	ThisFemale.CurrentRankStrict = ThisFemale.DefaultRankStrict;
+	ThisFemale.CurrentRankTop = ThisFemale.DefaultRankTop;
+	ThisFemale.CurrentRankBottom = ThisFemale.DefaultRankBottom;
 
-	female.ModestyTimer0 = 0;
-	female.ModestyTimer1 = 0;
-	female.ModestyTimer2 = 0;
-	female.ModestyTimer3 = 0;
-	female.ModestyTimer4 = 0;
-	female.ModestyTimer5 = 0;
-	female.ModestyTimer6 = 0;
+	ThisFemale.ModestyTimer0 = 0;
+	ThisFemale.ModestyTimer1 = 0;
+	ThisFemale.ModestyTimer2 = 0;
+	ThisFemale.ModestyTimer3 = 0;
+	ThisFemale.ModestyTimer4 = 0;
+	ThisFemale.ModestyTimer5 = 0;
+	ThisFemale.ModestyTimer6 = 0;
 
-	female.TopModestyTimer0 = 0;
-	female.TopModestyTimer1 = 0;
-	female.TopModestyTimer2 = 0;
-	female.TopModestyTimer3 = 0;
+	ThisFemale.TopModestyTimer0 = 0;
+	ThisFemale.TopModestyTimer1 = 0;
+	ThisFemale.TopModestyTimer2 = 0;
+	ThisFemale.TopModestyTimer3 = 0;
 
-	female.BottomModestyTimer0 = 0;
-	female.BottomModestyTimer1 = 0;
-	female.BottomModestyTimer2 = 0;
-	female.BottomModestyTimer3 = 0;
+	ThisFemale.BottomModestyTimer0 = 0;
+	ThisFemale.BottomModestyTimer1 = 0;
+	ThisFemale.BottomModestyTimer2 = 0;
+	ThisFemale.BottomModestyTimer3 = 0;
 }
 
 void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
@@ -528,28 +537,28 @@ void ExternalResetFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 void ResetAllFemales(RE::StaticFunctionTag*)
 {
-	for(auto& [id, female] : registeredfemales)
+	for(auto& [id, ThisFemale] : RegisteredFemaleMap)
 	{
-		female.CurrentRankStrict = female.DefaultRankStrict;
-		female.CurrentRankTop = female.DefaultRankTop;
-		female.CurrentRankBottom = female.DefaultRankBottom;
+		ThisFemale.CurrentRankStrict = ThisFemale.DefaultRankStrict;
+		ThisFemale.CurrentRankTop = ThisFemale.DefaultRankTop;
+		ThisFemale.CurrentRankBottom = ThisFemale.DefaultRankBottom;
 
-		female.ModestyTimer0 = 0;
-		female.ModestyTimer1 = 0;
-		female.ModestyTimer2 = 0;
-		female.ModestyTimer3 = 0;
-		female.ModestyTimer4 = 0;
-		female.ModestyTimer5 = 0;
-		female.ModestyTimer6 = 0;
+		ThisFemale.ModestyTimer0 = 0;
+		ThisFemale.ModestyTimer1 = 0;
+		ThisFemale.ModestyTimer2 = 0;
+		ThisFemale.ModestyTimer3 = 0;
+		ThisFemale.ModestyTimer4 = 0;
+		ThisFemale.ModestyTimer5 = 0;
+		ThisFemale.ModestyTimer6 = 0;
 
-		female.TopModestyTimer0 = 0;
-		female.TopModestyTimer1 = 0;
-		female.TopModestyTimer2 = 0;
-		female.TopModestyTimer3 = 0;
+		ThisFemale.TopModestyTimer0 = 0;
+		ThisFemale.TopModestyTimer1 = 0;
+		ThisFemale.TopModestyTimer2 = 0;
+		ThisFemale.TopModestyTimer3 = 0;
 
-		female.BottomModestyTimer0 = 0;
-		female.BottomModestyTimer1 = 0;
-		female.BottomModestyTimer2 = 0;
-		female.BottomModestyTimer3 = 0;
+		ThisFemale.BottomModestyTimer0 = 0;
+		ThisFemale.BottomModestyTimer1 = 0;
+		ThisFemale.BottomModestyTimer2 = 0;
+		ThisFemale.BottomModestyTimer3 = 0;
 	}
 }

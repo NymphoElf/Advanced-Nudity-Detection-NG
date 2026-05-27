@@ -7,20 +7,6 @@
 #include "NPCScanner.h"
 #include "Player.h"
 
-/*
-int FindInVector(std::vector<std::array<char, 256>> SearchVector, std::string_view SearchTarget) {
-	int SearchIndex = 0;
-	while (SearchIndex < SearchVector.size()) {
-		std::string_view IndexValue(SearchVector[SearchIndex].data());
-		if (IndexValue == SearchTarget) {
-			return SearchIndex;
-		}
-		SearchIndex++;
-	}
-	return -1;
-}
-*/
-
 int FindInVector(std::vector<std::string_view> SearchVector, std::string_view SearchTarget) {
 	int SearchIndex = 0;
 	while (SearchIndex < SearchVector.size()) {

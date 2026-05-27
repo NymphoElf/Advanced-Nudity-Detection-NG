@@ -3,6 +3,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Logger.h"
+
 enum ShySex {
 	Men,
 	Women,
@@ -39,28 +41,32 @@ struct PermanentFemales
 
 	uint32_t GetModIndex(void) const
 	{
-		std::optional<uint32_t> modindex;
+		uint32_t ModIndex;
 		RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
 		if(LightPlugin)
 		{
-			modindex = DataHandler->GetLoadedLightModIndex(GetPlugin());
+			Log("<C++ NPCData Header> [GetModIndex] Plugin " + static_cast<std::string>(GetPlugin()) + " is LIGHT");
+			ModIndex = DataHandler->GetLoadedLightModIndex(GetPlugin()).value_or(0xFF000) << 12;
+			//ModIndex << 12;
 		}
 		else
 		{
-			modindex = DataHandler->GetLoadedModIndex(GetPlugin());
+			Log("<C++ NPCData Header> [GetModIndex] Plugin " + static_cast<std::string>(GetPlugin()) + " is FULL");
+			ModIndex = DataHandler->GetLoadedModIndex(GetPlugin()).value_or(0xFF) << 24;
+			//ModIndex << 24;
 		}
 
-		return modindex.value_or(0xFF);
+		return ModIndex;
 	}
 };
 
-inline std::vector<PermanentFemales> permanentfemales;
+inline std::vector<PermanentFemales> PermanentFemaleVector;
 
 struct RegisteredFemales
 {
 	char Name[256];
-	RE::FormID id;
+	RE::FormID FemaleFormID;
 
 	int ModestyTimer0; //Modest
 	int ModestyTimer1; //Reasonable
@@ -105,14 +111,13 @@ struct RegisteredFemales
 	std::string GetName(void) const { return std::string(Name); }
 };
 
-inline std::unordered_map<RE::FormID, RegisteredFemales> registeredfemales;
+inline std::unordered_map<RE::FormID, RegisteredFemales> RegisteredFemaleMap;
 
 //Functions
 void NPCDataOnRevertCallback();
 
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore);
 void RegisterRosa(float CurrentGameTime, int SexualityScore);
-int GetInternalFemaleID(RE::Actor* akFemale);
 
 void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime);
 
