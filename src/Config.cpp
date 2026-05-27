@@ -766,13 +766,10 @@ std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
 std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 {
 	std::vector<RE::Actor*> females;
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
 	for(auto& female : permanentfemales)
 	{
-		std::optional<uint32_t> modindex = female.LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(female.GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(female.GetPlugin()));
-
-		if(!modindex.has_value()) { continue; }
+		uint32_t modindex = female.GetModIndex();
 
 		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>((modindex.value() << 24) | female.LocalID);
 		if(!actor) { continue; }

@@ -36,6 +36,23 @@ struct PermanentFemales
 
 	std::string_view GetPlugin(void) const { return std::string_view(Plugin); }
 	std::string_view GetName(void) const { return std::string_view(Name); }
+
+	uint32_t GetModIndex(void) const
+	{
+		std::optional<uint32_t> modindex;
+		RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+
+		if(LightPlugin)
+		{
+			modindex = DataHandler->GetLoadedLightModIndex(female.GetPlugin());
+		}
+		else
+		{
+			modindex = DataHandler->GetLoadedModIndex(female.GetPlugin())
+		}
+
+		return modindex.value_or(0xFF);
+	}
 };
 
 inline std::vector<PermanentFemales> permanentfemales;

@@ -13,13 +13,11 @@ enum FunctionEnd {
 
 int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 {
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-
 	for(int i = 0; i < permanentfemales.size(); ++i)
 	{
-		std::optional<uint32_t> modindex = permanentfemales[i].LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(permanentfemales[i].GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(permanentfemales[i].GetPlugin()));
+		uint32_t modindex = permanentfemales[i].GetModIndex();
 
-		RE::FormID id = (modindex.value_or(0xFF) << 24) | permanentfemales[i].LocalID;
+		RE::FormID id = (modindex << 24) | permanentfemales[i].LocalID;
 		if(id == akFemale->GetFormID()) { return i; }
 	}
 
@@ -357,7 +355,7 @@ void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime)
 
 	for(PermanentFemales& female : permanentfemales)
 	{
-		RE::FormID id = (female.LightPlugin ? static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedLightModIndex(female.GetPlugin())) : static_cast<std::optional<uint32_t>>(DataHandler->GetLoadedModIndex(female.GetPlugin()))).value_or(0xFF) << 24 | female.LocalID;
+		RE::FormID id = female.GetModIndex() << 24 | female.LocalID;
 
 		RE::Actor* actor = RE::TESForm::LookupByID<RE::Actor>(id);
 		if(!actor)
