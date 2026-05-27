@@ -1,34 +1,13 @@
 #pragma once
+
 /*
-struct PermanentFemaleData {
-	RE::FormID FemaleLocalID;
-	std::string_view FemalePlugin;
-	bool IsInLightPlugin;
-	std::string FemaleName;
-
-	int DefaultRankStrict;
-	int MinimumRankStrict;
-
-	int DefaultRankTop;
-	int MinimumRankTop;
-
-	int DefaultRankBottom;
-	int MinimumRankBottom;
-
-	int ShynessMode;
-	int SexualityScore;
-
-	bool AllowShameless;
-	bool AllowCorruption;
-	bool StrictRules;
-};
-*/
-
 struct PermanentNPCData {
 	std::vector<RE::FormID> FemaleLocalID;
-	std::vector<std::string_view> FemalePlugin;
+	//std::vector<std::string_view> FemalePlugin;
+	std::vector<std::array<char, 256>> FemalePlugin;
 	std::vector<uint8_t> IsInLightPlugin;
-	std::vector<std::string> FemaleName;
+	//std::vector<std::string> FemaleName;
+	std::vector<std::array<char, 256>> FemaleName;
 
 	std::vector<int> DefaultRankStrict;
 	std::vector<int> MinimumRankStrict;
@@ -54,10 +33,10 @@ struct PermanentNPCData {
 		int Index = 0;
 		
 		while (Index < TotalFemales) {
-			output.write(reinterpret_cast<const char*>(&FemaleLocalID[Index]), sizeof(uint32_t));
-			output.write(reinterpret_cast<const char*>(&FemalePlugin[Index]), sizeof(std::string_view));
+			output.write(reinterpret_cast<const char*>(&FemaleLocalID[Index]), sizeof(RE::FormID));
+			output.write(reinterpret_cast<const char*>(FemalePlugin[Index].data()), sizeof(char[256]));
 			output.write(reinterpret_cast<const char*>(&IsInLightPlugin[Index]), sizeof(uint8_t));
-			output.write(reinterpret_cast<const char*>(&FemaleName[Index]), sizeof(std::string));
+			output.write(reinterpret_cast<const char*>(FemaleName[Index].data()), sizeof(char[256]));
 
 			output.write(reinterpret_cast<const char*>(&DefaultRankStrict[Index]), sizeof(int));
 			output.write(reinterpret_cast<const char*>(&MinimumRankStrict[Index]), sizeof(int));
@@ -87,22 +66,23 @@ struct PermanentNPCData {
 		uint32_t uiValue = 0;
 		std::string_view svValue = "";
 		std::string sValue = "";
+		//std::array<char, 256> char256;
 		
 		uint8_t bValue = 0;
 		int iValue = 0;
 
 		while (Index < TotalFemales) {
-			input.read(reinterpret_cast<char*>(&uiValue), sizeof(uint32_t));
+			input.read(reinterpret_cast<char*>(&uiValue), sizeof(RE::FormID));
 			FemaleLocalID.emplace_back(uiValue);
 
-			input.read(reinterpret_cast<char*>(&svValue), sizeof(std::string_view));
-			FemalePlugin.emplace_back(svValue);
+			input.read(FemalePlugin[Index].data(), sizeof(char[256]));
+			//FemalePlugin.emplace_back(char256);
 
 			input.read(reinterpret_cast<char*>(&bValue), sizeof(uint8_t));
 			IsInLightPlugin.emplace_back(bValue);
 
-			input.read(reinterpret_cast<char*>(&sValue), sizeof(std::string));
-			FemaleName.emplace_back(sValue);
+			input.read(FemaleName[Index].data(), sizeof(char[256]));
+			//FemaleName.emplace_back(sValue);
 
 			input.read(reinterpret_cast<char*>(&iValue), sizeof(int));
 			DefaultRankStrict.emplace_back(iValue);
@@ -136,12 +116,9 @@ struct PermanentNPCData {
 		}
 	}
 };
+*/
 
 void SavePermanentNPCs();
 void LoadPermanentNPCs();
 
 void RegisterCoSaveSerializer();
-
-//void SaveData(std::string FileName);
-//void LoadData(std::string FileName);
-//void DeleteData(std::string FileName);

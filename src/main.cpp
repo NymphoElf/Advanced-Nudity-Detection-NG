@@ -196,14 +196,14 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		logs::info("Pre Load Game");
 		essPath = std::string{ (char*)message->data, message->dataLen };
 		logs::info("Loading Save: {}", essPath);
-
-		InitializeCoreData();
-		CheckMods();
-		
-		LoadPermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kPostLoadGame:
 		logs::info("Post Load Game");
+
+		InitializeCoreData();
+		CheckMods();
+
+		LoadPermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:
 		logs::info("Deleted Game");

@@ -181,8 +181,8 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 	std::string RosaName = Rosa->GetName();
 	std::string RosaBaseName = Rosa->GetActorBase()->GetFormEditorID();
 
-	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:#x}", RosaForm), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:#x}", RosaBaseForm), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:08X}", RosaForm), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + static_cast<std::string>(RosaEditorID), LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + static_cast<std::string>(RosaBaseEditorID), LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, LogType::NPCData);

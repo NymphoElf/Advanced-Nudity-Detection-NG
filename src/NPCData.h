@@ -108,6 +108,7 @@ struct RegisteredFemales
 inline std::unordered_map<RE::FormID, RegisteredFemales> registeredfemales;
 
 //Functions
+void NPCDataOnRevertCallback();
 
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore);
 void RegisterRosa(float CurrentGameTime, int SexualityScore);
