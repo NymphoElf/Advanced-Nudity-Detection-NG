@@ -31,6 +31,45 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 	return -1;
 }
 
+void ImportSinglePermanent(float CurrentGameTime, int InternalID) {
+	PermanentFemales& ThePermFemale = PermanentFemaleVector[InternalID];
+	
+	uint32_t ModIndex = ThePermFemale.GetModIndex();
+
+	RE::FormID PermanentFemaleFormID = ModIndex | ThePermFemale.LocalID;
+
+	RegisteredFemales TheRegFemale;
+	memset(&TheRegFemale, 0, sizeof(TheRegFemale));
+
+	memcpy(TheRegFemale.Name, ThePermFemale.Name, sizeof(TheRegFemale.Name));
+
+	TheRegFemale.FemaleFormID = PermanentFemaleFormID;
+
+	TheRegFemale.CurrentRankStrict = ThePermFemale.DefaultRankStrict;
+	TheRegFemale.DefaultRankStrict = ThePermFemale.DefaultRankStrict;
+	TheRegFemale.MinimumRankStrict = ThePermFemale.MinimumRankStrict;
+
+	TheRegFemale.CurrentRankTop = ThePermFemale.DefaultRankTop;
+	TheRegFemale.DefaultRankTop = ThePermFemale.DefaultRankTop;
+	TheRegFemale.MinimumRankTop = ThePermFemale.MinimumRankTop;
+
+	TheRegFemale.CurrentRankBottom = ThePermFemale.DefaultRankBottom;
+	TheRegFemale.DefaultRankBottom = ThePermFemale.DefaultRankBottom;
+	TheRegFemale.MinimumRankBottom = ThePermFemale.MinimumRankBottom;
+
+	TheRegFemale.ShynessMode = ThePermFemale.ShynessMode;
+	TheRegFemale.SexualityScore = ThePermFemale.SexualityScore;
+
+	TheRegFemale.AllowShameless = ThePermFemale.AllowShameless;
+	TheRegFemale.AllowCorruption = ThePermFemale.AllowCorruption;
+	TheRegFemale.StrictRules = ThePermFemale.StrictRules;
+	TheRegFemale.UpgradeBlocked = false;
+
+	TheRegFemale.LastUpdateTime = CurrentGameTime;
+
+	RegisteredFemaleMap[PermanentFemaleFormID] = TheRegFemale;
+}
+
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
 	int FemaleForm = akFemale->GetFormID();
 	std::string FemaleName = akFemale->GetName();
@@ -40,6 +79,13 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 
 	if (FemaleName == "") {
 		Log("<C++ NPCData> [RegisterFemale] Cannot Register Unnamed Female!", LogType::NPCData, LoggingLevel::warning);
+		return;
+	}
+
+	int PermanentID = GetInternalPermanentFemaleID(akFemale);
+	if (PermanentID >= 0) {
+		Log("<C++ NPCData> [RegisterFemale] Female exists on Permanent List. Re-importing female...", LogType::NPCData);
+		ImportSinglePermanent(CurrentGameTime, PermanentID);
 		return;
 	}
 
@@ -265,10 +311,6 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	uint32_t pluginID;
 
-	Log("DEBUG | REGISTER PERMANENT | Female Form ID (Pre-shift) is: " + std::format("{:08X}", FemaleFormID));
-	RE::FormID testID = FemaleFormID >> 24;
-	Log("DEBUG | REGISTER PERMANENT | Female Form ID (Post-shift) is: " + std::format("{:08X}", testID));
-
 	switch(FemaleFormID >> 24)
 	{
 		case 0xFF:
@@ -363,48 +405,48 @@ void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime)
 		return;
 	}
 
-	for(PermanentFemales& ThisFemale : PermanentFemaleVector)
+	for(PermanentFemales& ThePermFemale : PermanentFemaleVector)
 	{
-		RE::FormID PermanentFemaleFormID = ThisFemale.GetModIndex() | ThisFemale.LocalID;
+		RE::FormID PermanentFemaleFormID = ThePermFemale.GetModIndex() | ThePermFemale.LocalID;
 
 		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
 		if(!ValidActor)
 		{
-			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThisFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!");
+			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThePermFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!");
 
 			continue;
 		}
 
-		RegisteredFemales ImportThisFemale;
-		memset(&ImportThisFemale, 0, sizeof(ImportThisFemale));
+		RegisteredFemales TheRegFemale;
+		memset(&TheRegFemale, 0, sizeof(TheRegFemale));
 
-		memcpy(ImportThisFemale.Name, ThisFemale.Name, sizeof(ImportThisFemale.Name));
+		memcpy(TheRegFemale.Name, ThePermFemale.Name, sizeof(TheRegFemale.Name));
 
-		ImportThisFemale.FemaleFormID = PermanentFemaleFormID;
+		TheRegFemale.FemaleFormID = PermanentFemaleFormID;
 
-		ImportThisFemale.CurrentRankStrict = ThisFemale.DefaultRankStrict;
-		ImportThisFemale.DefaultRankStrict = ThisFemale.DefaultRankStrict;
-		ImportThisFemale.MinimumRankStrict = ThisFemale.MinimumRankStrict;
+		TheRegFemale.CurrentRankStrict = ThePermFemale.DefaultRankStrict;
+		TheRegFemale.DefaultRankStrict = ThePermFemale.DefaultRankStrict;
+		TheRegFemale.MinimumRankStrict = ThePermFemale.MinimumRankStrict;
 
-		ImportThisFemale.CurrentRankTop = ThisFemale.DefaultRankTop;
-		ImportThisFemale.DefaultRankTop = ThisFemale.DefaultRankTop;
-		ImportThisFemale.MinimumRankTop = ThisFemale.MinimumRankTop;
+		TheRegFemale.CurrentRankTop = ThePermFemale.DefaultRankTop;
+		TheRegFemale.DefaultRankTop = ThePermFemale.DefaultRankTop;
+		TheRegFemale.MinimumRankTop = ThePermFemale.MinimumRankTop;
 
-		ImportThisFemale.CurrentRankBottom = ThisFemale.DefaultRankBottom;
-		ImportThisFemale.DefaultRankBottom = ThisFemale.DefaultRankBottom;
-		ImportThisFemale.MinimumRankBottom = ThisFemale.MinimumRankBottom;
+		TheRegFemale.CurrentRankBottom = ThePermFemale.DefaultRankBottom;
+		TheRegFemale.DefaultRankBottom = ThePermFemale.DefaultRankBottom;
+		TheRegFemale.MinimumRankBottom = ThePermFemale.MinimumRankBottom;
 
-		ImportThisFemale.ShynessMode = ThisFemale.ShynessMode;
-		ImportThisFemale.SexualityScore = ThisFemale.SexualityScore;
+		TheRegFemale.ShynessMode = ThePermFemale.ShynessMode;
+		TheRegFemale.SexualityScore = ThePermFemale.SexualityScore;
 
-		ImportThisFemale.AllowShameless = ThisFemale.AllowShameless;
-		ImportThisFemale.AllowCorruption = ThisFemale.AllowCorruption;
-		ImportThisFemale.StrictRules = ThisFemale.StrictRules;
-		ImportThisFemale.UpgradeBlocked = false;
+		TheRegFemale.AllowShameless = ThePermFemale.AllowShameless;
+		TheRegFemale.AllowCorruption = ThePermFemale.AllowCorruption;
+		TheRegFemale.StrictRules = ThePermFemale.StrictRules;
+		TheRegFemale.UpgradeBlocked = false;
 
-		ImportThisFemale.LastUpdateTime = CurrentGameTime;
+		TheRegFemale.LastUpdateTime = CurrentGameTime;
 
-		RegisteredFemaleMap[PermanentFemaleFormID] = ImportThisFemale;
+		RegisteredFemaleMap[PermanentFemaleFormID] = TheRegFemale;
 	}
 }
 
