@@ -12,6 +12,7 @@ set_license("GPL-3.0")
 -- set defaults
 set_languages("c++23")
 set_warnings("allextra")
+set_runtimes("MT")
 
 -- set policies
 set_policy("package.requires_lock", true)
