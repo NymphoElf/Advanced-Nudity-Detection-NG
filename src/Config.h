@@ -165,7 +165,13 @@ namespace Configuration {
 
 	inline int PlayerConfidenceLevel;
 
+	//Nearby actor scanner (timing is owned by the Papyrus AND_NPCScanLoop script)
+	inline float ScanDistance;   // default game-unit radius around the player
+
 	//Booleans
+
+	inline bool NearbyScanEnabled;
+
 
 	inline bool MotionFlashEnabled;
 	inline bool DynamicModestyEnabled;

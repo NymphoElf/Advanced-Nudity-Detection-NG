@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "NPCData.h"
 #include "Logger.h"
+#include "ArousedInterop.h"
 
 void ProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTime, int SexualityScore) {
 	if (akActor == nullptr) {
@@ -20,6 +21,10 @@ void ProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTim
 	}
 
 	std::string akName = akActor->GetName();
+
+	// Publish arousal natively (replaces the old Papyrus AND_Core.UpdateArousalValue).
+	// Reads OSLAroused via its C export; yields 0 when OSLAroused is absent.
+	SetActorFactionRank(akActor, AllFactions[Arousal], static_cast<int8_t>(ArousedInterop::GetArousal(akActor)));
 
 	if (akActor->GetActorBase()->IsFemale() == false) {
 		NPCMaleScan::NPCMaleAnalyze(akActor);

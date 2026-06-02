@@ -190,7 +190,11 @@ void InitializeConfigData() {
 
 	Configuration::PlayerConfidenceLevel = ConfidenceLevel::Average;
 
+	//Nearby actor scanner (matches OSLAroused default scan distance)
+	Configuration::ScanDistance = 5120.0f;
+
 	//Booleans
+	Configuration::NearbyScanEnabled = true;
 	Configuration::MotionFlashEnabled = true;
 	Configuration::DynamicModestyEnabled = InstalledMods::DFFMA;
 

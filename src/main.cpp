@@ -14,6 +14,8 @@
 #include "NPCScanner.h"
 #include "NPCData.h"
 #include "ModEventHandler.h"
+#include "ActorScanner.h"
+#include "ArousedInterop.h"
 
 bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	//Main Script Binds
@@ -55,6 +57,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 
 	//NPC Scanner Binds
 	papyrusVM->RegisterFunction("ProcessNPC", "AND_NPC_ScanSpell", ProcessNPC);
+	papyrusVM->RegisterFunction("GetNearbyActors", "AND_NPCScanLoop", ActorScanner::GetNearbyActorsPapyrus);
 
 	//Config Script Binds
 	papyrusVM->RegisterFunction("GetLogSettings", "AND_MCM", GetLogSettings);
@@ -179,6 +182,9 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		break;
 	case SKSE::MessagingInterface::kPostPostLoad: //after main game loads and DLLs have time to do something
 		logs::info("Post Post Load");
+
+		// All SKSE plugin DLLs are loaded by now; safe to resolve OSLAroused's export.
+		ArousedInterop::Initialize();
 		break;
 	case SKSE::MessagingInterface::kNewGame:
 		logs::info("New Game");
