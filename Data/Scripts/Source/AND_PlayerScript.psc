@@ -143,7 +143,8 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
 		CheckWearingCurtains()
-		Core.RegisterForSingleUpdate(0.1)
+		;Core.RegisterForSingleUpdate(0.1)
+		Core.ProcessEquipmentChange()
 	EndIf
 EndEvent
 
@@ -160,7 +161,8 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
 		CheckWearingCurtains()
-		Core.RegisterForSingleUpdate(0.1)
+		;Core.RegisterForSingleUpdate(0.1)
+		Core.ProcessEquipmentChange()
 	EndIf
 EndEvent
 
@@ -178,7 +180,7 @@ Event OnUpdateGameTime()
 	
 	AND_Logger.FastLog("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
 	
-	Core.UpdateArousalValue(PlayerRef)
+	;Core.UpdateArousalValue(PlayerRef)
 	AND_Core.DiceRoll(PlayerRef.IsSprinting(), PlayerRef.IsRunning())
-	Core.NPCScanSpell.Cast(PlayerRef)
+	;Core.NPCScanSpell.Cast(PlayerRef)
 EndEvent

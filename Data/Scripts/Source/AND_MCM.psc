@@ -480,6 +480,11 @@ Event OnUpdate()
 	AND_Logger.FastLog("<MCM> [OnUpdate] - START", Logger.Config, Logger.CRITICAL)
 	InstallMCM()
 	
+	ConfigBoolOptions = GetConfigBoolOptions()
+	ConfigIntOptions = GetConfigIntOptions()
+	
+	FlashOdds = GetFlashOdds()
+	
 	ModestyArousalThreshold.SetValue(70)
 	NPCModestyArousalThreshold.SetValue(70)
 	

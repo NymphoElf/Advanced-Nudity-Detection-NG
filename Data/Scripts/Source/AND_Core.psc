@@ -222,6 +222,7 @@ Function Startup()
 	AND_Logger.FastLog("<Core> [Startup] Completed!", Logger.Core, Logger.CRITICAL)
 EndFunction
 
+;/
 Event OnUpdate()
 	If PlayerBase.GetSex() == 0 ;Male
 		AND_Logger.FastLog("<Core> [OnUpdate] Send Male Scan", Logger.Core)
@@ -242,6 +243,7 @@ Event OnUpdate()
 	Utility.Wait(0.1)
 	EquipScanArmed = False
 EndEvent
+/;
 
 Function ModCheck()
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
@@ -271,6 +273,27 @@ Function ModCheck()
 		AND_Logger.FastLog("<Core> [Mod Check] OSLAroused.esp NOT Found", Logger.Core)
 		OSLArousedInstalled = False
 	EndIf
+EndFunction
+
+Function ProcessEquipmentChange() 
+	If PlayerBase.GetSex() == 0 ;Male
+		AND_Logger.FastLog("<Core> [OnUpdate] Send Male Scan", Logger.Core)
+		
+		MaleAnalyze()
+	Else
+		AND_Logger.FastLog("<Core> [OnUpdate] Send Female Scan", Logger.Core)
+		
+		FemaleAnalyze()
+	EndIf
+	
+	If SLSFR_Found == True
+		SLSFR_NakedCommentPreCheck()
+	Else
+		WICommentChanceNaked.SetValue(NakedCommentChance(False))
+	EndIf
+	
+	Utility.Wait(0.1)
+	EquipScanArmed = False
 EndFunction
 
 Function AddCustomTransform(Race TransformRace)
