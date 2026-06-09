@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Config.h"
 #include "SaveLoad.h"
+#include "NPCScanner.h"
 
 enum FunctionEnd {
 	Success,
@@ -214,13 +215,32 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:08X}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemaleMap.size()), LogType::Core, LoggingLevel::info);
 }
 
-void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale) 
+void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
 {
-	RegisteredFemaleMap.erase(akfemale->GetFormID());
+	int index = 0;
+	while (index < TotalFactions) {
+		if (akFemale->IsInFaction(AllFactions[index]) == false) {
+			akFemale->RemoveFromFaction(AllFactions[index]);
+		}
+		index++;
+	}
+	
+	RegisteredFemaleMap.erase(akFemale->GetFormID());
 }
 
 void DeleteAllFemales(RE::StaticFunctionTag*)
 {
+	for (auto& [FemaleFormID, ThisFemale] : RegisteredFemaleMap) {
+		RE::Actor* akFemale = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
+		int index = 0;
+		while (index < TotalFactions) {
+			if (akFemale->IsInFaction(AllFactions[index]) == false) {
+				akFemale->RemoveFromFaction(AllFactions[index]);
+			}
+			index++;
+		}
+	}
+	
 	RegisteredFemaleMap.clear();
 }
 

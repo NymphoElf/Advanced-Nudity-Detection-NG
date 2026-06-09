@@ -116,6 +116,7 @@ void ActorScanner::StopScanLoop()
     Log("<C++ ActorScanner> [StopScanLoop] Native scan loop stopped", LogType::Core);
 }
 
+/*
 static void RequestSexualityResolution(RE::Actor* akActor) {
     if(!akActor) {
         Log("<C++ ActorScanner> [RequestSexualityResolution] Received a NONE/Null Actor!", LogType::Core, LoggingLevel::error);
@@ -135,6 +136,7 @@ static void RequestSexualityResolution(RE::Actor* akActor) {
         });
     });
 }
+*/
 
 void ActorScanner::RunScanPass()
 {
@@ -161,6 +163,9 @@ void ActorScanner::RunScanPass()
         return;
     }
 
+	ProcessActors(GetActorsInRadiusOfPlayer(2048));
+
+	/*
     float radius =  5120.0f; // Scan radius in game units (adjust as needed)
 
     const auto actors = GetNearbyActors(player, radius);
@@ -172,4 +177,5 @@ void ActorScanner::RunScanPass()
             ProcessActor(actor, 0); // Pass 0 for sexuality score if not using sexuality-based shyness
         }
     }
+	*/
 }

@@ -7,6 +7,7 @@
 #include "NPCScanner.h"
 #include "Player.h"
 #include "NPCData.h"
+#include "ArousedStats.h"
 
 /*
 int FindInVector(std::vector<PermanentFemales> SearchVector, PermanentFemales SearchTarget) {
@@ -950,12 +951,17 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 
 	Log("<C++ Core> [DiceRoll] END");
 
+	float arousalValue = InstalledMods::OSLAroused ? Aroused::GetArousal(Player) : 0.0f;
+	Player->AddToFaction(ArousalFaction, arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 });
+
 	if (PlayerBase->IsFemale()) {
 		FemaleArmorScan::FemaleAnalyze();
 	}
 	else {
 		MaleArmorScan::MaleAnalyze();
 	}
+
+	ProcessActors(GetActorsInRadiusOfPlayer(2048));
 }
 
 int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor) {

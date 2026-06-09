@@ -192,7 +192,7 @@ Keyword Property AND_AssFlashRiskUltra_Male Auto
 
 Int Property TransformOverwrite = 0 Auto Hidden
 
-Spell Property NPCScanSpell Auto
+;Spell Property NPCScanSpell Auto
 
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
@@ -368,6 +368,7 @@ Int Function NakedCommentChance(Bool IsMCMRequest)
 	return CommentChance
 EndFunction
 
+;/
 Function UpdateArousalValue(Actor akActor)
 	If OSLArousedInstalled == True
 		akActor.SetFactionRank(ArousalFaction, (OSLAroused_ModInterface.GetArousal(akActor) as Int))
@@ -375,6 +376,7 @@ Function UpdateArousalValue(Actor akActor)
 		akActor.SetFactionRank(ArousalFaction, 0)
 	EndIf
 EndFunction
+/;
 
 Bool Function IsPlayerTransformed()
 	If PlayerBase.GetRace() != BaseRace
