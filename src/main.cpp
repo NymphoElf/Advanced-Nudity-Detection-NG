@@ -14,6 +14,7 @@
 #include "NPCScanner.h"
 #include "NPCData.h"
 #include "ModEventHandler.h"
+#include "ActorScanner.h"
 
 bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	//Main Script Binds
@@ -52,9 +53,6 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("TweakFemale", "AND_NPCData", TweakFemaleData);
 	papyrusVM->RegisterFunction("ImportPermanentFemales", "AND_NPCData", ImportPermanentFemales);
 	papyrusVM->RegisterFunction("RegisterPermanentFemale", "AND_NPCData", RegisterPermanent);
-
-	//NPC Scanner Binds
-	papyrusVM->RegisterFunction("ProcessNPC", "AND_NPC_ScanSpell", ProcessNPC);
 
 	//Config Script Binds
 	papyrusVM->RegisterFunction("GetLogSettings", "AND_MCM", GetLogSettings);
@@ -172,6 +170,8 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		InitializeCoreData();
 		CheckMods();
 		InitializeConfigData();
+
+		ActorScanner::StartScanLoop();
 
 		break;
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads

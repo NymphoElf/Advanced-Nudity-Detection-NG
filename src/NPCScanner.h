@@ -20,5 +20,5 @@ enum FactionIndex {
 
 inline RE::TESFaction* AllFactions[TotalFactions];
 
-void ProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTime, int SexualityScore);
+void ProcessActor(RE::Actor* akActor, int SexualityScore);
 //void ExternalProcessNPC(RE::StaticFunctionTag*, RE::Actor* akActor, float CurrentGameTime, int SexualityScore);

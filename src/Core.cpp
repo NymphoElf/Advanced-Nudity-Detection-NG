@@ -120,7 +120,7 @@ void CheckMods() {
 	const RE::TESFile* Sexlab = DataHandler->LookupModByName("SexLab.esm");
 	//const RE::TESFile* SLSFR = DataHandler->LookupModByName("SLSF Reloaded.esp");
 	const RE::TESFile* DFFMA = DataHandler->LookupModByName("Modesty_Keyword.esp");
-	//const RE::TESFile* OSLAroused = DataHandler->LookupModByName("OSLAroused.esp");
+	const RE::TESFile* OSLAroused = DataHandler->LookupModByName("OSLAroused.esp");
 
 	if (RosaRoundBottom) {
 		InstalledMods::RosaRoundBottom = true;
@@ -146,6 +146,14 @@ void CheckMods() {
 	}
 	else {
 		InstalledMods::DFFMA = false;
+	}
+
+	if (OSLAroused) {
+		InstalledMods::OSLAroused = true;
+		Log("<C++ Core> [CheckMods] OSLAroused.esp FOUND", LogType::Core);
+	}
+	else {
+		InstalledMods::OSLAroused = false;
 	}
 }
 

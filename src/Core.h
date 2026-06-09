@@ -361,7 +361,7 @@ namespace InstalledMods {
 	inline bool Sexlab;
 	//inline bool SLSFR;
 	inline bool DFFMA;
-	//inline bool OSLAroused;
+	inline bool OSLAroused;
 
 	inline bool RosaRoundBottom;
 }

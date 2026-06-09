@@ -8,8 +8,6 @@ AND_Logger Property Logger Auto
 SLSF_Reloaded_MCM Property SLSFR_Config = None Auto Hidden
 SLSF_Reloaded_ModIntegration Property SLSFR_Mods = None Auto Hidden
 
-sslActorStats Property SexlabStats = None Auto Hidden
-
 ;Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto
 
@@ -198,7 +196,6 @@ Spell Property NPCScanSpell Auto
 
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
-Bool Property SexlabInstalled Auto Hidden
 Bool Property OSLArousedInstalled Auto Hidden
 
 Race Property BaseRace Auto Hidden
@@ -249,16 +246,6 @@ EndEvent
 /;
 
 Function ModCheck()
-	If Game.GetModByName("SexLab.esm") != 255
-		AND_Logger.FastLog("<Core> [Mod Check] SexLab.esm Found", Logger.Core)
-		SexlabInstalled = True
-		SexlabStats = Game.GetFormFromFile(0xD62, "SexLab.esm") as sslActorStats ;GetSexlabStats()
-	Else
-		AND_Logger.FastLog("<Core> [Mod Check] SexLab.esm NOT Found", Logger.Core)
-		SexlabInstalled = False
-		SexlabStats = None
-	EndIf
-	
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
 		AND_Logger.FastLog("<Core> [Mod Check] SLSF Reloaded.esp Found", Logger.Core)
 		SLSFR_Found = True
@@ -386,14 +373,6 @@ Function UpdateArousalValue(Actor akActor)
 		akActor.SetFactionRank(ArousalFaction, (OSLAroused_ModInterface.GetArousal(akActor) as Int))
 	Else
 		akActor.SetFactionRank(ArousalFaction, 0)
-	EndIf
-EndFunction
-
-Int Function FindSexuality(Actor target)
-	If SexlabInstalled == True
-		return SexlabStats.GetSexuality(target)
-	Else
-		return 100
 	EndIf
 EndFunction
 
