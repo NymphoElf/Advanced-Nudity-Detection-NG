@@ -90,7 +90,13 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 
 		std::string akName = ScannedActors[Index]->GetName();
 
-		if (ScannedActors[Index]->GetActorBase()->IsFemale() == false) {
+		auto* actorBase = ScannedActors[Index]->GetActorBase();
+		if (actorBase == nullptr) {
+			Log("<C++ NPCScanner> [ProcessActor] Actor " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ") has no actor base; skipping.", LogType::Core, LoggingLevel::warning);
+			continue;
+		}
+
+		if (actorBase->IsFemale() == false) {
 			NPCMaleScan::NPCMaleAnalyze(ScannedActors[Index]);
 		}
 		else {
@@ -101,8 +107,12 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 			// GetArousal returns -1 if OSLAroused is present but its Ext export can't be
 			// resolved (older build); fall back to 0 rather than writing a negative rank.
 			float arousalValue = InstalledMods::OSLAroused ? Aroused::GetArousal(ScannedActors[Index]) : 0.0f;
-			ScannedActors[Index]->AddToFaction(ArousalFaction, arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 });
-			
+			const std::int8_t arousalRank = arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 };
+			//Only write to the faction if the rank has actually changed. (try and avoid potential data races from game ai/job threads accessing factions)
+			if (ScannedActors[Index]->GetFactionRank(ArousalFaction, false) != arousalRank) {
+				ScannedActors[Index]->AddToFaction(ArousalFaction, arousalRank);
+			}
+
 			NPCFemaleScan::NPCFemaleAnalyze(ScannedActors[Index]);
 
 			auto* calendar = RE::Calendar::GetSingleton();
@@ -132,7 +142,14 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 					Log("<C++ NPCScanner> [ProcessActor] Registering New Female " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", LogType::Core);
 					Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime, FemaleFormID](int SexualityScore) {
 						SKSE::GetTaskInterface()->AddTask([currentGameTime, FemaleFormID, SexualityScore] {
+							// Async hop: the actor may have unloaded between the scan and this
+							// callback. RegisterFemale dereferences the actor on its first line,
+							// so bail if the lookup came back null.
 							RE::Actor* thisActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
+							if (!thisActor) {
+								Log("<C++ NPCScanner> [ProcessActor] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
+								return;
+							}
 							RegisterFemale(thisActor, currentGameTime, SexualityScore);
 						});
 					});
