@@ -429,9 +429,9 @@ void InitializeCoreData() {
 	UnderwearT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Male");
 	UnderwearT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_High_Male");
 
-	//Spells
+	//Other Keywords
 	
-	//NPCScanSpell = RE::TESForm::LookupByEditorID<RE::SpellItem>("AND_NPCScan");
+	ActorType_Creature = RE::TESForm::LookupByID<RE::BGSKeyword>(0x00013795);
 
 	//Globals
 

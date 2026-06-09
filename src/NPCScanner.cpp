@@ -64,7 +64,7 @@ std::vector<RE::Actor*> GetActorsInRadiusOfPlayer(float radius) {
 	ForEachReferenceInRange(Player, radius, [&](RE::TESObjectREFR& ref) {
 		//auto refBase = ref.GetBaseObject();
 		auto actor = ref.As<RE::Actor>();
-		if (actor && actor != Player && !actor->IsDisabled() && !actor->IsDead()) {
+		if (actor && actor != Player && !actor->IsDisabled() && !actor->IsDead() && !actor->HasKeyword(ActorType_Creature)) {
 			nearbyActors.push_back(actor);
 		}
 		return RE::BSContainer::ForEachResult::kContinue;

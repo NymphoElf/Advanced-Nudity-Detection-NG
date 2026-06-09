@@ -309,6 +309,8 @@ inline RE::BGSKeyword* UnderwearT_Low_Male;
 inline RE::BGSKeyword* UnderwearT_Male;
 inline RE::BGSKeyword* UnderwearT_High_Male;
 
+inline RE::BGSKeyword* ActorType_Creature;
+
 //inline RE::SpellItem* NPCScanSpell;
 
 //Player Rolls
