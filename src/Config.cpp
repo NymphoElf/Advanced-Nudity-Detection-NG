@@ -190,6 +190,15 @@ void InitializeConfigData() {
 
 	Configuration::PlayerConfidenceLevel = ConfidenceLevel::Average;
 
+	Configuration::NudeCommentChance = 10;
+	Configuration::ToplessCommentChance = 10;
+	Configuration::BottomlessCommentChance = 10;
+	Configuration::ChestCommentChance = 20;
+	Configuration::GenitalsCommentChance = 25;
+	Configuration::AssCommentChance = 15;
+	Configuration::BraCommentChance = 5;
+	Configuration::UnderwearCommentChance = 5;
+
 	//Booleans
 	Configuration::MotionFlashEnabled = true;
 	Configuration::DynamicModestyEnabled = InstalledMods::DFFMA;
@@ -206,6 +215,8 @@ void InitializeConfigData() {
 	Configuration::HardcoreModeEnabled = false;
 
 	Configuration::ModestyUpgradeBlocked = false;
+
+	Configuration::DisableNakedComments = false;
 
 	Configuration::DynamicModestyMode->value = InstalledMods::DFFMA;
 
@@ -831,6 +842,7 @@ std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*) {
 	Options.emplace_back(Configuration::HardcoreModeEnabled); //8
 
 	Options.emplace_back(Configuration::ModestyUpgradeBlocked); //9
+	Options.emplace_back(Configuration::DisableNakedComments); //10
 
 	return Options;
 }
@@ -852,6 +864,8 @@ void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options) 
 	Configuration::NPCStrictRulesByDefault = Options[7];
 
 	Configuration::HardcoreModeEnabled = Options[8];
+	Configuration::ModestyUpgradeBlocked = Options[9];
+	Configuration::DisableNakedComments = Options[10];
 }
 
 std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*) {
@@ -867,6 +881,15 @@ std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*) {
 	Options.emplace_back(Configuration::ImmodestyTimeNeeded); //5
 	Options.emplace_back(Configuration::PlayerConfidenceLevel); //6
 
+	Options.emplace_back(Configuration::NudeCommentChance); //7
+	Options.emplace_back(Configuration::ToplessCommentChance); //8
+	Options.emplace_back(Configuration::BottomlessCommentChance); //9
+	Options.emplace_back(Configuration::ChestCommentChance); //10
+	Options.emplace_back(Configuration::GenitalsCommentChance); //11
+	Options.emplace_back(Configuration::AssCommentChance); //12
+	Options.emplace_back(Configuration::BraCommentChance); //13
+	Options.emplace_back(Configuration::UnderwearCommentChance); //14
+
 	return Options;
 }
 
@@ -880,4 +903,13 @@ void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options) {
 	
 	Configuration::ImmodestyTimeNeeded = Options[5];
 	Configuration::PlayerConfidenceLevel = Options[6];
+
+	Configuration::NudeCommentChance = Options[7];
+	Configuration::ToplessCommentChance = Options[8];
+	Configuration::BottomlessCommentChance = Options[9];
+	Configuration::ChestCommentChance = Options[10];
+	Configuration::GenitalsCommentChance = Options[11];
+	Configuration::AssCommentChance = Options[12];
+	Configuration::BraCommentChance = Options[13];
+	Configuration::UnderwearCommentChance = Options[14];
 }

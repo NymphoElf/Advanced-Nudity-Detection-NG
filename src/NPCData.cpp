@@ -415,7 +415,62 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	return FunctionEnd::Success;
 }
 
-void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
+void ImportPermanentFemales(float CurrentGameTime)
+{
+	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
+	if (!PermanentFemaleVector.size())
+	{
+		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
+
+		return;
+	}
+
+	for (PermanentFemales& ThePermFemale : PermanentFemaleVector)
+	{
+		RE::FormID PermanentFemaleFormID = ThePermFemale.GetModIndex() | ThePermFemale.LocalID;
+
+		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
+		if (!ValidActor)
+		{
+			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThePermFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!");
+
+			continue;
+		}
+
+		RegisteredFemales TheRegFemale;
+		memset(&TheRegFemale, 0, sizeof(TheRegFemale));
+
+		memcpy(TheRegFemale.Name, ThePermFemale.Name, sizeof(TheRegFemale.Name));
+
+		TheRegFemale.FemaleFormID = PermanentFemaleFormID;
+
+		TheRegFemale.CurrentRankStrict = ThePermFemale.DefaultRankStrict;
+		TheRegFemale.DefaultRankStrict = ThePermFemale.DefaultRankStrict;
+		TheRegFemale.MinimumRankStrict = ThePermFemale.MinimumRankStrict;
+
+		TheRegFemale.CurrentRankTop = ThePermFemale.DefaultRankTop;
+		TheRegFemale.DefaultRankTop = ThePermFemale.DefaultRankTop;
+		TheRegFemale.MinimumRankTop = ThePermFemale.MinimumRankTop;
+
+		TheRegFemale.CurrentRankBottom = ThePermFemale.DefaultRankBottom;
+		TheRegFemale.DefaultRankBottom = ThePermFemale.DefaultRankBottom;
+		TheRegFemale.MinimumRankBottom = ThePermFemale.MinimumRankBottom;
+
+		TheRegFemale.ShynessMode = ThePermFemale.ShynessMode;
+		TheRegFemale.SexualityScore = ThePermFemale.SexualityScore;
+
+		TheRegFemale.AllowShameless = ThePermFemale.AllowShameless;
+		TheRegFemale.AllowCorruption = ThePermFemale.AllowCorruption;
+		TheRegFemale.StrictRules = ThePermFemale.StrictRules;
+		TheRegFemale.UpgradeBlocked = false;
+
+		TheRegFemale.LastUpdateTime = CurrentGameTime;
+
+		RegisteredFemaleMap[PermanentFemaleFormID] = TheRegFemale;
+	}
+}
+
+void ExternalImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
 {
 	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
 	if (!PermanentFemaleVector.size())

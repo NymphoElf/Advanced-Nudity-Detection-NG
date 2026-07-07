@@ -113,6 +113,8 @@ struct RegisteredFemales
 
 inline std::unordered_map<RE::FormID, RegisteredFemales> RegisteredFemaleMap;
 
+inline bool PermanentFemalesImported;
+
 //Functions
 void NPCDataOnRevertCallback();
 
@@ -129,7 +131,8 @@ void ResetAllFemales(RE::StaticFunctionTag*);
 
 int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
 int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
-void ImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime);
+void ExternalImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime);
+void ImportPermanentFemales(float CurrentGameTime);
 void TweakFemaleData
 (
 	RE::StaticFunctionTag*,

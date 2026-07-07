@@ -436,6 +436,7 @@ void InitializeCoreData() {
 	//Globals
 
 	Configuration::DynamicModestyMode = RE::TESForm::LookupByEditorID<RE::TESGlobal>("AND_DynamicModesty");
+	WINakedCommentChance = RE::TESForm::LookupByID<RE::TESGlobal>(0x000A8656);
 
 	//Flash Rolls (before first roll)
 
@@ -462,6 +463,9 @@ void InitializeCoreData() {
 	NPCUnderwearTransparentRoll = -1;
 	NPCHotpantsTransparentRoll = -1;
 	NPCShowgirlTransparentRoll = -1;
+
+	PlayerFactionsInitialized = false;
+	PermanentFemalesImported = false;
 
 	Log("<C++ Core> [InitializeCoreData] COMPLETE");
 }
@@ -1000,4 +1004,111 @@ bool PlayerIsWearingPelvicCurtain(RE::StaticFunctionTag*) {
 
 bool PlayerIsWearingAssCurtain(RE::StaticFunctionTag*) {
 	return IsWearingAssCurtain;
+}
+
+int NakedCommentChance(bool IsMCMRequest) {
+	int CommentChance = -1;
+	bool UnderwearCounted = false;
+
+	if (IsMCMRequest) {
+		CommentChance = 0; 
+		//Start at 0 instead of -1 for MCM readability. WINakedCommentChance uses Roll >= Odds, and we are returning the Odds of a naked comment by NPCs
+	}
+
+	if (!Configuration::DisableNakedComments) {
+		if (Player->GetFactionRank(NudeFaction, true) == 1) {
+			CommentChance += Configuration::NudeCommentChance;
+		}
+
+		if (Player->GetFactionRank(ToplessFaction, true) == 1) {
+			CommentChance += Configuration::ToplessCommentChance;
+		}
+
+		if (Player->GetFactionRank(BottomlessFaction, true) == 1) {
+			CommentChance += Configuration::BottomlessCommentChance;
+		}
+
+		if (Player->GetFactionRank(ShowingChestFaction, true) == 1) {
+			CommentChance += Configuration::ChestCommentChance;
+		}
+		else if (Player->GetFactionRank(ShowingBraFaction, true) == 1) {
+			CommentChance += Configuration::BraCommentChance;
+		}
+
+		if (Player->GetFactionRank(ShowingGenitalsFaction, true) == 1) {
+			CommentChance += Configuration::GenitalsCommentChance;
+		}
+		else if (Player->GetFactionRank(ShowingUnderwearFaction, true) == 1) {
+			CommentChance += Configuration::UnderwearCommentChance;
+			UnderwearCounted = true;
+		}
+
+		if (Player->GetFactionRank(ShowingAssFaction, true) == 1) {
+			CommentChance += Configuration::AssCommentChance;
+		}
+		else if (Player->GetFactionRank(ShowingUnderwearFaction, true) == 1 && !UnderwearCounted) {
+			CommentChance += Configuration::UnderwearCommentChance;
+		}
+	}
+
+	return CommentChance;
+}
+
+int ExternalNakedCommentChance(RE::StaticFunctionTag*, bool IsMCMRequest) {
+	return NakedCommentChance(IsMCMRequest);
+}
+
+RE::TESRace* GetPlayerBaseRace() {
+	return PlayerBaseRace;
+}
+
+RE::TESRace* ExternalGetPlayerBaseRace(RE::StaticFunctionTag*) {
+	return GetPlayerBaseRace();
+}
+
+void AddCustomTransform(RE::StaticFunctionTag*, RE::TESRace* NewTransform) {
+	CustomTransformations.emplace_back(NewTransform);
+}
+
+void SetPlayerBaseRace(RE::TESRace* NewRace) {
+	PlayerBaseRace = NewRace;
+}
+
+void ExternalSetPlayerBaseRace(RE::StaticFunctionTag*, RE::TESRace* NewRace) {
+	SetPlayerBaseRace(NewRace);
+}
+
+bool PlayerRaceIsRecognized(RE::StaticFunctionTag*) {
+	if (IsPlayerTransformed()) {
+		return true;
+	}
+
+	RE::TESRace* arPlayer = Player->GetRace();
+
+	if (arPlayer == PlayerBaseRace) {
+		return true;
+	}
+
+	for (int Index = 0; Index < 20; ++Index) {
+		if (VanillaRaces[Index] == arPlayer) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool IsPlayerTransformed() {
+	RE::TESRace* arPlayer = Player->GetRace();
+	if (arPlayer == DefaultTransformations[0] || arPlayer == DefaultTransformations[1]) {
+		return true;
+	}
+
+	for (int Index = 0; Index < CustomTransformations.size(); ++Index) {
+		if (arPlayer == CustomTransformations[Index]) {
+			return true;
+		}
+	}
+
+	return false;
 }

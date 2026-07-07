@@ -97,6 +97,10 @@ inline RE::TESActorBase* PlayerBase;
 
 inline RE::TESRace* VanillaRaces[20];
 
+inline RE::TESRace* PlayerBaseRace;
+inline std::array<RE::TESRace*, 2> DefaultTransformations;
+inline std::vector<RE::TESRace*> CustomTransformations;
+
 //Factions
 
 inline RE::TESFaction* NudeFaction;
@@ -311,7 +315,8 @@ inline RE::BGSKeyword* UnderwearT_High_Male;
 
 inline RE::BGSKeyword* ActorType_Creature;
 
-//inline RE::SpellItem* NPCScanSpell;
+//Globals
+inline RE::TESGlobal* WINakedCommentChance;
 
 //Player Rolls
 
@@ -370,6 +375,15 @@ namespace InstalledMods {
 
 //Functions
 
+bool PlayerRaceIsRecognized(RE::StaticFunctionTag*);
+
+RE::TESRace* ExternalGetPlayerBaseRace(RE::StaticFunctionTag*);
+void ExternalSetPlayerBaseRace(RE::StaticFunctionTag*, RE::TESRace* NewRace);
+
+void AddCustomTransform(RE::StaticFunctionTag*, RE::TESRace* NewTransform);
+
+bool IsPlayerTransformed();
+
 void InitializeCoreData();
 RE::BGSKeywordForm* AsKeywordForm(RE::TESForm* tesForm);
 bool PlayerWornHasKeyword(RE::BSFixedString keywordString);
@@ -386,8 +400,6 @@ int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor);
 
 int Randomizer(int MinRoll, int MaxRoll);
 
-//int FindInVector(std::vector<PermanentFemales> SearchVector, PermanentFemales SearchTarget);
-
 int FindInVector(std::vector<int> SearchVector, int SearchTarget);
 int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget);
 
@@ -403,9 +415,7 @@ std::string FlashRiskToString(int RiskLevel);
 
 void CheckMods();
 
-/*
-int GetCurtainOdds(float BaseRisk, float RiskModifier);
-*/
+int NakedCommentChance(bool IsMCMRequest);
 
 //Static Functions (Papyrus calls)
 
@@ -417,3 +427,5 @@ void OverrideCurtainRoll(RE::StaticFunctionTag*, int CurtainType, int RollOverri
 bool PlayerIsWearingChestCurtain(RE::StaticFunctionTag*);
 bool PlayerIsWearingPelvicCurtain(RE::StaticFunctionTag*);
 bool PlayerIsWearingAssCurtain(RE::StaticFunctionTag*);
+
+int ExternalNakedCommentChance(RE::StaticFunctionTag*, bool IsMCMRequest);

@@ -298,6 +298,7 @@ Int Property PlayerStrictRules = 6 AutoReadOnly
 Int Property NPCStrictRulesByDefault = 7 AutoReadOnly
 Int Property HardcoreModeEnabled = 8 AutoReadOnly
 Int Property PlayerModestyUpgradeBlocked = 9 AutoReadOnly
+Int Property DisableNakedComments = 10 AutoReadOnly
 
 Int[] Property ConfigIntOptions Auto Hidden
 
@@ -310,6 +311,15 @@ Int Property MinimumBottomRank = 4 AutoReadOnly
 
 Int Property ImmodestyTimeNeeded = 5 AutoReadOnly
 Int Property PlayerConfidenceValue = 6 AutoReadOnly
+
+Int Property NudeFactionCommentChance = 7 AutoReadOnly
+Int Property ToplessFactionCommentChance = 8 AutoReadOnly
+Int Property BottomlessFactionCommentChance = 9 AutoReadOnly
+Int Property ChestFactionCommentChance = 10 AutoReadOnly
+Int Property GenitalsFactionCommentChance = 11 AutoReadOnly
+Int Property AssFactionCommentChance = 12 AutoReadOnly
+Int Property BraFactionCommentChance = 13 AutoReadOnly
+Int Property UnderwearFactionCommentChance = 14 AutoReadOnly
 
 Int[] Property PlayerCurtainState Auto Hidden
 
@@ -381,7 +391,6 @@ PAPYRUS-ONLY CONFIG OPTIONS
 /;
 
 Bool Property GenderlessWording Auto Hidden
-Bool Property DisableNakedComments Auto Hidden
 Bool Property ConfirmSelection Auto Hidden
 
 Bool Property Rank1Jump = False Auto Hidden
@@ -420,6 +429,7 @@ Bool Property ApplyAsDefault = False Auto Hidden
 
 Bool Property StrictNPC = False Auto Hidden
 
+;/
 Int Property NudeFactionCommentChance = 10 Auto Hidden
 Int Property ToplessFactionCommentChance = 10 Auto Hidden
 Int Property BottomlessFactionCommentChance = 10 Auto Hidden
@@ -428,6 +438,7 @@ Int Property GenitalsFactionCommentChance = 25 Auto Hidden
 Int Property AssFactionCommentChance = 15 Auto Hidden
 Int Property BraFactionCommentChance = 5 Auto Hidden
 Int Property UnderwearFactionCommentChance = 5 Auto Hidden
+/;
 
 String Property PlayerConfidence = "Average" Auto Hidden
 String Property ShySex = "Males" Auto Hidden
@@ -1066,6 +1077,8 @@ Event OnPageReset(string page)
 					AND_Logger.FastLog("<MCM> [Flashing States Page] Player has 'PelvicFlashRiskUltra' keyword without also having a Pelvic Curtain keyword.", Logger.Config)
 					AddTextOption("$PelvicText", "0%")
 				EndIf
+			Else
+				AddTextOption("$PelvicText", "0%")
 			EndIf
 			
 		Else ;Female
@@ -1213,6 +1226,8 @@ Event OnPageReset(string page)
 					AND_Logger.FastLog("<MCM> [Flashing States Page] Player has 'PelvicFlashRiskUltra' keyword without also having a Pelvic Curtain keyword.", Logger.Config)
 					AddTextOption("$PelvicText", "0%")
 				EndIf
+			Else
+				AddTextOption("$PelvicText", "0%")
 			EndIf
 		EndIf
 		
@@ -1904,19 +1919,19 @@ Event OnPageReset(string page)
 		AddSliderOptionST("AND_TransparentHotpantsOddsHighMale", "$TransparentHotpantsHighText", FlashOdds[TransparentHotpantsOdds_High_Male], "{0}%", 0)
 		
 	ElseIf (page == "$NakedCommentsPage")
-		AddToggleOptionST("AND_DisableNakedCommentsState", "$DisableNakedCommentsText", DisableNakedComments, 0)
+		AddToggleOptionST("AND_DisableNakedCommentsState", "$DisableNakedCommentsText", ConfigBoolOptions[DisableNakedComments], 0)
 		AddEmptyOption()
-		AddSliderOptionST("AND_NudeFactionCommentChanceState", "$NudeFactionCommentChanceText", NudeFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_ToplessFactionCommentChanceState", "$ToplessFactionCommentChanceText", ToplessFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_BottomlessFactionCommentChanceState", "$BottomlessFactionCommentChanceText", BottomlessFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_ChestFactionCommentChanceState", "$ChestFactionCommentChanceText", ChestFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_GenitalsFactionCommentChanceState", "$GenitalsFactionCommentChanceText", GenitalsFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_AssFactionCommentChanceState", "$AssFactionCommentChanceText", AssFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_BraFactionCommentChanceState", "$BraFactionCommentChanceText", BraFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
-		AddSliderOptionST("AND_UnderwearFactionCommentChanceState", "$UnderwearFactionCommentChanceText", UnderwearFactionCommentChance, "{0}%", DisabledIf(DisableNakedComments == True))
+		AddSliderOptionST("AND_NudeFactionCommentChanceState", "$NudeFactionCommentChanceText", ConfigIntOptions[NudeFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_ToplessFactionCommentChanceState", "$ToplessFactionCommentChanceText", ConfigIntOptions[ToplessFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_BottomlessFactionCommentChanceState", "$BottomlessFactionCommentChanceText", ConfigIntOptions[BottomlessFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_ChestFactionCommentChanceState", "$ChestFactionCommentChanceText", ConfigIntOptions[ChestFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_GenitalsFactionCommentChanceState", "$GenitalsFactionCommentChanceText", ConfigIntOptions[GenitalsFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_AssFactionCommentChanceState", "$AssFactionCommentChanceText", ConfigIntOptions[AssFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_BraFactionCommentChanceState", "$BraFactionCommentChanceText", ConfigIntOptions[BraFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
+		AddSliderOptionST("AND_UnderwearFactionCommentChanceState", "$UnderwearFactionCommentChanceText", ConfigIntOptions[UnderwearFactionCommentChance], "{0}%", DisabledIf(ConfigBoolOptions[DisableNakedComments] == True))
 		
 		SetCursorPosition(1)
-		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", Main.NakedCommentChance(True) as String + "%", 0)
+		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", AND_Core.NakedCommentChance(True) as String + "%", 0)
 	
 	ElseIf (page == "$DynamicModestyPage")
 		If Main.DFFMA_Found == True || Main.DynamicModestyEnabledByOtherMod == True
@@ -3185,9 +3200,9 @@ EndState
 
 State AND_DisableNakedCommentsState
 	Event OnSelectST()
-		DisableNakedComments = !DisableNakedComments
+		ConfigBoolOptions[DisableNakedComments] = !ConfigBoolOptions[DisableNakedComments]
 		
-		SetToggleOptionValueST(DisableNakedComments, False, "AND_DisableNakedCommentsState")
+		SetToggleOptionValueST(ConfigBoolOptions[DisableNakedComments], False, "AND_DisableNakedCommentsState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3198,15 +3213,15 @@ EndState
 
 State AND_NudeFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(NudeFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[NudeFactionCommentChance])
 		SetSliderDialogDefaultValue(30)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		NudeFactionCommentChance = value as Int
-		SetSliderOptionValueST(NudeFactionCommentChance, "{0}", False, "AND_NudeFactionCommentChanceState")
+		ConfigIntOptions[NudeFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[NudeFactionCommentChance], "{0}", False, "AND_NudeFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3217,15 +3232,15 @@ EndState
 
 State AND_ToplessFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(ToplessFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[ToplessFactionCommentChance])
 		SetSliderDialogDefaultValue(20)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		ToplessFactionCommentChance = value as Int
-		SetSliderOptionValueST(ToplessFactionCommentChance, "{0}", False, "AND_ToplessFactionCommentChanceState")
+		ConfigIntOptions[ToplessFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[ToplessFactionCommentChance], "{0}", False, "AND_ToplessFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3236,15 +3251,15 @@ EndState
 
 State AND_BottomlessFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(BottomlessFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[BottomlessFactionCommentChance])
 		SetSliderDialogDefaultValue(20)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		BottomlessFactionCommentChance = value as Int
-		SetSliderOptionValueST(BottomlessFactionCommentChance, "{0}", False, "AND_BottomlessFactionCommentChanceState")
+		ConfigIntOptions[BottomlessFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[BottomlessFactionCommentChance], "{0}", False, "AND_BottomlessFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3255,15 +3270,15 @@ EndState
 
 State AND_ChestFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(ChestFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[ChestFactionCommentChance])
 		SetSliderDialogDefaultValue(10)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		ChestFactionCommentChance = value as Int
-		SetSliderOptionValueST(ChestFactionCommentChance, "{0}", False, "AND_ChestFactionCommentChanceState")
+		ConfigIntOptions[ChestFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[ChestFactionCommentChance], "{0}", False, "AND_ChestFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3274,15 +3289,15 @@ EndState
 
 State AND_GenitalsFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(GenitalsFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[GenitalsFactionCommentChance])
 		SetSliderDialogDefaultValue(15)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		GenitalsFactionCommentChance = value as Int
-		SetSliderOptionValueST(GenitalsFactionCommentChance, "{0}", False, "AND_GenitalsFactionCommentChanceState")
+		ConfigIntOptions[GenitalsFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[GenitalsFactionCommentChance], "{0}", False, "AND_GenitalsFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3293,15 +3308,15 @@ EndState
 
 State AND_AssFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(AssFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[AssFactionCommentChance])
 		SetSliderDialogDefaultValue(5)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		AssFactionCommentChance = value as Int
-		SetSliderOptionValueST(AssFactionCommentChance, "{0}", False, "AND_AssFactionCommentChanceState")
+		ConfigIntOptions[AssFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[AssFactionCommentChance], "{0}", False, "AND_AssFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3312,15 +3327,15 @@ EndState
 
 State AND_BraFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(BraFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[BraFactionCommentChance])
 		SetSliderDialogDefaultValue(5)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		BraFactionCommentChance = value as Int
-		SetSliderOptionValueST(BraFactionCommentChance, "{0}", False, "AND_BraFactionCommentChanceState")
+		ConfigIntOptions[BraFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[BraFactionCommentChance], "{0}", False, "AND_BraFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	
@@ -3331,15 +3346,15 @@ EndState
 
 State AND_UnderwearFactionCommentChanceState
 	Event OnSliderOpenST()
-		SetSliderDialogStartValue(UnderwearFactionCommentChance)
+		SetSliderDialogStartValue(ConfigIntOptions[UnderwearFactionCommentChance])
 		SetSliderDialogDefaultValue(5)
 		SetSliderDialogRange(0,50)
 		SetSliderDialogInterval(1)
 	EndEvent
 	
 	Event OnSliderAcceptST(Float value)
-		UnderwearFactionCommentChance = value as Int
-		SetSliderOptionValueST(UnderwearFactionCommentChance, "{0}", False, "AND_UnderwearFactionCommentChanceState")
+		ConfigIntOptions[UnderwearFactionCommentChance] = value as Int
+		SetSliderOptionValueST(ConfigIntOptions[UnderwearFactionCommentChance], "{0}", False, "AND_UnderwearFactionCommentChanceState")
 		ForcePageReset()
 	EndEvent
 	

@@ -1050,8 +1050,8 @@ namespace FemaleArmorScan {
 		}
 	
 		Log("<C++ FemaleArmorScan> [FemaleAnalyze] Start analysis...", LogType::PlayerArmorScan);
-		if (PlayerWornHasKeyword(CoversAll)) {
-			Log("<C++ FemaleArmorScan> [FemaleAnalyze] Covers All keyword detected", LogType::PlayerArmorScan);
+		if (PlayerWornHasKeyword(CoversAll) || IsPlayerTransformed()) {
+			Log("<C++ FemaleArmorScan> [FemaleAnalyze] Covers All keyword detected or player is transformed", LogType::PlayerArmorScan);
 
 			PlayerCoverage::ChestCurtainCoverage = true;
 			PlayerCoverage::PelvicCurtainCover = true;

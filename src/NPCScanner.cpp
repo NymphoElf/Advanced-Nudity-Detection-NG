@@ -77,7 +77,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 	for (int Index = 0; Index < ScannedActors.size(); ++Index) {
 		if (ScannedActors[Index] == nullptr) {
 			Log("<C++ NPCScanner> [ProcessActor] Received a NONE/Null Actor!", LogType::Core, LoggingLevel::error);
-			return;
+			continue;
 		}
 
 		int index = 0;
@@ -108,6 +108,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 			// resolved (older build); fall back to 0 rather than writing a negative rank.
 			float arousalValue = InstalledMods::OSLAroused ? Aroused::GetArousal(ScannedActors[Index]) : 0.0f;
 			const std::int8_t arousalRank = arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 };
+			
 			//Only write to the faction if the rank has actually changed. (try and avoid potential data races from game ai/job threads accessing factions)
 			if (ScannedActors[Index]->GetFactionRank(ArousalFaction, false) != arousalRank) {
 				ScannedActors[Index]->AddToFaction(ArousalFaction, arousalRank);
@@ -130,31 +131,38 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 				RE::FormID FemaleFormID = ScannedActors[Index]->GetFormID();
 
 				if (InstalledMods::RosaRoundBottom && ScannedActors[Index] == Rosa) {
-					Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime](int SexualityScore) {
-						SKSE::GetTaskInterface()->AddTask([currentGameTime, SexualityScore] {
-							RegisterRosa(currentGameTime, SexualityScore);
-						});
-					});
-					
-					//RegisterRosa(currentGameTime, SexualityScore);
+					if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
+						Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime](int SexualityScore) {
+							SKSE::GetTaskInterface()->AddTask([currentGameTime, SexualityScore] {
+								RegisterRosa(currentGameTime, SexualityScore);
+								});
+							});
+					}
+					else {
+						RegisterRosa(currentGameTime, 100);
+					}
 				}
 				else {
 					Log("<C++ NPCScanner> [ProcessActor] Registering New Female " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", LogType::Core);
-					Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime, FemaleFormID](int SexualityScore) {
-						SKSE::GetTaskInterface()->AddTask([currentGameTime, FemaleFormID, SexualityScore] {
-							// Async hop: the actor may have unloaded between the scan and this
-							// callback. RegisterFemale dereferences the actor on its first line,
-							// so bail if the lookup came back null.
-							RE::Actor* thisActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
-							if (!thisActor) {
-								Log("<C++ NPCScanner> [ProcessActor] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
-								return;
-							}
-							RegisterFemale(thisActor, currentGameTime, SexualityScore);
-						});
-					});
 					
-					//RegisterFemale(ScannedActors[Index], currentGameTime, SexualityScore);
+					if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
+						Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime, FemaleFormID](int SexualityScore) {
+							SKSE::GetTaskInterface()->AddTask([currentGameTime, FemaleFormID, SexualityScore] {
+								// Async hop: the actor may have unloaded between the scan and this
+								// callback. RegisterFemale dereferences the actor on its first line,
+								// so bail if the lookup came back null.
+								RE::Actor* thisActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
+								if (!thisActor) {
+									Log("<C++ NPCScanner> [ProcessActor] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
+									return;
+								}
+								RegisterFemale(thisActor, currentGameTime, SexualityScore);
+								});
+							});
+					}
+					else {
+						RegisterFemale(ScannedActors[Index], currentGameTime, 100);
+					}
 				}
 			}
 		}

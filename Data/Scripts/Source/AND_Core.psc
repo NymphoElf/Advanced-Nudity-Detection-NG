@@ -212,6 +212,8 @@ Function FemaleAnalyze() Global Native
 Function MaleAnalyze() Global Native
 Int Function GetRandomizedModesty(Actor akActor) Global Native
 
+Function AddCustomTransform(Race TransformRace) Global Native
+
 Event OnInit()
 	Startup()
 EndEvent
@@ -292,10 +294,14 @@ Function ProcessEquipmentChange()
 		WICommentChanceNaked.SetValue(NakedCommentChance(False))
 	EndIf
 	
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+	ModEvent.Send(EventHandle)
+	
 	Utility.Wait(0.1)
 	EquipScanArmed = False
 EndFunction
 
+;/
 Function AddCustomTransform(Race TransformRace)
 	Int Index = CustomTransform.Find(None)
 	If Index < 0
@@ -311,7 +317,11 @@ Function AddCustomTransform(Race TransformRace)
 	
 	CustomTransform[Index] = TransformRace
 EndFunction
+/;
 
+;Function NakedCommentPreCheck(Bool ) Global Native
+
+;Redo when SLSFR v4 is done?
 Function SLSFR_NakedCommentPreCheck()
 	If SLSFR_Config.DisableNakedCommentsWhilePW == True
 		If SLSFR_Mods.IsPublicWhore() == True
@@ -324,6 +334,9 @@ Function SLSFR_NakedCommentPreCheck()
 	EndIf
 EndFunction
 
+Int Function NakedCommentChance(Bool IsMCMRequest) Global Native
+
+;/
 Int Function NakedCommentChance(Bool IsMCMRequest)
 	Int CommentChance = -1
 	Bool UnderwearCounted = False
@@ -367,6 +380,7 @@ Int Function NakedCommentChance(Bool IsMCMRequest)
 	
 	return CommentChance
 EndFunction
+/;
 
 ;/
 Function UpdateArousalValue(Actor akActor)
@@ -378,9 +392,11 @@ Function UpdateArousalValue(Actor akActor)
 EndFunction
 /;
 
+;/
 Bool Function IsPlayerTransformed()
 	If PlayerBase.GetRace() != BaseRace
 		return True
 	EndIf
 	return False
 EndFunction
+/;

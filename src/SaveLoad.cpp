@@ -8,6 +8,7 @@
 #include "NPCData.h"
 #include "ModEventHandler.h"
 #include "PlayerModesty.h"
+#include "Player.h"
 
 // 4-char record tags. Must be unique within your plugin.
 static constexpr std::uint32_t kPluginID = 'AND4'; // Set any unique id for your plugin here
@@ -69,12 +70,6 @@ void LoadPermanentNPCs()
 		ActorFile.read(reinterpret_cast<char*>(&Female), sizeof(Female));
 		
 		PermanentFemaleVector.emplace_back(Female);
-
-		/*
-		if (FindInVector(PermanentFemaleVector, Female) == -1) {
-			PermanentFemaleVector.emplace_back(Female);
-		}
-		*/
 	}
 
 	ActorFile.close();
@@ -108,19 +103,9 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
 		}
 
-
 		SavePermanentNPCs();
 
-		/*
-		const uint32_t PermanentCount = (uint32_t)PermanentFemaleVector.size();
-
-		serializer->WriteRecordData(&PermanentCount, sizeof(PermanentCount));
-
-		for(auto& Female : PermanentFemaleVector)
-		{
-			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
-		}
-		*/
+		serializer->WriteRecordData(&PermanentFemalesImported, sizeof(bool));
 	}
 
 	// --- MCM record ---
@@ -139,6 +124,15 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 		serializer->WriteRecordData(&Configuration::PlayerConfidenceLevel, sizeof(int));
 
+		serializer->WriteRecordData(&Configuration::NudeCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::ToplessCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::BottomlessCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::ChestCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::BraCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::AssCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::GenitalsCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::UnderwearCommentChance, sizeof(int));
+
 		serializer->WriteRecordData(&Configuration::MotionFlashEnabled, sizeof(bool));
 		serializer->WriteRecordData(&Configuration::DynamicModestyEnabled, sizeof(bool));
 
@@ -154,6 +148,8 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 		serializer->WriteRecordData(&Configuration::HardcoreModeEnabled, sizeof(bool));
 		
 		serializer->WriteRecordData(&Configuration::ModestyUpgradeBlocked, sizeof(bool));
+
+		serializer->WriteRecordData(&Configuration::DisableNakedComments, sizeof(bool));
 
 		float DynamicModstyValue = Configuration::DynamicModestyMode->value;
 		serializer->WriteRecordData(&DynamicModstyValue, sizeof(float));
@@ -198,6 +194,24 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 		serializer->WriteRecordData(BottomModestyTimer, sizeof(BottomModestyTimer));
 
 		serializer->WriteRecordData(&LastTimeChecked, sizeof(float));
+
+		serializer->WriteRecordData(&IsWearingChestCurtain, sizeof(bool));
+		serializer->WriteRecordData(&IsWearingPelvicCurtain, sizeof(bool));
+		serializer->WriteRecordData(&IsWearingAssCurtain, sizeof(bool));
+
+		serializer->WriteRecordData(&PlayerFactionsInitialized, sizeof(bool));
+
+		std::string raceEditorID = PlayerBaseRace->GetFormEditorID();
+		Log("Saving Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
+		WriteString(serializer, raceEditorID);
+
+		const std::uint32_t count = (uint32_t)CustomTransformations.size();
+		serializer->WriteRecordData(&count, sizeof(count));
+		
+		for (uint32_t Index = 0; Index < count; ++Index) {
+			raceEditorID = CustomTransformations[Index]->GetFormEditorID();
+			WriteString(serializer, raceEditorID);
+		}
 	}
 }
 
@@ -235,18 +249,7 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 				LoadPermanentNPCs();
 
-				/*
-				uint32_t PermanentCount = 0;
-				serializer->ReadRecordData(&PermanentCount, sizeof(PermanentCount));
-	
-				for (uint32_t Index = 0; Index < PermanentCount; ++Index)
-				{
-					PermanentFemales ThisFemale;
-					serializer->ReadRecordData(reinterpret_cast<char*>(&ThisFemale), sizeof(ThisFemale));
-
-					PermanentFemaleVector.emplace_back(ThisFemale);
-				}
-				*/
+				serializer->ReadRecordData(&PermanentFemalesImported, sizeof(bool));
 
 				break;
 			}
@@ -267,6 +270,15 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 				serializer->ReadRecordData(&Configuration::PlayerConfidenceLevel, sizeof(int));
 
+				serializer->ReadRecordData(&Configuration::NudeCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::ToplessCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::BottomlessCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::ChestCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::BraCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::AssCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::GenitalsCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::UnderwearCommentChance, sizeof(int));
+
 				serializer->ReadRecordData(&Configuration::MotionFlashEnabled, sizeof(bool));
 				serializer->ReadRecordData(&Configuration::DynamicModestyEnabled, sizeof(bool));
 
@@ -280,6 +292,10 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 				serializer->ReadRecordData(&Configuration::NPCStrictRulesByDefault, sizeof(bool));
 
 				serializer->ReadRecordData(&Configuration::HardcoreModeEnabled, sizeof(bool));
+
+				serializer->ReadRecordData(&Configuration::ModestyUpgradeBlocked, sizeof(bool));
+
+				serializer->ReadRecordData(&Configuration::DisableNakedComments, sizeof(bool));
 
 				float DynamicModestyValue;
 				serializer->ReadRecordData(&DynamicModestyValue, sizeof(float));
@@ -351,6 +367,25 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 				serializer->ReadRecordData(BottomModestyTimer, sizeof(BottomModestyTimer));
 
 				serializer->ReadRecordData(&LastTimeChecked, sizeof(float));
+
+				serializer->ReadRecordData(&IsWearingChestCurtain, sizeof(bool));
+				serializer->ReadRecordData(&IsWearingPelvicCurtain, sizeof(bool));
+				serializer->ReadRecordData(&IsWearingAssCurtain, sizeof(bool));
+
+				serializer->ReadRecordData(&PlayerFactionsInitialized, sizeof(bool));
+
+				std::string raceEditorID;
+				ReadString(serializer, raceEditorID);
+				Log("Loading Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
+				PlayerBaseRace = RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID);
+
+				std::uint32_t count = 0;
+				serializer->ReadRecordData(&count, sizeof(count));
+				
+				for (uint32_t Index = 0; Index < count; ++Index) {
+					ReadString(serializer, raceEditorID);
+					CustomTransformations.emplace_back(RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID));
+				}
 				break;
 			}
 
@@ -392,6 +427,9 @@ inline void RevertCallback(SKSE::SerializationInterface*) {
 	NPCUnderwearTransparentRoll = -1;
 	NPCHotpantsTransparentRoll = -1;
 	NPCShowgirlTransparentRoll = -1;
+
+	//Clear Custom Transform List
+	CustomTransformations.clear();
 }
 
 void RegisterCoSaveSerializer()

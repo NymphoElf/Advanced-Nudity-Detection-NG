@@ -1055,8 +1055,8 @@ namespace MaleArmorScan {
 		}
 
 		Log("<C++ MaleArmorScan> [MaleAnalyze] Start analysis...", LogType::PlayerArmorScan);
-		if (PlayerWornHasKeyword(CoversAll_Male)) {
-			Log("<C++ MaleArmorScan> [MaleAnalyze] Covers All keyword detected", LogType::PlayerArmorScan);
+		if (PlayerWornHasKeyword(CoversAll_Male) || IsPlayerTransformed()) {
+			Log("<C++ MaleArmorScan> [MaleAnalyze] Covers All keyword detected or player is transformed", LogType::PlayerArmorScan);
 
 			PlayerCoverage::ChestCurtainCoverage = true;
 			PlayerCoverage::PelvicCurtainCover = true;

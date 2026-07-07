@@ -33,10 +33,15 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("FemaleAnalyze", "AND_Core", ExternalFemaleAnalyze);
 	papyrusVM->RegisterFunction("MaleAnalyze", "AND_Core", ExternalMaleAnalyze);
 	papyrusVM->RegisterFunction("GetRandomizedModesty", "AND_Core", ExternalGetRandomizedModesty);
+	papyrusVM->RegisterFunction("NakedCommentChance", "AND_Core", ExternalNakedCommentChance);
+	papyrusVM->RegisterFunction("AddCustomTransform", "AND_Core", AddCustomTransform);
 
 	//Player Script Binds
 	papyrusVM->RegisterFunction("CheckWearingCurtains", "AND_PlayerScript", CheckWearingCurtains);
 	papyrusVM->RegisterFunction("ClosedMenuEvent", "AND_PlayerScript", ClosedMenuEvent);
+	papyrusVM->RegisterFunction("PlayerRaceIsRecognized", "AND_PlayerScript", PlayerRaceIsRecognized);
+	papyrusVM->RegisterFunction("GetPlayerBaseRace", "AND_PlayerScript", ExternalGetPlayerBaseRace);
+	papyrusVM->RegisterFunction("SetPlayerBaseRace", "AND_PlayerScript", ExternalSetPlayerBaseRace);
 
 	//Keybind Manager Binds
 	papyrusVM->RegisterFunction("PlayerIsWearingChestCurtain", "AND_KeybindManager", PlayerIsWearingChestCurtain);
@@ -51,7 +56,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("ResetAllFemales", "AND_NPCData", ResetAllFemales);
 	papyrusVM->RegisterFunction("DeleteAllFemales", "AND_NPCData", DeleteAllFemales);
 	papyrusVM->RegisterFunction("TweakFemale", "AND_NPCData", TweakFemaleData);
-	papyrusVM->RegisterFunction("ImportPermanentFemales", "AND_NPCData", ImportPermanentFemales);
+	//papyrusVM->RegisterFunction("ImportPermanentFemales", "AND_NPCData", ExternalImportPermanentFemales);
 	papyrusVM->RegisterFunction("RegisterPermanentFemale", "AND_NPCData", RegisterPermanent);
 
 	//Config Script Binds
@@ -69,7 +74,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("UpdateConfigBoolOptions", "AND_MCM", UpdateConfigBoolOptions);
 
 	papyrusVM->RegisterFunction("GetConfigIntOptions", "AND_MCM", GetConfigIntOptions);
-	papyrusVM->RegisterFunction("UpdateConfigIntOptions", "AND_MCM", UpdateConfigBoolOptions);
+	papyrusVM->RegisterFunction("UpdateConfigIntOptions", "AND_MCM", UpdateConfigIntOptions);
 	
 	papyrusVM->RegisterFunction("GetCurtainCoverage", "AND_MCM", GetCurtainCoverage);
 
@@ -171,7 +176,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		CheckMods();
 		InitializeConfigData();
 
-		ActorScanner::StartScanLoop();
+		//ActorScanner::StartScanLoop();
 
 		break;
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads

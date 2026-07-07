@@ -26,6 +26,11 @@ String Property ScanSetting Auto Hidden
 Function CheckWearingCurtains() Global Native
 Function ClosedMenuEvent(String MenuName) Global Native
 
+Race Function GetPlayerBaseRace() Global Native
+Function SetPlayerBaseRace(Race NewRace) Global Native
+
+Bool Function PlayerRaceIsRecognized() Global Native
+
 Event OnInit()
 	Startup()
 EndEvent
@@ -38,18 +43,20 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
-	If Core.BaseRace == None
-		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.ERROR)
-		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
-		Game.ShowRaceMenu()
-	EndIf
-	
 	AND_Logger.FastLog("===LOAD GAME===")
 	Core.ModCheck()
 	
 	ModEventListener.InitializeModEvents()
 	
 	RegisterForAnimations()
+	
+	;Utility.Wait(2.0)
+	
+	If GetPlayerBaseRace() == None
+		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.ERROR)
+		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
+		Game.ShowRaceMenu()
+	EndIf
 EndEvent
 
 Function RegisterForAnimations()
@@ -59,16 +66,22 @@ EndFunction
 
 Event OnMenuClose(String MenuName)
 	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Menu Closed", Logger.Core, Logger.CRITICAL)
+	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Sending ClosedMenuEvent to C++...", Logger.Core, Logger.CRITICAL)
+	ClosedMenuEvent(MenuName)
+	
 	If MenuName == "RaceSex Menu"
 		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - RaceSex Menu Closed", Logger.Core, Logger.CRITICAL)
 		
 		RegisterForAnimations()
 		
+		;/
 		If PermanentsImported == False
 			AND_NPCData.ImportPermanentFemales(Utility.GetCurrentGameTime())
 			PermanentsImported = True
 		EndIf
+		/;
 		
+		;/
 		Core.BaseRace = Core.PlayerBase.GetRace()
 		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace, Logger.Core)
 		
@@ -78,11 +91,18 @@ Event OnMenuClose(String MenuName)
 			;Game.ShowRaceMenu()
 			return
 		EndIf
+		/;
 		
-		Core.RegisterForSingleUpdate(1.0)
+		If GetPlayerBaseRace() == None
+			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.CRITICAL)
+			Debug.MessageBox("A.N.D. - CRITICAL ERROR!!! Race was not detected! Something is wrong with your game!")
+		EndIf
+		
+		;Core.RegisterForSingleUpdate(1.0)
 	EndIf
 	
 	If MenuName == "Console"
+		;/
 		Race arPlayer = Core.PlayerBase.GetRace()
 		If arPlayer != Core.BaseRace
 			If Core.DefaultRaces.Find(arPlayer) >= 0
@@ -102,18 +122,29 @@ Event OnMenuClose(String MenuName)
 				EndIf
 			EndIf
 		EndIf
+		/;
+		
+		If PlayerRaceIsRecognized() == False
+			Race arPlayer = GetPlayerBaseRace()
+			Int TransformedSelection = IsTransformedMessage.Show()
+			If TransformedSelection == 1 ;Custom Race
+				SetPlayerBaseRace(arPlayer)
+				Debug.MessageBox("A.N.D. MESSAGE - Your race is detected as: " + arPlayer + " " + arPlayer.GetName() + ". If this is not your NON-transformed race, use Racemenu to reset it to the correct race.")
+			Else
+				Int AddTransform = AddTransformRace.Show()
+				If AddTransform == 0
+					AND_Core.AddCustomTransform(arPlayer)
+				EndIf
+			EndIf
+		EndIf
 	EndIf
-	
-	AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Sending ClosedMenuEvent to C++...", Logger.Core, Logger.CRITICAL)
-	ClosedMenuEvent(MenuName)
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 	If Config.ConfigBoolOptions[Config.MotionFlashEnabled] == True
 		If akEventName == "FootLeft"
 			If MotionClock.CooldownActive == False
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft'")
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Running Motion Flash Trigger")
+				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft' - Running Motion Flash Trigger")
 				AND_Core.MovementDiceRoll(False)
 				MotionClock.Cooldown()
 			EndIf
@@ -121,13 +152,15 @@ Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 		
 		If akEventName == "FootSprintLeft"
 			If MotionClock.CooldownActive == False
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft'")
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Sprinting Motion Flash Trigger")
+				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft' - Sprinting Motion Flash Trigger")
 				AND_Core.MovementDiceRoll(True)
 				MotionClock.Cooldown()
 			EndIf
 		EndIf
 	EndIf
+	
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+	ModEvent.Send(EventHandle)
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
@@ -183,4 +216,7 @@ Event OnUpdateGameTime()
 	;Core.UpdateArousalValue(PlayerRef)
 	AND_Core.DiceRoll(PlayerRef.IsSprinting(), PlayerRef.IsRunning())
 	;Core.NPCScanSpell.Cast(PlayerRef)
+	
+	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+	ModEvent.Send(EventHandle)
 EndEvent

@@ -165,6 +165,17 @@ namespace Configuration {
 
 	inline int PlayerConfidenceLevel;
 
+	inline int NudeCommentChance;
+	inline int ToplessCommentChance;
+	inline int BottomlessCommentChance;
+	inline int ChestCommentChance;
+	inline int BraCommentChance;
+	inline int AssCommentChance;
+	inline int GenitalsCommentChance;
+	inline int UnderwearCommentChance;
+
+	//inline int PlayerNakedCommentChance;
+
 	//Booleans
 
 	inline bool MotionFlashEnabled;
@@ -183,6 +194,7 @@ namespace Configuration {
 	//inline bool HardcoreLockdown;
 
 	inline bool ModestyUpgradeBlocked;
+	inline bool DisableNakedComments;
 
 	//Skyrim Global Variables
 	inline RE::TESGlobal* DynamicModestyMode;
