@@ -201,6 +201,9 @@ void InitializeCoreData() {
 	VanillaRaces[18] = RE::TESForm::LookupByID<RE::TESRace>(0x13748); //Redguard
 	VanillaRaces[19] = RE::TESForm::LookupByID<RE::TESRace>(0x88846); //Redguard Vampire
 
+	DefaultTransformations[0] = RE::TESForm::LookupByID<RE::TESRace>(0x0200283A); //Vampire Lord
+	DefaultTransformations[1] = RE::TESForm::LookupByID<RE::TESRace>(0x000CDD84); //Werewolf
+
 	//Factions
 	
 	NudeFaction = RE::TESForm::LookupByEditorID<RE::TESFaction>("AND_NudeActorFaction");
