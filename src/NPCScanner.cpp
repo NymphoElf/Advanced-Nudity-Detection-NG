@@ -54,6 +54,8 @@ void ForEachReferenceInRange(RE::TESObjectREFR* origin, float radius, std::funct
 }
 
 std::vector<RE::Actor*> GetActorsInRadiusOfPlayer(float radius) {
+	Log("<C++ ActorScanner> [GetActorsInRadiusOfPlayer] Gathering Actors. Radius is " + std::to_string(radius));
+
 	std::vector<RE::Actor*> nearbyActors;
 
 	if (!Player || !Player->parentCell) {
@@ -64,19 +66,23 @@ std::vector<RE::Actor*> GetActorsInRadiusOfPlayer(float radius) {
 	ForEachReferenceInRange(Player, radius, [&](RE::TESObjectREFR& ref) {
 		//auto refBase = ref.GetBaseObject();
 		auto actor = ref.As<RE::Actor>();
-		if (actor && actor != Player && !actor->IsDisabled() && !actor->IsDead() && !actor->HasKeyword(ActorType_Creature)) {
+		if (actor && actor != Player && !actor->IsDisabled() && !actor->IsDead() && !actor->IsChild() && !actor->HasKeyword(ActorType_Creature)) {
 			nearbyActors.push_back(actor);
 		}
 		return RE::BSContainer::ForEachResult::kContinue;
 		});
 
+	Log("<C++ ActorScanner> [GetActorsInRadiusOfPlayer] Finished Gathering Actors. Sending " + std::to_string((int)nearbyActors.size()) + " actors to be processed!");
+
 	return nearbyActors;
 }
 
 void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
+	Log("<C++ NPCScanner> [ProcessActors] Beginning to process actors! Processing " + std::to_string((int)ScannedActors.size()) + " actors!");
+	
 	for (int Index = 0; Index < ScannedActors.size(); ++Index) {
 		if (ScannedActors[Index] == nullptr) {
-			Log("<C++ NPCScanner> [ProcessActor] Received a NONE/Null Actor!", LogType::Core, LoggingLevel::error);
+			Log("<C++ NPCScanner> [ProcessActors] Received a NONE/Null Actor!", LogType::Core, LoggingLevel::error);
 			continue;
 		}
 
@@ -92,7 +98,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 
 		auto* actorBase = ScannedActors[Index]->GetActorBase();
 		if (actorBase == nullptr) {
-			Log("<C++ NPCScanner> [ProcessActor] Actor " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ") has no actor base; skipping.", LogType::Core, LoggingLevel::warning);
+			Log("<C++ NPCScanner> [ProcessActors] Actor " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ") has no actor base; skipping.", LogType::Core, LoggingLevel::warning);
 			continue;
 		}
 
@@ -121,7 +127,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 
 			if (RegisteredFemaleMap.count(ScannedActors[Index]->GetFormID()))
 			{
-				Log("<C++ NPCScanner> [ProcessActor] Female " + akName + " already exists in registered actor list.", LogType::Core);
+				Log("<C++ NPCScanner> [ProcessActors] Female " + akName + " already exists in registered actor list.", LogType::Core);
 				if (Configuration::DynamicModestyEnabled) {
 					ProcessNPCModesty(ScannedActors[Index], currentGameTime);
 				}
@@ -143,7 +149,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 					}
 				}
 				else {
-					Log("<C++ NPCScanner> [ProcessActor] Registering New Female " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", LogType::Core);
+					Log("<C++ NPCScanner> [ProcessActors] Registering New Female: " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", LogType::Core);
 					
 					if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
 						Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime, FemaleFormID](int SexualityScore) {
@@ -153,7 +159,7 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 								// so bail if the lookup came back null.
 								RE::Actor* thisActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
 								if (!thisActor) {
-									Log("<C++ NPCScanner> [ProcessActor] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
+									Log("<C++ NPCScanner> [ProcessActors] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
 									return;
 								}
 								RegisterFemale(thisActor, currentGameTime, SexualityScore);
@@ -167,6 +173,8 @@ void ProcessActors(std::vector<RE::Actor*> ScannedActors) {
 			}
 		}
 	}
+
+	Log("<C++ NPCScanner> [ProcessActors] Finished processing actors!");
 }
 
 /*

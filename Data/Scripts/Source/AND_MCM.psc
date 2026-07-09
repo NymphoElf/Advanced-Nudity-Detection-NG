@@ -429,17 +429,6 @@ Bool Property ApplyAsDefault = False Auto Hidden
 
 Bool Property StrictNPC = False Auto Hidden
 
-;/
-Int Property NudeFactionCommentChance = 10 Auto Hidden
-Int Property ToplessFactionCommentChance = 10 Auto Hidden
-Int Property BottomlessFactionCommentChance = 10 Auto Hidden
-Int Property ChestFactionCommentChance = 20 Auto Hidden
-Int Property GenitalsFactionCommentChance = 25 Auto Hidden
-Int Property AssFactionCommentChance = 15 Auto Hidden
-Int Property BraFactionCommentChance = 5 Auto Hidden
-Int Property UnderwearFactionCommentChance = 5 Auto Hidden
-/;
-
 String Property PlayerConfidence = "Average" Auto Hidden
 String Property ShySex = "Males" Auto Hidden
 String Property NPCShySex = "Males" Auto Hidden
@@ -474,12 +463,16 @@ String Property ScanFrequency = "Normal" Auto Hidden
 
 String[] Property RegisteredFemaleNames Auto Hidden
 Int Property DisplayIndex = 0 Auto Hidden
+Int Property CurrentRegisteredFemalePage = 1 Auto Hidden
+Int Property MaxRegisteredFemalePages = 1 Auto Hidden
 String Property SelectedFemale = "---" Auto Hidden
 Bool Property MakeFemalePermanent = False Auto Hidden
 Bool Property DeleteFemale = False Auto Hidden
 
 String[] Property PermanentFemaleNames Auto Hidden
 Int Property PermIndex = 0 Auto Hidden
+Int Property CurrentPermanentFemalePage = 1 Auto Hidden
+Int Property MaxPermanentFemalePages = 1 Auto Hidden
 String Property SelectedPermFemale = "---" Auto Hidden
 Bool Property DeletePermFemale = False Auto Hidden
 
@@ -556,8 +549,8 @@ Function InstallMCM()
 	AND_Logger.FastLog("<MCM> [InstallMCM] - END", Logger.Config, Logger.CRITICAL)
 EndFunction
 
-Actor[] Function GetRegisteredFemaleActors() Global Native
-Actor[] Function GetPermanentFemaleActors() Global Native
+Actor[] Function GetRegisteredFemaleActors(Int PageNumber) Global Native
+Actor[] Function GetPermanentFemaleActors(Int PageNumber) Global Native
 
 Bool[] Function GetConfigBoolOptions() Global Native
 
@@ -577,8 +570,13 @@ Int[] Function GetPlayerSimpleModestyTimers() Global Native
 
 Int[] Function GetFemaleActorData(Actor akFemale) Global Native
 
-String[] Function GetRegisteredFemaleNames() Global Native
-String[] Function GetPermanentFemaleNames() Global Native
+Int Function GetRegisteredFemalesPages() Global Native
+Int Function GetPermanentFemalesPages() Global Native
+
+String[] Function GetRegisteredFemaleNames(Int PageNumber) Global Native
+String[] Function GetPermanentFemaleNames(Int PageNumber) Global Native
+
+String Function GetFemaleActorFormID(Actor akFemale) Global Native
 
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
@@ -598,11 +596,26 @@ Event OnConfigOpen()
 	
 	PlayerCurtainState = GetCurtainCoverage()
 	
-	RegisteredFemaleNames = GetRegisteredFemaleNames()
-	RegisteredFemaleActors = GetRegisteredFemaleActors()
+	MaxRegisteredFemalePages = GetRegisteredFemalesPages()
+	MaxPermanentFemalePages = GetPermanentFemalesPages()
 	
-	PermanentFemaleNames = GetPermanentFemaleNames()
-	PermanentFemaleActors = GetPermanentFemaleActors()
+	If MaxRegisteredFemalePages > CurrentRegisteredFemalePage
+		CurrentRegisteredFemalePage = MaxRegisteredFemalePages
+	ElseIf CurrentRegisteredFemalePage < 1
+		CurrentRegisteredFemalePage = 1
+	EndIf
+	
+	If MaxPermanentFemalePages > CurrentPermanentFemalePage
+		CurrentPermanentFemalePage = MaxPermanentFemalePages
+	ElseIf CurrentPermanentFemalePage < 1
+		CurrentPermanentFemalePage = 1
+	EndIf
+	
+	RegisteredFemaleNames = GetRegisteredFemaleNames(CurrentRegisteredFemalePage)
+	RegisteredFemaleActors = GetRegisteredFemaleActors(CurrentRegisteredFemalePage)
+	
+	PermanentFemaleNames = GetPermanentFemaleNames(CurrentPermanentFemalePage)
+	PermanentFemaleActors = GetPermanentFemaleActors(CurrentPermanentFemalePage)
 	
 	If Main.PlayerBase.GetSex() == Enum_Male
 		WornKeywordList = MaleWornKeywordList()
@@ -2073,6 +2086,8 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$TrackedFemalesHeader")
 			NPCModestyMenus[1] = AddMenuOption("$SelectedFemaleText", SelectedFemale, 0)
+			AddTextOption("$FemaleFormIDText", GetFemaleActorFormID(SelectedFemaleActor))
+			NPCModestySliders[7] = AddMenuOption("$RegisteredFemalesPage", CurrentRegisteredFemalePage, DisabledIf(MaxRegisteredFemalePages < 2))
 			
 			NPCModestyToggles[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermanentFemaleNames.Find(SelectedFemale) >= 0))
 			NPCModestyToggles[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, DisabledIf(MakeFemalePermanent == False))
@@ -2099,6 +2114,7 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$PersistentFemaleHeader")
 			NPCModestyMenus[3] = AddMenuOption("$SelectedFemaleText", SelectedPermFemale, 0)
+			NPCModestySliders[8] = AddMenuOption("$PermanentFemalesPage", CurrentPermanentFemalePage, DisabledIf(MaxPermanentFemalePages < 2))
 			NPCModestyToggles[19] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
 			NPCModestyToggles[20] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, DisabledIf(DeletePermFemale == False || SelectedPermFemale == "---" || SelectedPermFemale == ""))
 		EndIf
@@ -2387,6 +2403,10 @@ Event OnOptionHighlight(Int Option)
 		SetInfoText("$TweakBottomRankInfoText")
 	ElseIf Option == NPCModestySliders[6] ;Tweak Minimum Bottom Rank
 		SetInfoText("$TweakMinBottomRankInfoText")
+	ElseIf Option == NPCModestySliders[7] ;Current Registered Females Page
+		SetInfoText("$RegisteredFemalePageInfoText")
+	ElseIf Option == NPCModestySliders[8] ;Current Permanent Females Page
+		SetInfoText("$PermanentFemalePageInfoText")
 	
 		;=========================
 		;---MENUS---
@@ -2475,6 +2495,18 @@ Event OnOptionSliderOpen(Int Option)
 		RangeMax = 3
 		Interval = 1
 		DefaultValue = 0
+	ElseIf Option == NPCModestySliders[7]
+		StartValue = CurrentRegisteredFemalePage
+		RangeMin = 1
+		RangeMax = MaxRegisteredFemalePages
+		Interval = 1
+		DefaultValue = 1
+	ElseIf Option == NPCModestySliders[8]
+		StartValue = CurrentPermanentFemalePage
+		RangeMin = 1
+		RangeMax = MaxPermanentFemalePages
+		Interval = 1
+		DefaultValue = 1
 	EndIf
 	
 	SetSliderDialogStartValue(StartValue)
@@ -2511,6 +2543,29 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 	ElseIf Option == NPCModestySliders[6]
 		ThisNPCMinimumBottomRank = Value as Int
 		SetSliderOptionValue(Option, Value, "{0}", False)
+	ElseIf Option == NPCModestySliders[7]
+		CurrentRegisteredFemalePage = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
+		
+		RegisteredFemaleNames = GetRegisteredFemaleNames(CurrentRegisteredFemalePage)
+		RegisteredFemaleActors = GetRegisteredFemaleActors(CurrentRegisteredFemalePage)
+		
+		DisplayIndex = 0
+		
+		SelectedFemale = RegisteredFemaleNames[DisplayIndex]
+		SelectedFemaleActor = RegisteredFemaleActors[DisplayIndex]
+		ForcePageReset()
+	ElseIf Option == NPCModestySliders[8]
+		CurrentPermanentFemalePage = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
+		
+		PermanentFemaleNames = GetPermanentFemaleNames(CurrentPermanentFemalePage)
+		PermanentFemaleActors = GetPermanentFemaleActors(CurrentPermanentFemalePage)
+		
+		PermIndex = 0
+		
+		SelectedPermFemale = PermanentFemaleNames[PermIndex]
+		ForcePageReset()
 	EndIf
 EndEvent
 
@@ -2906,7 +2961,8 @@ Event OnOptionSelect(Int Option)
 		EndIf
 		
 		MakeFemalePermanent = False
-		PermanentFemaleNames = GetPermanentFemaleNames()
+		PermanentFemaleNames = GetPermanentFemaleNames(CurrentPermanentFemalePage)
+		PermanentFemaleActors = GetPermanentFemaleActors(CurrentPermanentFemalePage)
 		ForcePageReset()
 	ElseIf Option == NPCModestyToggles[9]
 		DeleteFemale = !DeleteFemale

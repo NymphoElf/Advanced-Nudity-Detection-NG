@@ -323,28 +323,6 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 	return CurtainVector;
 }
 
-std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*) {
-	std::vector<RE::BSFixedString> FemaleNames;
-
-	for(auto& [ID, Female] : RegisteredFemaleMap)
-	{
-		FemaleNames.emplace_back(Female.GetName());
-	}
-
-	return FemaleNames;
-}
-
-std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*) {
-	std::vector<RE::BSFixedString> FemaleNames;
-
-	for(auto& Female : PermanentFemaleVector)
-	{
-		FemaleNames.emplace_back(Female.Name);
-	}
-
-	return FemaleNames;
-}
-
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
 	std::vector<bool> FemaleKeywordList;
 
@@ -763,7 +741,79 @@ std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 	return SimpleTimers;
 }
 
-std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
+int GetRegisteredFemalesPages(RE::StaticFunctionTag*) {
+	Log("<C++ Config> [GetRegisteredFemalesPages] Getting Registered Females Pages...");
+	float MapSize = RegisteredFemaleMap.size();
+	
+	if (MapSize < 1) {
+		return 1;
+	}
+	
+	return (int)std::ceil(MapSize / 128);
+}
+
+int GetPermanentFemalesPages(RE::StaticFunctionTag*) {
+	Log("<C++ Config> [GetPermanentFemalesPages] Getting Permanent Females Pages...");
+	float VectorSize = PermanentFemaleVector.size();
+	
+	if (VectorSize < 1) {
+		return 1;
+	}
+
+	return (int)std::ceil(VectorSize / 128);
+}
+
+std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*, int PageNumber) {
+	std::vector<RE::BSFixedString> FemaleNames;
+
+	for (auto& [ID, Female] : RegisteredFemaleMap)
+	{
+		FemaleNames.emplace_back(Female.GetName());
+	}
+
+	std::vector<RE::BSFixedString> ReturnVector;
+
+	if (PageNumber < 1) {
+		PageNumber = 1;
+	}
+
+	int MinimumIndex = 128 * (PageNumber - 1);
+	int MaximumIndex = 128 + MinimumIndex;
+
+	int CurrentIndex = MinimumIndex;
+	for (CurrentIndex; CurrentIndex < MaximumIndex && CurrentIndex < FemaleNames.size(); ++CurrentIndex) {
+		ReturnVector.emplace_back(FemaleNames[CurrentIndex]);
+	}
+
+	return ReturnVector;
+}
+
+std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*, int PageNumber) {
+	std::vector<RE::BSFixedString> FemaleNames;
+
+	for (auto& Female : PermanentFemaleVector)
+	{
+		FemaleNames.emplace_back(Female.Name);
+	}
+
+	std::vector<RE::BSFixedString> ReturnVector;
+
+	if (PageNumber < 1) {
+		PageNumber = 1;
+	}
+
+	int MinimumIndex = 128 * (PageNumber - 1);
+	int MaximumIndex = 128 + MinimumIndex;
+
+	int CurrentIndex = MinimumIndex;
+	for (CurrentIndex; CurrentIndex < MaximumIndex && CurrentIndex < FemaleNames.size(); ++CurrentIndex) {
+		ReturnVector.emplace_back(FemaleNames[CurrentIndex]);
+	}
+
+	return ReturnVector;
+}
+
+std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*, int PageNumber) {
 	std::vector<RE::Actor*> FemaleActors;
 
 	for(auto& [ID, Female] : RegisteredFemaleMap)
@@ -771,10 +821,24 @@ std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*) {
 		FemaleActors.emplace_back(RE::TESForm::LookupByID<RE::Actor>(Female.FemaleFormID));
 	}
 
-	return FemaleActors;
+	std::vector<RE::Actor*> ReturnVector;
+
+	if (PageNumber < 1) {
+		PageNumber = 1;
+	}
+
+	int MinimumIndex = 128 * (PageNumber - 1);
+	int MaximumIndex = 128 + MinimumIndex;
+
+	int CurrentIndex = MinimumIndex;
+	for (CurrentIndex; CurrentIndex < MaximumIndex && CurrentIndex < FemaleActors.size(); ++CurrentIndex) {
+		ReturnVector.emplace_back(FemaleActors[CurrentIndex]);
+	}
+
+	return ReturnVector;
 }
 
-std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
+std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int PageNumber)
 {
 	std::vector<RE::Actor*> FemaleActors;
 
@@ -788,7 +852,33 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*)
 		FemaleActors.emplace_back(ValidActor);
 	}
 
-	return FemaleActors;
+	std::vector<RE::Actor*> ReturnVector;
+
+	if (PageNumber < 1) {
+		PageNumber = 1;
+	}
+
+	int MinimumIndex = 128 * (PageNumber - 1);
+	int MaximumIndex = 128 + MinimumIndex;
+
+	int CurrentIndex = MinimumIndex;
+	for (CurrentIndex; CurrentIndex < MaximumIndex && CurrentIndex < FemaleActors.size(); ++CurrentIndex) {
+		ReturnVector.emplace_back(FemaleActors[CurrentIndex]);
+	}
+
+	return ReturnVector;
+}
+
+std::string GetFemaleActorFormID(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	RE::FormID FemaleForm = akFemale->GetFormID();
+	if (!RegisteredFemaleMap.count(FemaleForm))
+	{
+		Log("<C++ Config> [GetFemaleActorFormID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", FemaleForm) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+
+		return "UNREGISTERED";
+	}
+
+	return std::format("{:08X}", FemaleForm);
 }
 
 std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)

@@ -78,6 +78,9 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	
 	papyrusVM->RegisterFunction("GetCurtainCoverage", "AND_MCM", GetCurtainCoverage);
 
+	papyrusVM->RegisterFunction("GetRegisteredFemalesPages", "AND_MCM", GetRegisteredFemalesPages);
+	papyrusVM->RegisterFunction("GetPermanentFemalesPages", "AND_MCM", GetPermanentFemalesPages);
+
 	papyrusVM->RegisterFunction("GetRegisteredFemaleNames", "AND_MCM", GetRegisteredFemaleNames);
 	papyrusVM->RegisterFunction("GetRegisteredFemaleActors", "AND_MCM", GetRegisteredFemaleActors);
 
@@ -85,6 +88,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("GetPermanentFemaleActors", "AND_MCM", GetPermanentFemaleActors);
 
 	papyrusVM->RegisterFunction("GetFemaleActorData", "AND_MCM", GetFemaleActorData);
+	papyrusVM->RegisterFunction("GetFemaleActorFormID", "AND_MCM", GetFemaleActorFormID);
 
 	papyrusVM->RegisterFunction("GetPlayerFactionRanks", "AND_MCM", GetPlayerFactionRanks);
 	papyrusVM->RegisterFunction("GetPlayerStrictModestyTimers", "AND_MCM", GetPlayerStrictModestyTimers);

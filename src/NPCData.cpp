@@ -72,7 +72,12 @@ void ImportSinglePermanent(float CurrentGameTime, int InternalID) {
 }
 
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
-	int FemaleForm = akFemale->GetFormID();
+	if (akFemale == nullptr) {
+		Log("<C++ NPCData> [RegisterFemale] Cannot register NULL actor!", LogType::NPCData, LoggingLevel::warning);
+		return;
+	}
+	
+	RE::FormID FemaleForm = akFemale->GetFormID();
 	std::string FemaleName = akFemale->GetName();
 
 	Log("<C++ NPCData> [RegisterFemale] Female Form ID: " + std::format("{:08X}", FemaleForm), LogType::NPCData);
@@ -232,6 +237,11 @@ void DeleteAllFemales(RE::StaticFunctionTag*)
 {
 	for (auto& [FemaleFormID, ThisFemale] : RegisteredFemaleMap) {
 		RE::Actor* akFemale = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
+
+		if (akFemale == nullptr) {
+			continue;
+		}
+
 		int index = 0;
 		while (index < TotalFactions) {
 			if (akFemale->IsInFaction(AllFactions[index]) == false) {

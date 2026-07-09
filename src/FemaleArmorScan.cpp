@@ -1330,7 +1330,7 @@ namespace FemaleArmorScan {
 
 		Finalize();
 
-		Log("<C++ MaleArmorScan> [FemaleAnalyze] Analysis Succeeded!", LogType::PlayerArmorScan);
+		Log("<C++ FemaleArmorScan> [FemaleAnalyze] Analysis Succeeded!", LogType::PlayerArmorScan);
 	}
 }
 

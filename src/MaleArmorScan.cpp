@@ -955,7 +955,7 @@ namespace MaleArmorScan {
 		Log("<C++ MaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingGenitalsFaction, true)), LogType::PlayerArmorScan);
 		Log("<C++ MaleArmorScan> [Finalize] Showing Ass Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingAssFaction, true)), LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [Finalize] Player Female Scan Completed", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Player Male Scan Completed", LogType::PlayerArmorScan);
 	}
 
 	bool VanillaArmorCheck() {

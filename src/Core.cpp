@@ -945,16 +945,16 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 	NPCHotpantsTransparentRoll = FixedDistribute(gen);
 	NPCShowgirlTransparentRoll = FixedDistribute(gen);
 
-	Log("<C++ Main> [DiceRoll] ChestCurtainRoll " + std::to_string(ChestCurtainRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] PelvicCurtainRoll " + std::to_string(PelvicCurtainRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] AssCurtainRoll " + std::to_string(AssCurtainRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] CStringRoll " + std::to_string(CStringRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] TopTransparentRoll " + std::to_string(TopTransparentRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] BottomTransparentRoll " + std::to_string(BottomTransparentRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] BraTransparentRoll " + std::to_string(BraTransparentRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] UnderwearTransparentRoll " + std::to_string(UnderwearTransparentRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] HotpantsTransparentRoll " + std::to_string(HotpantsTransparentRoll), LogType::Core);
-	Log("<C++ Main> [DiceRoll] ShowgirlTransparentRoll " + std::to_string(ShowgirlTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] ChestCurtainRoll " + std::to_string(ChestCurtainRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] PelvicCurtainRoll " + std::to_string(PelvicCurtainRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] AssCurtainRoll " + std::to_string(AssCurtainRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] CStringRoll " + std::to_string(CStringRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] TopTransparentRoll " + std::to_string(TopTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] BottomTransparentRoll " + std::to_string(BottomTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] BraTransparentRoll " + std::to_string(BraTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] UnderwearTransparentRoll " + std::to_string(UnderwearTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] HotpantsTransparentRoll " + std::to_string(HotpantsTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] ShowgirlTransparentRoll " + std::to_string(ShowgirlTransparentRoll), LogType::Core);
 
 	Log("<C++ Core> [DiceRoll] END");
 

@@ -211,13 +211,17 @@ std::vector<int> GetFlashRolls(RE::StaticFunctionTag*);
 
 std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*);
 
-std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*);
-std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*);
+int GetRegisteredFemalesPages(RE::StaticFunctionTag*);
+int GetPermanentFemalesPages(RE::StaticFunctionTag*);
 
-std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*);
-std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*);
+std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*, int PageNumber);
+std::vector<RE::Actor*> GetRegisteredFemaleActors(RE::StaticFunctionTag*, int PageNumber);
+
+std::vector<RE::BSFixedString> GetPermanentFemaleNames(RE::StaticFunctionTag*, int PageNumber);
+std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int PageNumber);
 
 std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale);
+std::string GetFemaleActorFormID(RE::StaticFunctionTag*, RE::Actor* akFemale);
 
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*);
 std::vector<bool> MaleWornKeywordList(RE::StaticFunctionTag*);
