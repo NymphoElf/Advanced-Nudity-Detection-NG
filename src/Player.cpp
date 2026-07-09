@@ -65,8 +65,7 @@ void ClosedMenuEvent(RE::StaticFunctionTag*, std::string MenuName) {
 		}
 
 		if (!PermanentFemalesImported) {
-			RE::Calendar* calendar = RE::Calendar::GetSingleton();
-			ImportPermanentFemales(calendar->GetCurrentGameTime());
+			ImportPermanentFemales();
 		}
 	}
 

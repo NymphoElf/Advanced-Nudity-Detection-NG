@@ -93,7 +93,7 @@ void StrictModestyDowngrade(int Rank, int HoursPassed) {
 	}
 }
 
-void StrictModesty(float CurrentGameTime) {
+void StrictModesty() {
 	if (InstalledMods::DFFMA == false) {
 		Log("<C++ PlayerModesty> [StrictModesty] DFFMA is not detected!", LogType::PlayerModesty, LoggingLevel::warning);
 		return;
@@ -103,6 +103,7 @@ void StrictModesty(float CurrentGameTime) {
 		return;
 	}
 	
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 	int HoursPassed = static_cast<int>((CurrentGameTime - LastTimeChecked) / 0.041666);
 	Log("<C++ PlayerModesty> [StrictModesty] Hours Passed: " + std::to_string(HoursPassed), LogType::PlayerModesty);
 	Log("<C++ PlayerModesty> [StrictModesty] RAW Hours Passed: " + std::to_string(((CurrentGameTime - LastTimeChecked) / 0.041666)), LogType::PlayerModesty);
@@ -385,7 +386,17 @@ void BottomModesty(int CurrentBottomRank, int HoursPassed, int UpgradeTime) {
 	}
 }
 
-void SimpleModesty(float CurrentGameTime) {
+void SimpleModesty() {
+	if (InstalledMods::DFFMA == false) {
+		Log("<C++ PlayerModesty> [SimpleModesty] DFFMA is not detected!", LogType::PlayerModesty, LoggingLevel::warning);
+		return;
+	}
+	else if (Configuration::DynamicModestyEnabled == false) {
+		Log("<C++ PlayerModesty> [SimpleModesty] Dynamic Modesty is Disabled!", LogType::PlayerModesty);
+		return;
+	}
+	
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 	int HoursPassed = static_cast<int>((CurrentGameTime - LastTimeChecked) / 0.041666);
 	Log("<C++ PlayerModesty> [SimpleModesty] Hours Passed: " + std::to_string(HoursPassed), LogType::PlayerModesty);
 	Log("<C++ PlayerModesty> [SimpleModesty] RAW Hours Passed: " + std::to_string(((CurrentGameTime - LastTimeChecked) / 0.041666)), LogType::PlayerModesty);
@@ -417,12 +428,12 @@ void SimpleModesty(float CurrentGameTime) {
 FUNCTION CALLS FROM PAPYRUS
 */
 
-void ExternalStrictModesty(RE::StaticFunctionTag*, float CurrentGameTime) {
-	StrictModesty(CurrentGameTime);
+void ExternalStrictModesty(RE::StaticFunctionTag*) {
+	StrictModesty();
 }
 
-void ExternalSimpleModesty(RE::StaticFunctionTag*, float CurrentGameTime) {
-	SimpleModesty(CurrentGameTime);
+void ExternalSimpleModesty(RE::StaticFunctionTag*) {
+	SimpleModesty();
 }
 
 void ExternalRankJump(RE::StaticFunctionTag*, int RankValue) {

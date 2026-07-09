@@ -20,7 +20,7 @@ enum FactionIndex {
 
 inline RE::TESFaction* AllFactions[TotalFactions];
 
-void ProcessActors(std::vector<RE::Actor*> ScannedActors);
+void ScanForNewActors(std::vector<RE::Actor*> ScannedActors);
 std::vector<RE::Actor*> GetActorsInRadiusOfPlayer(float radius);
 
 //void ProcessActor(RE::Actor* akActor, int SexualityScore);

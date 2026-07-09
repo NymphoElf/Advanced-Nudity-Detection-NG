@@ -93,6 +93,9 @@ inline RE::Actor* Rosa;
 
 inline RE::TESActorBase* PlayerBase;
 
+//Calendar
+inline RE::Calendar* GameCalendar;
+
 //Races
 
 inline RE::TESRace* VanillaRaces[20];

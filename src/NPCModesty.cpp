@@ -579,7 +579,6 @@ void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 }
 
 void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
-	
 	std::string FemaleName = akFemale->GetName();
 
 	Log("<C++ NPCModesty> [ProcessNPCModesty] Actor is: " + FemaleName + " | FormID: (" + std::format("{0:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
@@ -614,4 +613,16 @@ void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 	}
 
 	ThisFemale.LastUpdateTime = CurrentGameTime;
+}
+
+void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
+	if (InstalledMods::DFFMA && Configuration::DynamicModestyEnabled) {
+		float CurrentGameTime = GameCalendar->GetCurrentGameTime();
+
+		RE::Actor* FemaleActor;
+		for (auto& [ID, Female] : RegisteredFemaleMap) {
+			FemaleActor = RE::TESForm::LookupByID<RE::Actor>(Female.FemaleFormID);
+			ProcessNPCModesty(FemaleActor, CurrentGameTime);
+		}
+	}
 }

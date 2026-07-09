@@ -870,6 +870,10 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int Pag
 }
 
 std::string GetFemaleActorFormID(RE::StaticFunctionTag*, RE::Actor* akFemale) {
+	if (akFemale == nullptr) {
+		return "NULL";
+	}
+	
 	RE::FormID FemaleForm = akFemale->GetFormID();
 	if (!RegisteredFemaleMap.count(FemaleForm))
 	{

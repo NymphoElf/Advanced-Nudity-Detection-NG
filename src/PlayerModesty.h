@@ -10,8 +10,8 @@ inline int BottomModestyTimer[4] = {0,0,0,0};
 
 //Functions
 
-void ExternalStrictModesty(RE::StaticFunctionTag*, float CurrentGameTime);
-void ExternalSimpleModesty(RE::StaticFunctionTag*, float CurrentGameTime);
+void ExternalStrictModesty(RE::StaticFunctionTag*);
+void ExternalSimpleModesty(RE::StaticFunctionTag*);
 void ExternalRankJump(RE::StaticFunctionTag*, int RankValue);
 void ExternalTopRankJump(RE::StaticFunctionTag*, int RankValue);
 void ExternalBottomRankJump(RE::StaticFunctionTag*, int RankValue);

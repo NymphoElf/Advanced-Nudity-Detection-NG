@@ -12,6 +12,7 @@
 
 // 4-char record tags. Must be unique within your plugin.
 static constexpr std::uint32_t kPluginID = 'AND4'; // Set any unique id for your plugin here
+static constexpr std::uint32_t kCoreRecord = 'CORE';
 static constexpr std::uint32_t kNPCsRecord = 'NPC0';
 static constexpr std::uint32_t kMCMRecord = 'MCM0';
 static constexpr std::uint32_t kLogRecord = 'LOG0';
@@ -91,6 +92,32 @@ inline bool ReadString(SKSE::SerializationInterface* serializer, std::string& st
 
 inline void SaveCallback(SKSE::SerializationInterface* serializer)
 {
+	if (serializer->OpenRecord(kCoreRecord, kVersion)) {
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&ChestCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&PelvicCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&AssCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&CStringRoll), sizeof(int));
+
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&TopTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&BottomTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&BraTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&UnderwearTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&HotpantsTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&ShowgirlTransparentRoll), sizeof(int));
+
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCChestCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCPelvicCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCAssCurtainRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCCStringRoll), sizeof(int));
+
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCTopTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBottomTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBraTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCUnderwearTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCHotpantsTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCShowgirlTransparentRoll), sizeof(int));
+	}
+	
 	// --- NPC record ---
 	if (serializer->OpenRecord(kNPCsRecord, kVersion)) {
 
@@ -222,6 +249,34 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 	std::uint32_t type, version, length;
 	while (serializer->GetNextRecordInfo(type, version, length)) {
 		switch (type) {
+
+			case kCoreRecord:
+			{
+				serializer->ReadRecordData(&ChestCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&PelvicCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&AssCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&CStringRoll, sizeof(int));
+
+				serializer->ReadRecordData(&TopTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&BottomTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&BraTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&UnderwearTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&HotpantsTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&ShowgirlTransparentRoll, sizeof(int));
+
+				serializer->ReadRecordData(&NPCChestCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCPelvicCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCAssCurtainRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCCStringRoll, sizeof(int));
+
+				serializer->ReadRecordData(&NPCTopTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCBottomTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCBraTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCUnderwearTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCHotpantsTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCShowgirlTransparentRoll, sizeof(int));
+				break;
+			}
 
 			case kNPCsRecord: 
 			{

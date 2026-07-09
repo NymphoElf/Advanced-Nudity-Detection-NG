@@ -617,6 +617,24 @@ Event OnConfigOpen()
 	PermanentFemaleNames = GetPermanentFemaleNames(CurrentPermanentFemalePage)
 	PermanentFemaleActors = GetPermanentFemaleActors(CurrentPermanentFemalePage)
 	
+	If DisplayIndex >= RegisteredFemaleActors.Length && RegisteredFemaleActors.Length > 0
+		DisplayIndex = 0
+		
+		SelectedFemale = RegisteredFemaleNames[DisplayIndex]
+		SelectedFemaleActor = RegisteredFemaleActors[DisplayIndex]
+	ElseIf RegisteredFemaleActors.Length == 0
+		SelectedFemale = "---"
+		SelectedFemaleActor = None
+	EndIf
+	
+	If PermIndex >= PermanentFemaleActors.Length && PermanentFemaleActors.Length > 0
+		PermIndex = 0
+		
+		SelectedPermFemale = PermanentFemaleNames[PermIndex]
+	ElseIf PermanentFemaleActors.Length == 0
+		SelectedPermFemale = "---"
+	EndIf
+	
 	If Main.PlayerBase.GetSex() == Enum_Male
 		WornKeywordList = MaleWornKeywordList()
 	Else

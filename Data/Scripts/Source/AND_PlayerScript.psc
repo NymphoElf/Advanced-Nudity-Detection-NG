@@ -50,8 +50,6 @@ Event OnPlayerLoadGame()
 	
 	RegisterForAnimations()
 	
-	;Utility.Wait(2.0)
-	
 	If GetPlayerBaseRace() == None
 		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.ERROR)
 		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
@@ -74,56 +72,13 @@ Event OnMenuClose(String MenuName)
 		
 		RegisterForAnimations()
 		
-		;/
-		If PermanentsImported == False
-			AND_NPCData.ImportPermanentFemales(Utility.GetCurrentGameTime())
-			PermanentsImported = True
-		EndIf
-		/;
-		
-		;/
-		Core.BaseRace = Core.PlayerBase.GetRace()
-		AND_Logger.FastLog("<PlayerScript> [OnCloseMenu] - Base Race is: " + Core.BaseRace, Logger.Core)
-		
-		If Core.BaseRace == None
-			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.ERROR)
-			Debug.MessageBox("A.N.D. - Race was not detected. Something is wrong with one or more of your other mods because they're telling Skyrim your Race is 'None'.")
-			;Game.ShowRaceMenu()
-			return
-		EndIf
-		/;
-		
 		If GetPlayerBaseRace() == None
 			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.CRITICAL)
 			Debug.MessageBox("A.N.D. - CRITICAL ERROR!!! Race was not detected! Something is wrong with your game!")
 		EndIf
-		
-		;Core.RegisterForSingleUpdate(1.0)
 	EndIf
 	
 	If MenuName == "Console"
-		;/
-		Race arPlayer = Core.PlayerBase.GetRace()
-		If arPlayer != Core.BaseRace
-			If Core.DefaultRaces.Find(arPlayer) >= 0
-				Core.BaseRace = arPlayer
-			ElseIf Core.TransformedRaces.Find(arPlayer) >= 0 || Core.CustomTransform.Find(arPlayer) >= 0
-				;Do nothing, player is still Transformed
-			Else
-				Int TransformedSelection = IsTransformedMessage.Show()
-				If TransformedSelection == 1 ;Custom Race
-					Core.BaseRace = arPlayer
-					Debug.MessageBox("A.N.D. MESSAGE - Your race is detected as: " + arPlayer + " " + arPlayer.GetName() + ". If this is not your NON-transformed race, use Racemenu to reset it to the correct race.")
-				Else
-					Int AddTransform = AddTransformRace.Show()
-					If AddTransform == 0
-						Core.AddCustomTransform(arPlayer)
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-		/;
-		
 		If PlayerRaceIsRecognized() == False
 			Race arPlayer = GetPlayerBaseRace()
 			Int TransformedSelection = IsTransformedMessage.Show()
@@ -176,7 +131,6 @@ Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
 		CheckWearingCurtains()
-		;Core.RegisterForSingleUpdate(0.1)
 		Core.ProcessEquipmentChange()
 	EndIf
 EndEvent
@@ -194,7 +148,6 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	If Core.EquipScanArmed == False
 		Core.EquipScanArmed = True
 		CheckWearingCurtains()
-		;Core.RegisterForSingleUpdate(0.1)
 		Core.ProcessEquipmentChange()
 	EndIf
 EndEvent
@@ -213,9 +166,7 @@ Event OnUpdateGameTime()
 	
 	AND_Logger.FastLog("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
 	
-	;Core.UpdateArousalValue(PlayerRef)
 	AND_Core.DiceRoll(PlayerRef.IsSprinting(), PlayerRef.IsRunning())
-	;Core.NPCScanSpell.Cast(PlayerRef)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
 	ModEvent.Send(EventHandle)

@@ -8,7 +8,6 @@ AND_Logger Property Logger Auto
 SLSF_Reloaded_MCM Property SLSFR_Config = None Auto Hidden
 SLSF_Reloaded_ModIntegration Property SLSFR_Mods = None Auto Hidden
 
-;Actor Property Rosa Auto Hidden
 ActorBase Property PlayerBase Auto
 
 Bool Property MainRollRunning Auto Hidden
@@ -26,8 +25,8 @@ Faction Property AND_NudeActorFaction Auto
 
 Faction Property ModestyFaction Auto
 
-Faction Property TopModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
-Faction Property BottomModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Bold, 3 = Shameless, 4 = Permanent
+Faction Property TopModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Brazen, 3 = Immodest, 4 = Shameless
+Faction Property BottomModestyFaction Auto ;0 = Shy, 1 = Comfortable, 2 = Brazen, 3 = Immodest, 4 = Shameless
 
 Faction Property ShyWithMale Auto ;0 = No, 1 = Yes
 Faction Property ShyWithFemale Auto ;0 = No, 1 = Yes
@@ -192,17 +191,9 @@ Keyword Property AND_AssFlashRiskUltra_Male Auto
 
 Int Property TransformOverwrite = 0 Auto Hidden
 
-;Spell Property NPCScanSpell Auto
-
 Bool Property SLSFR_Found Auto Hidden
 Bool Property DFFMA_Found Auto Hidden
 Bool Property OSLArousedInstalled Auto Hidden
-
-Race Property BaseRace Auto Hidden
-
-Race[] Property DefaultRaces Auto
-Race[] Property TransformedRaces Auto
-Race[] Property CustomTransform Auto Hidden
 
 GlobalVariable Property WICommentChanceNaked Auto
 
@@ -220,32 +211,8 @@ EndEvent
 
 Function Startup()
 	ModCheck()
-	CustomTransform = new Race[10]
 	AND_Logger.FastLog("<Core> [Startup] Completed!", Logger.Core, Logger.CRITICAL)
 EndFunction
-
-;/
-Event OnUpdate()
-	If PlayerBase.GetSex() == 0 ;Male
-		AND_Logger.FastLog("<Core> [OnUpdate] Send Male Scan", Logger.Core)
-		
-		MaleAnalyze()
-	Else
-		AND_Logger.FastLog("<Core> [OnUpdate] Send Female Scan", Logger.Core)
-		
-		FemaleAnalyze()
-	EndIf
-	
-	If SLSFR_Found == True
-		SLSFR_NakedCommentPreCheck()
-	Else
-		WICommentChanceNaked.SetValue(NakedCommentChance(False))
-	EndIf
-	
-	Utility.Wait(0.1)
-	EquipScanArmed = False
-EndEvent
-/;
 
 Function ModCheck()
 	If Game.GetModByName("SLSF Reloaded.esp") != 255
@@ -301,24 +268,6 @@ Function ProcessEquipmentChange()
 	EquipScanArmed = False
 EndFunction
 
-;/
-Function AddCustomTransform(Race TransformRace)
-	Int Index = CustomTransform.Find(None)
-	If Index < 0
-		AND_Logger.FastLog("<Core> [AddCustomTransform] - Custom Transform List Full! Oldest Entry will be overwritten!", Logger.Core, Logger.WARNING)
-		Debug.MessageBox("A.N.D. MESSAGE - Custom Transform List Full! Oldest Entry will be overwritten!")
-		Index = TransformOverwrite
-		If TransformOverwrite < 9
-			TransformOverwrite += 1
-		Else
-			TransformOverwrite = 0
-		EndIf
-	EndIf
-	
-	CustomTransform[Index] = TransformRace
-EndFunction
-/;
-
 ;Function NakedCommentPreCheck(Bool ) Global Native
 
 ;Redo when SLSFR v4 is done?
@@ -335,68 +284,3 @@ Function SLSFR_NakedCommentPreCheck()
 EndFunction
 
 Int Function NakedCommentChance(Bool IsMCMRequest) Global Native
-
-;/
-Int Function NakedCommentChance(Bool IsMCMRequest)
-	Int CommentChance = -1
-	Bool UnderwearCounted = False
-	
-	If IsMCMRequest == True
-		CommentChance += 1 ;Increase return value by 1 for a more understandable % return in the MCM
-	EndIf
-	
-	If Config.DisableNakedComments == False
-		If PlayerScript.PlayerRef.GetFactionRank(AND_NudeActorFaction) == 1
-			CommentChance += Config.NudeFactionCommentChance
-		EndIf
-		
-		If PlayerScript.PlayerRef.GetFactionRank(AND_ToplessFaction) == 1
-			CommentChance += Config.ToplessFactionCommentChance
-		EndIf
-		
-		If PlayerScript.PlayerRef.GetFactionRank(AND_BottomlessFaction) == 1
-			CommentChance += Config.BottomlessFactionCommentChance
-		EndIf
-		
-		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingChestFaction) == 1
-			CommentChance += Config.ChestFactionCommentChance
-		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingBraFaction) == 1
-			CommentChance += Config.BraFactionCommentChance
-		EndIf
-		
-		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingGenitalsFaction) == 1
-			CommentChance += Config.GenitalsFactionCommentChance
-		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1
-			CommentChance += Config.UnderwearFactionCommentChance
-			UnderwearCounted = True
-		EndIf
-		
-		If PlayerScript.PlayerRef.GetFactionRank(AND_ShowingAssFaction) == 1
-			CommentChance += Config.AssFactionCommentChance
-		ElseIf PlayerScript.PlayerRef.GetFactionRank(AND_ShowingUnderwearFaction) == 1 && UnderwearCounted == False
-			CommentChance += Config.UnderwearFactionCommentChance
-		EndIf
-	EndIf
-	
-	return CommentChance
-EndFunction
-/;
-
-;/
-Function UpdateArousalValue(Actor akActor)
-	If OSLArousedInstalled == True
-		akActor.SetFactionRank(ArousalFaction, (OSLAroused_ModInterface.GetArousal(akActor) as Int))
-	Else
-		akActor.SetFactionRank(ArousalFaction, 0)
-	EndIf
-EndFunction
-/;
-
-;/
-Bool Function IsPlayerTransformed()
-	If PlayerBase.GetRace() != BaseRace
-		return True
-	EndIf
-	return False
-EndFunction
-/;

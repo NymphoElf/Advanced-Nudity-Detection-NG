@@ -32,7 +32,9 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 	return -1;
 }
 
-void ImportSinglePermanent(float CurrentGameTime, int InternalID) {
+void ImportSinglePermanent(int InternalID) {
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
+	
 	PermanentFemales& ThePermFemale = PermanentFemaleVector[InternalID];
 	
 	uint32_t ModIndex = ThePermFemale.GetModIndex();
@@ -91,7 +93,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 	int PermanentID = GetInternalPermanentFemaleID(akFemale);
 	if (PermanentID >= 0) {
 		Log("<C++ NPCData> [RegisterFemale] Female exists on Permanent List. Re-importing female...", LogType::NPCData);
-		ImportSinglePermanent(CurrentGameTime, PermanentID);
+		ImportSinglePermanent(PermanentID);
 		return;
 	}
 
@@ -231,6 +233,10 @@ void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	}
 	
 	RegisteredFemaleMap.erase(akFemale->GetFormID());
+}
+
+void DeleteFemaleWithID(RE::FormID FemaleID) {
+	RegisteredFemaleMap.erase(FemaleID);
 }
 
 void DeleteAllFemales(RE::StaticFunctionTag*)
@@ -425,7 +431,11 @@ int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	return FunctionEnd::Success;
 }
 
-void ImportPermanentFemales(float CurrentGameTime)
+void RemovePermanentAtIndex(int PermanentIndex) {
+	PermanentFemaleVector.erase(PermanentFemaleVector.begin() + PermanentIndex);
+}
+
+void ImportPermanentFemales()
 {
 	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
 	if (!PermanentFemaleVector.size())
@@ -434,6 +444,8 @@ void ImportPermanentFemales(float CurrentGameTime)
 
 		return;
 	}
+
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
 	for (PermanentFemales& ThePermFemale : PermanentFemaleVector)
 	{
@@ -480,7 +492,7 @@ void ImportPermanentFemales(float CurrentGameTime)
 	}
 }
 
-void ExternalImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime) 
+void ExternalImportPermanentFemales(RE::StaticFunctionTag*) 
 {
 	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
 	if (!PermanentFemaleVector.size())
@@ -489,6 +501,8 @@ void ExternalImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTim
 
 		return;
 	}
+
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
 	for(PermanentFemales& ThePermFemale : PermanentFemaleVector)
 	{
@@ -540,8 +554,7 @@ void TweakFemaleData
 	RE::StaticFunctionTag*,
 	RE::Actor* akFemale, 
 	int StrictRank, int TopRank, int BottomRank, int MinimumStrict, int MinimumTop, int MinimumBottom, int ShynessMode, 
-	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked,
-	float CurrentGameTime
+	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked
 ) {
 	RE::FormID id = akFemale->GetFormID();
 
@@ -551,6 +564,8 @@ void TweakFemaleData
 		
 		return;
 	}
+
+	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
 	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictRank));
 	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopRank));
@@ -700,5 +715,23 @@ void ResetAllFemales(RE::StaticFunctionTag*)
 		ThisFemale.BottomModestyTimer1 = 0;
 		ThisFemale.BottomModestyTimer2 = 0;
 		ThisFemale.BottomModestyTimer3 = 0;
+	}
+}
+
+void CleanFemaleLists() {
+	RE::Actor* FemaleActor;
+	for (auto& [ID, Female] : RegisteredFemaleMap) {
+		FemaleActor = RE::TESForm::LookupByID<RE::Actor>(ID);
+		if (FemaleActor == nullptr || FemaleActor->IsDead()) {
+			DeleteFemaleWithID(ID);
+		}
+	}
+
+	for (int Index = 0; Index < PermanentFemaleVector.size(); ++Index) {
+		RE::FormID PermanentFemaleFormID = PermanentFemaleVector[Index].GetModIndex() | PermanentFemaleVector[Index].LocalID;
+		FemaleActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
+		if (FemaleActor == nullptr) {
+			RemovePermanentAtIndex(Index);
+		}
 	}
 }

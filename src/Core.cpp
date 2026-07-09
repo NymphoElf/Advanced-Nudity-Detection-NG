@@ -169,6 +169,10 @@ void InitializeCoreData() {
 
 	PlayerBase = RE::TESForm::LookupByID<RE::TESActorBase>(0x7);
 
+	//Calendar
+
+	GameCalendar = RE::Calendar::GetSingleton();
+
 	//Races
 
 	VanillaRaces[0] = RE::TESForm::LookupByID<RE::TESRace>(0x13743); //Altmer
@@ -968,7 +972,7 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 		MaleArmorScan::MaleAnalyze();
 	}
 
-	ProcessActors(GetActorsInRadiusOfPlayer(2048));
+	ScanForNewActors(GetActorsInRadiusOfPlayer(2048));
 }
 
 int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor) {

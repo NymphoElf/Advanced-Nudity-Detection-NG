@@ -122,6 +122,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 void RegisterRosa(float CurrentGameTime, int SexualityScore);
 
 void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime);
+void ProcessAllNPCModesty(RE::StaticFunctionTag*);
 
 void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akfemale);
 void DeleteAllFemales(RE::StaticFunctionTag*);
@@ -131,13 +132,14 @@ void ResetAllFemales(RE::StaticFunctionTag*);
 
 int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
 int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
-void ExternalImportPermanentFemales(RE::StaticFunctionTag*, float CurrentGameTime);
-void ImportPermanentFemales(float CurrentGameTime);
+void ExternalImportPermanentFemales(RE::StaticFunctionTag*);
+void ImportPermanentFemales();
 void TweakFemaleData
 (
 	RE::StaticFunctionTag*,
 	RE::Actor* akFemale,
 	int StrictRank, int TopRank, int BottomRank, int MinimumStrict, int MinimumTop, int MinimumBottom, int ShynessMode,
-	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked,
-	float CurrentGameTime
+	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked
 );
+
+void CleanFemaleLists();

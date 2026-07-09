@@ -14,7 +14,6 @@
 #include "NPCScanner.h"
 #include "NPCData.h"
 #include "ModEventHandler.h"
-#include "ActorScanner.h"
 
 bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	//Main Script Binds
@@ -100,6 +99,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("SKSERankJump", "AND_Modesty_Manager", ExternalRankJump);
 	papyrusVM->RegisterFunction("SKSETopRankJump", "AND_Modesty_Manager", ExternalTopRankJump);
 	papyrusVM->RegisterFunction("SKSEBottomRankJump", "AND_Modesty_Manager", ExternalBottomRankJump);
+	papyrusVM->RegisterFunction("ProcessAllNPCModesty", "AND_Modesty_Manager", ProcessAllNPCModesty);
 
 	//ModEventListener Script Binds
 	papyrusVM->RegisterFunction("RegisterPlugin", "AND_ModEventListener", RegisterPlugin);
@@ -180,8 +180,6 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		CheckMods();
 		InitializeConfigData();
 
-		//ActorScanner::StartScanLoop();
-
 		break;
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads
 		logs::info("Post Load");
@@ -193,13 +191,12 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		logs::info("New Game");
 
 		LoadPermanentNPCs();
+
 		break;
 	case SKSE::MessagingInterface::kSaveGame:
 		logs::info("Save Game");
 		essPath = std::string{ (char*)message->data, message->dataLen };
 		logs::info("Saving Game: {}", essPath);
-		
-		//SavePermanentNPCs();
 		break;
 	case SKSE::MessagingInterface::kPreLoadGame:
 		logs::info("Pre Load Game");
@@ -209,7 +206,8 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 	case SKSE::MessagingInterface::kPostLoadGame:
 		logs::info("Post Load Game");
 
-		//LoadPermanentNPCs();
+		CleanFemaleLists();
+
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:
 		logs::info("Deleted Game");

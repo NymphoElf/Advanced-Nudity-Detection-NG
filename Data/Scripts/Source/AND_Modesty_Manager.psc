@@ -10,11 +10,16 @@ String[] Property ModestyTitle Auto
 String[] Property TopModestyTitle Auto
 String[] Property BottomModestyTitle Auto
 
-Function SKSEStrictModesty(Float CurrentGameTime) Global Native
-Function SKSESimpleModesty(Float CurrentGameTime) Global Native
+;Function SKSEStrictModesty(Float CurrentGameTime) Global Native
+Function SKSEStrictModesty() Global Native
+;Function SKSESimpleModesty(Float CurrentGameTime) Global Native
+Function SKSESimpleModesty() Global Native
+
 Function SKSERankJump(Int RankValue) Global Native
 Function SKSETopRankJump(Int RankValue) Global Native
 Function SKSEBottomRankJump(Int RankValue) Global Native
+
+Function ProcessAllNPCModesty() Global Native
 
 Event OnInit()
 	Startup()
@@ -29,12 +34,13 @@ EndFunction
 Event OnUpdateGameTime()
 	AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - START")
 	
-	Float CurrentGameTime = Utility.GetCurrentGameTime()
+	;Float CurrentGameTime = Utility.GetCurrentGameTime()
 	
 	If Config.ConfigBoolOptions[Config.PlayerStrictRules] == True
 		Int InitialStrictRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
 		
-		SKSEStrictModesty(CurrentGameTime)
+		;SKSEStrictModesty(CurrentGameTime)
+		SKSEStrictModesty()
 		
 		Int NewStrictRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
 		
@@ -49,7 +55,8 @@ Event OnUpdateGameTime()
 		Int InitialTopRank = PlayerRef.GetFactionRank(Core.TopModestyFaction)
 		Int InitialBottomRank = PlayerRef.GetFactionRank(Core.BottomModestyFaction)
 		
-		SKSESimpleModesty(CurrentGameTime)
+		;SKSESimpleModesty(CurrentGameTime)
+		SKSESimpleModesty()
 		
 		Int NewTopRank = PlayerRef.GetFactionRank(Core.TopModestyFaction)
 		Int NewBottomRank = PlayerRef.GetFactionRank(Core.BottomModestyFaction)
@@ -70,6 +77,8 @@ Event OnUpdateGameTime()
 			EndIf
 		EndIf
 	EndIf
+	
+	ProcessAllNPCModesty()
 	
 	AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - END")
 EndEvent
