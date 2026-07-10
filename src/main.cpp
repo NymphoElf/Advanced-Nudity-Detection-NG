@@ -61,12 +61,10 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("RemovePermanentAtIndex", "AND_NPCData", ExternalRemovePermanentAtIndex);
 
 	//Config Script Binds
-	papyrusVM->RegisterFunction("GetLogSettings", "AND_MCM", GetLogSettings);
-	
 	papyrusVM->RegisterFunction("FemaleWornKeywordList", "AND_MCM", FemaleWornKeywordList);
 	papyrusVM->RegisterFunction("MaleWornKeywordList", "AND_MCM", MaleWornKeywordList);
 
-	papyrusVM->RegisterFunction("UpdateFlashOdds", "AND_MCM", UpdateFlashingOdds);
+	papyrusVM->RegisterFunction("UpdateFlashingOdds", "AND_MCM", UpdateFlashingOdds);
 	papyrusVM->RegisterFunction("GetFlashOdds", "AND_MCM", GetFlashOddsArray);
 
 	papyrusVM->RegisterFunction("GetFlashRolls", "AND_MCM", GetFlashRolls);

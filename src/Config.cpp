@@ -743,24 +743,12 @@ std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 
 int GetRegisteredFemalesPages(RE::StaticFunctionTag*) {
 	Log("<C++ Config> [GetRegisteredFemalesPages] Getting Registered Females Pages...");
-	float MapSize = RegisteredFemaleMap.size();
-	
-	if (MapSize < 1) {
-		return 1;
-	}
-	
-	return (int)std::ceil(MapSize / 128);
+	return ((int)(RegisteredFemaleMap.size()) - 1) / 128 + 1;
 }
 
 int GetPermanentFemalesPages(RE::StaticFunctionTag*) {
 	Log("<C++ Config> [GetPermanentFemalesPages] Getting Permanent Females Pages...");
-	float VectorSize = PermanentFemaleVector.size();
-	
-	if (VectorSize < 1) {
-		return 1;
-	}
-
-	return (int)std::ceil(VectorSize / 128);
+	return ((int)(PermanentFemaleVector.size()) - 1) / 128 + 1;
 }
 
 std::vector<RE::BSFixedString> GetRegisteredFemaleNames(RE::StaticFunctionTag*, int PageNumber) {

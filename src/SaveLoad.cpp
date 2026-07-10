@@ -228,6 +228,10 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 		serializer->WriteRecordData(&PlayerFactionsInitialized, sizeof(bool));
 
+		if (PlayerBaseRace == nullptr) {
+			PlayerBaseRace = Player->GetRace();
+		}
+
 		std::string raceEditorID = PlayerBaseRace->GetFormEditorID();
 		Log("Saving Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
 		WriteString(serializer, raceEditorID);
@@ -432,7 +436,7 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 				std::string raceEditorID;
 				ReadString(serializer, raceEditorID);
 				Log("Loading Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
-				PlayerBaseRace = RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID);
+				PlayerBaseRace = RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID) != nullptr ? RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID) : Player->GetRace();
 
 				std::uint32_t count = 0;
 				serializer->ReadRecordData(&count, sizeof(count));
