@@ -3020,7 +3020,7 @@ Event OnOptionSelect(Int Option)
 		
 		AND_NPCData.TweakFemale(RegisteredFemaleActors[DisplayIndex], ThisNPCStrictRank as Int, ThisNPCTopRank as Int, ThisNPCBottomRank as Int,\
 			ThisNPCMinimumStrictRank as Int, ThisNPCMinimumTopRank as Int, ThisNPCMinimumBottomRank as Int, Sexes.Find(ThisNPCShySex),\
-			ThisNPCShameless, ThisNPCCorrupt, ApplyAsDefault, ThisNPCStrictRules, ThisNPCUpgradeBlocked, Utility.GetCurrentGameTime())
+			ThisNPCShameless, ThisNPCCorrupt, ApplyAsDefault, ThisNPCStrictRules, ThisNPCUpgradeBlocked)
 		ApplyTweak = False
 		ApplyAsDefault = False
 		ForcePageReset()
