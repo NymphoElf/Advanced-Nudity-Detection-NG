@@ -780,17 +780,6 @@ void ResetAllFemales(RE::StaticFunctionTag*)
 	}
 }
 
-void RemoveDeadFemales() {
-	Log("<C++ NPCData> [RemoveDeadFemales] Removing Dead Females...", LogType::NPCData);
-	RE::Actor* FemaleActor;
-	for (auto& [ID, Female] : RegisteredFemaleMap) {
-		FemaleActor = RE::TESForm::LookupByID<RE::Actor>(ID);
-		if (FemaleActor->IsDead()) {
-			DeleteFemaleWithID(ID);
-		}
-	}
-}
-
 void CleanFemaleList() {
 	Log("<C++ NPCData> [CleanFemaleLists] Cleaning Female Lists...", LogType::NPCData);
 	RE::Actor* FemaleActor;
@@ -800,8 +789,8 @@ void CleanFemaleList() {
 		Log("<C++ NPCModesty> [CleanFemaleLists] Female Map ID is: " + std::format("{0:08X}", ID), LogType::NPCData, LoggingLevel::info);
 		Log("<C++ NPCModesty> [CleanFemaleLists] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCData, LoggingLevel::info);
 
-		if (FemaleActor == nullptr) {
-			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female is NULL. Removing...", LogType::NPCModesty, LoggingLevel::info);
+		if (FemaleActor == nullptr || FemaleActor->IsDead(false)) {
+			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female is NULL or Dead. Removing...", LogType::NPCModesty, LoggingLevel::info);
 			DeleteFemaleWithID(ID);
 		}
 	}

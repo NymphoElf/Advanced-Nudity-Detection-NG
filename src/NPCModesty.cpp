@@ -619,7 +619,7 @@ void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
 	if (InstalledMods::DFFMA && Configuration::DynamicModestyEnabled) {
 		float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
-		RemoveDeadFemales();
+		CleanFemaleList();
 
 		RE::Actor* FemaleActor;
 		for (auto& [ID, Female] : RegisteredFemaleMap) {
@@ -629,7 +629,7 @@ void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
 			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCModesty, LoggingLevel::info);
 
 			if (FemaleActor == nullptr) {
-				Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female is NULL. Skipping...", LogType::NPCModesty, LoggingLevel::info);
+				Log("<C++ NPCModesty> [ProcessAllNPCModesty] CRITICAL ERROR - Female Actor is NULL despite Female List being cleaned of Null Actors!!! Something is terribly wrong!", LogType::NPCModesty, LoggingLevel::critical);
 				continue;
 			}
 

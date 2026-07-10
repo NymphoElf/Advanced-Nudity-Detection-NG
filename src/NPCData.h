@@ -144,5 +144,4 @@ void TweakFemaleData
 	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked
 );
 
-void RemoveDeadFemales();
 void CleanFemaleList();
