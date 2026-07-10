@@ -1,6 +1,5 @@
 ScriptName AND_NPCData extends Quest
 
-;Function ImportPermanentFemales(Float CurrentGameTime) Global Native
 Int Function RegisterPermanentFemale(Actor akFemale) Global Native
 Function DeleteFemale(Actor akFemale) Global Native
 Function ResetFemale(Actor akFemale) Global Native
@@ -8,3 +7,4 @@ Function TweakFemale(Actor akFemale, Int StrictRank, Int TopRank, Int BottomRank
 Function ResetAllFemales() Global Native
 Function DeleteAllFemales() Global Native
 Int Function RemovePermanent(Actor akFemale) Global Native
+Function RemovePermanentAtIndex(Int PermanentIndex) Global Native

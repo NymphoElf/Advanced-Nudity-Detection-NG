@@ -619,9 +619,20 @@ void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
 	if (InstalledMods::DFFMA && Configuration::DynamicModestyEnabled) {
 		float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
+		RemoveDeadFemales();
+
 		RE::Actor* FemaleActor;
 		for (auto& [ID, Female] : RegisteredFemaleMap) {
-			FemaleActor = RE::TESForm::LookupByID<RE::Actor>(Female.FemaleFormID);
+			FemaleActor = RE::TESForm::LookupByID<RE::Actor>(ID);
+
+			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Map ID is: " + std::format("{0:08X}", ID), LogType::NPCModesty, LoggingLevel::info);
+			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCModesty, LoggingLevel::info);
+
+			if (FemaleActor == nullptr) {
+				Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female is NULL. Skipping...", LogType::NPCModesty, LoggingLevel::info);
+				continue;
+			}
+
 			ProcessNPCModesty(FemaleActor, CurrentGameTime);
 		}
 	}

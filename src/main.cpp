@@ -40,6 +40,7 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("ClosedMenuEvent", "AND_PlayerScript", ClosedMenuEvent);
 	papyrusVM->RegisterFunction("PlayerRaceIsRecognized", "AND_PlayerScript", PlayerRaceIsRecognized);
 	papyrusVM->RegisterFunction("GetPlayerBaseRace", "AND_PlayerScript", ExternalGetPlayerBaseRace);
+	papyrusVM->RegisterFunction("ValidatePlayerBaseRace", "AND_PlayerScript", ValidatePlayerBaseRace);
 	papyrusVM->RegisterFunction("SetPlayerBaseRace", "AND_PlayerScript", ExternalSetPlayerBaseRace);
 
 	//Keybind Manager Binds
@@ -55,8 +56,9 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("ResetAllFemales", "AND_NPCData", ResetAllFemales);
 	papyrusVM->RegisterFunction("DeleteAllFemales", "AND_NPCData", DeleteAllFemales);
 	papyrusVM->RegisterFunction("TweakFemale", "AND_NPCData", TweakFemaleData);
-	//papyrusVM->RegisterFunction("ImportPermanentFemales", "AND_NPCData", ExternalImportPermanentFemales);
 	papyrusVM->RegisterFunction("RegisterPermanentFemale", "AND_NPCData", RegisterPermanent);
+	papyrusVM->RegisterFunction("RemovePermanent", "AND_NPCData", RemovePermanent);
+	papyrusVM->RegisterFunction("RemovePermanentAtIndex", "AND_NPCData", ExternalRemovePermanentAtIndex);
 
 	//Config Script Binds
 	papyrusVM->RegisterFunction("GetLogSettings", "AND_MCM", GetLogSettings);
@@ -206,7 +208,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 	case SKSE::MessagingInterface::kPostLoadGame:
 		logs::info("Post Load Game");
 
-		CleanFemaleLists();
+		CleanFemaleList();
 
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:

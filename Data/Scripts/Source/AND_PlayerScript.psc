@@ -30,6 +30,7 @@ Race Function GetPlayerBaseRace() Global Native
 Function SetPlayerBaseRace(Race NewRace) Global Native
 
 Bool Function PlayerRaceIsRecognized() Global Native
+Bool Function ValidatePlayerBaseRace() Global Native
 
 Event OnInit()
 	Startup()
@@ -50,7 +51,7 @@ Event OnPlayerLoadGame()
 	
 	RegisterForAnimations()
 	
-	If GetPlayerBaseRace() == None
+	If ValidatePlayerBaseRace() == False
 		AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.ERROR)
 		Debug.MessageBox("A.N.D. - Your character's race was not detected. Please confirm your charcater's race again.")
 		Game.ShowRaceMenu()
@@ -72,7 +73,7 @@ Event OnMenuClose(String MenuName)
 		
 		RegisterForAnimations()
 		
-		If GetPlayerBaseRace() == None
+		If ValidatePlayerBaseRace() == False
 			AND_Logger.FastLog("<PlayerScript> [OnPlayerLoadGame] - Base Race is None!", Logger.Core, Logger.CRITICAL)
 			Debug.MessageBox("A.N.D. - CRITICAL ERROR!!! Race was not detected! Something is wrong with your game!")
 		EndIf

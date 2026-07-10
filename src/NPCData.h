@@ -132,6 +132,8 @@ void ResetAllFemales(RE::StaticFunctionTag*);
 
 int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
 int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale);
+void ExternalRemovePermanentAtIndex(RE::StaticFunctionTag*, int PermanentIndex);
+
 void ExternalImportPermanentFemales(RE::StaticFunctionTag*);
 void ImportPermanentFemales();
 void TweakFemaleData
@@ -142,4 +144,5 @@ void TweakFemaleData
 	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked
 );
 
-void CleanFemaleLists();
+void RemoveDeadFemales();
+void CleanFemaleList();

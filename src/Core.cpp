@@ -1066,11 +1066,19 @@ int ExternalNakedCommentChance(RE::StaticFunctionTag*, bool IsMCMRequest) {
 }
 
 RE::TESRace* GetPlayerBaseRace() {
-	return PlayerBaseRace;
+	if (PlayerBaseRace != nullptr) {
+		return PlayerBaseRace;
+	}
+	
+	return Player->GetRace();
 }
 
 RE::TESRace* ExternalGetPlayerBaseRace(RE::StaticFunctionTag*) {
 	return GetPlayerBaseRace();
+}
+
+bool ValidatePlayerBaseRace(RE::StaticFunctionTag*) {
+	return PlayerBaseRace != nullptr;
 }
 
 void AddCustomTransform(RE::StaticFunctionTag*, RE::TESRace* NewTransform) {

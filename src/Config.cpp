@@ -845,9 +845,25 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int Pag
 	for(auto& Female : PermanentFemaleVector)
 	{
 		uint32_t ModIndex = Female.GetModIndex();
+		Log("<C++ Config> [GetPermanentFemaleActors] Female " + static_cast<std::string>(Female.GetName()), LogType::Config, LoggingLevel::info);
+
+		if (Female.LightPlugin) {
+			ModIndex += 0xFE000000;
+			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), LogType::Config, LoggingLevel::info);
+		}
+		else {
+			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), LogType::Config, LoggingLevel::info);
+		}
 
 		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(ModIndex | Female.LocalID);
-		if(!ValidActor) { continue; }
+		if (!ValidActor) { 
+			Log("<C++ Config> [GetPermanentFemaleActors] Actor is invalid! Skipping...", LogType::Config, LoggingLevel::info);
+			continue; 
+		}
 
 		FemaleActors.emplace_back(ValidActor);
 	}

@@ -2973,9 +2973,9 @@ Event OnOptionSelect(Int Option)
 	ElseIf Option == NPCModestyToggles[8] ;Confirm Make Permanent
 		Int Result = AND_NPCData.RegisterPermanentFemale(RegisteredFemaleActors[DisplayIndex])
 		If Result == 1
-			Debug.MessageBox(RegisteredFemaleActors[DisplayIndex].GetName() + " already exists as a Permanent Female.")
+			Debug.MessageBox(RegisteredFemaleNames[DisplayIndex] + " already exists as a Persistent Female.")
 		ElseIf Result >= 2
-			Debug.MessageBox("AND - An Error occurred while trying to register " + RegisteredFemaleActors[DisplayIndex].GetName() + " as a Permanent Female! Check your logs!")
+			Debug.MessageBox("AND - An Error occurred while trying to register " + RegisteredFemaleNames[DisplayIndex] + " as a Persistent Female! Check your logs!")
 		EndIf
 		
 		MakeFemalePermanent = False
@@ -3027,11 +3027,18 @@ Event OnOptionSelect(Int Option)
 	ElseIf Option == NPCModestyToggles[19]
 		DeletePermFemale = !DeletePermFemale
 		SetToggleOptionValue(Option, DeletePermFemale)
+		ForcePageReset()
 	ElseIf Option == NPCModestyToggles[20] ;Confirm Permanent Removal
 		
-		AND_NPCData.RemovePermanent(PermanentFemaleActors[PermIndex])
+		Int Result = AND_NPCData.RemovePermanent(PermanentFemaleActors[PermIndex])
+		If Result >= 2
+			Debug.MessageBox("AND - An Error occurred while trying to remove " + PermanentFemaleNames[DisplayIndex] + " from the Persistent Female list! Check your logs!")
+		EndIf
 		
 		DeletePermFemale = False
+		
+		PermanentFemaleActors = GetPermanentFemaleActors(CurrentPermanentFemalePage)
+		PermanentFemaleNames = GetPermanentFemaleNames(CurrentPermanentFemalePage)
 		ForcePageReset()
 		
 		;===============

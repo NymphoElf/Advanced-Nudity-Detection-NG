@@ -69,7 +69,7 @@ void LoadPermanentNPCs()
 	{
 		PermanentFemales Female;
 		ActorFile.read(reinterpret_cast<char*>(&Female), sizeof(Female));
-		
+
 		PermanentFemaleVector.emplace_back(Female);
 	}
 

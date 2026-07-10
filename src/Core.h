@@ -381,6 +381,7 @@ namespace InstalledMods {
 bool PlayerRaceIsRecognized(RE::StaticFunctionTag*);
 
 RE::TESRace* ExternalGetPlayerBaseRace(RE::StaticFunctionTag*);
+bool ValidatePlayerBaseRace(RE::StaticFunctionTag*);
 void ExternalSetPlayerBaseRace(RE::StaticFunctionTag*, RE::TESRace* NewRace);
 
 void AddCustomTransform(RE::StaticFunctionTag*, RE::TESRace* NewTransform);
