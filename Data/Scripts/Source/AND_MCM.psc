@@ -578,12 +578,16 @@ String[] Function GetPermanentFemaleNames(Int PageNumber) Global Native
 
 String Function GetFemaleActorFormID(Actor akFemale) Global Native
 
+Bool Function GetDynamicModestyEnabledByOtherMod() Global Native
+
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
 	
 	LogSettings = AND_Logger.GetLogSettings()
 	
 	ConfigBoolOptions = GetConfigBoolOptions()
+	
+	Main.DynamicModestyEnabledByOtherMod = GetDynamicModestyEnabledByOtherMod()
 	
 	If ConfigBoolOptions[HardcoreModeEnabled] == True
 		HardcoreLockdown = True

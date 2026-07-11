@@ -72,6 +72,8 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("GetConfigBoolOptions", "AND_MCM", GetConfigBoolOptions);
 	papyrusVM->RegisterFunction("UpdateConfigBoolOptions", "AND_MCM", UpdateConfigBoolOptions);
 
+	papyrusVM->RegisterFunction("GetDynamicModestyEnabledByOtherMod", "AND_MCM", GetDynamicModestyEnabledByOtherMod);
+
 	papyrusVM->RegisterFunction("GetConfigIntOptions", "AND_MCM", GetConfigIntOptions);
 	papyrusVM->RegisterFunction("UpdateConfigIntOptions", "AND_MCM", UpdateConfigIntOptions);
 	

@@ -237,3 +237,5 @@ void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options);
 
 std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*);
 void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options);
+
+bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*);

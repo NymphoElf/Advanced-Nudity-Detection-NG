@@ -6,6 +6,7 @@
 #include "NPCData.h"
 #include "PlayerModesty.h"
 #include "Logger.h"
+#include "ModEventHandler.h"
 
 enum DefaultOdds {
 	DefaultCurtainOddsLow = 20,
@@ -1010,4 +1011,13 @@ void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options) {
 	Configuration::AssCommentChance = Options[12];
 	Configuration::BraCommentChance = Options[13];
 	Configuration::UnderwearCommentChance = Options[14];
+}
+
+bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*) {
+	for (int Index = 0; Index < RegisteredPlugins::Plugins.size(); ++Index) {
+		if (RegisteredPlugins::DynamicModestyEnabled[Index]) {
+			return true;
+		}
+	}
+	return false;
 }
