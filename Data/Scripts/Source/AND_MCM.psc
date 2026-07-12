@@ -589,6 +589,10 @@ Event OnConfigOpen()
 	
 	Main.DynamicModestyEnabledByOtherMod = GetDynamicModestyEnabledByOtherMod()
 	
+	If Main.DFFMA_Found == False && Main.DynamicModestyEnabledByOtherMod == False
+		ConfigBoolOptions[DynamicModestyEnabled] = False
+	EndIf
+	
 	If ConfigBoolOptions[HardcoreModeEnabled] == True
 		HardcoreLockdown = True
 	EndIf

@@ -790,7 +790,7 @@ void CleanFemaleList() {
 		Log("<C++ NPCModesty> [CleanFemaleLists] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCData, LoggingLevel::info);
 
 		if (FemaleActor == nullptr || FemaleActor->IsDead(false)) {
-			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female is NULL or Dead. Removing...", LogType::NPCModesty, LoggingLevel::info);
+			Log("<C++ NPCModesty> [CleanFemaleLists] Female is NULL or Dead. Removing...", LogType::NPCModesty, LoggingLevel::info);
 			DeleteFemaleWithID(ID);
 		}
 	}

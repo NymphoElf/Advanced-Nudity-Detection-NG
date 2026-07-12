@@ -56,6 +56,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	bool IsTopless = akFemale->GetFactionRank(ToplessFaction, false) == 1;
 
 	bool IsShowingUnderwear = akFemale->GetFactionRank(ShowingUnderwearFaction, false) == 1;
+	bool IsShowingAss = akFemale->GetFactionRank(ShowingAssFaction, false) == 1;
 	bool IsShowingGenitals = akFemale->GetFactionRank(ShowingGenitalsFaction, false) == 1;
 	bool IsBottomless = akFemale->GetFactionRank(BottomlessFaction, false) == 1;
 
@@ -66,7 +67,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	}
 
 	if (CurrentRank == StrictModestyLevel::Modest) {
-		if (IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
+		if (IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingAss && !IsShowingGenitals) {
 			ThisFemale.ModestyTimer0 += HoursPassed;
 			
 			if (ThisFemale.ModestyTimer0 >= UpgradeTime) {
@@ -78,7 +79,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 				}
 			}
 		}
-		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
+		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingAss && !IsShowingGenitals) {
 			if (ThisFemale.ModestyTimer0 > 0) {
 				ThisFemale.ModestyTimer0 -= HoursPassed;
 			}
@@ -89,7 +90,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Reasonable) {
-		if (IsShowingUnderwear && IsShowingBra && !IsShowingGenitals && !IsShowingChest) {
+		if ((IsShowingUnderwear || IsShowingAss) && IsShowingBra && !IsShowingGenitals && !IsShowingChest) {
 			ThisFemale.ModestyTimer1 += HoursPassed;
 
 			if (ThisFemale.ModestyTimer1 >= UpgradeTime) {
@@ -101,7 +102,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 				}
 			}
 		}
-		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingGenitals) {
+		else if (!IsShowingBra && !IsShowingChest && !IsShowingUnderwear && !IsShowingAss && !IsShowingGenitals) {
 			ThisFemale.ModestyTimer1 -= HoursPassed;
 
 			if (!Corruption && ThisFemale.ModestyTimer1 <= -UpgradeTime) {
@@ -113,7 +114,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 		}
 	}
 	else if (CurrentRank == StrictModestyLevel::Relaxed) {
-		if (IsShowingChest && IsShowingUnderwear && !IsTopless && !IsShowingGenitals) {
+		if (IsShowingChest && (IsShowingUnderwear || IsShowingAss) && !IsTopless && !IsShowingGenitals) {
 			ThisFemale.ModestyTimer2 += HoursPassed;
 
 			if (ThisFemale.ModestyTimer2 >= UpgradeTime) {
@@ -125,7 +126,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 				}
 			}
 		}
-		else if ((!IsShowingBra && !IsShowingChest) || (!IsShowingUnderwear && !IsShowingGenitals)) {
+		else if ((!IsShowingBra && !IsShowingChest) || (!IsShowingUnderwear && !IsShowingAss && !IsShowingGenitals)) {
 			ThisFemale.ModestyTimer2 -= HoursPassed;
 
 			if (!Corruption && ThisFemale.BottomModestyTimer2 <= -UpgradeTime) {
@@ -149,7 +150,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 				}
 			}
 		}
-		else if ((!IsShowingChest && !IsTopless) || (!IsShowingUnderwear && !IsShowingGenitals)) {
+		else if ((!IsShowingChest && !IsTopless) || (!IsShowingUnderwear && !IsShowingAss && !IsShowingGenitals)) {
 			ThisFemale.ModestyTimer3 -= HoursPassed;
 
 			if (!Corruption && ThisFemale.ModestyTimer3 <= -UpgradeTime) {
@@ -418,6 +419,7 @@ void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	int MinimumBottomRank = ThisFemale.MinimumRankBottom;
 
 	bool IsShowingUnderwear = akFemale->GetFactionRank(ShowingUnderwearFaction, false) == 1;
+	bool IsShowingAss = akFemale->GetFactionRank(ShowingAssFaction, false) == 1;
 	bool IsShowingGenitals = akFemale->GetFactionRank(ShowingGenitalsFaction, false) == 1;
 	bool IsBottomless = akFemale->GetFactionRank(BottomlessFaction, false) == 1;
 
@@ -426,14 +428,14 @@ void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	}
 
 	//Modest (Previously 'Shy')
-	if (CurrentBottomRank == SimpleModestyLevel::Modest && IsShowingUnderwear && !IsShowingGenitals) {
+	if (CurrentBottomRank == SimpleModestyLevel::Modest && (IsShowingUnderwear || IsShowingAss) && !IsShowingGenitals) {
 		ThisFemale.BottomModestyTimer0 += HoursPassed;
 	}
 	//Comfortable
 	else if (CurrentBottomRank <= SimpleModestyLevel::Comfortable && IsShowingGenitals && !IsBottomless) {
 		ThisFemale.BottomModestyTimer1 += HoursPassed;
 	}
-	else if (CurrentBottomRank == SimpleModestyLevel::Comfortable && IsShowingUnderwear && !IsShowingGenitals) {
+	else if (CurrentBottomRank == SimpleModestyLevel::Comfortable && (IsShowingUnderwear || IsShowingAss) && !IsShowingGenitals) {
 		//Do Nothing
 	}
 	//Brazen (Previously 'Bold')
@@ -616,7 +618,7 @@ void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 }
 
 void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
-	if (InstalledMods::DFFMA && Configuration::DynamicModestyEnabled) {
+	if (Configuration::DynamicModestyEnabled) {
 		float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
 		CleanFemaleList();

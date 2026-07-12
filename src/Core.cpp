@@ -9,19 +9,6 @@
 #include "NPCData.h"
 #include "ArousedStats.h"
 
-/*
-int FindInVector(std::vector<PermanentFemales> SearchVector, PermanentFemales SearchTarget) {
-	int SearchIndex = 0;
-	while (SearchIndex < SearchVector.size()) {
-		if ((SearchVector[SearchIndex].Name == SearchTarget.Name) && (SearchVector[SearchIndex].Plugin == SearchTarget.Plugin) && (SearchVector[SearchIndex].LocalID == SearchTarget.LocalID)) {
-			return SearchIndex;
-		}
-		SearchIndex++;
-	}
-	return -1;
-}
-*/
-
 int FindInVector(std::vector<std::string_view> SearchVector, std::string_view SearchTarget) {
 	int SearchIndex = 0;
 	while (SearchIndex < SearchVector.size()) {
