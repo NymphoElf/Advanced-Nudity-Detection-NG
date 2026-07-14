@@ -104,11 +104,11 @@ std::string FlashRiskToString(int RiskLevel) {
 void CheckMods() {
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
-	const RE::TESFile* RosaRoundBottom = DataHandler->LookupModByName("RosaFollower.esp");
-	const RE::TESFile* Sexlab = DataHandler->LookupModByName("SexLab.esm");
-	//const RE::TESFile* SLSFR = DataHandler->LookupModByName("SLSF Reloaded.esp");
-	const RE::TESFile* DFFMA = DataHandler->LookupModByName("Modesty_Keyword.esp");
-	const RE::TESFile* OSLAroused = DataHandler->LookupModByName("OSLAroused.esp");
+	const RE::TESFile* RosaRoundBottom = DataHandler->LookupLoadedModByName("RosaFollower.esp");
+	const RE::TESFile* Sexlab = DataHandler->LookupLoadedModByName("SexLab.esm");
+	//const RE::TESFile* SLSFR = DataHandler->LookupLoadedModByName("SLSF Reloaded.esp");
+	const RE::TESFile* DFFMA = DataHandler->LookupLoadedModByName("Modesty_Keyword.esp");
+	const RE::TESFile* OSLAroused = DataHandler->LookupLoadedModByName("OSLAroused.esp");
 
 	if (RosaRoundBottom) {
 		InstalledMods::RosaRoundBottom = true;
