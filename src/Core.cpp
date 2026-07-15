@@ -106,9 +106,9 @@ void CheckMods() {
 
 	const RE::TESFile* RosaRoundBottom = DataHandler->LookupLoadedModByName("RosaFollower.esp");
 	const RE::TESFile* Sexlab = DataHandler->LookupLoadedModByName("SexLab.esm");
-	//const RE::TESFile* SLSFR = DataHandler->LookupLoadedModByName("SLSF Reloaded.esp");
-	const RE::TESFile* DFFMA = DataHandler->LookupLoadedModByName("Modesty_Keyword.esp");
-	const RE::TESFile* OSLAroused = DataHandler->LookupLoadedModByName("OSLAroused.esp");
+	//const RE::TESFile* SLSFR = DataHandler->LookupLoadedLightModByName("SLSF Reloaded.esp");
+	const RE::TESFile* DFFMA = DataHandler->LookupLoadedLightModByName("Modesty_Keyword.esp");
+	const RE::TESFile* OSLAroused = DataHandler->LookupLoadedLightModByName("OSLAroused.esp");
 
 	if (RosaRoundBottom) {
 		InstalledMods::RosaRoundBottom = true;
