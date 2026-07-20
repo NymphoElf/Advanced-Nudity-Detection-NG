@@ -23,6 +23,11 @@ static constexpr std::uint32_t kVersion = 1;
 void SavePermanentNPCs() 
 {
 	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+	constexpr char FolderPath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/";
+
+	if (!std::filesystem::exists(FolderPath)) {
+		std::filesystem::create_directories(FolderPath);
+	}
 
 	if(!PermanentFemaleVector.size())
 	{
