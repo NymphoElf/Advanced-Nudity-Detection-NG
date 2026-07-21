@@ -729,13 +729,13 @@ std::vector<int> GetPlayerStrictModestyTimers(RE::StaticFunctionTag*) {
 std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*) {
 	std::vector<int> SimpleTimers;
 
-	SimpleTimers.emplace_back(TopModestyTimer[0]); //0
-	SimpleTimers.emplace_back(TopModestyTimer[1]); //1
+	SimpleTimers.emplace_back(TopModestyTimer[0] + (TopModestyTimer[1] / 2) + (TopModestyTimer[2] / 4)); //0
+	SimpleTimers.emplace_back(TopModestyTimer[1] + (TopModestyTimer[2] / 2)); //1
 	SimpleTimers.emplace_back(TopModestyTimer[2]); //2
 	SimpleTimers.emplace_back(TopModestyTimer[3]); //3
 
-	SimpleTimers.emplace_back(BottomModestyTimer[0]); //4
-	SimpleTimers.emplace_back(BottomModestyTimer[1]); //5
+	SimpleTimers.emplace_back(BottomModestyTimer[0] + (BottomModestyTimer[1] / 2) + (BottomModestyTimer[2] / 4)); //4
+	SimpleTimers.emplace_back(BottomModestyTimer[1] + (BottomModestyTimer[2] / 2)); //5
 	SimpleTimers.emplace_back(BottomModestyTimer[2]); //6
 	SimpleTimers.emplace_back(BottomModestyTimer[3]); //7
 

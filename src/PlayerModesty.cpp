@@ -364,10 +364,10 @@ void TopModesty(int CurrentTopRank, int HoursPassed, int UpgradeTime) {
 		return;
 	}
 
-	Log("<C++ PlayerModesty> [TopModesty] Modest TopModestyTimer is: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Modest]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [TopModesty] Comfortable TopModestyTimer is: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Comfortable]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [TopModesty] Brazen TopModestyTimer is: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Brazen]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [TopModesty] Immodet TopModestyTimer is: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Immodest]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [TopModesty] Modest TopModestyTimer is now: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Modest]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [TopModesty] Comfortable TopModestyTimer is now: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Comfortable]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [TopModesty] Brazen TopModestyTimer is now: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Brazen]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [TopModesty] Immodet TopModestyTimer is now: " + std::to_string(TopModestyTimer[SimpleModestyLevel::Immodest]), LogType::PlayerModesty);
 
 	Log("<C++ PlayerModesty> [TopModesty] Required Upgrade Time is: " + std::to_string(UpgradeTime), LogType::PlayerModesty);
 
@@ -464,10 +464,10 @@ void BottomModesty(int CurrentBottomRank, int HoursPassed, int UpgradeTime) {
 		return;
 	}
 
-	Log("<C++ PlayerModesty> [BottomModesty] Modest BottomModestyTimer is: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Modest]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [BottomModesty] Comfortable BottomModestyTimer is: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Comfortable]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [BottomModesty] Brazen BottomModestyTimer is: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Brazen]), LogType::PlayerModesty);
-	Log("<C++ PlayerModesty> [BottomModesty] Immodest BottomModestyTimer is: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Immodest]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [BottomModesty] Modest BottomModestyTimer is now: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Modest]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [BottomModesty] Comfortable BottomModestyTimer is now: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Comfortable]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [BottomModesty] Brazen BottomModestyTimer is now: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Brazen]), LogType::PlayerModesty);
+	Log("<C++ PlayerModesty> [BottomModesty] Immodest BottomModestyTimer is now: " + std::to_string(BottomModestyTimer[SimpleModestyLevel::Immodest]), LogType::PlayerModesty);
 
 	Log("<C++ PlayerModesty> [BottomModesty] Required Upgrade Time is: " + std::to_string(UpgradeTime), LogType::PlayerModesty);
 
