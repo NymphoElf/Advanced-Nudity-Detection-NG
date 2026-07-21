@@ -6,7 +6,7 @@ includes("lib/commonlibsse-ng")
 
 -- set project
 set_project("Advanced-Nudity-Detection")
-set_version("4.0.14")
+set_version("4.0.15")
 set_license("GPL-3.0")
 
 -- set defaults

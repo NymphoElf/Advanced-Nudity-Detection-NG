@@ -37,6 +37,8 @@ void InitializePlayerFactions() {
 
 	Player->AddToFaction(ArousalFaction, 0);
 
+	PlayerFactionsInitialized = true;
+
 	Log("<C++ Player> [InitializePlayerFactions] COMPLETE");
 }
 
