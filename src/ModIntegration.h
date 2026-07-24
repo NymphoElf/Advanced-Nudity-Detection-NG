@@ -57,6 +57,7 @@ namespace ModAPI {
 #pragma warning(disable : 4191)
 			sla.GetVersion = reinterpret_cast<decltype(sla.GetVersion)>        (GetProcAddress(h, "SLA_GetVersion"));
 			sla.GetArousal = reinterpret_cast<decltype(sla.GetArousal)>        (GetProcAddress(h, "SLA_GetArousal"));
+			sla.GetArousalInt = reinterpret_cast<decltype(sla.GetArousalInt)>     (GetProcAddress(h, "SLA_GetArousalInt"));
 			sla.AddDecayingEffect = reinterpret_cast<decltype(sla.AddDecayingEffect)> (GetProcAddress(h, "SLA_AddDecayingEffect"));
 			sla.ClearDynamicEffect = reinterpret_cast<decltype(sla.ClearDynamicEffect)>(GetProcAddress(h, "SLA_ClearDynamicEffect"));
 #pragma warning(pop)

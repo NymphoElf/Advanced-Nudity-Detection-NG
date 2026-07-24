@@ -93,10 +93,13 @@ namespace ModAPI {
 		}
 
 		uint32_t GetSLAVersion() {
-			return SLOArousedAPI.GetVersion();
+			return SLOArousedAPI.available() ? SLOArousedAPI.GetVersion() : 0;
 		}
-		
+
 		int GetPlayerArousal() {
+			if (!SLOArousedAPI.GetArousalInt) {
+				return 0;
+			}
 			return (int)SLOArousedAPI.GetArousalInt(Player);
 		}
 	}
