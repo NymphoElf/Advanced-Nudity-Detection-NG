@@ -11,3 +11,17 @@ Int Function GetRandomizedModesty(Actor akActor) Global Native
 Function AddCustomTransform(Race TransformRace) Global Native
 
 Int Function NakedCommentChance(Bool IsMCMRequest) Global Native
+
+Event OnInit()
+	CheckConflictingMods()
+EndEvent
+
+Function CheckConflictingMods()
+	Bool[] InstalledMods = AND_MCM.GetInstalledMods()
+	
+	If InstalledMods[3] && InstalledMods[5]
+		Debug.Messagebox("You cannot use OSL Aroused and SLO Aroused at the same time! Your game will now close...")
+		Utility.Wait(1.0)
+		Debug.QuitGame()
+	EndIf
+EndFunction

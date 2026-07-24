@@ -2,6 +2,7 @@ ScriptName AND_PlayerScript extends ReferenceAlias
 
 Import PO3_SKSEFunctions
 
+AND_Core Property Core Auto
 AND_MotionTimer Property MotionClock Auto
 AND_MCM Property Config Auto
 AND_ModEventListener Property ModEventListener Auto
@@ -41,6 +42,7 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
+	Core.CheckConflictingMods()
 	ModEventListener.InitializeModEvents()
 	
 	RegisterForAnimations()

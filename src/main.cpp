@@ -200,9 +200,8 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads
 		logs::info("Post Load");
 
-		//if (InstalledMods::SLSFR) {
-			ModAPI::SLSFR::ConnectToSLSFRAPI();
-		//}
+		ModAPI::SLSFR::ConnectToSLSFRAPI();
+		ModAPI::SLOArousedNG::ConnectToSLOArousedNG();
 
 		break;
 	case SKSE::MessagingInterface::kPostPostLoad: //after main game loads and DLLs have time to do something

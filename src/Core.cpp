@@ -906,7 +906,15 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 
 	Log("<C++ Core> [DiceRoll] END");
 
-	float arousalValue = InstalledMods::OSLAroused ? Aroused::GetArousal(Player) : 0.0f;
+	float arousalValue = 0.0f;
+
+	if (InstalledMods::OSLAroused)  {
+		 arousalValue = OSLAroused::GetArousal(Player);
+	}
+	else if (InstalledMods::SLOAroused) {
+		arousalValue = (float)ModAPI::SLOArousedNG::GetPlayerArousal();
+	}
+
 	Player->AddToFaction(ArousalFaction, arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 });
 
 	if (PlayerBase->IsFemale()) {

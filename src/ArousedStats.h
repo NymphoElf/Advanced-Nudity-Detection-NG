@@ -21,7 +21,7 @@
 // AND_Core.UpdateArousalValue used.
 // =====================================================================================
 
-namespace Aroused
+namespace OSLAroused
 {
     // True if OSLAroused.esp is in the current load order.
     [[nodiscard]] inline bool IsLoaded()

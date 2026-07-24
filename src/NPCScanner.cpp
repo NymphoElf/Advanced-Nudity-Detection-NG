@@ -113,7 +113,16 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 			// the GetArousalExt first-query init path and AddToFaction are both safe here.
 			// GetArousal returns -1 if OSLAroused is present but its Ext export can't be
 			// resolved (older build); fall back to 0 rather than writing a negative rank.
-			float arousalValue = InstalledMods::OSLAroused ? Aroused::GetArousal(ScannedActors[Index]) : 0.0f;
+
+			float arousalValue = 0.0f;
+
+			if (InstalledMods::OSLAroused) {
+				arousalValue = OSLAroused::GetArousal(Player);
+			}
+			else if (InstalledMods::SLOAroused) {
+				arousalValue = (float)ModAPI::SLOArousedNG::GetPlayerArousal();
+			}
+
 			const std::int8_t arousalRank = arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 };
 			
 			//Only write to the faction if the rank has actually changed. (try and avoid potential data races from game ai/job threads accessing factions)

@@ -1,6 +1,7 @@
 #include "ModIntegration.h"
 #include "Core.h"
 #include "Logger.h"
+#include "APIs/ArousalAPI.h"
 
 void CheckMods() {
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
@@ -57,6 +58,19 @@ void CheckMods() {
 		InstalledMods::SLSFR = false;
 		Log("<C++ ModIntegration> [CheckMods] SLSF Reloaded.esp MISSING", Logger::LogType::Core, Logger::LoggingLevel::critical);
 	}
+
+	if (ModAPI::SLOArousedNG::GetSLAVersion() >= 30200000) {
+		InstalledMods::SLOAroused = true;
+		Log("<C++ ModIntegration> [CheckMods] SLO Aroused NG FOUND", Logger::LogType::Core, Logger::LoggingLevel::critical);
+	}
+	else {
+		InstalledMods::SLOAroused = false;
+		Log("<C++ ModIntegration> [CheckMods] SLO Aroused NG MISSING", Logger::LogType::Core, Logger::LoggingLevel::critical);
+	}
+
+	if (InstalledMods::OSLAroused && InstalledMods::SLOAroused) {
+		Log("<C++ ModIntegration> [CheckMods] CRITIAL ERROR!!! OSL Aroused and SLO Aroused are both installed! These mods conflict!!!", Logger::LogType::Core, Logger::LoggingLevel::critical);
+	}
 }
 
 std::vector<bool> GetInstalledMods(RE::StaticFunctionTag*) {
@@ -65,13 +79,28 @@ std::vector<bool> GetInstalledMods(RE::StaticFunctionTag*) {
 		InstalledMods::Sexlab, //1
 		InstalledMods::DFFMA, //2
 		InstalledMods::OSLAroused, //3
-		InstalledMods::SLSFR //4
+		InstalledMods::SLSFR, //4
+		InstalledMods::SLOAroused //5
 	};
 
 	return ModVector;
 }
 
 namespace ModAPI {
+	namespace SLOArousedNG {
+		void ConnectToSLOArousedNG() {
+			SLOArousedAPI = LoadSLA();
+		}
+
+		uint32_t GetSLAVersion() {
+			return SLOArousedAPI.GetVersion();
+		}
+		
+		int GetPlayerArousal() {
+			return (int)SLOArousedAPI.GetArousalInt(Player);
+		}
+	}
+	
 	namespace SLSFR {
 		void ConnectToSLSFRAPI() {
 			API = static_cast<const SLSFR_API::SLSFRInterfaceV1*>(SLSFR_API::RequestAPI(SLSFR_API::InterfaceVersion::V1));
