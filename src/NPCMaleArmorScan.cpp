@@ -172,14 +172,14 @@ namespace NPCMaleScan {
 			}
 		}
 
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Roll = " + std::to_string(Roll), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Roll = " + std::to_string(Roll), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Odds = " + std::to_string(Odds), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Type = " + TypeString, LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] IsTransparent = " + BoolToString(IsTransparent), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Type = " + TypeString, Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] IsTransparent = " + BoolToString(IsTransparent), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] RiskLevel = " + FlashRiskToString(Level), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), Logger::LogType::NPCArmorScan);
 
 		bool Result = (Roll > Odds);
 
@@ -291,13 +291,13 @@ namespace NPCMaleScan {
 			}
 		}
 
-		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Roll = " + std::to_string(Roll), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Roll = " + std::to_string(Roll), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Odds = " + std::to_string(Odds), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Type = " + TypeString, LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Type = " + TypeString, Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] RiskLevel = " + FlashRiskToString(Level), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), Logger::LogType::NPCArmorScan);
 
 		bool Result = (Roll > Odds);
 
@@ -346,13 +346,13 @@ namespace NPCMaleScan {
 			Odds = Configuration::FlashingOdds[TransparentBananaHammockOdds_High];
 		}
 
-		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Roll = " + std::to_string(NPCCStringRoll), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Odds = " + std::to_string(Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Roll = " + std::to_string(NPCCStringRoll), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Odds = " + std::to_string(Odds), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] IsTransparent = " + BoolToString(IsTransparent), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] RiskLevel = " + FlashRiskToString(Level), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] IsTransparent = " + BoolToString(IsTransparent), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] RiskLevel = " + FlashRiskToString(Level), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? " + BoolToString(NPCCStringRoll > Odds), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? " + BoolToString(NPCCStringRoll > Odds), Logger::LogType::NPCArmorScan);
 
 		bool Result = (CStringRoll > Odds);
 
@@ -939,16 +939,16 @@ namespace NPCMaleScan {
 			SetActorFactionRank(thisActor, NudeFaction, 0);
 		}
 
-		Log("<C++ NPCMaleArmorScan> [Finalize] Nude Faction Rank: " + BoolToString(thisActor->GetFactionRank(NudeFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Topless Faction Rank: " + BoolToString(thisActor->GetFactionRank(ToplessFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Bottomless Faction Rank: " + BoolToString(thisActor->GetFactionRank(BottomlessFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Bra Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingBraFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Chest Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingChestFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Underwear Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingUnderwearFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingGenitalsFaction, true)), LogType::NPCArmorScan);
-		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Ass Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingAssFaction, true)), LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Nude Faction Rank: " + BoolToString(thisActor->GetFactionRank(NudeFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Topless Faction Rank: " + BoolToString(thisActor->GetFactionRank(ToplessFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Bottomless Faction Rank: " + BoolToString(thisActor->GetFactionRank(BottomlessFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Bra Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingBraFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Chest Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingChestFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Underwear Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingUnderwearFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingGenitalsFaction, true)), Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] Showing Ass Faction Rank: " + BoolToString(thisActor->GetFactionRank(ShowingAssFaction, true)), Logger::LogType::NPCArmorScan);
 
-		Log("<C++ NPCMaleArmorScan> [Finalize] NPC Male Scan Completed", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [Finalize] NPC Male Scan Completed", Logger::LogType::NPCArmorScan);
 	}
 
 	bool VanillaArmorCheck() {
@@ -966,7 +966,7 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(AssCurtain_Male) || BodyItem->HasKeyword(AssCurtainT_Male) ||
 					BodyItem->HasKeyword(Miniskirt_Male) || BodyItem->HasKeyword(MiniskirtT_Male)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), Logger::LogType::NPCArmorScan);
 
 			bool HasTopKeyword =
 				(
@@ -974,7 +974,7 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(ArmorTopT_Low_Male) || BodyItem->HasKeyword(ArmorTopT_Male) || BodyItem->HasKeyword(ArmorTopT_High_Male) ||
 					BodyItem->HasKeyword(ArmorTop_NoCover_Male)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), Logger::LogType::NPCArmorScan);
 
 			bool HasBottomKeyword =
 				(
@@ -986,7 +986,7 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(HimboSkirt) ||
 					BodyItem->HasKeyword(HimboSkirtT_Low) || BodyItem->HasKeyword(HimboSkirtT) || BodyItem->HasKeyword(HimboSkirtT_High)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), Logger::LogType::NPCArmorScan);
 
 			bool HasBraKeyword =
 				(
@@ -994,7 +994,7 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(BraT_Low_Male) || BodyItem->HasKeyword(BraT_Male) || BodyItem->HasKeyword(BraT_High_Male) ||
 					BodyItem->HasKeyword(Bra_NoCover_Male)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), Logger::LogType::NPCArmorScan);
 
 			bool HasUnderwearKeyword =
 				(
@@ -1007,7 +1007,7 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(BananaHammock) ||
 					BodyItem->HasKeyword(BananaHammockT_Low) || BodyItem->HasKeyword(BananaHammockT) || BodyItem->HasKeyword(BananaHammockT_High)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), Logger::LogType::NPCArmorScan);
 
 			bool HasExtraKeyword =
 				(
@@ -1016,12 +1016,12 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(Microskirt_Male) ||
 					BodyItem->HasKeyword(EffectivelyNaked_Male)
 					);
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), Logger::LogType::NPCArmorScan);
 
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), Logger::LogType::NPCArmorScan);
 			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
 		}
-		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", Logger::LogType::NPCArmorScan);
 		return false;
 	}
 
@@ -1029,15 +1029,15 @@ namespace NPCMaleScan {
 		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] NPC Male Analysis Triggered!");
 
 		if (akMale == nullptr) {
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Actor is None/Null Pointer!!!", LogType::NPCArmorScan, LoggingLevel::critical);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Actor is None/Null Pointer!!!", Logger::LogType::NPCArmorScan, Logger::LoggingLevel::critical);
 			return;
 		}
 
 		std::string akName = akMale->GetName();
-		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: " + akName + " | Form ID: (" + std::format("{:08X}", akMale->GetFormID()) + ")", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analyzing Actor: " + akName + " | Form ID: (" + std::format("{:08X}", akMale->GetFormID()) + ")", Logger::LogType::NPCArmorScan);
 
 		if (akMale->GetActorBase()->IsFemale() == true) {
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] CRITICAL ERROR: Actor " + akName + " is Female! This should not have happened!", LogType::NPCArmorScan, LoggingLevel::critical);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] CRITICAL ERROR: Actor " + akName + " is Female! This should not have happened!", Logger::LogType::NPCArmorScan, Logger::LoggingLevel::critical);
 			return;
 		}
 
@@ -1045,9 +1045,9 @@ namespace NPCMaleScan {
 
 		ResetFlashingFactions();
 
-		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Start analysis...", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Start analysis...", Logger::LogType::NPCArmorScan);
 		if (ActorWornHasKeyword(thisActor, CoversAll_Male)) {
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Covers All keyword detected", LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Covers All keyword detected", Logger::LogType::NPCArmorScan);
 
 			NPCTopCurtainCover = true;
 			NPCPelvicCurtainCover = true;
@@ -1120,18 +1120,18 @@ namespace NPCMaleScan {
 				AssRiskLevel = FlashRiskLevel::Ultra;
 			}
 
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ChestRiskLevel = " + BoolToString(ChestRiskLevel), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtain = " + BoolToString(HasPelvicCurtain), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = " + BoolToString(HasPelvicCurtainT), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] PelvicRiskLevel = " + BoolToString(PelvicRiskLevel), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtain = " + BoolToString(HasAssCurtain), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtainT = " + BoolToString(HasAssCurtainT), LogType::NPCArmorScan);
-			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] AssRiskLevel = " + BoolToString(AssRiskLevel), LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ChestRiskLevel = " + BoolToString(ChestRiskLevel), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtain = " + BoolToString(HasPelvicCurtain), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = " + BoolToString(HasPelvicCurtainT), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] PelvicRiskLevel = " + BoolToString(PelvicRiskLevel), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtain = " + BoolToString(HasAssCurtain), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasAssCurtainT = " + BoolToString(HasAssCurtainT), Logger::LogType::NPCArmorScan);
+			Log("<C++ NPCMaleArmorScan> [MaleAnalyze] AssRiskLevel = " + BoolToString(AssRiskLevel), Logger::LogType::NPCArmorScan);
 
 			if (VanillaArmorCheck() == true) {
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Armor is considered vanilla.", LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Armor is considered vanilla.", Logger::LogType::NPCArmorScan);
 
 				NPCTopCurtainCover = CurtainCheck(FlashRiskType::Chest, HasChestCurtainT, ChestRiskLevel);
 				NPCPelvicCurtainCover = CurtainCheck(FlashRiskType::Pelvic, HasPelvicCurtainT, PelvicRiskLevel);
@@ -1273,35 +1273,35 @@ namespace NPCMaleScan {
 
 				//Debug Results
 				//Top
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTop = " + BoolToString(HasArmorTop), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTopT = " + BoolToString(HasArmorTopT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] TopRiskLevel = " + BoolToString(TopRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBra = " + BoolToString(HasBra), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraT = " + BoolToString(HasBraT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BraRiskLevel = " + BoolToString(BraRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraNoCover = " + BoolToString(HasBraNoCover), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTop = " + BoolToString(HasArmorTop), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorTopT = " + BoolToString(HasArmorTopT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] TopRiskLevel = " + BoolToString(TopRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBra = " + BoolToString(HasBra), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraT = " + BoolToString(HasBraT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BraRiskLevel = " + BoolToString(BraRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBraNoCover = " + BoolToString(HasBraNoCover), Logger::LogType::NPCArmorScan);
 
 				//Bottom
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottom = " + BoolToString(HasArmorBottom), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottomT = " + BoolToString(HasArmorBottomT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BottomRiskLevel = " + BoolToString(BottomRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpants = " + BoolToString(HasHotpants), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpantsT = " + BoolToString(HasHotpantsT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = " + BoolToString(HotpantsRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimbo = " + BoolToString(HasHimbo), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimboT = " + BoolToString(HasHimboT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HimboRiskLevel = " + BoolToString(HimboRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwear = " + BoolToString(HasUnderwear), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearT = " + BoolToString(HasUnderwearT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = " + BoolToString(UnderwearRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = " + BoolToString(HasUnderwearNoCover), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThong = " + BoolToString(HasThong), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongT = " + BoolToString(HasThongT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ThongRiskLevel = " + BoolToString(ThongRiskLevel), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongNoCover = " + BoolToString(HasThongNoCover), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammock = " + BoolToString(HasBananaHammock), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammockT = " + BoolToString(HasBananaHammockT), LogType::NPCArmorScan);
-				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = " + BoolToString(BananaHammockRiskLevel), LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottom = " + BoolToString(HasArmorBottom), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasArmorBottomT = " + BoolToString(HasArmorBottomT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BottomRiskLevel = " + BoolToString(BottomRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpants = " + BoolToString(HasHotpants), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHotpantsT = " + BoolToString(HasHotpantsT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = " + BoolToString(HotpantsRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimbo = " + BoolToString(HasHimbo), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasHimboT = " + BoolToString(HasHimboT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HimboRiskLevel = " + BoolToString(HimboRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwear = " + BoolToString(HasUnderwear), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearT = " + BoolToString(HasUnderwearT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = " + BoolToString(UnderwearRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = " + BoolToString(HasUnderwearNoCover), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThong = " + BoolToString(HasThong), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongT = " + BoolToString(HasThongT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] ThongRiskLevel = " + BoolToString(ThongRiskLevel), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasThongNoCover = " + BoolToString(HasThongNoCover), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammock = " + BoolToString(HasBananaHammock), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] HasBananaHammockT = " + BoolToString(HasBananaHammockT), Logger::LogType::NPCArmorScan);
+				Log("<C++ NPCMaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = " + BoolToString(BananaHammockRiskLevel), Logger::LogType::NPCArmorScan);
 
 				AnalyzeTop
 				(
@@ -1325,7 +1325,7 @@ namespace NPCMaleScan {
 		}
 
 		Finalize();
-		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analysis Succeeded!", LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [MaleAnalyze] Analysis Succeeded!", Logger::LogType::NPCArmorScan);
 	}
 }
 

@@ -1,7 +1,5 @@
 ScriptName AND_KeybindManager extends Quest
 
-AND_Core Property Core Auto
-AND_PlayerScript Property PlayerScript Auto
 AND_MCM Property Config Auto
 AND_Logger Property Logger Auto
 
@@ -93,12 +91,12 @@ Event OnKeyDown(Int KeyCode)
 			CheckedIndex += 1
 		EndWhile
 
-		If Core.PlayerBase.GetSex() == 0 ;Male
-			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Send Male Scan")
-			AND_Core.MaleAnalyze()
-		Else
+		If Config.PlayerIsFemale
 			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Send Female Scan")
 			AND_Core.FemaleAnalyze()
+		Else
+			AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Send Male Scan")
+			AND_Core.MaleAnalyze()
 		EndIf
 	Else
 		AND_Logger.FastLog("<Keybind Manager> [OnKeyDown] Keys are DISABLED.")

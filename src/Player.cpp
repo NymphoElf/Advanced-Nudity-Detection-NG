@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Logger.h"
 #include "NPCData.h"
+#include "PlayerArmorScan.h"
 
 void InitializePlayerFactions() {
 	Log("<C++ Player> [InitializePlayerFactions] START");
@@ -43,7 +44,7 @@ void InitializePlayerFactions() {
 }
 
 void CheckWearingCurtains(RE::StaticFunctionTag*) {
-	if (Player->GetActorBase()->IsFemale()) {
+	if (PlayerBase->IsFemale()) {
 		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain) || PlayerWornHasKeyword(ChestCurtainT));
 		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(PelvicCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
 		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(AssCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
@@ -55,8 +56,59 @@ void CheckWearingCurtains(RE::StaticFunctionTag*) {
 	}
 }
 
+bool ProcessEquipmentChange(RE::StaticFunctionTag*, RE::TESForm* BaseObject, RE::TESObjectREFR* akReference) {
+	if (BaseObject == nullptr && akReference == nullptr) {
+		Log("<C++ PlayerScript> [ProcessEquipmentChange] Changed Object is NULL", Logger::LogType::Core, Logger::LoggingLevel::info);
+		return false;
+	}
+	else {
+		if (BaseObject != nullptr) {
+			std::string BaseObjectName = BaseObject->GetName();
+
+			if (BaseObjectName == "") {
+				Log("<C++ PlayerScript> [ProcessEquipmentChange] BaseObject (" + std::format("{:08X}", BaseObject->GetFormID()) + ") has no name!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+				BaseObjectName = "UnknownObject";
+			}
+
+			Log("<C++ PlayerScript> [ProcessEquipmentChange] BaseObject is: " + BaseObjectName + " (" + std::format("{:08X}", BaseObject->GetFormID()) + ")", Logger::LogType::Core, Logger::LoggingLevel::info);
+		}
+
+		if (akReference != nullptr) {
+			std::string ObjectReferenceName = akReference->GetName();
+
+			if (ObjectReferenceName == "") {
+				Log("<C++ PlayerScript> [ProcessEquipmentChange] akReference (" + std::format("{:08X}", akReference->GetFormID()) + ") has no name!", Logger::LogType::Misc, Logger::LoggingLevel::warning);
+				ObjectReferenceName = "UnknownObjectRef";
+			}
+
+			Log("<C++ Player> [ProcessEquipmentChange] akReference is: " + ObjectReferenceName + " (" + std::format("{:08X}", akReference->GetFormID()), Logger::LogType::Core, Logger::LoggingLevel::info);
+		}
+	}
+	
+	if (PlayerBase->IsFemale()) {
+		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
+		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain) || PlayerWornHasKeyword(ChestCurtainT));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(PelvicCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(AssCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
+		
+		Log("<C++ Player> [ProcessEquipmentChange] Send Female Scan...");
+		FemaleArmorScan::FemaleAnalyze();
+	}
+	else {
+		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
+		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain_Male) || PlayerWornHasKeyword(ChestCurtainT_Male));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain_Male) || PlayerWornHasKeyword(PelvicCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain_Male) || PlayerWornHasKeyword(AssCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
+		
+		Log("<C++ Player> [ProcessEquipmentChange] Send Male Scan...");
+		MaleArmorScan::MaleAnalyze();
+	}
+
+	return true;
+}
+
 void ClosedMenuEvent(RE::StaticFunctionTag*, std::string MenuName) {
-	Log("<C++ Player> [ClosedMenuEvent] Closed Menu: " + MenuName, LogType::Core);
+	Log("<C++ Player> [ClosedMenuEvent] Closed Menu: " + MenuName, Logger::LogType::Core);
 	if (MenuName == "RaceSex Menu") {
 		if (!IsPlayerTransformed()) {
 			PlayerBaseRace = Player->GetRace();

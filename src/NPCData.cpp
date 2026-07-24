@@ -4,6 +4,7 @@
 #include "Config.h"
 #include "SaveLoad.h"
 #include "NPCScanner.h"
+#include "ModIntegration.h"
 
 enum FunctionEnd {
 	Success,
@@ -19,14 +20,14 @@ void NPCDataOnRevertCallback() {
 
 int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 {
-	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Getting Female Index...", LogType::NPCData, LoggingLevel::info);
+	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Getting Female Index...", Logger::LogType::NPCData, Logger::LoggingLevel::info);
 	
 	for(int Index = 0; Index < PermanentFemaleVector.size(); ++Index)
 	{
 		uint32_t ModIndex = PermanentFemaleVector[Index].GetModIndex();
 
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Checking Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()), LogType::NPCData, LoggingLevel::info);
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") ModIndex is: " + std::format("{:08X}", ModIndex), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Checking Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()), Logger::LogType::NPCData, Logger::LoggingLevel::info);
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") ModIndex is: " + std::format("{:08X}", ModIndex), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		
 		if (PermanentFemaleVector[Index].LightPlugin) {
 			ModIndex += 0xFE000000;
@@ -35,18 +36,18 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 		uint32_t akLocalID = PermanentFemaleVector[Index].LocalID;
 		RE::FormID PermanentFemaleFormID = ModIndex + akLocalID;
 
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") LocalID is: " + std::format("{:08X}", akLocalID), LogType::NPCData, LoggingLevel::info);
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") FullID should be: " + std::format("{:08X}", PermanentFemaleFormID), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") LocalID is: " + std::format("{:08X}", akLocalID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") FullID should be: " + std::format("{:08X}", PermanentFemaleFormID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		
 		if (PermanentFemaleFormID == akFemale->GetFormID()) { 
-			Log("<C++ NPCData> [GetInternalPermanentFemaleID] Match Found!", LogType::NPCData, LoggingLevel::info);
+			Log("<C++ NPCData> [GetInternalPermanentFemaleID] Match Found!", Logger::LogType::NPCData, Logger::LoggingLevel::info);
 			return Index; 
 		}
 
-		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Match not found. Checking next Permanent Female...", LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Match not found. Checking next Permanent Female...", Logger::LogType::NPCData, Logger::LoggingLevel::info);
 	}
 
-	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Permanent Female List", LogType::NPCData, LoggingLevel::warning);
+	Log("<C++ NPCData> [GetInternalPermanentFemaleID] Could not find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Permanent Female List", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 
 	return -1;
 }
@@ -98,24 +99,24 @@ void ImportSinglePermanent(int InternalID) {
 
 void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
 	if (akFemale == nullptr) {
-		Log("<C++ NPCData> [RegisterFemale] Cannot register NULL actor!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [RegisterFemale] Cannot register NULL actor!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 		return;
 	}
 	
 	RE::FormID FemaleForm = akFemale->GetFormID();
 	std::string FemaleName = akFemale->GetName();
 
-	Log("<C++ NPCData> [RegisterFemale] Female Form ID: " + std::format("{:08X}", FemaleForm), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterFemale] Female Name: " + FemaleName, LogType::NPCData);
+	Log("<C++ NPCData> [RegisterFemale] Female Form ID: " + std::format("{:08X}", FemaleForm), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterFemale] Female Name: " + FemaleName, Logger::LogType::NPCData);
 
 	if (FemaleName == "") {
-		Log("<C++ NPCData> [RegisterFemale] Cannot Register Unnamed Female!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [RegisterFemale] Cannot Register Unnamed Female!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 		return;
 	}
 
 	int PermanentID = GetInternalPermanentFemaleID(akFemale);
 	if (PermanentID >= 0) {
-		Log("<C++ NPCData> [RegisterFemale] Female exists on Permanent List. Re-importing female...", LogType::NPCData);
+		Log("<C++ NPCData> [RegisterFemale] Female exists on Permanent List. Re-importing female...", Logger::LogType::NPCData);
 		ImportSinglePermanent(PermanentID);
 		return;
 	}
@@ -242,7 +243,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 
 	RegisteredFemaleMap[FemaleForm] = ThisFemale;
 
-	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:08X}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemaleMap.size()), LogType::Core, LoggingLevel::info);
+	Log("<C++ NPCData> [RegisterFemale] Registered Female: " + FemaleName + " | Form ID: " + std::format("{:08X}", FemaleForm) + " | Internal ID: " + std::to_string(RegisteredFemaleMap.size()), Logger::LogType::Core, Logger::LoggingLevel::info);
 }
 
 void DeleteFemale(RE::StaticFunctionTag*, RE::Actor* akFemale)
@@ -291,12 +292,12 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 	std::string RosaName = Rosa->GetName();
 	std::string RosaBaseName = Rosa->GetActorBase()->GetFormEditorID();
 
-	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:08X}", RosaForm), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + static_cast<std::string>(RosaEditorID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + static_cast<std::string>(RosaBaseEditorID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:08X}", RosaForm), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + static_cast<std::string>(RosaEditorID), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + static_cast<std::string>(RosaBaseEditorID), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, Logger::LogType::NPCData);
 
 	int ShynessMode;
 
@@ -360,7 +361,7 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 
 	if (!RegisteredFemaleMap.count(FemaleFormID))
 	{
-		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " does not exist on regular registry! This should not be possible!", Logger::LogType::NPCData, Logger::LoggingLevel::critical);
 
 		return FunctionEnd::FailCritical;
 	}
@@ -373,7 +374,7 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	switch(FemaleFormID >> 24)
 	{
 		case 0xFF:
-		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " is a dynamic form. Cannot make this NPC persistent.", LogType::NPCData, LoggingLevel::error);
+		Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " is a dynamic form. Cannot make this NPC persistent.", Logger::LogType::NPCData, Logger::LoggingLevel::error);
 		return FunctionEnd::FailError;
 
 		case 0xFE:
@@ -387,19 +388,19 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	const RE::TESFile* plugin;
 
 	if (ThisFemale.LightPlugin) {
-		Log("<C++ NPCData> [RegisterPermanent] LIGHT PLUGIN 12 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [RegisterPermanent] LIGHT PLUGIN 12 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		pluginID -= 0xFE000;
-		Log("<C++ NPCData> [RegisterPermanent] Subtracted 0xFE000 Plugin ID is: " + std::format("{:08X}", pluginID), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [RegisterPermanent] Subtracted 0xFE000 Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		plugin = DataHandler->LookupLoadedLightModByIndex((uint16_t)pluginID);
 	}
 	else {
-		Log("<C++ NPCData> [RegisterPermanent] FULL PLUGIN 24 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCData> [RegisterPermanent] FULL PLUGIN 24 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		plugin = DataHandler->LookupLoadedModByIndex((uint8_t)pluginID);
 	}
 
 	if(!plugin)
 	{
-		Log("<C++ NPCData> [RegisterPermanent] Error: Failed to find Plugin Index! Plugin ID is: " + std::format("{:08X}", pluginID), LogType::NPCData, LoggingLevel::error);
+		Log("<C++ NPCData> [RegisterPermanent] Error: Failed to find Plugin Index! Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::error);
 		return FunctionEnd::FailError; 
 	}
 
@@ -413,14 +414,14 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	{
 		if(PermanentFemaleVector[i].LocalID == localID)
 		{
-			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:08X}", FemaleFormID) + ") (Local ID | " + std::format("{:08X}", localID) + ") already exists in Permanent Female list!", LogType::NPCData, LoggingLevel::warning);
+			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:08X}", FemaleFormID) + ") (Local ID | " + std::format("{:08X}", localID) + ") already exists in Permanent Female list!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 			return FunctionEnd::FailWarn;
 		}
 	}
 
-	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:08X}", FemaleFormID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:08X}", localID), LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:08X}", FemaleFormID), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:08X}", localID), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), Logger::LogType::NPCData);
 
 	ThisFemale.LocalID = localID;
 
@@ -457,17 +458,17 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 int RemovePermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 {
 	if (akFemale == nullptr) {
-		Log("<C++ NPCData> [RemovePermanent] Can't remove NULL female!", LogType::NPCData, LoggingLevel::critical);
+		Log("<C++ NPCData> [RemovePermanent] Can't remove NULL female!", Logger::LogType::NPCData, Logger::LoggingLevel::critical);
 		return FunctionEnd::FailCritical;
 	}
 	
 	int index = GetInternalPermanentFemaleID(akFemale);
 
-	Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") Index is: " + std::to_string(index), LogType::NPCData, LoggingLevel::critical);
+	Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") Index is: " + std::to_string(index), Logger::LogType::NPCData, Logger::LoggingLevel::critical);
 
 	if(index < 0)
 	{
-		Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", LogType::NPCData, LoggingLevel::critical);
+		Log("<C++ NPCData> [RemovePermanent] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") does not exist on Permanent list! This should not be possible!", Logger::LogType::NPCData, Logger::LoggingLevel::critical);
 
 		return FunctionEnd::FailCritical;
 	}
@@ -487,10 +488,10 @@ void ExternalRemovePermanentAtIndex(RE::StaticFunctionTag*, int PermanentIndex) 
 
 void ImportPermanentFemales()
 {
-	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
+	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", Logger::LogType::NPCData);
 	if (!PermanentFemaleVector.size())
 	{
-		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 
 		return;
 	}
@@ -550,10 +551,10 @@ void ImportPermanentFemales()
 
 void ExternalImportPermanentFemales(RE::StaticFunctionTag*) 
 {
-	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", LogType::NPCData);
+	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", Logger::LogType::NPCData);
 	if (!PermanentFemaleVector.size())
 	{
-		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [ImportPermanentFemales] No Permanent Females to import!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 
 		return;
 	}
@@ -622,7 +623,7 @@ void TweakFemaleData
 
 	if (!RegisteredFemaleMap.count(id)) 
 	{
-		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", id) + ") does not exist in Female Registry!", LogType::NPCData, LoggingLevel::warning);
+		Log("<C++ NPCData> [TweakFemaleData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", id) + ") does not exist in Female Registry!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 		
 		return;
 	}
@@ -717,7 +718,7 @@ void ResetFemale(RE::Actor* akFemale)
 
 	if (!RegisteredFemaleMap.count(id))
 	{
-		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Registered Females list!", LogType::NPCData);
+		Log("<C++ NPCData> [ResetFemaleModesty] Error: Cannot find " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") in Registered Females list!", Logger::LogType::NPCData);
 
 		return;
 	}
@@ -781,16 +782,16 @@ void ResetAllFemales(RE::StaticFunctionTag*)
 }
 
 void CleanFemaleList() {
-	Log("<C++ NPCData> [CleanFemaleLists] Cleaning Female Lists...", LogType::NPCData);
+	Log("<C++ NPCData> [CleanFemaleLists] Cleaning Female Lists...", Logger::LogType::NPCData);
 	RE::Actor* FemaleActor;
 	for (auto& [ID, Female] : RegisteredFemaleMap) {
 		FemaleActor = RE::TESForm::LookupByID<RE::Actor>(ID);
 
-		Log("<C++ NPCModesty> [CleanFemaleLists] Female Map ID is: " + std::format("{0:08X}", ID), LogType::NPCData, LoggingLevel::info);
-		Log("<C++ NPCModesty> [CleanFemaleLists] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCData, LoggingLevel::info);
+		Log("<C++ NPCModesty> [CleanFemaleLists] Female Map ID is: " + std::format("{0:08X}", ID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
+		Log("<C++ NPCModesty> [CleanFemaleLists] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 
 		if (FemaleActor == nullptr || FemaleActor->IsDead(false)) {
-			Log("<C++ NPCModesty> [CleanFemaleLists] Female is NULL or Dead. Removing...", LogType::NPCModesty, LoggingLevel::info);
+			Log("<C++ NPCModesty> [CleanFemaleLists] Female is NULL or Dead. Removing...", Logger::LogType::NPCModesty, Logger::LoggingLevel::info);
 			DeleteFemaleWithID(ID);
 		}
 	}

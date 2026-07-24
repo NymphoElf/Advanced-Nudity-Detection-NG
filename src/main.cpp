@@ -14,6 +14,7 @@
 #include "NPCScanner.h"
 #include "NPCData.h"
 #include "ModEventHandler.h"
+#include "ModIntegration.h"
 
 bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	//Main Script Binds
@@ -95,6 +96,10 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("GetPlayerStrictModestyTimers", "AND_MCM", GetPlayerStrictModestyTimers);
 	papyrusVM->RegisterFunction("GetPlayerSimpleModestyTimers", "AND_MCM", GetPlayerSimpleModestyTimers);
 
+	papyrusVM->RegisterFunction("GetInstalledMods", "AND_MCM", GetInstalledMods);
+
+	papyrusVM->RegisterFunction("IsPlayerFemale", "AND_MCM", IsPlayerFemale);
+
 	//Modesty Script Binds
 	papyrusVM->RegisterFunction("SKSEStrictModesty", "AND_Modesty_Manager", ExternalStrictModesty);
 	papyrusVM->RegisterFunction("SKSESimpleModesty", "AND_Modesty_Manager", ExternalSimpleModesty);
@@ -104,6 +109,15 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("ProcessAllNPCModesty", "AND_Modesty_Manager", ProcessAllNPCModesty);
 
 	//ModEventListener Script Binds
+	papyrusVM->RegisterFunction("GetShowingBra", "AND_ModEventListener", GetShowingBra);
+	papyrusVM->RegisterFunction("GetShowingUnderwear", "AND_ModEventListener", GetShowingUnderwear);
+	papyrusVM->RegisterFunction("GetShowingChest", "AND_ModEventListener", GetShowingChest);
+	papyrusVM->RegisterFunction("GetShowingGenitals", "AND_ModEventListener", GetShowingGenitals);
+	papyrusVM->RegisterFunction("GetShowingAss", "AND_ModEventListener", GetShowingAss);
+	papyrusVM->RegisterFunction("GetTopless", "AND_ModEventListener", GetTopless);
+	papyrusVM->RegisterFunction("GetBottomless", "AND_ModEventListener", GetBottomless);
+	papyrusVM->RegisterFunction("GetNude", "AND_ModEventListener", GetNude);
+
 	papyrusVM->RegisterFunction("RegisterPlugin", "AND_ModEventListener", RegisterPlugin);
 	papyrusVM->RegisterFunction("UnregisterPlugin", "AND_ModEventListener", UnregisterPlugin);
 
@@ -185,6 +199,11 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		break;
 	case SKSE::MessagingInterface::kPostLoad: //after main game loads
 		logs::info("Post Load");
+
+		//if (InstalledMods::SLSFR) {
+			ModAPI::SLSFR::ConnectToSLSFRAPI();
+		//}
+
 		break;
 	case SKSE::MessagingInterface::kPostPostLoad: //after main game loads and DLLs have time to do something
 		logs::info("Post Post Load");

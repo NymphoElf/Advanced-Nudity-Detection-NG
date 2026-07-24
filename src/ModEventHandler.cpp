@@ -3,6 +3,198 @@
 #include "Logger.h"
 #include "Config.h"
 
+int GetModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetModestyRank] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+	
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetModestyRank] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+
+	return akActor->GetFactionRank(ModestyFaction, akActor == Player);
+}
+
+int GetTopModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetTopModestyRank] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetTopModestyRank] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+
+	return akActor->GetFactionRank(TopModestyFaction, akActor == Player);
+}
+
+int GetBottomModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetBottomModestyRank] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetBottomModestyRank] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return -2;
+	}
+
+	return akActor->GetFactionRank(BottomModestyFaction, akActor == Player);
+}
+
+bool GetShowingBra(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingBra] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingBra] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ShowingBraFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetShowingUnderwear(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingUnderwear] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingUnderwear] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ShowingUnderwearFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetShowingChest(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingChest] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingChest] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ShowingChestFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetShowingGenitals(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingGenitals] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingGenitals] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ShowingGenitalsFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetShowingAss(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingAss] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetShowingAss] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ShowingAssFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetTopless(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetTopless] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetTopless] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(ToplessFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetBottomless(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetBottomless] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetBottomless] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(BottomlessFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
+bool GetNude(RE::StaticFunctionTag*, RE::TESForm* ActorForm) {
+	if (ActorForm == nullptr) {
+		Log("<C++ ModEventListener> [GetNude] ActorForm is Null!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	RE::Actor* akActor = ActorForm->As<RE::Actor>();
+
+	if (akActor == nullptr) {
+		Log("<C++ ModEventListener> [GetNude] akActor is Null! (Passed Form did not translate to a valid Actor Form!)", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		return false;
+	}
+
+	int Rank = akActor->GetFactionRank(NudeFaction, akActor == Player);
+
+	return (Rank == 1 || Rank == 0) ? Rank : false;
+}
+
 void CleanRegistry(int StartIndex = 0) {
 	int CleaningIndex = StartIndex;
 	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
@@ -64,7 +256,7 @@ void RegisterPlugin(RE::StaticFunctionTag*, std::string Plugin) {
 void UnregisterPlugin(RE::StaticFunctionTag*, std::string Plugin) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [UnregisterPlugin] Plugin " + Plugin + " does not exist in registry.", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [UnregisterPlugin] Plugin " + Plugin + " does not exist in registry.", Logger::LogType::Core, Logger::LoggingLevel::warning);
 	}
 	else {
 		RegisteredPlugins::Plugins.erase(RegisteredPlugins::Plugins.begin() + PluginIndex);
@@ -89,7 +281,7 @@ void UnregisterPlugin(RE::StaticFunctionTag*, std::string Plugin) {
 void OnEnableDynamicModesty(RE::StaticFunctionTag*, std::string Plugin, bool Enabled) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnEnableDynamicModesty] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnEnableDynamicModesty] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -112,7 +304,7 @@ bool OnGetIsDynamicModestyEnabled(RE::StaticFunctionTag*) {
 void OnSetStrictModestyRules(RE::StaticFunctionTag*, std::string Plugin, bool StrictRules) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetStrictModestyRules] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetStrictModestyRules] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -143,7 +335,7 @@ bool OnGetStrictRulesEnabled(RE::StaticFunctionTag*) {
 void OnSetMinimumStrictModestyRank(RE::StaticFunctionTag*, std::string Plugin, int StrictRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -188,7 +380,7 @@ int OnGetMinimumStrictModestyRank(RE::StaticFunctionTag*) {
 void OnSetMinimumTopModestyRank(RE::StaticFunctionTag*, std::string Plugin, int TopRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetMinimumTopRank] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetMinimumTopRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -224,7 +416,7 @@ int OnGetMinimumTopModestyRank(RE::StaticFunctionTag*) {
 void OnSetMinimumBottomModestyRank(RE::StaticFunctionTag*, std::string Plugin, int BottomRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetMinimumBottomModestyRank] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetMinimumBottomModestyRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -260,7 +452,7 @@ int OnGetMinimumBottomModestyRank(RE::StaticFunctionTag*) {
 void OnSetHardcore(RE::StaticFunctionTag*, std::string Plugin, bool HardcoreEnabled) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetHardcore] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetHardcore] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -285,7 +477,7 @@ bool OnGetHardcore(RE::StaticFunctionTag*) {
 void OnSetCorruption(RE::StaticFunctionTag*, std::string Plugin, bool CorruptionEnabled) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetCorruption] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetCorruption] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -308,7 +500,7 @@ bool OnGetCorruption(RE::StaticFunctionTag*) {
 void OnSetShameless(RE::StaticFunctionTag*, std::string Plugin, bool ShamelessEnabled) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetShameless] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetShameless] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -331,7 +523,7 @@ bool OnGetShameless(RE::StaticFunctionTag*) {
 void OnSetModestyUpgradeBlocked(RE::StaticFunctionTag*, std::string Plugin, bool UpgradeBlocked) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [SetModestyUpgradeBlocked] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [SetModestyUpgradeBlocked] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 
@@ -354,7 +546,7 @@ bool OnGetModestyUpgradeBlocked(RE::StaticFunctionTag*) {
 void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, int ImmodestyTime) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
-		Log("<C++ ModEventListener> [OnSetImmodestyTime] Plugin " + Plugin + " is not registered!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ModEventListener> [OnSetImmodestyTime] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return;
 	}
 

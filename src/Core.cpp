@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "NPCData.h"
 #include "ArousedStats.h"
+#include "ModIntegration.h"
 
 int FindInVector(std::vector<std::string_view> SearchVector, std::string_view SearchTarget) {
 	int SearchIndex = 0;
@@ -99,50 +100,6 @@ std::string FlashRiskToString(int RiskLevel) {
 		return "Ultra";
 	}
 	return "None";
-}
-
-void CheckMods() {
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-
-	const RE::TESFile* RosaRoundBottom = DataHandler->LookupLoadedModByName("RosaFollower.esp");
-	const RE::TESFile* Sexlab = DataHandler->LookupLoadedModByName("SexLab.esm");
-	//const RE::TESFile* SLSFR = DataHandler->LookupLoadedLightModByName("SLSF Reloaded.esp");
-	const RE::TESFile* DFFMA = DataHandler->LookupLoadedLightModByName("Modesty_Keyword.esp");
-	const RE::TESFile* OSLAroused = DataHandler->LookupLoadedLightModByName("OSLAroused.esp");
-
-	if (RosaRoundBottom) {
-		InstalledMods::RosaRoundBottom = true;
-		Rosa = RE::TESForm::LookupByEditorID<RE::Actor>("Rosa");
-		Log("<C++ Core> [CheckMods] RosaFollower.esp FOUND", LogType::Core);
-	}
-	else {
-		InstalledMods::RosaRoundBottom = false;
-		Rosa = nullptr;
-	}
-
-	if (Sexlab) {
-		InstalledMods::Sexlab = true;
-		Log("<C++ Core> [CheckMods] SexLab.esm FOUND", LogType::Core);
-	}
-	else {
-		InstalledMods::Sexlab = false;
-	}
-
-	if (DFFMA) {
-		InstalledMods::DFFMA = true;
-		Log("<C++ Core> [CheckMods] Modesty_Keyword.esp (aka DFFMA) FOUND", LogType::Core);
-	}
-	else {
-		InstalledMods::DFFMA = false;
-	}
-
-	if (OSLAroused) {
-		InstalledMods::OSLAroused = true;
-		Log("<C++ Core> [CheckMods] OSLAroused.esp FOUND", LogType::Core);
-	}
-	else {
-		InstalledMods::OSLAroused = false;
-	}
 }
 
 void InitializeCoreData() {
@@ -585,24 +542,24 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 
 	if (!IsPlayer) {
 		Confidence = static_cast<int>(akActor->GetActorBase()->GetActorValue(RE::ActorValue::kConfidence));
-		Log("<C++ Core> [GetRandomizedModesty] Actor is NPC", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is NPC", Logger::LogType::Core);
 	} 
 	else if (Configuration::PlayerConfidenceLevel == ConfidenceLevel::Randomized) {
 		Confidence = Randomizer(0, 4);
 		Configuration::PlayerConfidenceLevel = Confidence;
-		Log("<C++ Core> [GetRandomizedModesty] Actor is PLAYER", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is PLAYER", Logger::LogType::Core);
 	}
 	else {
 		Confidence = Configuration::PlayerConfidenceLevel;
-		Log("<C++ Core> [GetRandomizedModesty] Actor is PLAYER", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is PLAYER", Logger::LogType::Core);
 	}
 
-	Log("<C++ Core> [GetRandomizedModesty] Modesty Roll is: " + std::to_string(ModestyRoll), LogType::Core);
+	Log("<C++ Core> [GetRandomizedModesty] Modesty Roll is: " + std::to_string(ModestyRoll), Logger::LogType::Core);
 
 	//RACE
 
 	if (akRace == VanillaRaces[VanillaRaceIndex::Altmer] || akRace == VanillaRaces[VanillaRaceIndex::AltmerVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is an Altmer", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is an Altmer", Logger::LogType::Core);
 		if (ModestyRoll <= 35) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -617,7 +574,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Argonian] || akRace == VanillaRaces[VanillaRaceIndex::ArgonianVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is an Argonian", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is an Argonian", Logger::LogType::Core);
 		if (ModestyRoll <= 10) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -635,7 +592,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Breton] || akRace == VanillaRaces[VanillaRaceIndex::BretonVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Breton", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Breton", Logger::LogType::Core);
 		if (ModestyRoll <= 5) {
 			BaseModesty = StrictModestyLevel::Reasonable;
 		}
@@ -653,7 +610,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Bosmer] || akRace == VanillaRaces[VanillaRaceIndex::BosmerVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Bosmer", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Bosmer", Logger::LogType::Core);
 		if (ModestyRoll <= 35) {
 			BaseModesty = StrictModestyLevel::Comfortable;
 		}
@@ -665,7 +622,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Dunmer] || akRace == VanillaRaces[VanillaRaceIndex::DunmerVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Dunmer", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Dunmer", Logger::LogType::Core);
 		if (ModestyRoll <= 30) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -680,7 +637,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Imperial] || akRace == VanillaRaces[VanillaRaceIndex::ImperialVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is an Imperial", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is an Imperial", Logger::LogType::Core);
 		if (ModestyRoll <= 25) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -695,7 +652,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Khajiit] || akRace == VanillaRaces[VanillaRaceIndex::KhajiitVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Khajiit", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Khajiit", Logger::LogType::Core);
 		if (ModestyRoll <= 5) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -713,7 +670,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Nord] || akRace == VanillaRaces[VanillaRaceIndex::NordVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Nord", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Nord", Logger::LogType::Core);
 		if (ModestyRoll <= 45) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -728,7 +685,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Orsimer] || akRace == VanillaRaces[VanillaRaceIndex::OrsimerVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is an Orsimer", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is an Orsimer", Logger::LogType::Core);
 		if (ModestyRoll <= 10) {
 			BaseModesty = StrictModestyLevel::Modest;
 		}
@@ -746,7 +703,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == VanillaRaces[VanillaRaceIndex::Redguard] || akRace == VanillaRaces[VanillaRaceIndex::RedguardVampire]) {
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Redguard", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Redguard", Logger::LogType::Core);
 		if (ModestyRoll <= 5) {
 			BaseModesty = StrictModestyLevel::Reasonable;
 		}
@@ -764,20 +721,20 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		}
 	}
 	else if (akRace == nullptr) {
-		Log("<C++ Core> [GetRandomizedModesty] CRITICAL ERROR: Actor Race is NONE!", LogType::Core, LoggingLevel::critical);
+		Log("<C++ Core> [GetRandomizedModesty] CRITICAL ERROR: Actor Race is NONE!", Logger::LogType::Core, Logger::LoggingLevel::critical);
 
 		BaseModesty = StrictModestyLevel::Modest;
 	}
 	else {
 		//Unrecognized Race - Maybe add system to add custom races?
 
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Non-Vanilla Race", LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor is a Non-Vanilla Race", Logger::LogType::Core);
 
 		BaseModesty = StrictModestyLevel::Modest;
 	}
 
-	Log("<C++ Core> [GetRandomizedModesty] Base Modesty is: " + std::to_string(BaseModesty), LogType::Core);
-	Log("<C++ Core> [GetRandomizedModesty] Confidence is: " + std::to_string(Confidence), LogType::Core);
+	Log("<C++ Core> [GetRandomizedModesty] Base Modesty is: " + std::to_string(BaseModesty), Logger::LogType::Core);
+	Log("<C++ Core> [GetRandomizedModesty] Confidence is: " + std::to_string(Confidence), Logger::LogType::Core);
 
 	//CALCULATE FINAL MODESTY
 
@@ -804,7 +761,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 		FinalModesty = StrictModestyLevel::Immodest;
 	}
 
-	Log("<C++ Core> [GetRandomizedModesty] Final Modesty is: " + std::to_string(FinalModesty), LogType::Core);
+	Log("<C++ Core> [GetRandomizedModesty] Final Modesty is: " + std::to_string(FinalModesty), Logger::LogType::Core);
 
 	return FinalModesty;
 }
@@ -855,7 +812,7 @@ void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting) {
 	Log("<C++ Core> [MotionDiceRoll] START");
 
 	if (!IsWearingChestCurtain && !IsWearingPelvicCurtain && !IsWearingAssCurtain) {
-		Log("<C++ Core> [MotionDiceRoll] Not wearing any curtains. Check Skipepd.", LogType::Core);
+		Log("<C++ Core> [MotionDiceRoll] Not wearing any curtains. Check Skipepd.", Logger::LogType::Core);
 		return;
 	}
 
@@ -936,16 +893,16 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 	NPCHotpantsTransparentRoll = FixedDistribute(gen);
 	NPCShowgirlTransparentRoll = FixedDistribute(gen);
 
-	Log("<C++ Core> [DiceRoll] ChestCurtainRoll " + std::to_string(ChestCurtainRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] PelvicCurtainRoll " + std::to_string(PelvicCurtainRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] AssCurtainRoll " + std::to_string(AssCurtainRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] CStringRoll " + std::to_string(CStringRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] TopTransparentRoll " + std::to_string(TopTransparentRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] BottomTransparentRoll " + std::to_string(BottomTransparentRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] BraTransparentRoll " + std::to_string(BraTransparentRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] UnderwearTransparentRoll " + std::to_string(UnderwearTransparentRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] HotpantsTransparentRoll " + std::to_string(HotpantsTransparentRoll), LogType::Core);
-	Log("<C++ Core> [DiceRoll] ShowgirlTransparentRoll " + std::to_string(ShowgirlTransparentRoll), LogType::Core);
+	Log("<C++ Core> [DiceRoll] ChestCurtainRoll " + std::to_string(ChestCurtainRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] PelvicCurtainRoll " + std::to_string(PelvicCurtainRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] AssCurtainRoll " + std::to_string(AssCurtainRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] CStringRoll " + std::to_string(CStringRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] TopTransparentRoll " + std::to_string(TopTransparentRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] BottomTransparentRoll " + std::to_string(BottomTransparentRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] BraTransparentRoll " + std::to_string(BraTransparentRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] UnderwearTransparentRoll " + std::to_string(UnderwearTransparentRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] HotpantsTransparentRoll " + std::to_string(HotpantsTransparentRoll), Logger::LogType::Core);
+	Log("<C++ Core> [DiceRoll] ShowgirlTransparentRoll " + std::to_string(ShowgirlTransparentRoll), Logger::LogType::Core);
 
 	Log("<C++ Core> [DiceRoll] END");
 
@@ -1113,4 +1070,12 @@ bool IsPlayerTransformed() {
 	}
 
 	return false;
+}
+
+void SLSFRNakedCommentPrecheck() {
+	if (InstalledMods::SLSFR && ModAPI::SLSFR::SuppressNakedComments()) {
+		return;
+	}
+	
+	WINakedCommentChance->value = (float)NakedCommentChance(false);
 }

@@ -10,8 +10,8 @@ inline int BottomModestyTimer[4] = {0,0,0,0};
 
 //Functions
 
-void ExternalStrictModesty(RE::StaticFunctionTag*);
-void ExternalSimpleModesty(RE::StaticFunctionTag*);
+std::vector<int> ExternalStrictModesty(RE::StaticFunctionTag*);
+std::vector<int> ExternalSimpleModesty(RE::StaticFunctionTag*);
 void ExternalRankJump(RE::StaticFunctionTag*, int RankValue);
 void ExternalTopRankJump(RE::StaticFunctionTag*, int RankValue);
 void ExternalBottomRankJump(RE::StaticFunctionTag*, int RankValue);

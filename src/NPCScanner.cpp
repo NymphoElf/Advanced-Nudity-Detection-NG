@@ -6,6 +6,7 @@
 #include "Logger.h"
 #include "ArousedStats.h"
 #include "SexlabStats.h"
+#include "ModIntegration.h"
 
 void ForEachReferenceInRange(RE::TESObjectREFR* origin, float radius, std::function<RE::BSContainer::ForEachResult(RE::TESObjectREFR& ref)> callback) {
 	if (origin && radius > 0.0f) {
@@ -59,7 +60,7 @@ std::vector<RE::Actor*> GetActorsInRadiusOfPlayer(float radius) {
 	std::vector<RE::Actor*> nearbyActors;
 
 	if (!Player || !Player->parentCell) {
-		Log("<C++ ActorScanner> [GetActorsInRadiusOfPlayer] Warning: Source (Player or Player's Parent Cell) is null", LogType::Core, LoggingLevel::warning);
+		Log("<C++ ActorScanner> [GetActorsInRadiusOfPlayer] Warning: Source (Player or Player's Parent Cell) is null", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		return nearbyActors;
 	}
 
@@ -82,7 +83,7 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 	
 	for (int Index = 0; Index < ScannedActors.size(); ++Index) {
 		if (ScannedActors[Index] == nullptr) {
-			Log("<C++ NPCScanner> [ProcessActors] Received a NONE/Null Actor!", LogType::Core, LoggingLevel::error);
+			Log("<C++ NPCScanner> [ProcessActors] Received a NONE/Null Actor!", Logger::LogType::Core, Logger::LoggingLevel::error);
 			continue;
 		}
 
@@ -98,7 +99,7 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 
 		auto* actorBase = ScannedActors[Index]->GetActorBase();
 		if (actorBase == nullptr) {
-			Log("<C++ NPCScanner> [ProcessActors] Actor " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ") has no actor base; skipping.", LogType::Core, LoggingLevel::warning);
+			Log("<C++ NPCScanner> [ProcessActors] Actor " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ") has no actor base; skipping.", Logger::LogType::Core, Logger::LoggingLevel::warning);
 			continue;
 		}
 
@@ -126,7 +127,7 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 
 			if (RegisteredFemaleMap.count(ScannedActors[Index]->GetFormID()))
 			{
-				Log("<C++ NPCScanner> [ProcessActors] Female " + akName + " already exists in registered actor list.", LogType::Core);
+				Log("<C++ NPCScanner> [ProcessActors] Female " + akName + " already exists in registered actor list.", Logger::LogType::Core);
 			}
 			else {
 				
@@ -145,7 +146,7 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 					}
 				}
 				else {
-					Log("<C++ NPCScanner> [ProcessActors] Registering New Female: " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", LogType::Core);
+					Log("<C++ NPCScanner> [ProcessActors] Registering New Female: " + akName + " (" + std::format("{:08X}", ScannedActors[Index]->GetFormID()) + ")", Logger::LogType::Core);
 					
 					if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
 						Sexlab::RequestSexuality(ScannedActors[Index], [currentGameTime, FemaleFormID](int SexualityScore) {
@@ -155,7 +156,7 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 								// so bail if the lookup came back null.
 								RE::Actor* thisActor = RE::TESForm::LookupByID<RE::Actor>(FemaleFormID);
 								if (!thisActor) {
-									Log("<C++ NPCScanner> [ProcessActors] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", LogType::Core, LoggingLevel::warning);
+									Log("<C++ NPCScanner> [ProcessActors] Actor " + std::format("{:08X}", FemaleFormID) + " no longer exists when sexuality callback fired; skipping registration.", Logger::LogType::Core, Logger::LoggingLevel::warning);
 									return;
 								}
 								RegisterFemale(thisActor, currentGameTime, SexualityScore);

@@ -2,15 +2,12 @@ ScriptName AND_PlayerScript extends ReferenceAlias
 
 Import PO3_SKSEFunctions
 
-AND_Core Property Core Auto
 AND_MotionTimer Property MotionClock Auto
 AND_MCM Property Config Auto
 AND_ModEventListener Property ModEventListener Auto
 AND_Logger Property Logger Auto
 
 Actor Property PlayerRef Auto
-
-Bool Property PermanentsImported = False Auto Hidden
 
 Float Property GameTimeUpdateSpeed Auto Hidden
 
@@ -21,8 +18,6 @@ Int Property MaxTimeScale = 100 Auto Hidden
 Message Property IsTransformedMessage Auto
 Message Property AddTransformRace Auto
 
-String Property ScanSetting Auto Hidden
-
 Function CheckWearingCurtains() Global Native
 Function ClosedMenuEvent(String MenuName) Global Native
 
@@ -31,6 +26,8 @@ Function SetPlayerBaseRace(Race NewRace) Global Native
 
 Bool Function PlayerRaceIsRecognized() Global Native
 Bool Function ValidatePlayerBaseRace() Global Native
+
+Bool Function ProcessEquipmentChange(Form BaseObject, ObjectReference obReference) Global Native
 
 Event OnInit()
 	Startup()
@@ -44,9 +41,6 @@ Function Startup()
 EndFunction
 
 Event OnPlayerLoadGame()
-	AND_Logger.FastLog("===LOAD GAME===")
-	Core.ModCheck()
-	
 	ModEventListener.InitializeModEvents()
 	
 	RegisterForAnimations()
@@ -120,36 +114,16 @@ Event OnAnimationEvent(ObjectReference akReference, String akEventName)
 EndEvent
 
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
-	AND_Logger.FastLog("<Player Script> [OnObjectEquipped] Object Data: Base Object = " + akBaseObject \
-	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
-	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
-	
-	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
-		AND_Logger.FastLog("<Player Script> [OnObjectEquipped] Equipped Null Object or has Ignore Keyword. Update Skipped.")
-		return
-	EndIf
-	
-	If Core.EquipScanArmed == False
-		Core.EquipScanArmed = True
-		CheckWearingCurtains()
-		Core.ProcessEquipmentChange()
+	If ProcessEquipmentChange(akBaseObject, akReference)
+		Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+		ModEvent.Send(EventHandle)
 	EndIf
 EndEvent
 
 Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
-	AND_Logger.FastLog("<Player Script> [OnObjectUnequipped] Object Data: Base Object = " + akBaseObject \
-	+ " | Editor ID = " + GetFormEditorID(akBaseObject) + " | Object Reference = " + akReference \
-	+ " | Object Name = " + akBaseObject.GetName() + " | Has Ignore Keyword = " + akBaseObject.HasKeyword(Core.AND_Ignore))
-
-	If (akBaseObject == none || akBaseObject.GetName() == "" || akBaseObject.HasKeyword(Core.AND_Ignore))
-		AND_Logger.FastLog("<Player Script> [OnObjectUnequipped] Unequipped Null Object or has Ignore Keyword. Update Skipped.")
-		return
-	EndIf
-	
-	If Core.EquipScanArmed == False
-		Core.EquipScanArmed = True
-		CheckWearingCurtains()
-		Core.ProcessEquipmentChange()
+	If ProcessEquipmentChange(akBaseObject, akReference)
+		Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
+		ModEvent.Send(EventHandle)
 	EndIf
 EndEvent
 

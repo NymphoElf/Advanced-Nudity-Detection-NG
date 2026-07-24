@@ -365,17 +365,6 @@ namespace PlayerCoverage {
 
 }
 
-//Mod Detection Status
-
-namespace InstalledMods {
-	inline bool Sexlab;
-	//inline bool SLSFR;
-	inline bool DFFMA;
-	inline bool OSLAroused;
-
-	inline bool RosaRoundBottom;
-}
-
 //Functions
 
 bool PlayerRaceIsRecognized(RE::StaticFunctionTag*);
@@ -420,6 +409,7 @@ std::string FlashRiskToString(int RiskLevel);
 void CheckMods();
 
 int NakedCommentChance(bool IsMCMRequest);
+void SLSFRNakedCommentPrecheck();
 
 //Static Functions (Papyrus calls)
 

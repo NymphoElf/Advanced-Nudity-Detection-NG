@@ -1,11 +1,5 @@
 ScriptName AND_ModEventListener extends Quest
 
-AND_Core Property Core Auto
-AND_MCM Property Config Auto
-AND_Modesty_Manager Property ModestyManager Auto
-AND_PlayerScript Property PlayerScript Auto
-AND_Logger Property Logger Auto
-
 Event OnInit()
 	InitializeModEvents()
 EndEvent
@@ -52,6 +46,22 @@ Function InitializeModEvents()
 	RegisterForModEvent("AdvancedNudityDetection_GetImmodestyTime", "OnGetImmodestyTime")
 EndFunction
 
+;===SKSE Functions===
+
+Int Function GetModestyRank(Form ActorForm) Global Native
+Int Function GetTopModestyRank(Form ActorForm) Global Native
+Int Function GetBottomModestyRank(Form ActorForm) Global Native
+
+Bool Function GetShowingBra(Form ActorForm) Global Native
+Bool Function GetShowingUnderwear(Form ActorForm) Global Native
+Bool Function GetShowingChest(Form ActorForm) Global Native
+Bool Function GetShowingGenitals(Form ActorForm) Global Native
+Bool Function GetShowingAss(Form ActorForm) Global Native
+Bool Function GetTopless(Form ActorForm) Global Native
+Bool Function GetBottomless(Form ActorForm) Global Native
+Bool Function GetNude(Form ActorForm) Global Native
+
+
 ;/
 =====================================================
 Example - Request Modesty Faction Rank for an actor:
@@ -74,8 +84,7 @@ EndEvent
 /;
 
 Event OnGetModestyRank(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Int Rank = actorRef.GetFactionRank(Core.ModestyFaction)
+	Int Rank = GetModestyRank(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
@@ -83,8 +92,7 @@ Event OnGetModestyRank(Form ActorForm)
 EndEvent
 
 Event OnGetTopModestyRank(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Int Rank = actorRef.GetFactionRank(Core.TopModestyFaction)
+	Int Rank = GetTopModestyRank(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnTopModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
@@ -92,8 +100,7 @@ Event OnGetTopModestyRank(Form ActorForm)
 EndEvent
 
 Event OnGetBottomModestyRank(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Int Rank = actorRef.GetFactionRank(Core.BottomModestyFaction)
+	Int Rank = GetBottomModestyRank(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnBottomModestyRank")
 	ModEvent.PushInt(EventHandle, Rank)
@@ -101,8 +108,7 @@ Event OnGetBottomModestyRank(Form ActorForm)
 EndEvent
 
 Event OnGetShowingBra(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsShowingBra = actorRef.GetFactionRank(Core.AND_ShowingBraFaction)
+	Bool IsShowingBra = GetShowingBra(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsShowingBra")
 	ModEvent.PushBool(EventHandle, IsShowingBra)
@@ -110,8 +116,7 @@ Event OnGetShowingBra(Form ActorForm)
 EndEvent
 
 Event OnGetShowingUnderwear(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsShowingUnderwear = actorRef.GetFactionRank(Core.AND_ShowingUnderwearFaction)
+	Bool IsShowingUnderwear = GetShowingUnderwear(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsShowingUnderwear")
 	ModEvent.PushBool(EventHandle, IsShowingUnderwear)
@@ -119,8 +124,7 @@ Event OnGetShowingUnderwear(Form ActorForm)
 EndEvent
 
 Event OnGetShowingChest(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsShowingChest = actorRef.GetFactionRank(Core.AND_ShowingChestFaction)
+	Bool IsShowingChest = GetShowingChest(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsShowingChest")
 	ModEvent.PushBool(EventHandle, IsShowingChest)
@@ -128,8 +132,7 @@ Event OnGetShowingChest(Form ActorForm)
 EndEvent
 
 Event OnGetShowingGenitals(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsShowingGenitals = actorRef.GetFactionRank(Core.AND_ShowingGenitalsFaction)
+	Bool IsShowingGenitals = GetShowingGenitals(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsShowingGenitals")
 	ModEvent.PushBool(EventHandle, IsShowingGenitals)
@@ -137,8 +140,7 @@ Event OnGetShowingGenitals(Form ActorForm)
 EndEvent
 
 Event OnGetShowingAss(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsShowingAss = actorRef.GetFactionRank(Core.AND_ShowingAssFaction)
+	Bool IsShowingAss = GetShowingAss(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsShowingAss")
 	ModEvent.PushBool(EventHandle, IsShowingAss)
@@ -146,8 +148,7 @@ Event OnGetShowingAss(Form ActorForm)
 EndEvent
 
 Event OnGetTopless(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsTopless = actorRef.GetFactionRank(Core.AND_ToplessFaction)
+	Bool IsTopless = GetTopless(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsTopless")
 	ModEvent.PushBool(EventHandle, IsTopless)
@@ -155,8 +156,7 @@ Event OnGetTopless(Form ActorForm)
 EndEvent
 
 Event OnGetBottomless(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsBottomless = actorRef.GetFactionRank(Core.AND_BottomlessFaction)
+	Bool IsBottomless = GetBottomless(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsBottomless")
 	ModEvent.PushBool(EventHandle, IsBottomless)
@@ -164,8 +164,7 @@ Event OnGetBottomless(Form ActorForm)
 EndEvent
 
 Event OnGetNude(Form ActorForm)
-	Actor actorRef = ActorForm as Actor
-	Bool IsNude = actorRef.GetFactionRank(Core.AND_NudeActorFaction)
+	Bool IsNude = GetNude(ActorForm)
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetection_ReturnIsNude")
 	ModEvent.PushBool(EventHandle, IsNude)

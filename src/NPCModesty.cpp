@@ -44,7 +44,7 @@ void ChangeBottomRank(RE::Actor* akFemale, int Rank)
 
 void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless)
 {
-	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
@@ -242,7 +242,7 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 }
 
 void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
@@ -411,7 +411,7 @@ void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime,
 }
 
 void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
-	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
@@ -583,7 +583,7 @@ void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 	std::string FemaleName = akFemale->GetName();
 
-	Log("<C++ NPCModesty> [ProcessNPCModesty] Actor is: " + FemaleName + " | FormID: (" + std::format("{0:08X}", akFemale->GetFormID()) + ")", LogType::NPCModesty);
+	Log("<C++ NPCModesty> [ProcessNPCModesty] Actor is: " + FemaleName + " | FormID: (" + std::format("{0:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
@@ -592,11 +592,11 @@ void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 
 	int HoursPassed = static_cast<int>((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666);
 
-	Log("<C++ NPCModesty> [ProcessNPCModesty] RAW Hours passed for this actor: " + std::to_string(((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666)), LogType::NPCModesty);
+	Log("<C++ NPCModesty> [ProcessNPCModesty] RAW Hours passed for this actor: " + std::to_string(((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666)), Logger::LogType::NPCModesty);
 
 	if (HoursPassed < 1) 
 	{
-		Log("<C++ NPCModesty> [ProcessNPCModesty] Less than an hour has passed for this actor. Skipping update...", LogType::NPCModesty);
+		Log("<C++ NPCModesty> [ProcessNPCModesty] Less than an hour has passed for this actor. Skipping update...", Logger::LogType::NPCModesty);
 		return;
 	}
 
@@ -627,11 +627,11 @@ void ProcessAllNPCModesty(RE::StaticFunctionTag*) {
 		for (auto& [ID, Female] : RegisteredFemaleMap) {
 			FemaleActor = RE::TESForm::LookupByID<RE::Actor>(ID);
 
-			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Map ID is: " + std::format("{0:08X}", ID), LogType::NPCModesty, LoggingLevel::info);
-			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), LogType::NPCModesty, LoggingLevel::info);
+			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Map ID is: " + std::format("{0:08X}", ID), Logger::LogType::NPCModesty, Logger::LoggingLevel::info);
+			Log("<C++ NPCModesty> [ProcessAllNPCModesty] Female Registered ID is: " + std::format("{0:08X}", Female.FemaleFormID), Logger::LogType::NPCModesty, Logger::LoggingLevel::info);
 
 			if (FemaleActor == nullptr) {
-				Log("<C++ NPCModesty> [ProcessAllNPCModesty] CRITICAL ERROR - Female Actor is NULL despite Female List being cleaned of Null Actors!!! Something is terribly wrong!", LogType::NPCModesty, LoggingLevel::critical);
+				Log("<C++ NPCModesty> [ProcessAllNPCModesty] CRITICAL ERROR - Female Actor is NULL despite Female List being cleaned of Null Actors!!! Something is terribly wrong!", Logger::LogType::NPCModesty, Logger::LoggingLevel::critical);
 				continue;
 			}
 

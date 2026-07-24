@@ -21,6 +21,21 @@ Bool Property ThisNPCCorrupt Auto Hidden
 Bool Property ThisNPCStrictRules Auto Hidden
 Bool Property ThisNPCUpgradeBlocked Auto Hidden
 
+String Property ScanSetting = "Normal" Auto Hidden
+
+Bool[] Property InstalledMods Auto Hidden
+
+;Installed Mods ENUM
+Int Property ENUM_RosaRoundBottom = 0 AutoReadOnly
+Int Property ENUM_SexLabFramework = 1 AutoReadOnly
+Int Property ENUM_DFFMA = 2 AutoReadOnly
+Int Property ENUM_OSLAroused = 3 AutoReadOnly
+Int Property ENUM_SLSFR = 4 AutoReadOnly
+
+Bool Property DynamicModestyEnabledByOtherMod = False Auto Hidden
+
+Bool Property PlayerIsFemale Auto Hidden
+
 Int[] Property FlashRolls Auto Hidden
 
 Int Property ChestCurtainRoll = 0 AutoReadOnly
@@ -186,10 +201,6 @@ Int Property TotalFlashOddsLength = 104 AutoReadOnly
 ;/
 SKSE CONFIG OPTIONS
 /;
-
-Int Property Enum_Male = 0 AutoReadOnly
-Int Property Enum_Female = 1 AutoReadOnly
-
 Bool[] Property WornKeywordList Auto Hidden
 
 Int Property ArmorTop = 0 AutoReadOnly
@@ -580,6 +591,10 @@ String Function GetFemaleActorFormID(Actor akFemale) Global Native
 
 Bool Function GetDynamicModestyEnabledByOtherMod() Global Native
 
+Bool[] Function GetInstalledMods() Global Native
+
+Bool Function IsPlayerFemale() Global Native
+
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
 	
@@ -587,9 +602,13 @@ Event OnConfigOpen()
 	
 	ConfigBoolOptions = GetConfigBoolOptions()
 	
-	Main.DynamicModestyEnabledByOtherMod = GetDynamicModestyEnabledByOtherMod()
+	DynamicModestyEnabledByOtherMod = GetDynamicModestyEnabledByOtherMod()
 	
-	If Main.DFFMA_Found == False && Main.DynamicModestyEnabledByOtherMod == False
+	InstalledMods = GetInstalledMods()
+	
+	PlayerIsFemale = IsPlayerFemale()
+	
+	If InstalledMods[ENUM_DFFMA] == False && DynamicModestyEnabledByOtherMod == False
 		ConfigBoolOptions[DynamicModestyEnabled] = False
 	EndIf
 	
@@ -643,10 +662,10 @@ Event OnConfigOpen()
 		SelectedPermFemale = "---"
 	EndIf
 	
-	If Main.PlayerBase.GetSex() == Enum_Male
-		WornKeywordList = MaleWornKeywordList()
-	Else
+	If PlayerIsFemale
 		WornKeywordList = FemaleWornKeywordList()
+	Else
+		WornKeywordList = MaleWornKeywordList()
 	EndIf
 	
 	PlayerFactionRanks = GetPlayerFactionRanks()
@@ -719,40 +738,40 @@ Event OnConfigClose()
 	If ScanFrequency == "$VFScan"
 		PlayerScript.MaxTimeScale = 40
 		PlayerScript.GameTimeUpdateSpeed = 0.1
-		If PlayerScript.ScanSetting != "Very Fast"
-			PlayerScript.ScanSetting = "Very Fast"
+		If ScanSetting != "Very Fast"
+			ScanSetting = "Very Fast"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.1)
 		EndIf
 	ElseIf ScanFrequency == "$FScan"
 		PlayerScript.MaxTimeScale = 60
 		PlayerScript.GameTimeUpdateSpeed = 0.15
-		If PlayerScript.ScanSetting != "Fast"
-			PlayerScript.ScanSetting = "Fast"
+		If ScanSetting != "Fast"
+			ScanSetting = "Fast"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.15)
 		EndIf
 	ElseIf ScanFrequency == "$NScan"
 		PlayerScript.MaxTimeScale = 100
 		PlayerScript.GameTimeUpdateSpeed = 0.25
-		If PlayerScript.ScanSetting != "Normal"
-			PlayerScript.ScanSetting = "Normal"
+		If ScanSetting != "Normal"
+			ScanSetting = "Normal"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.25)
 		EndIf
 	ElseIf ScanFrequency == "$SScan"
 		PlayerScript.MaxTimeScale = 200
 		PlayerScript.GameTimeUpdateSpeed = 0.5
-		If PlayerScript.ScanSetting != "Slow"
-			PlayerScript.ScanSetting = "Slow"
+		If ScanSetting != "Slow"
+			ScanSetting = "Slow"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.5)
 		EndIf
 	ElseIf ScanFrequency == "$VSScan"
 		PlayerScript.MaxTimeScale = 300
 		PlayerScript.GameTimeUpdateSpeed = 0.75
-		If PlayerScript.ScanSetting != "Very Slow"
-			PlayerScript.ScanSetting = "Very Slow"
+		If ScanSetting != "Very Slow"
+			ScanSetting = "Very Slow"
 			PlayerScript.UnregisterForUpdateGameTime()
 			PlayerScript.RegisterForUpdateGameTime(0.75)
 		EndIf
@@ -760,7 +779,7 @@ Event OnConfigClose()
 		ScanFrequency = "$NScan"
 		PlayerScript.MaxTimeScale = 100
 		PlayerScript.GameTimeUpdateSpeed = 0.25
-		PlayerScript.ScanSetting = "Normal"
+		ScanSetting = "Normal"
 		PlayerScript.UnregisterForUpdateGameTime()
 		PlayerScript.RegisterForUpdateGameTime(0.25)
 	EndIf
@@ -851,57 +870,54 @@ Event OnPageReset(string page)
 	SetCursorFillMode(TOP_TO_BOTTOM)
 	SetCursorPosition(0)
 	
-	ActorBase PlayerBase = Main.PlayerBase
-	Int PlayerSex = PlayerBase.GetSex()
-	
 	If (page == "$NudityStatesPage") ;default page
 		AddHeaderOption("$NudityConditionsHeader")
-		If PlayerRef.GetFactionRank(Main.AND_NudeActorFaction) == 1
+		If PlayerFactionRanks[NudeFaction] ;PlayerRef.GetFactionRank(Main.AND_NudeActorFaction) == 1
 			AddTextOption("$NudeText", "$YesText")
 		Else
 			AddTextOption("$NudeText", "$NoText")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ToplessFaction) == 1
+		If PlayerFactionRanks[ToplessFaction] ;PlayerRef.GetFactionRank(Main.AND_ToplessFaction) == 1
 			AddTextOption("$ToplessText", "$YesText")
 		Else
 			AddTextOption("$ToplessText", "$NoText")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_BottomlessFaction) == 1
+		If PlayerFactionRanks[BottomlessFaction] ;PlayerRef.GetFactionRank(Main.AND_BottomlessFaction) == 1
 			AddTextOption("$BottomlessText", "$YesText")
 		Else
 			AddTextOption("$BottomlessText", "$NoText")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ShowingBraFaction) == 1
+		If PlayerFactionRanks[ShowingBraFaction] ;PlayerRef.GetFactionRank(Main.AND_ShowingBraFaction) == 1
 			AddTextOption("$ShowingBraText", "$YesText")
 		Else
 			AddTextOption("$ShowingBraText", "$NoText")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ShowingChestFaction) == 1
-			If PlayerSex == 0 || GenderlessWording == True ;Male/Genderless
+		If PlayerFactionRanks[ShowingChestFaction] ;PlayerRef.GetFactionRank(Main.AND_ShowingChestFaction) == 1
+			If !PlayerIsFemale || GenderlessWording == True ;Male/Genderless
 				AddTextOption("$ShowingChestText", "$YesText")
 			Else
 				AddTextOption("$ShowingBoobsText", "$YesText")
 			EndIf
 		Else
-			If PlayerSex == 0 || GenderlessWording == True ;Male/Genderless
+			If !PlayerIsFemale || GenderlessWording == True ;Male/Genderless
 				AddTextOption("$ShowingChestText", "$NoText")
 			Else
 				AddTextOption("$ShowingBoobsText", "$NoText")
 			EndIf
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ShowingUnderwearFaction) == 1
+		If PlayerFactionRanks[ShowingUnderwearFaction] ;PlayerRef.GetFactionRank(Main.AND_ShowingUnderwearFaction) == 1
 			AddTextOption("$ShowingUnderwearText", "$YesText")
 		Else
 			AddTextOption("$ShowingUnderwearText", "$NoText")
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ShowingGenitalsFaction) == 1
-			If PlayerSex == 0 && GenderlessWording == False ;Male
+		If PlayerFactionRanks[ShowingGenitalsFaction] ;PlayerRef.GetFactionRank(Main.AND_ShowingGenitalsFaction) == 1
+			If !PlayerIsFemale && GenderlessWording == False ;Male
 				AddTextOption("$ShowingPenisText", "$YesText")
 			ElseIf GenderlessWording == False
 				AddTextOption("$ShowingPussyText", "$YesText")
@@ -909,7 +925,7 @@ Event OnPageReset(string page)
 				AddTextOption("$ShowingGenitalsText", "$YesText")
 			EndIf
 		Else
-			If PlayerSex == 0 && GenderlessWording == False ;Male
+			If !PlayerIsFemale && GenderlessWording == False ;Male
 				AddTextOption("$ShowingPenisText", "$NoText")
 			ElseIf GenderlessWording == False
 				AddTextOption("$ShowingPussyText", "$NoText")
@@ -918,7 +934,7 @@ Event OnPageReset(string page)
 			EndIf
 		EndIf
 		
-		If PlayerRef.GetFactionRank(Main.AND_ShowingAssFaction) == 1
+		If PlayerFactionRanks[ShowingAssFaction] ;PlayerRef.GetFactionRank(Main.AND_ShowingAssFaction) == 1
 			AddTextOption("$ShowingAssText", "$YesText")
 		Else
 			AddTextOption("$ShowingAssText", "$NoText")
@@ -927,7 +943,7 @@ Event OnPageReset(string page)
 		AddEmptyOption()
 		AddToggleOptionST("UseGenderlessState", "$GenderlessWordingText", GenderlessWording, 0)
 		
-		If PlayerSex == 0 ;Male
+		If !PlayerIsFemale ;Male
 			AddTextOption("$BaseSexText", "$MaleText")
 		Else
 			AddTextOption("$BaseSexText", "$FemaleText")
@@ -971,7 +987,7 @@ Event OnPageReset(string page)
 		
 	ElseIf (page == "$FlashingStatesPage")
 		AddHeaderOption("$CurtainRiskHeader")
-		If PlayerSex == Enum_Male ;Male
+		If !PlayerIsFemale ;Male
 			
 			If WornKeywordList[ChestFlashRiskLow]
 				If WornKeywordList[ChestCurtain]
@@ -1271,7 +1287,7 @@ Event OnPageReset(string page)
 		EndIf
 		
 		AddHeaderOption("$TransparentClothesRiskHeader")
-		If PlayerSex == Enum_Female ;FEMALE
+		If PlayerIsFemale ;FEMALE
 			
 			If WornKeywordList[ArmorTopT_Low]
 				AddTextOption("$TopText", FlashOdds[TransparentTopArmorOdds_Low] as String + "%")
@@ -1429,7 +1445,7 @@ Event OnPageReset(string page)
 		AddTextOption("$ChestCurtainRollText", FlashRolls[ChestCurtainRoll])
 		AddTextOption("$AssCurtainRollText", FlashRolls[AssCurtainRoll])
 		AddTextOption("$PelvicCurtainRollText", FlashRolls[PelvicCurtainRoll])
-		If PlayerSex == Enum_Male ;Male
+		If!PlayerIsFemale ;Male
 			AddTextOption("$BananaHammockRollText", FlashRolls[CStringRoll])
 		Else
 			AddTextOption("$CStringRollText", FlashRolls[CStringRoll])
@@ -1439,7 +1455,7 @@ Event OnPageReset(string page)
 		AddTextOption("$TransparentBraRollText", FlashRolls[BraTransparentRoll])
 		AddTextOption("$TransparentUnderwearRollText", FlashRolls[UnderwearTransparentRoll])
 		AddTextOption("$TransparentHotpantsRollText", FlashRolls[HotpantsTransparentRoll])
-		If PlayerSex == Enum_Male ;Male
+		If !PlayerIsFemale ;Male
 			AddTextOption("$TransparentHimboSkirtRollText", FlashRolls[ShowgirlTransparentRoll])
 		Else
 			AddTextOption("$TransparentShowgirlSkirtRollText", FlashRolls[ShowgirlTransparentRoll])
@@ -1547,24 +1563,24 @@ Event OnPageReset(string page)
 			AddTextOption("AND_HotpantsT", "$NoText")
 		EndIf
 		
-		If WornKeywordList[ShowgirlSkirt] && PlayerSex == Enum_Female
+		If WornKeywordList[ShowgirlSkirt] && PlayerIsFemale
 			AddTextOption("AND_ShowgirlSkirt", "$YesText")
-		ElseIf WornKeywordList[HimboSkirt] && PlayerSex == Enum_Male
+		ElseIf WornKeywordList[HimboSkirt] && !PlayerIsFemale
 			AddTextOption("AND_HimboSkirt", "$YesText")
 		Else
-			If PlayerSex == Enum_Female
+			If PlayerIsFemale
 				AddTextOption("AND_ShowgirlSkirt", "$NoText")
 			Else
 				AddTextOption("AND_HimboSkirt", "$NoText")
 			EndIf
 		EndIf
 		
-		If (WornKeywordList[ShowgirlSkirtT_Low] || WornKeywordList[ShowgirlSkirtT] || WornKeywordList[ShowgirlSkirtT_High]) && PlayerSex == Enum_Female
+		If (WornKeywordList[ShowgirlSkirtT_Low] || WornKeywordList[ShowgirlSkirtT] || WornKeywordList[ShowgirlSkirtT_High]) && PlayerIsFemale
 			AddTextOption("AND_ShowgirlSkirtT", "$YesText")
-		ElseIf (WornKeywordList[HimboSkirtT_Low] || WornKeywordList[HimboSkirtT] || WornKeywordList[HimboSkirtT_High]) && PlayerSex == Enum_Male
+		ElseIf (WornKeywordList[HimboSkirtT_Low] || WornKeywordList[HimboSkirtT] || WornKeywordList[HimboSkirtT_High]) && !PlayerIsFemale
 			AddTextOption("AND_HimboSkirtT", "$YesText")
 		Else
-			If PlayerSex == Enum_Female
+			If PlayerIsFemale
 				AddTextOption("AND_ShowgirlSkirtT", "$NoText")
 			Else
 				AddTextOption("AND_HimboSkirtT", "$NoText")
@@ -1593,24 +1609,24 @@ Event OnPageReset(string page)
 			AddTextOption("AND_Bra_NoCover", "$NoText")
 		EndIf
 		
-		If WornKeywordList[CString] && PlayerSex == Enum_Female
+		If WornKeywordList[CString] && PlayerIsFemale
 			AddTextOption("AND_CString", "$YesText")
-		ElseIf WornKeywordList[BananaHammock] && PlayerSex == Enum_Male
+		ElseIf WornKeywordList[BananaHammock] && !PlayerIsFemale
 			AddTextOption("AND_BananaHammock", "$YesText")
 		Else
-			If PlayerSex == Enum_Female
+			If PlayerIsFemale
 				AddTextOption("AND_CString", "$NoText")
 			Else
 				AddTextOption("AND_BananaHammock", "$NoText")
 			EndIf
 		EndIf
 		
-		If (WornKeywordList[CStringT_Low] || WornKeywordList[CStringT] || WornKeywordList[CStringT_High]) && PlayerSex == Enum_Female
+		If (WornKeywordList[CStringT_Low] || WornKeywordList[CStringT] || WornKeywordList[CStringT_High]) && PlayerIsFemale
 			AddTextOption("AND_CStringT", "$YesText")
-		ElseIf (WornKeywordList[BananaHammockT_Low] || WornKeywordList[BananaHammockT] || WornKeywordList[BananaHammockT_High]) && PlayerSex == Enum_Male
+		ElseIf (WornKeywordList[BananaHammockT_Low] || WornKeywordList[BananaHammockT] || WornKeywordList[BananaHammockT_High]) && !PlayerIsFemale
 			AddTextOption("AND_BananaHammockT", "$YesText")
 		Else
-			If PlayerSex == Enum_Female
+			If PlayerIsFemale
 				AddTextOption("AND_CStringT", "$NoText")
 			Else
 				AddTextOption("AND_BananaHammockT", "$NoText")
@@ -1673,7 +1689,7 @@ Event OnPageReset(string page)
 			AddTextOption("AND_NipplePasties", "$NoText")
 		EndIf
 		
-		If PlayerSex == Enum_Female
+		If PlayerIsFemale
 			If WornKeywordList[VaginaPasties]
 				AddTextOption("AND_VaginaPasties", "$YesText")
 			Else
@@ -1973,7 +1989,7 @@ Event OnPageReset(string page)
 		AddTextOptionST("AND_NakedCommentChanceState", "$CurrentNakedCommentChanceText", AND_Core.NakedCommentChance(True) as String + "%", 0)
 	
 	ElseIf (page == "$DynamicModestyPage")
-		If Main.DFFMA_Found == True || Main.DynamicModestyEnabledByOtherMod == True
+		If InstalledMods[ENUM_DFFMA] == True || DynamicModestyEnabledByOtherMod == True
 			
 			AddHeaderOption("$ModestySettingsHeader")
 			DynamicModestyToggles[0] = AddToggleOption("$EnableModesty", ConfigBoolOptions[DynamicModestyEnabled], DisabledIf(HardcoreLockdown == True))
@@ -1999,7 +2015,7 @@ Event OnPageReset(string page)
 			AddTextOption("$ModestyDisabled", None)
 		EndIf
 	ElseIf (page == "$StrictModestyPage")
-		If Main.DFFMA_Found == True || Main.DynamicModestyEnabledByOtherMod == True
+		If InstalledMods[ENUM_DFFMA] == True || DynamicModestyEnabledByOtherMod == True
 			Int ModestyRank = PlayerFactionRanks[ModestyFaction]
 			
 			AddHeaderOption("$StrictModestySettingsHeader")
@@ -2038,7 +2054,7 @@ Event OnPageReset(string page)
 			AddTextOption("$ModestyDisabled", None)
 		EndIf
 	ElseIf (page == "$SimpleModestyPage")
-		If Main.DFFMA_Found == True || Main.DynamicModestyEnabledByOtherMod == True
+		If InstalledMods[ENUM_DFFMA] == True || DynamicModestyEnabledByOtherMod == True
 		
 			Int TopModestyRank = PlayerFactionRanks[TopModestyFaction]
 			Int BottomModestyRank = PlayerFactionRanks[BottomModestyFaction]
@@ -2090,7 +2106,7 @@ Event OnPageReset(string page)
 			AddTextOption("$ModestyDisabled", None)
 		EndIf
 	ElseIf (page == "$NPCModestyPage")
-		If (Main.DFFMA_Found == False && Main.DynamicModestyEnabledByOtherMod == False) || ConfigBoolOptions[DynamicModestyEnabled] == False
+		If (InstalledMods[ENUM_DFFMA] == False && DynamicModestyEnabledByOtherMod == False) || ConfigBoolOptions[DynamicModestyEnabled] == False
 			AddTextOption("$ModestyDisabled", None)
 		Else
 			AddHeaderOption("$AllNPCHeader")

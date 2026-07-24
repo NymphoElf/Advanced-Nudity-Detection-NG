@@ -20,7 +20,7 @@ namespace MaleArmorScan {
 	}
 
 	bool CurtainCheck(int Type, bool IsTransparent, int Level) {
-		Log("<C++ MaleArmorScan> [CurtainCheck] START", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] START", Logger::LogType::PlayerArmorScan);
 
 		int Roll = 0;
 		int Odds = 0;
@@ -160,14 +160,14 @@ namespace MaleArmorScan {
 			}
 		}
 
-		Log("<C++ MaleArmorScan> [CurtainCheck] Roll = " + std::to_string(Roll), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [CurtainCheck] Odds = " + std::to_string(Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] Roll = " + std::to_string(Roll), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] Odds = " + std::to_string(Odds), Logger::LogType::PlayerArmorScan);
 
 		Log("<C++ MaleArmorScan> [CurtainCheck] Type = " + TypeString);
-		Log("<C++ MaleArmorScan> [CurtainCheck] Is Transparent = " + BoolToString(IsTransparent), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [CurtainCheck] Risk Level = " + FlashRiskToString(Level), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] Is Transparent = " + BoolToString(IsTransparent), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] Risk Level = " + FlashRiskToString(Level), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [CurtainCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), Logger::LogType::PlayerArmorScan);
 
 		bool Result = (Roll > Odds);
 
@@ -294,13 +294,13 @@ namespace MaleArmorScan {
 			}
 		}
 
-		Log("<C++ MaleArmorScan> [TransparentItemCheck] Roll = " + std::to_string(Roll), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [TransparentItemCheck] Odds = " + std::to_string(Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [TransparentItemCheck] Roll = " + std::to_string(Roll), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [TransparentItemCheck] Odds = " + std::to_string(Odds), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [TransparentItemCheck] Type = " + TypeString, LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [TransparentItemCheck] Risk Level = " + FlashRiskToString(Level), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [TransparentItemCheck] Type = " + TypeString, Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [TransparentItemCheck] Risk Level = " + FlashRiskToString(Level), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [TransparentItemCheck] Function Return Value: Is Covering? " + BoolToString(Roll > Odds), Logger::LogType::PlayerArmorScan);
 
 		bool Result = (Roll > Odds);
 
@@ -349,13 +349,13 @@ namespace MaleArmorScan {
 			Odds = Configuration::FlashingOdds[TransparentBananaHammockOdds_High];
 		}
 
-		Log("<C++ MaleArmorScan> [BananaHammockCheck] Roll = " + std::to_string(CStringRoll), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [BananaHammockCheck] Odds = " + std::to_string(Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [BananaHammockCheck] Roll = " + std::to_string(CStringRoll), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [BananaHammockCheck] Odds = " + std::to_string(Odds), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [BananaHammockCheck] IsTransparent = " + BoolToString(IsTransparent), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [BananaHammockCheck] RiskLevel = " + FlashRiskToString(Level), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [BananaHammockCheck] IsTransparent = " + BoolToString(IsTransparent), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [BananaHammockCheck] RiskLevel = " + FlashRiskToString(Level), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? " + BoolToString(CStringRoll > Odds), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [BananaHammockCheck] Function Return Value: Is Covering? " + BoolToString(CStringRoll > Odds), Logger::LogType::PlayerArmorScan);
 
 		bool Result = (CStringRoll > Odds);
 
@@ -946,20 +946,20 @@ namespace MaleArmorScan {
 			SetPlayerFactionRank(NudeFaction, 0);
 		}
 
-		Log("<C++ MaleArmorScan> [Finalize] Nude Faction Rank: " + std::to_string(Player->GetFactionRank(NudeFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Topless Faction Rank: " + std::to_string(Player->GetFactionRank(ToplessFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Bottomless Faction Rank: " + std::to_string(Player->GetFactionRank(BottomlessFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Showing Bra Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingBraFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Showing Chest Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingChestFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Showing Underwear Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingUnderwearFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingGenitalsFaction, true)), LogType::PlayerArmorScan);
-		Log("<C++ MaleArmorScan> [Finalize] Showing Ass Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingAssFaction, true)), LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Nude Faction Rank: " + std::to_string(Player->GetFactionRank(NudeFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Topless Faction Rank: " + std::to_string(Player->GetFactionRank(ToplessFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Bottomless Faction Rank: " + std::to_string(Player->GetFactionRank(BottomlessFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Showing Bra Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingBraFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Showing Chest Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingChestFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Showing Underwear Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingUnderwearFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Showing Genitals Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingGenitalsFaction, true)), Logger::LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Showing Ass Faction Rank: " + std::to_string(Player->GetFactionRank(ShowingAssFaction, true)), Logger::LogType::PlayerArmorScan);
 
-		Log("<C++ MaleArmorScan> [Finalize] Player Male Scan Completed", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [Finalize] Player Male Scan Completed", Logger::LogType::PlayerArmorScan);
 	}
 
 	bool VanillaArmorCheck() {
-		Log("<C++ MaleArmorScan> [VanillaArmorCheck] START", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [VanillaArmorCheck] START", Logger::LogType::PlayerArmorScan);
 
 		RE::TESBoundObject* BodyArmor = Player->GetWornArmor(RE::BIPED_MODEL::BipedObjectSlot::kBody);
 
@@ -973,7 +973,7 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(AssCurtain_Male) || BodyItem->HasKeyword(AssCurtainT_Male) ||
 					BodyItem->HasKeyword(Miniskirt_Male) || BodyItem->HasKeyword(MiniskirtT_Male)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), Logger::LogType::PlayerArmorScan);
 
 			bool HasTopKeyword =
 				(
@@ -981,7 +981,7 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(ArmorTopT_Low_Male) || BodyItem->HasKeyword(ArmorTopT_Male) || BodyItem->HasKeyword(ArmorTopT_High_Male) ||
 					BodyItem->HasKeyword(ArmorTop_NoCover_Male)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), Logger::LogType::PlayerArmorScan);
 
 			bool HasBottomKeyword =
 				(
@@ -993,7 +993,7 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(HimboSkirt) ||
 					BodyItem->HasKeyword(HimboSkirtT_Low) || BodyItem->HasKeyword(HimboSkirtT) || BodyItem->HasKeyword(HimboSkirtT_High)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), Logger::LogType::PlayerArmorScan);
 
 			bool HasBraKeyword =
 				(
@@ -1001,7 +1001,7 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(BraT_Low_Male) || BodyItem->HasKeyword(BraT_Male) || BodyItem->HasKeyword(BraT_High_Male) ||
 					BodyItem->HasKeyword(Bra_NoCover_Male)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), Logger::LogType::PlayerArmorScan);
 
 			bool HasUnderwearKeyword =
 				(
@@ -1014,7 +1014,7 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(BananaHammock) ||
 					BodyItem->HasKeyword(BananaHammockT_Low) || BodyItem->HasKeyword(BananaHammockT) || BodyItem->HasKeyword(BananaHammockT_High)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), Logger::LogType::PlayerArmorScan);
 
 			bool HasExtraKeyword =
 				(
@@ -1023,40 +1023,40 @@ namespace MaleArmorScan {
 					BodyItem->HasKeyword(Microskirt_Male) ||
 					BodyItem->HasKeyword(EffectivelyNaked_Male)
 					);
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), Logger::LogType::PlayerArmorScan);
 
-			Log("<C++ MaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), Logger::LogType::PlayerArmorScan);
 			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
 		}
-		Log("<C++ MaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", Logger::LogType::PlayerArmorScan);
 		return false;
 	}
 
 	void MaleAnalyze() {
-		Log("<C++ MaleArmorScan> [MaleAnalyze] Player Male Analysis Triggered!", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [MaleAnalyze] Player Male Analysis Triggered!", Logger::LogType::PlayerArmorScan);
 
 		ResetFlashingFactions();
 
 		bool ShouldEscape = false;
 
 		if (Player == nullptr || Player->IsPlayerRef() == false) {
-			Log("<C++ MaleArmorScan> [MaleAnalyze] RE::Actor variable not set!!!", LogType::PlayerArmorScan, LoggingLevel::critical);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] RE::Actor variable not set!!!", Logger::LogType::PlayerArmorScan, Logger::LoggingLevel::critical);
 			ShouldEscape = true;
 		}
 
 		if (PlayerBase == nullptr || PlayerBase->IsPlayer() == false) {
-			Log("<C++ MaleArmorScan> [MaleAnalyze] RE::TESActorBase variable not set!!!", LogType::PlayerArmorScan, LoggingLevel::critical);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] RE::TESActorBase variable not set!!!", Logger::LogType::PlayerArmorScan, Logger::LoggingLevel::critical);
 			ShouldEscape = true;
 		}
 
 		if (ShouldEscape == true) {
-			Log("<C++ MaleArmorScan> [MaleAnalyze] Male Analysis Failed! (Escaped)", LogType::PlayerArmorScan, LoggingLevel::critical);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] Male Analysis Failed! (Escaped)", Logger::LogType::PlayerArmorScan, Logger::LoggingLevel::critical);
 			return;
 		}
 
-		Log("<C++ MaleArmorScan> [MaleAnalyze] Start analysis...", LogType::PlayerArmorScan);
+		Log("<C++ MaleArmorScan> [MaleAnalyze] Start analysis...", Logger::LogType::PlayerArmorScan);
 		if (PlayerWornHasKeyword(CoversAll_Male) || IsPlayerTransformed()) {
-			Log("<C++ MaleArmorScan> [MaleAnalyze] Covers All keyword detected or player is transformed", LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] Covers All keyword detected or player is transformed", Logger::LogType::PlayerArmorScan);
 
 			PlayerCoverage::ChestCurtainCoverage = true;
 			PlayerCoverage::PelvicCurtainCover = true;
@@ -1129,18 +1129,18 @@ namespace MaleArmorScan {
 				AssRiskLevel = FlashRiskLevel::Ultra;
 			}
 
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] ChestRiskLevel = " + BoolToString(ChestRiskLevel), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasPelvicCurtain = " + BoolToString(HasPelvicCurtain), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = " + BoolToString(HasPelvicCurtainT), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] PelvicRiskLevel = " + BoolToString(PelvicRiskLevel), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasAssCurtain = " + BoolToString(HasAssCurtain), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] HasAssCurtainT = " + BoolToString(HasAssCurtainT), LogType::PlayerArmorScan);
-			Log("<C++ MaleArmorScan> [MaleAnalyze] AssRiskLevel = " + BoolToString(AssRiskLevel), LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] ChestRiskLevel = " + BoolToString(ChestRiskLevel), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasPelvicCurtain = " + BoolToString(HasPelvicCurtain), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasPelvicCurtainT = " + BoolToString(HasPelvicCurtainT), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] PelvicRiskLevel = " + BoolToString(PelvicRiskLevel), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasAssCurtain = " + BoolToString(HasAssCurtain), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] HasAssCurtainT = " + BoolToString(HasAssCurtainT), Logger::LogType::PlayerArmorScan);
+			Log("<C++ MaleArmorScan> [MaleAnalyze] AssRiskLevel = " + BoolToString(AssRiskLevel), Logger::LogType::PlayerArmorScan);
 
 			if (VanillaArmorCheck() == true) {
-				Log("<C++ MaleArmorScan> [MaleAnalyze] Armor is considered vanilla", LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] Armor is considered vanilla", Logger::LogType::PlayerArmorScan);
 
 				PlayerCoverage::ChestCurtainCoverage = CurtainCheck(FlashRiskType::Chest, HasChestCurtainT, ChestRiskLevel);
 				PlayerCoverage::PelvicCurtainCover = CurtainCheck(FlashRiskType::Pelvic, HasPelvicCurtainT, PelvicRiskLevel);
@@ -1282,35 +1282,35 @@ namespace MaleArmorScan {
 
 				//Debug Results
 				//Top
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorTop = " + BoolToString(HasArmorTop), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorTopT = " + BoolToString(HasArmorTopT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] TopRiskLevel = " + BoolToString(TopRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBra = " + BoolToString(HasBra), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBraT = " + BoolToString(HasBraT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] BraRiskLevel = " + BoolToString(BraRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBraNoCover = " + BoolToString(HasBraNoCover), LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorTop = " + BoolToString(HasArmorTop), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorTopT = " + BoolToString(HasArmorTopT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] TopRiskLevel = " + BoolToString(TopRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBra = " + BoolToString(HasBra), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBraT = " + BoolToString(HasBraT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] BraRiskLevel = " + BoolToString(BraRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBraNoCover = " + BoolToString(HasBraNoCover), Logger::LogType::PlayerArmorScan);
 
 				//Bottom
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorBottom = " + BoolToString(HasArmorBottom), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorBottomT = " + BoolToString(HasArmorBottomT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] BottomRiskLevel = " + BoolToString(BottomRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHotpants = " + BoolToString(HasHotpants), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHotpantsT = " + BoolToString(HasHotpantsT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = " + BoolToString(HotpantsRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHimbo = " + BoolToString(HasHimbo), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHimboT = " + BoolToString(HasHimboT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HimboRiskLevel = " + BoolToString(HimboRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwear = " + BoolToString(HasUnderwear), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwearT = " + BoolToString(HasUnderwearT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = " + BoolToString(UnderwearRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = " + BoolToString(HasUnderwearNoCover), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThong = " + BoolToString(HasThong), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThongT = " + BoolToString(HasThongT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] ThongRiskLevel = " + BoolToString(ThongRiskLevel), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThongNoCover = " + BoolToString(HasThongNoCover), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBananaHammock = " + BoolToString(HasBananaHammock), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBananaHammockT = " + BoolToString(HasBananaHammockT), LogType::PlayerArmorScan);
-				Log("<C++ MaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = " + BoolToString(BananaHammockRiskLevel), LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorBottom = " + BoolToString(HasArmorBottom), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasArmorBottomT = " + BoolToString(HasArmorBottomT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] BottomRiskLevel = " + BoolToString(BottomRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHotpants = " + BoolToString(HasHotpants), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHotpantsT = " + BoolToString(HasHotpantsT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HotpantsRiskLevel = " + BoolToString(HotpantsRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHimbo = " + BoolToString(HasHimbo), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasHimboT = " + BoolToString(HasHimboT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HimboRiskLevel = " + BoolToString(HimboRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwear = " + BoolToString(HasUnderwear), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwearT = " + BoolToString(HasUnderwearT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] UnderwearRiskLevel = " + BoolToString(UnderwearRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasUnderwearNoCover = " + BoolToString(HasUnderwearNoCover), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThong = " + BoolToString(HasThong), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThongT = " + BoolToString(HasThongT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] ThongRiskLevel = " + BoolToString(ThongRiskLevel), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasThongNoCover = " + BoolToString(HasThongNoCover), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBananaHammock = " + BoolToString(HasBananaHammock), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] HasBananaHammockT = " + BoolToString(HasBananaHammockT), Logger::LogType::PlayerArmorScan);
+				Log("<C++ MaleArmorScan> [MaleAnalyze] BananaHammockRiskLevel = " + BoolToString(BananaHammockRiskLevel), Logger::LogType::PlayerArmorScan);
 
 				AnalyzeTop
 				(
@@ -1334,9 +1334,13 @@ namespace MaleArmorScan {
 		}
 
 		Finalize();
-		Log("<C++ MaleArmorScan> [MaleAnalyze] Analysis Succeeded!", LogType::PlayerArmorScan);
+
+		SLSFRNakedCommentPrecheck();
+
+		Log("<C++ MaleArmorScan> [MaleAnalyze] Analysis Succeeded!", Logger::LogType::PlayerArmorScan);
 	}
 }
+
 void ExternalMaleAnalyze(RE::StaticFunctionTag*) {
 	MaleArmorScan::MaleAnalyze();
 }

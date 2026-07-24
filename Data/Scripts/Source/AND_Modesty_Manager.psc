@@ -1,6 +1,5 @@
 ScriptName AND_Modesty_Manager extends Quest
 
-AND_Core Property Core Auto
 AND_MCM Property Config Auto
 AND_Logger Property Logger Auto
 
@@ -10,10 +9,8 @@ String[] Property ModestyTitle Auto
 String[] Property TopModestyTitle Auto
 String[] Property BottomModestyTitle Auto
 
-;Function SKSEStrictModesty(Float CurrentGameTime) Global Native
-Function SKSEStrictModesty() Global Native
-;Function SKSESimpleModesty(Float CurrentGameTime) Global Native
-Function SKSESimpleModesty() Global Native
+Int[] Function SKSEStrictModesty() Global Native
+Int[] Function SKSESimpleModesty() Global Native
 
 Function SKSERankJump(Int RankValue) Global Native
 Function SKSETopRankJump(Int RankValue) Global Native
@@ -34,46 +31,31 @@ EndFunction
 Event OnUpdateGameTime()
 	AND_Logger.FastLog("<Modesty Manager> [OnUpdateGameTime] - START")
 	
-	;Float CurrentGameTime = Utility.GetCurrentGameTime()
-	
 	If Config.ConfigBoolOptions[Config.PlayerStrictRules] == True
-		Int InitialStrictRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
+		Int[] Result = SKSEStrictModesty()
 		
-		;SKSEStrictModesty(CurrentGameTime)
-		SKSEStrictModesty()
-		
-		Int NewStrictRank = PlayerRef.GetFactionRank(Core.ModestyFaction)
-		
-		If InitialStrictRank != NewStrictRank
-			ModestyAlert(0, (InitialStrictRank < NewStrictRank), NewStrictRank)
+		If Result[0]
+			ModestyAlert(0, (Result[1] < Result[2]), Result[2])
 			
 			If Config.ModestyMonologue == True
-				ModestyInnerMonologue((InitialStrictRank < NewStrictRank), NewStrictRank, 0)
+				ModestyInnerMonologue((Result[1] < Result[2]), Result[2], 0)
 			EndIf
 		EndIf
 	Else
-		Int InitialTopRank = PlayerRef.GetFactionRank(Core.TopModestyFaction)
-		Int InitialBottomRank = PlayerRef.GetFactionRank(Core.BottomModestyFaction)
-		
-		;SKSESimpleModesty(CurrentGameTime)
-		SKSESimpleModesty()
-		
-		Int NewTopRank = PlayerRef.GetFactionRank(Core.TopModestyFaction)
-		Int NewBottomRank = PlayerRef.GetFactionRank(Core.BottomModestyFaction)
-		
-		If InitialTopRank != NewTopRank
-			ModestyAlert(1, (InitialTopRank < NewTopRank), NewTopRank)
+		Int[] Result = SKSESimpleModesty()
+		If Result[0] ;TopModesty
+			ModestyAlert(1, (Result[1] < Result[2]), Result[2])
 			
 			If Config.ModestyMonologue == True
-				ModestyInnerMonologue((InitialTopRank < NewTopRank), NewTopRank, 1)
+				ModestyInnerMonologue((Result[1] < Result[2]), Result[2], 1)
 			EndIf
 		EndIf
 		
-		If InitialBottomRank != NewBottomRank
-			ModestyAlert(2, (InitialBottomRank < NewBottomRank), NewBottomRank)
+		If Result[3] ;BottomModesty
+			ModestyAlert(2, (Result[4] < Result[5]), Result[5])
 			
 			If Config.ModestyMonologue == True
-				ModestyInnerMonologue((InitialBottomRank < NewBottomRank), NewBottomRank, 2)
+				ModestyInnerMonologue((Result[4] < Result[5]), Result[5], 2)
 			EndIf
 		EndIf
 	EndIf

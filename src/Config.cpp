@@ -7,6 +7,7 @@
 #include "PlayerModesty.h"
 #include "Logger.h"
 #include "ModEventHandler.h"
+#include "ModIntegration.h"
 
 enum DefaultOdds {
 	DefaultCurtainOddsLow = 20,
@@ -834,23 +835,23 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int Pag
 	for(auto& Female : PermanentFemaleVector)
 	{
 		uint32_t ModIndex = Female.GetModIndex();
-		Log("<C++ Config> [GetPermanentFemaleActors] Female " + static_cast<std::string>(Female.GetName()), LogType::Config, LoggingLevel::info);
+		Log("<C++ Config> [GetPermanentFemaleActors] Female " + static_cast<std::string>(Female.GetName()), Logger::LogType::Config, Logger::LoggingLevel::info);
 
 		if (Female.LightPlugin) {
 			ModIndex += 0xFE000000;
-			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), LogType::Config, LoggingLevel::info);
-			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), LogType::Config, LoggingLevel::info);
-			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), Logger::LogType::Config, Logger::LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), Logger::LogType::Config, Logger::LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), Logger::LogType::Config, Logger::LoggingLevel::info);
 		}
 		else {
-			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), LogType::Config, LoggingLevel::info);
-			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), LogType::Config, LoggingLevel::info);
-			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), Logger::LogType::Config, Logger::LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), Logger::LogType::Config, Logger::LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] Combined ID " + std::format("{:08X}", ModIndex | Female.LocalID), Logger::LogType::Config, Logger::LoggingLevel::info);
 		}
 
 		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(ModIndex | Female.LocalID);
 		if (!ValidActor) { 
-			Log("<C++ Config> [GetPermanentFemaleActors] Actor is invalid! Skipping...", LogType::Config, LoggingLevel::info);
+			Log("<C++ Config> [GetPermanentFemaleActors] Actor is invalid! Skipping...", Logger::LogType::Config, Logger::LoggingLevel::info);
 			continue; 
 		}
 
@@ -882,7 +883,7 @@ std::string GetFemaleActorFormID(RE::StaticFunctionTag*, RE::Actor* akFemale) {
 	RE::FormID FemaleForm = akFemale->GetFormID();
 	if (!RegisteredFemaleMap.count(FemaleForm))
 	{
-		Log("<C++ Config> [GetFemaleActorFormID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", FemaleForm) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		Log("<C++ Config> [GetFemaleActorFormID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", FemaleForm) + ") cannot be found in Registered Female list!", Logger::LogType::Config, Logger::LoggingLevel::error);
 
 		return "UNREGISTERED";
 	}
@@ -897,7 +898,7 @@ std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	RE::FormID FemaleForm = akFemale->GetFormID();
 	if(!RegisteredFemaleMap.count(FemaleForm))
 	{
-		Log("<C++ Config> [GetFemaleActorData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", FemaleForm) + ") cannot be found in Registered Female list!", LogType::Config, LoggingLevel::error);
+		Log("<C++ Config> [GetFemaleActorData] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", FemaleForm) + ") cannot be found in Registered Female list!", Logger::LogType::Config, Logger::LoggingLevel::error);
 		
 		return FemaleActorData;
 	}
@@ -1020,4 +1021,8 @@ bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*) {
 		}
 	}
 	return false;
+}
+
+bool IsPlayerFemale(RE::StaticFunctionTag*) {
+	return PlayerBase->IsFemale();
 }

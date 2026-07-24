@@ -239,3 +239,5 @@ std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*);
 void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options);
 
 bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*);
+
+bool IsPlayerFemale(RE::StaticFunctionTag*);

@@ -3,15 +3,6 @@
 #include <vector>
 
 namespace RegisteredPlugins {
-	/*
-	inline std::vector<bool> DynamicModestyEnabled;
-	inline std::vector<bool> HardcoreEnabled;
-	inline std::vector<bool> CorruptionEnabled;
-	inline std::vector<bool> ShamelessEnabled;
-	inline std::vector<bool> UpgradeBlocked;
-	inline std::vector<bool> UseStrictModesty;
-	*/
-
 	inline std::vector<uint8_t> DynamicModestyEnabled;
 	inline std::vector<uint8_t> HardcoreEnabled;
 	inline std::vector<uint8_t> CorruptionEnabled;
@@ -29,6 +20,19 @@ namespace RegisteredPlugins {
 
 	inline int TotalRegisteredPlugins = 0;
 }
+
+int GetModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+int GetTopModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+int GetBottomModestyRank(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+
+bool GetShowingBra(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetShowingUnderwear(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetShowingChest(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetShowingGenitals(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetShowingAss(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetTopless(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetBottomless(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
+bool GetNude(RE::StaticFunctionTag*, RE::TESForm* ActorForm);
 
 void RegisterPlugin(RE::StaticFunctionTag*, std::string Plugin);
 void UnregisterPlugin(RE::StaticFunctionTag*, std::string Plugin);

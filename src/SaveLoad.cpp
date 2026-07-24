@@ -31,10 +31,10 @@ void SavePermanentNPCs()
 
 	if(!PermanentFemaleVector.size())
 	{
-		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", LogType::Core, LoggingLevel::warning);
+		Log("<C++ SaveLoad> [SavePermanentNPCs] There are no Permanent NPCs to save! Skipping save function...", Logger::LogType::Core, Logger::LoggingLevel::warning);
 		if (std::filesystem::exists(FilePath))
 		{
-			Log("<C++ SaveLoad> [SavePermanentNPCs] Deleting Permanent NPC file since no Permanent NPCs exist!", LogType::Core, LoggingLevel::warning);
+			Log("<C++ SaveLoad> [SavePermanentNPCs] Deleting Permanent NPC file since no Permanent NPCs exist!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 			std::filesystem::remove(FilePath);
 		}
 
@@ -53,13 +53,13 @@ void SavePermanentNPCs()
 
 void LoadPermanentNPCs()
 {
-	Log("<C++ NPCData> [LoadPermanentNPCs] - Function Triggered", LogType::Core);
+	Log("<C++ NPCData> [LoadPermanentNPCs] - Function Triggered", Logger::LogType::Core);
 	
 	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
 
 	if (!std::filesystem::exists(FilePath))
 	{
-		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", LogType::Core, LoggingLevel::warning);
+		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", Logger::LogType::Core, Logger::LoggingLevel::warning);
 
 		return;
 	}
@@ -238,7 +238,7 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 		}
 
 		std::string raceEditorID = PlayerBaseRace->GetFormEditorID();
-		Log("Saving Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
+		Log("Saving Race Editor ID String: " + raceEditorID, Logger::LogType::Core, Logger::LoggingLevel::critical);
 		WriteString(serializer, raceEditorID);
 
 		const std::uint32_t count = (uint32_t)CustomTransformations.size();
@@ -253,7 +253,7 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 inline void LoadCallback(SKSE::SerializationInterface* serializer)
 {
-	Log("<C++ NPCData> [LoadCallback] - Function Triggered", LogType::Core);
+	Log("<C++ NPCData> [LoadCallback] - Function Triggered", Logger::LogType::Core);
 	
 	std::uint32_t type, version, length;
 	while (serializer->GetNextRecordInfo(type, version, length)) {
@@ -440,7 +440,7 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 				std::string raceEditorID;
 				ReadString(serializer, raceEditorID);
-				Log("Loading Race Editor ID String: " + raceEditorID, LogType::Core, LoggingLevel::critical);
+				Log("Loading Race Editor ID String: " + raceEditorID, Logger::LogType::Core, Logger::LoggingLevel::critical);
 				PlayerBaseRace = RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID) != nullptr ? RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID) : Player->GetRace();
 
 				std::uint32_t count = 0;
