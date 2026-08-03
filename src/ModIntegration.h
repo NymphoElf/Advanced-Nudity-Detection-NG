@@ -69,5 +69,6 @@ namespace ModAPI {
 		void ConnectToSLOArousedNG();
 		uint32_t GetSLAVersion();
 		int GetPlayerArousal();
+		int GetActorArousal(RE::Actor* akActor);
 	}
 }

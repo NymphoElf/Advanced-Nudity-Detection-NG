@@ -117,10 +117,10 @@ void ScanForNewActors(std::vector<RE::Actor*> ScannedActors) {
 			float arousalValue = 0.0f;
 
 			if (InstalledMods::OSLAroused) {
-				arousalValue = OSLAroused::GetArousal(Player);
+				arousalValue = OSLAroused::GetArousal(ScannedActors[Index]);
 			}
 			else if (InstalledMods::SLOAroused) {
-				arousalValue = (float)ModAPI::SLOArousedNG::GetPlayerArousal();
+				arousalValue = (float)ModAPI::SLOArousedNG::GetActorArousal(ScannedActors[Index]);
 			}
 
 			const std::int8_t arousalRank = arousalValue > 0.0f ? static_cast<std::int8_t>(arousalValue) : std::int8_t{ 0 };

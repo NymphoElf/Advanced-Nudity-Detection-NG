@@ -96,6 +96,13 @@ namespace ModAPI {
 			return SLOArousedAPI.available() ? SLOArousedAPI.GetVersion() : 0;
 		}
 
+		int GetActorArousal(RE::Actor* akActor) {
+			if (!SLOArousedAPI.GetArousalInt) {
+				return 0;
+			}
+			return (int)SLOArousedAPI.GetArousalInt(akActor);
+		}
+
 		int GetPlayerArousal() {
 			if (!SLOArousedAPI.GetArousalInt) {
 				return 0;

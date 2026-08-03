@@ -858,19 +858,20 @@ namespace MaleArmorScan {
 		else if (!PlayerCoverage::PelvicCurtainCover && PlayerCoverage::AssCurtainCover) {
 			SetPlayerFactionRank(BottomlessFaction, 0);
 			SetPlayerFactionRank(ShowingAssFaction, 0);
-			if (PlayerCoverage::UnderwearCover && PlayerCoverage::AssCover) {
+
+			if (PlayerCoverage::UnderwearCover && PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 0);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 0);
 			}
-			else if (!PlayerCoverage::UnderwearCover && PlayerCoverage::AssCover) {
+			else if (!PlayerCoverage::UnderwearCover && PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 1);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 0);
 			}
-			else if (!PlayerCoverage::UnderwearCover && !PlayerCoverage::AssCover) {
+			else if (!PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 1);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 1);
 			}
-			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::AssCover) {
+			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 0);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 1);
 			}

@@ -787,6 +787,7 @@ namespace FemaleArmorScan {
 	}
 
 	void Finalize() {
+		//Top Coverage
 		if (PlayerCoverage::ChestCurtainCoverage) {
 			SetPlayerFactionRank(ToplessFaction, 0);
 			SetPlayerFactionRank(ShowingChestFaction, 0);
@@ -823,6 +824,7 @@ namespace FemaleArmorScan {
 			}
 		}
 
+		//Bottom Coverage
 		if (PlayerCoverage::PelvicCurtainCover && PlayerCoverage::AssCurtainCover) {
 			SetPlayerFactionRank(BottomlessFaction, 0);
 			SetPlayerFactionRank(ShowingAssFaction, 0);
@@ -832,6 +834,7 @@ namespace FemaleArmorScan {
 		else if (PlayerCoverage::PelvicCurtainCover && !PlayerCoverage::AssCurtainCover) {
 			SetPlayerFactionRank(BottomlessFaction, 0);
 			SetPlayerFactionRank(ShowingGenitalsFaction, 0);
+
 			if (PlayerCoverage::UnderwearCover && PlayerCoverage::AssCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 0);
 				SetPlayerFactionRank(ShowingAssFaction, 0);
@@ -852,19 +855,20 @@ namespace FemaleArmorScan {
 		else if (!PlayerCoverage::PelvicCurtainCover && PlayerCoverage::AssCurtainCover) {
 			SetPlayerFactionRank(BottomlessFaction, 0);
 			SetPlayerFactionRank(ShowingAssFaction, 0);
-			if (PlayerCoverage::UnderwearCover && PlayerCoverage::AssCover) {
+
+			if (PlayerCoverage::UnderwearCover && PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 0);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 0);
 			}
-			else if (!PlayerCoverage::UnderwearCover && PlayerCoverage::AssCover) {
+			else if (!PlayerCoverage::UnderwearCover && PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 1);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 0);
 			}
-			else if (!PlayerCoverage::UnderwearCover && !PlayerCoverage::AssCover) {
+			else if (!PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 1);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 1);
 			}
-			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::AssCover) {
+			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover) {
 				SetPlayerFactionRank(ShowingUnderwearFaction, 0);
 				SetPlayerFactionRank(ShowingGenitalsFaction, 1);
 			}
@@ -914,7 +918,7 @@ namespace FemaleArmorScan {
 			}
 			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover && !PlayerCoverage::AssCover) { //True False False
 				if (
-					PlayerWornHasKeyword(ArmorBottom_NoCover) || 
+					PlayerWornHasKeyword(ArmorBottom_NoCover) ||
 					PlayerWornHasKeyword(HotpantsT_Low) || PlayerWornHasKeyword(HotpantsT) || PlayerWornHasKeyword(HotpantsT_High) ||
 					PlayerWornHasKeyword(ShowgirlSkirtT_Low) || PlayerWornHasKeyword(ShowgirlSkirtT) || PlayerWornHasKeyword(ShowgirlSkirtT_High) ||
 					PlayerWornHasKeyword(Microskirt) || PlayerWornHasKeyword(VaginaPasties)
