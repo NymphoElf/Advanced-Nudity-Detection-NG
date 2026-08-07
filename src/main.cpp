@@ -44,6 +44,8 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("ValidatePlayerBaseRace", "AND_PlayerScript", ValidatePlayerBaseRace);
 	papyrusVM->RegisterFunction("SetPlayerBaseRace", "AND_PlayerScript", ExternalSetPlayerBaseRace);
 
+	papyrusVM->RegisterFunction("ProcessEquipmentChange", "AND_PlayerScript", ProcessEquipmentChange);
+
 	//Keybind Manager Binds
 	papyrusVM->RegisterFunction("PlayerIsWearingChestCurtain", "AND_KeybindManager", PlayerIsWearingChestCurtain);
 	papyrusVM->RegisterFunction("PlayerIsWearingPelvicCurtain", "AND_KeybindManager", PlayerIsWearingPelvicCurtain);

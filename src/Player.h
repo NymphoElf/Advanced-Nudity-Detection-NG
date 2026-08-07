@@ -11,3 +11,5 @@ inline bool PlayerFactionsInitialized;
 
 void CheckWearingCurtains(RE::StaticFunctionTag*);
 void ClosedMenuEvent(RE::StaticFunctionTag*, std::string MenuName);
+
+bool ProcessEquipmentChange(RE::StaticFunctionTag*, RE::TESForm* BaseObject, RE::TESObjectREFR* akReference);
