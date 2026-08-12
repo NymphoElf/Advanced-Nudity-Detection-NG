@@ -29,7 +29,7 @@ namespace FemaleArmorScan {
 			TypeString = "Chest";
 			Roll = ChestCurtainRoll;
 			if (Level == FlashRiskLevel::Low) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[ChestCurtainOddsLow];
 				}
 				else {
@@ -37,7 +37,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Normal) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[ChestCurtainOdds];
 				}
 				else {
@@ -45,7 +45,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::High) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[ChestCurtainOddsHigh];
 				}
 				else {
@@ -53,7 +53,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Extreme) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[ChestCurtainOddsExtreme];
 				}
 				else {
@@ -61,7 +61,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Ultra) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[ChestCurtainOddsUltra];
 				}
 				else {
@@ -73,7 +73,7 @@ namespace FemaleArmorScan {
 			TypeString = "Pelvic";
 			Roll = PelvicCurtainRoll;
 			if (Level == FlashRiskLevel::Low) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[PelvicCurtainOddsLow];
 				}
 				else {
@@ -81,7 +81,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Normal) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[PelvicCurtainOdds];
 				}
 				else {
@@ -89,7 +89,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::High) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[PelvicCurtainOddsHigh];
 				}
 				else {
@@ -97,7 +97,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Extreme) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[PelvicCurtainOddsExtreme];
 				}
 				else {
@@ -105,7 +105,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Ultra) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[PelvicCurtainOddsUltra];
 				}
 				else {
@@ -117,7 +117,7 @@ namespace FemaleArmorScan {
 			TypeString = "Ass";
 			Roll = AssCurtainRoll;
 			if (Level == FlashRiskLevel::Low) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[AssCurtainOddsLow];
 				}
 				else {
@@ -125,7 +125,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Normal) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[AssCurtainOdds];
 				}
 				else {
@@ -133,7 +133,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::High) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[AssCurtainOddsHigh];
 				}
 				else {
@@ -141,7 +141,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Extreme) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[AssCurtainOddsExtreme];
 				}
 				else {
@@ -149,7 +149,7 @@ namespace FemaleArmorScan {
 				}
 			}
 			else if (Level == FlashRiskLevel::Ultra) {
-				if (IsTransparent) {
+				if (!IsTransparent) {
 					Odds = Configuration::FlashingOdds[AssCurtainOddsUltra];
 				}
 				else {
@@ -334,7 +334,7 @@ namespace FemaleArmorScan {
 	bool CStringCheck(bool IsTransparent, int Level) {
 		int Odds = 0;
 
-		if (IsTransparent == false) {
+		if (!IsTransparent) {
 			Odds = Configuration::FlashingOdds[CStringOdds];
 		}
 		else if (Level == FlashRiskLevel::Low) {

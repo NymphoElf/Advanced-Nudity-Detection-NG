@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "NPCData.h"
-
 namespace FlashRiskLevel {
 	enum FlashRiskLevel {
 		None,

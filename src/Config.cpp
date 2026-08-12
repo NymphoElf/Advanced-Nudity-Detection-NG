@@ -226,7 +226,9 @@ void InitializeConfigData() {
 }
 
 void UpdateFlashingOdds(RE::StaticFunctionTag*, int FlashOddsIndex, int OddsValue) {
+	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " to value " + std::to_string(OddsValue), Logger::Config, Logger::info);
 	Configuration::FlashingOdds[FlashOddsIndex] = OddsValue;
+	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " value is now " + std::to_string(Configuration::FlashingOdds[FlashOddsIndex]), Logger::Config, Logger::info);
 }
 
 std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*) {

@@ -151,6 +151,7 @@ enum FlashingIndex {
 //Integers
 namespace Configuration {
 	inline int FlashingOdds[FlashingOddsLength];
+	//inline std::array<int, FlashingOddsLength> FlashingOdds;
 
 	inline int ImmodestyTimeNeeded;
 
