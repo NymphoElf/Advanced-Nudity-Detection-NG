@@ -20,7 +20,7 @@ Function CheckConflictingMods()
 	Bool[] InstalledMods = AND_MCM.GetInstalledMods()
 	
 	If InstalledMods[3] && InstalledMods[5]
-		Debug.Messagebox("You cannot use OSL Aroused and SLO Aroused at the same time! Your game will now close...")
+		Debug.Messagebox("A.N.D. ERROR - You cannot use OSL Aroused and SLO Aroused at the same time! (This includes dummy plugins!) Your game will now close...")
 		Utility.Wait(1.0)
 		Debug.QuitGame()
 	EndIf

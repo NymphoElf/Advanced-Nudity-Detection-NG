@@ -434,7 +434,7 @@ void SetPlayerFactionRank(RE::TESFaction* akFaction, int8_t factionRank) {
 RE::BGSKeywordForm* AsKeywordForm(RE::TESForm* tesForm)
 {
 	if (const auto arrowForm = tesForm->As<RE::TESAmmo>()) {
-		return arrowForm->AsKeywordForm();
+		return arrowForm->As<RE::BGSKeywordForm>();
 	}
 	else {
 		return tesForm->As<RE::BGSKeywordForm>();

@@ -6,7 +6,7 @@ includes("lib/commonlibsse-ng")
 
 -- set project
 set_project("Advanced-Nudity-Detection")
-set_version("4.1.3")
+set_version("4.1.4")
 set_license("GPL-3.0")
 
 -- set defaults
@@ -24,13 +24,13 @@ add_rules("plugin.vsxmake.autoupdate")
 -- targets
 target("advanced-nudity-detection")
     -- add dependencies to target
-    add_deps("commonlibsse-ng")
+    add_deps("commonlibsse")
 
     -- add commonlibsse-ng plugin
-    add_rules("commonlibsse-ng.plugin", {
+    add_rules("commonlibsse.plugin", {
         name = "Advanced Nudity Detection",
         author = "NymphoElf",
-        description = "SKSE64 plugin using CommonLibSSE-NG"
+        description = "SKSE64 plugin using CommonLibSSE"
     })
 
     -- add src files

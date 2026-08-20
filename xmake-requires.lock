@@ -6,47 +6,31 @@
         ["cmake#f56260b5"] = {
             repo = {
                 branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
+                commit = "1b715ade8aafea2eb820e395b626df1aa507c229",
                 url = "https://gitlab.com/tboox/xmake-repo.git"
             },
             version = "4.2.1"
         },
-        ["directxmath#f56260b5"] = {
-            repo = {
-                branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
-                url = "https://gitlab.com/tboox/xmake-repo.git"
-            },
-            version = "2024.02"
-        },
-        ["directxtk#f56260b5"] = {
-            repo = {
-                branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
-                url = "https://gitlab.com/tboox/xmake-repo.git"
-            },
-            version = "24.2.0"
-        },
         ["ninja#f56260b5"] = {
             repo = {
                 branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
+                commit = "1b715ade8aafea2eb820e395b626df1aa507c229",
                 url = "https://gitlab.com/tboox/xmake-repo.git"
             },
             version = "1.12.1"
         },
-        ["rapidcsv#f56260b5"] = {
+        ["rsm-binary-io#f56260b5"] = {
             repo = {
                 branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
+                commit = "1b715ade8aafea2eb820e395b626df1aa507c229",
                 url = "https://gitlab.com/tboox/xmake-repo.git"
             },
-            version = "v8.89"
+            version = "2.0.6"
         },
         ["spdlog#09c8c173"] = {
             repo = {
                 branch = "master",
-                commit = "38e780f7aff3901817acf2fb1789e127db2e8872",
+                commit = "1b715ade8aafea2eb820e395b626df1aa507c229",
                 url = "https://gitlab.com/tboox/xmake-repo.git"
             },
             version = "v1.15.3"

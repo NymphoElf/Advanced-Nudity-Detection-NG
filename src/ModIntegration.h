@@ -1,5 +1,9 @@
 #pragma once
 
+#include <windows.h>
+#include <minwindef.h>
+#include <libloaderapi.h>
+
 #include "APIs/SLSFR_API.h"
 #include "APIs/ArousalAPI.h"
 

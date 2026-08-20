@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "FameData.h"
-
 namespace SLSFR_API {
 	constexpr const char* PluginName = "SLSFReloaded";
 
