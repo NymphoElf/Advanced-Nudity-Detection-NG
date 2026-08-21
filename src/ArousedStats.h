@@ -1,8 +1,8 @@
 #pragma once
 
-#include <windows.h>
-#include <minwindef.h>
-#include <libloaderapi.h>
+//#include <windows.h>
+//#include <minwindef.h>
+//#include <libloaderapi.h>
 
 #include <RE/Skyrim.h>
 #include <SKSE/SKSE.h>

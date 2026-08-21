@@ -24,10 +24,10 @@ add_rules("plugin.vsxmake.autoupdate")
 -- targets
 target("advanced-nudity-detection")
     -- add dependencies to target
-    add_deps("commonlibsse")
+    add_deps("commonlibsse-ng")
 
     -- add commonlibsse-ng plugin
-    add_rules("commonlibsse.plugin", {
+    add_rules("commonlibsse-ng.plugin", {
         name = "Advanced Nudity Detection",
         author = "NymphoElf",
         description = "SKSE64 plugin using CommonLibSSE"

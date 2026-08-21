@@ -166,11 +166,11 @@ void InitializeLog()
 		return;
 	}
 
-	SKSE::detail::PluginInfo ThisPlugin;
+	//SKSE::detail::PluginInfo ThisPlugin;
 
 	std::filesystem::path path = log_directory.value();
-	//path /= std::format("{}.log", SKSE::GetPluginName());
-	path /= std::format("{}.log", ThisPlugin.name);
+	path /= std::format("{}.log", SKSE::GetPluginName());
+	//path /= std::format("{}.log", ThisPlugin.name);
 
 	std::vector<spdlog::sink_ptr> sinks {
 		std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), 0x6400000, 4, true),
@@ -184,9 +184,9 @@ void InitializeLog()
 	spdlog::set_default_logger(std::move(logger));
 	spdlog::set_pattern("[%T.%e] [%=5t] [%L] %v");
 
-	//logs::info("{} v{}", SKSE::GetPluginName(), SKSE::GetPluginVersion());
+	logs::info("{} v{}", SKSE::GetPluginName(), SKSE::GetPluginVersion());
 
-	logs::info("{} v{}", ThisPlugin.name, ThisPlugin.version);
+	//logs::info("{} v{}", ThisPlugin.name, ThisPlugin.version);
 }
 
 void OnMessage(SKSE::MessagingInterface::Message* message) {
