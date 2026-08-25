@@ -16,6 +16,22 @@
 #include "ModEventHandler.h"
 #include "ModIntegration.h"
 
+/* KEEP! IMPORTANT!!!
+
+Github Add Submodule Command (-f = "force"):
+git submodule add -f -b [branch name] [URL] [Local repository foler]
+
+Example (alandtse's CommonLib-NG):
+git submodule add -f -b ng https://github.com/alandtse/CommonLibSSE-NG.git lib/commonlibsse-ng
+
+GitHub Submodule update command:
+
+git submodule update --remote --recursive
+
+Currently using CommonLib-NG Library found here:
+https://github.com/alandtse/CommonLibSSE-NG
+*/
+
 bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	//Main Script Binds
 	
