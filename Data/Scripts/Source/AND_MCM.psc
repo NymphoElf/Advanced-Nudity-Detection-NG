@@ -576,6 +576,8 @@ Int[] Function GetCurtainCoverage() Global Native
 Int[] Function GetConfigIntOptions() Global Native
 
 Int[] Function GetPlayerFactionRanks() Global Native
+Function UpdatePlayerShySex(Bool ShyWithMaleRank, Bool ShyWithFemaleRank) Global Native
+
 Int[] Function GetPlayerStrictModestyTimers() Global Native
 Int[] Function GetPlayerSimpleModestyTimers() Global Native
 
@@ -2616,7 +2618,13 @@ Event OnOptionMenuOpen(Int Option)
 	Int StartIndex
 	If Option == DynamicModestyMenus[0]
 		Texts = Sexes
-		StartIndex = 0
+		If (PlayerFactionRanks[ShyWithMale] == 1 && PlayerFactionRanks[ShyWithFemale] == 1)
+			StartIndex = 2
+		ElseIf (PlayerFactionRanks[ShyWithFemale] == 1)
+			StartIndex = 1
+		Else
+			StartIndex = 0
+		EndIf
 	ElseIf Option == NPCModestyMenus[0]
 		Texts = NPCSexes
 		StartIndex = 0
@@ -2651,6 +2659,8 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 			PlayerFactionRanks[ShyWithMale] = 1
 			PlayerFactionRanks[ShyWithFemale] = 1
 		EndIf
+		
+		UpdatePlayerShySex(PlayerFactionRanks[ShyWithMale], PlayerFactionRanks[ShyWithFemale])
 		
 		;=============
 		;END PAGE 9

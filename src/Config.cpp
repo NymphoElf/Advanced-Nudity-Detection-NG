@@ -715,6 +715,11 @@ std::vector<int> GetPlayerFactionRanks(RE::StaticFunctionTag*) {
 	return FactionRanks;
 }
 
+void UpdatePlayerShySex(RE::StaticFunctionTag*, bool ShyWithMaleRank, bool ShyWithFemaleRank) {
+	SetPlayerFactionRank(ShyWithMale, ShyWithMaleRank);
+	SetPlayerFactionRank(ShyWithFemale, ShyWithFemaleRank);
+}
+
 std::vector<int> GetPlayerStrictModestyTimers(RE::StaticFunctionTag*) {
 	std::vector<int> StrictTimers;
 

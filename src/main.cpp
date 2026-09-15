@@ -22,7 +22,7 @@ Github Add Submodule Command (-f = "force"):
 git submodule add -f -b [branch name] [URL] [Local repository foler]
 
 Example (alandtse's CommonLib-NG):
-git submodule add -f -b ng https://github.com/alandtse/CommonLibSSE-NG.git lib/commonlibsse-ng
+git submodule add -f -b ng https://github.com/alandtse/CommonLibSSE-NG.git ../lib/commonlibsse-ng
 
 GitHub Submodule update command:
 
@@ -111,6 +111,8 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 	papyrusVM->RegisterFunction("GetFemaleActorFormID", "AND_MCM", GetFemaleActorFormID);
 
 	papyrusVM->RegisterFunction("GetPlayerFactionRanks", "AND_MCM", GetPlayerFactionRanks);
+	papyrusVM->RegisterFunction("UpdatePlayerShySex", "AND_MCM", UpdatePlayerShySex);
+
 	papyrusVM->RegisterFunction("GetPlayerStrictModestyTimers", "AND_MCM", GetPlayerStrictModestyTimers);
 	papyrusVM->RegisterFunction("GetPlayerSimpleModestyTimers", "AND_MCM", GetPlayerSimpleModestyTimers);
 

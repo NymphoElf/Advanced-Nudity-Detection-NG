@@ -6,7 +6,7 @@ includes("lib/commonlibsse-ng")
 
 -- set project
 set_project("Advanced-Nudity-Detection")
-set_version("4.1.4")
+set_version("4.1.5")
 set_license("GPL-3.0")
 
 -- set defaults
@@ -22,7 +22,7 @@ add_rules("mode.debug", "mode.releasedbg")
 add_rules("plugin.vsxmake.autoupdate")
 
 -- targets
-target("advanced-nudity-detection")
+target("AdvancedNudityDetection")
     -- add dependencies to target
     add_deps("commonlibsse-ng")
 

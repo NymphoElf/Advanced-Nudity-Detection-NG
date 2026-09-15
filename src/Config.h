@@ -230,6 +230,8 @@ std::vector<bool> NPCFemaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* ak
 std::vector<bool> NPCMaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor);
 
 std::vector<int> GetPlayerFactionRanks(RE::StaticFunctionTag*);
+void UpdatePlayerShySex(RE::StaticFunctionTag*, bool ShyWithMaleRank, bool ShyWithFemaleRank);
+
 std::vector<int> GetPlayerStrictModestyTimers(RE::StaticFunctionTag*);
 std::vector<int> GetPlayerSimpleModestyTimers(RE::StaticFunctionTag*);
 
