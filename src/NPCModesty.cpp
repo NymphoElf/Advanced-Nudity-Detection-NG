@@ -3,7 +3,7 @@
 #include "Core.h"
 #include "Logger.h"
 
-void ChangeStrictRank(RE::Actor* akFemale, int Rank)
+void ChangeStrictRank(RE::Actor* akFemale, UINT8 Rank)
 {
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(Rank));
@@ -18,7 +18,7 @@ void ChangeStrictRank(RE::Actor* akFemale, int Rank)
 	ThisFemale.ModestyTimer6 = 0;
 }
 
-void ChangeTopRank(RE::Actor* akFemale, int Rank)
+void ChangeTopRank(RE::Actor* akFemale, UINT8 Rank)
 {
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(Rank));
@@ -30,7 +30,7 @@ void ChangeTopRank(RE::Actor* akFemale, int Rank)
 	ThisFemale.TopModestyTimer3 = 0;
 }
 
-void ChangeBottomRank(RE::Actor* akFemale, int Rank)
+void ChangeBottomRank(RE::Actor* akFemale, UINT8 Rank)
 {
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(Rank));
@@ -42,14 +42,14 @@ void ChangeBottomRank(RE::Actor* akFemale, int Rank)
 	ThisFemale.BottomModestyTimer3 = 0;
 }
 
-void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless)
+void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, INT16 UpgradeTime, UINT16 HoursPassed, bool Corruption, bool Blocked, bool AllowShameless)
 {
 	Log("<C++ NPCModesty> [StrictNPCModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
-	int CurrentRank = ThisFemale.CurrentRankStrict;
-	int MinimumRank = ThisFemale.MinimumRankStrict;
+	UINT8 CurrentRank = ThisFemale.CurrentRankStrict;
+	UINT8 MinimumRank = ThisFemale.MinimumRankStrict;
 
 	bool IsShowingBra = akFemale->GetFactionRank(ShowingBraFaction, false) == 1;
 	bool IsShowingChest = akFemale->GetFactionRank(ShowingChestFaction, false) == 1;
@@ -241,13 +241,13 @@ void StrictNPCModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTi
 	}
 }
 
-void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
+void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, INT16 UpgradeTime, UINT16 HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
 	Log("<C++ NPCModesty> [NPCTopModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
-	int CurrentTopRank = ThisFemale.CurrentRankTop;
-	int MinimumTopRank = ThisFemale.MinimumRankTop;
+	UINT8 CurrentTopRank = ThisFemale.CurrentRankTop;
+	UINT8 MinimumTopRank = ThisFemale.MinimumRankTop;
 
 	bool IsShowingBra = akFemale->GetFactionRank(ShowingBraFaction, false) == 1;
 	bool IsShowingChest = akFemale->GetFactionRank(ShowingChestFaction, false) == 1;
@@ -410,13 +410,13 @@ void NPCTopModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime,
 	}
 }
 
-void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, int UpgradeTime, int HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
+void NPCBottomModesty(RE::Actor* akFemale, std::string FemaleName, INT16 UpgradeTime, UINT16 HoursPassed, bool Corruption, bool Blocked, bool AllowShameless) {
 	Log("<C++ NPCModesty> [NPCBottomModesty] Analysis Started for " + FemaleName + " FormID: (" + std::format("{:08X}", akFemale->GetFormID()) + ")", Logger::LogType::NPCModesty);
 	
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[akFemale->GetFormID()];
 
-	int CurrentBottomRank = ThisFemale.CurrentRankBottom;
-	int MinimumBottomRank = ThisFemale.MinimumRankBottom;
+	UINT8 CurrentBottomRank = ThisFemale.CurrentRankBottom;
+	UINT8 MinimumBottomRank = ThisFemale.MinimumRankBottom;
 
 	bool IsShowingUnderwear = akFemale->GetFactionRank(ShowingUnderwearFaction, false) == 1;
 	bool IsShowingAss = akFemale->GetFactionRank(ShowingAssFaction, false) == 1;
@@ -590,7 +590,7 @@ void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 	bool Corruption = ThisFemale.AllowCorruption;
 	bool Blocked = ThisFemale.UpgradeBlocked;
 
-	int HoursPassed = static_cast<int>((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666);
+	INT16 HoursPassed = (INT16)((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666f);
 
 	Log("<C++ NPCModesty> [ProcessNPCModesty] RAW Hours passed for this actor: " + std::to_string(((CurrentGameTime - ThisFemale.LastUpdateTime) / 0.041666)), Logger::LogType::NPCModesty);
 
@@ -600,7 +600,7 @@ void ProcessNPCModesty(RE::Actor* akFemale, float CurrentGameTime) {
 		return;
 	}
 
-	int UpgradeTime = Configuration::ImmodestyTimeNeeded * 24;
+	INT16 UpgradeTime = Configuration::ImmodestyTimeNeeded * 24;
 	
 	bool AllowShameless = ThisFemale.AllowShameless;
 	

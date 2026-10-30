@@ -45,14 +45,14 @@ void InitializePlayerFactions() {
 
 void CheckWearingCurtains(RE::StaticFunctionTag*) {
 	if (PlayerBase->IsFemale()) {
-		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain) || PlayerWornHasKeyword(ChestCurtainT));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(PelvicCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(AssCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
+		IsWearingChestCurtain = (PlayerWornHasKeyword(FemaleKeywords[ChestCurtain]) || PlayerWornHasKeyword(FemaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(FemaleKeywords[PelvicCurtain]) || PlayerWornHasKeyword(FemaleKeywords[PelvicCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(FemaleKeywords[AssCurtain]) || PlayerWornHasKeyword(FemaleKeywords[AssCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
 	}
 	else {
-		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain_Male) || PlayerWornHasKeyword(ChestCurtainT_Male));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain_Male) || PlayerWornHasKeyword(PelvicCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain_Male) || PlayerWornHasKeyword(AssCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
+		IsWearingChestCurtain = (PlayerWornHasKeyword(MaleKeywords[ChestCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[ChestCurtainT_Male]));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(MaleKeywords[PelvicCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(MaleKeywords[AssCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[AssCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
 	}
 }
 
@@ -87,18 +87,18 @@ bool ProcessEquipmentChange(RE::StaticFunctionTag*, RE::TESForm* BaseObject, RE:
 	
 	if (PlayerBase->IsFemale()) {
 		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
-		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain) || PlayerWornHasKeyword(ChestCurtainT));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(PelvicCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(AssCurtainT) || PlayerWornHasKeyword(Miniskirt) || PlayerWornHasKeyword(MiniskirtT));
+		IsWearingChestCurtain = (PlayerWornHasKeyword(FemaleKeywords[ChestCurtain]) || PlayerWornHasKeyword(FemaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(FemaleKeywords[PelvicCurtain]) || PlayerWornHasKeyword(FemaleKeywords[PelvicCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(FemaleKeywords[AssCurtain]) || PlayerWornHasKeyword(FemaleKeywords[AssCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
 		
 		Log("<C++ Player> [ProcessEquipmentChange] Send Female Scan...");
 		FemaleArmorScan::FemaleAnalyze();
 	}
 	else {
 		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
-		IsWearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain_Male) || PlayerWornHasKeyword(ChestCurtainT_Male));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain_Male) || PlayerWornHasKeyword(PelvicCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(AssCurtain_Male) || PlayerWornHasKeyword(AssCurtainT_Male) || PlayerWornHasKeyword(Miniskirt_Male) || PlayerWornHasKeyword(MiniskirtT_Male));
+		IsWearingChestCurtain = (PlayerWornHasKeyword(MaleKeywords[ChestCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[ChestCurtainT_Male]));
+		IsWearingPelvicCurtain = (PlayerWornHasKeyword(MaleKeywords[PelvicCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
+		IsWearingAssCurtain = (PlayerWornHasKeyword(MaleKeywords[AssCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[AssCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
 		
 		Log("<C++ Player> [ProcessEquipmentChange] Send Male Scan...");
 		MaleArmorScan::MaleAnalyze();
@@ -127,44 +127,45 @@ void ClosedMenuEvent(RE::StaticFunctionTag*, std::string MenuName) {
 		RE::TESRace* arPlayer = Player->GetRace();
 		if (arPlayer != PlayerBaseRace && !IsPlayerTransformed()) {
 			bool FoundRace = false;
-			for (int Index = 0; Index < 20 && FoundRace == false; ++Index) {
+			for (UINT8 Index = 0; Index < 20 && FoundRace == false; ++Index) {
 				if (VanillaRaces[Index] == arPlayer) {
 					switch (Index) {
 						//Check if contracted vampirism without being Vampire lord, and if so, set base race to non-vampire version
-						case 1:
-							PlayerBaseRace = VanillaRaces[0];
+						case AltmerVampire:
+							PlayerBaseRace = VanillaRaces[Altmer];
 							break;
-						case 3:
-							PlayerBaseRace = VanillaRaces[2];
+						case ArgonianVampire:
+							PlayerBaseRace = VanillaRaces[Argonian];
 							break;
-						case 5:
-							PlayerBaseRace = VanillaRaces[4];
+						case BosmerVampire:
+							PlayerBaseRace = VanillaRaces[Bosmer];
 							break;
-						case 7:
-							PlayerBaseRace = VanillaRaces[6];
+						case BretonVampire:
+							PlayerBaseRace = VanillaRaces[Breton];
 							break;
-						case 9:
-							PlayerBaseRace = VanillaRaces[8];
+						case DunmerVampire:
+							PlayerBaseRace = VanillaRaces[Dunmer];
 							break;
-						case 11:
-							PlayerBaseRace = VanillaRaces[10];
+						case ImperialVampire:
+							PlayerBaseRace = VanillaRaces[Imperial];
 							break;
-						case 13:
-							PlayerBaseRace = VanillaRaces[12];
+						case KhajiitVampire:
+							PlayerBaseRace = VanillaRaces[Khajiit];
 							break;
-						case 15:
-							PlayerBaseRace = VanillaRaces[14];
+						case NordVampire:
+							PlayerBaseRace = VanillaRaces[Nord];
 							break;
-						case 17:
-							PlayerBaseRace = VanillaRaces[16];
+						case OrsimerVampire:
+							PlayerBaseRace = VanillaRaces[Orsimer];
 							break;
-						case 19:
-							PlayerBaseRace = VanillaRaces[18];
+						case RedguardVampire:
+							PlayerBaseRace = VanillaRaces[Redguard];
 							break;
 						default:
 							PlayerBaseRace = VanillaRaces[Index];
 							break;
 					}
+					FoundRace = true;
 				}
 			}
 		}

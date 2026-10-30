@@ -136,8 +136,6 @@ enum FlashingIndex {
 	TransparentHimboOdds,
 	TransparentHimboOdds_High,
 
-	//BananaHammock Odds
-
 	BananaHammockOdds,
 	TransparentBananaHammockOdds_Low,
 	TransparentBananaHammockOdds,
@@ -150,32 +148,29 @@ enum FlashingIndex {
 
 //Integers
 namespace Configuration {
-	inline int FlashingOdds[FlashingOddsLength];
-	//inline std::array<int, FlashingOddsLength> FlashingOdds;
+	inline UINT8 FlashingOdds[FlashingOddsLength];
 
-	inline int ImmodestyTimeNeeded;
+	inline UINT16 ImmodestyTimeNeeded;
 
-	inline int MinimumStrictModestyRank;
-	inline int MinimumTopModestyRank;
-	inline int MinimumBottomModestyRank;
+	inline UINT8 MinimumStrictModestyRank;
+	inline UINT8 MinimumTopModestyRank;
+	inline UINT8 MinimumBottomModestyRank;
 
-	inline int DefaultNPCShyness;
+	inline UINT8 DefaultNPCShyness;
 
-	inline int SprintingMod;
-	inline int RunningMod;
+	inline UINT8 SprintingMod;
+	inline UINT8 RunningMod;
 
-	inline int PlayerConfidenceLevel;
+	inline UINT8 PlayerConfidenceLevel;
 
-	inline int NudeCommentChance;
-	inline int ToplessCommentChance;
-	inline int BottomlessCommentChance;
-	inline int ChestCommentChance;
-	inline int BraCommentChance;
-	inline int AssCommentChance;
-	inline int GenitalsCommentChance;
-	inline int UnderwearCommentChance;
-
-	//inline int PlayerNakedCommentChance;
+	inline UINT8 NudeCommentChance;
+	inline UINT8 ToplessCommentChance;
+	inline UINT8 BottomlessCommentChance;
+	inline UINT8 ChestCommentChance;
+	inline UINT8 BraCommentChance;
+	inline UINT8 AssCommentChance;
+	inline UINT8 GenitalsCommentChance;
+	inline UINT8 UnderwearCommentChance;
 
 	//Booleans
 
@@ -192,13 +187,15 @@ namespace Configuration {
 	inline bool NPCStrictRulesByDefault;
 
 	inline bool HardcoreModeEnabled;
-	//inline bool HardcoreLockdown;
 
 	inline bool ModestyUpgradeBlocked;
 	inline bool DisableNakedComments;
 
 	//Skyrim Global Variables
 	inline RE::TESGlobal* DynamicModestyMode;
+
+	//Strings
+	inline std::vector<std::string_view> WornObjectEditorIDs;
 }
 
 //Functions
@@ -244,3 +241,17 @@ void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options);
 bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*);
 
 bool IsPlayerFemale(RE::StaticFunctionTag*);
+
+std::vector<std::string> GetWornObjectList(RE::StaticFunctionTag*);
+void ClearWornObjectList(RE::StaticFunctionTag*);
+
+int CreateTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB, int ObjectType);
+int DeleteTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB);
+
+int GetTwoPartObjectsAmount(RE::StaticFunctionTag*);
+int GetTwoPartObjectPages(RE::StaticFunctionTag*);
+
+std::vector<std::string> GetTwoPartObjectDisplayText(RE::StaticFunctionTag*, int PageNumber);
+std::vector<int> GetTwoPartObjectItemNumbers(RE::StaticFunctionTag*, int PageNumber);
+
+std::vector<std::string> GetTwoPartObjectTypeStrings(RE::StaticFunctionTag*);

@@ -1,7 +1,5 @@
 #pragma once
 
-//inline bool ModestyUpgradeBlocked = false;
-
 inline float LastTimeChecked = 0.0;
 
 inline int StrictModestyTimer[7] = {0,0,0,0,0,0,0};

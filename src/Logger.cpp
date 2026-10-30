@@ -24,7 +24,7 @@ void ExternalLog(RE::StaticFunctionTag*, std::string logString, int loggingType,
 	};
 }
 
-void Log(std::string logString, int loggingType, int severity) {
+void Log(std::string logString, UINT8 loggingType, UINT8 severity) {
 	if (LogLevelEnabled[severity] == false || (LogTypeEnabled[loggingType] == false && severity < Logger::LoggingLevel::critical)) {
 		return;
 	}

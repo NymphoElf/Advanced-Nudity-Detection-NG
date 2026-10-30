@@ -63,7 +63,7 @@ namespace SLSFR_API {
 	};
 
 	[[nodiscard]] inline void* RequestAPI(InterfaceVersion thisInterface = InterfaceVersion::V1) {
-		auto ModuleHandle = GetModuleHandle("sexlab-sexual-fame-reloaded.dll");
+		auto ModuleHandle = GetModuleHandle("SexlabSexualFameReloaded.dll");
 		if (!ModuleHandle) {
 			return nullptr;
 		}

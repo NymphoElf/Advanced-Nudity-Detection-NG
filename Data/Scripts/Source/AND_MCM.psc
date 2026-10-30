@@ -465,6 +465,10 @@ Int[] Property NPCModestyToggles Auto Hidden
 Int[] Property NPCModestySliders Auto Hidden
 Int[] Property NPCModestyMenus Auto Hidden
 
+Int[] Property TwoPartObjectMenu Auto Hidden
+Int[] Property TwoPartObjectToggles Auto Hidden
+Int[] Property TwoPartObjectSliders Auto Hidden
+
 Int[] Property FlashKeyToggles Auto Hidden
 Int[] Property FlashKeyMaps Auto Hidden
 
@@ -486,6 +490,17 @@ Int Property CurrentPermanentFemalePage = 1 Auto Hidden
 Int Property MaxPermanentFemalePages = 1 Auto Hidden
 String Property SelectedPermFemale = "---" Auto Hidden
 Bool Property DeletePermFemale = False Auto Hidden
+
+String[] Property WornObjectNames Auto Hidden
+String Property TwoPartObjectA Auto Hidden
+Int Property TwoPartObjectAIndex Auto Hidden
+String Property TwoPartObjectB Auto Hidden
+Int Property TwoPartObjectBIndex Auto Hidden
+String Property TwoPartObjectType Auto Hidden
+Int Property TwoPartObjectTypeIndex Auto Hidden
+String[] Property TwoPartObjectTypes Auto Hidden
+Int Property TwoPartObjectPage Auto Hidden
+Int Property MaxTwoPartObjectPages Auto Hidden
 
 Event OnConfigInit()
 	Startup()
@@ -520,7 +535,7 @@ Function InstallMCM()
 	AND_Logger.FastLog("<MCM> [InstallMCM] - START", Logger.Config, Logger.CRITICAL)
 	
 	ModName = "Advanced Nudity"
-	Pages = New String[15]
+	Pages = New String[16]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	
@@ -537,7 +552,8 @@ Function InstallMCM()
 	Pages[11] = "$SimpleModestyPage"
 	Pages[12] = "$NPCModestyPage"
 	Pages[13] = "$FlashKeys"
-	Pages[14] = "$DebugPage"
+	Pages[14] = "$TwoPartObjectsPage"
+	Pages[15] = "$DebugPage"
 	
 	
 	DynamicModestyToggles = new Int[9]
@@ -551,6 +567,10 @@ Function InstallMCM()
 	NPCModestyToggles = new Int[21]
 	NPCModestySliders = new Int[7]
 	NPCModestyMenus = new Int[4]
+	
+	TwoPartObjectMenu = new Int[3]
+	TwoPartObjectToggles = new Int[2]
+	TwoPartObjectSliders = new Int[1]
 	
 	FlashKeyToggles = new Int[4]
 	FlashKeyMaps = new Int[6]
@@ -597,6 +617,18 @@ Bool[] Function GetInstalledMods() Global Native
 
 Bool Function IsPlayerFemale() Global Native
 
+String[] Function GetWornObjectList() Global Native
+Function ClearWornObjectList() Global Native
+
+Int Function CreateTwoPartObject(Int ObjectA, Int ObjectB, Int ObjectType) Global Native
+Int Function DeleteTwoPartObject(Int ObjectA, Int ObjectB) Global Native
+
+Int[] Function GetTwoPartObjectItemNumbers(Int Page) Global Native
+String[] Function GetTwoPartObjectDisplayText(Int Page) Global Native
+Int Function GetTwoPartObjectPages() Global Native
+Int Function GetTwoPartObjectsAmount() Global Native
+String[] Function GetTwoPartObjectTypeStrings() Global Native
+
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
 	
@@ -627,17 +659,31 @@ Event OnConfigOpen()
 	
 	MaxRegisteredFemalePages = GetRegisteredFemalesPages()
 	MaxPermanentFemalePages = GetPermanentFemalesPages()
+	MaxTwoPartObjectPages = GetTwoPartObjectPages()
+	TwoPartObjectTypes = GetTwoPartObjectTypeStrings()
 	
-	If MaxRegisteredFemalePages > CurrentRegisteredFemalePage
+	If MaxRegisteredFemalePages < CurrentRegisteredFemalePage
 		CurrentRegisteredFemalePage = MaxRegisteredFemalePages
-	ElseIf CurrentRegisteredFemalePage < 1
+	EndIf
+	
+	If CurrentRegisteredFemalePage < 1
 		CurrentRegisteredFemalePage = 1
 	EndIf
 	
-	If MaxPermanentFemalePages > CurrentPermanentFemalePage
+	If MaxPermanentFemalePages < CurrentPermanentFemalePage
 		CurrentPermanentFemalePage = MaxPermanentFemalePages
-	ElseIf CurrentPermanentFemalePage < 1
+	EndIf
+	
+	If CurrentPermanentFemalePage < 1
 		CurrentPermanentFemalePage = 1
+	EndIf
+	
+	If MaxTwoPartObjectPages < TwoPartObjectPage
+		TwoPartObjectPage = MaxTwoPartObjectPages
+	EndIf
+	
+	If TwoPartObjectPage < 1
+		TwoPartObjectPage = 1
 	EndIf
 	
 	RegisteredFemaleNames = GetRegisteredFemaleNames(CurrentRegisteredFemalePage)
@@ -674,6 +720,8 @@ Event OnConfigOpen()
 	StrictModestyTimers = GetPlayerStrictModestyTimers()
 	SimpleModestyTimers = GetPlayerSimpleModestyTimers()
 	
+	WornObjectNames = GetWornObjectList()
+	
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - END")
 EndEvent
 
@@ -685,6 +733,16 @@ Function UpdateFlashingOdds(Int FlashOddsIndex, Int OddsValue) Global Native
 Event OnConfigClose()
 	UpdateConfigBoolOptions(ConfigBoolOptions)
 	UpdateConfigIntOptions(ConfigIntOptions)
+	
+	ClearWornObjectList()
+	
+	TwoPartObjectA = "-None-"
+	TwoPartObjectB = "-None-"
+	TwoPartObjectType = "-None-"
+	
+	TwoPartObjectAIndex = -1
+	TwoPartObjectBIndex = -1
+	TwoPartObjectTypeIndex = -1
 	
 	If TopRank1Jump == True
 		AND_Modesty_Manager.SKSETopRankJump(1)
@@ -2131,7 +2189,7 @@ Event OnPageReset(string page)
 			AddHeaderOption("$TrackedFemalesHeader")
 			NPCModestyMenus[1] = AddMenuOption("$SelectedFemaleText", SelectedFemale, 0)
 			AddTextOption("$FemaleFormIDText", GetFemaleActorFormID(SelectedFemaleActor))
-			NPCModestySliders[7] = AddMenuOption("$RegisteredFemalesPage", CurrentRegisteredFemalePage, DisabledIf(MaxRegisteredFemalePages < 2))
+			NPCModestySliders[7] = AddSliderOption("$RegisteredFemalesPage", CurrentRegisteredFemalePage, "{0}",  DisabledIf(MaxRegisteredFemalePages < 2))
 			
 			NPCModestyToggles[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermanentFemaleNames.Find(SelectedFemale) >= 0))
 			NPCModestyToggles[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, DisabledIf(MakeFemalePermanent == False))
@@ -2158,9 +2216,76 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$PersistentFemaleHeader")
 			NPCModestyMenus[3] = AddMenuOption("$SelectedFemaleText", SelectedPermFemale, 0)
-			NPCModestySliders[8] = AddMenuOption("$PermanentFemalesPage", CurrentPermanentFemalePage, DisabledIf(MaxPermanentFemalePages < 2))
+			NPCModestySliders[8] = AddSliderOption("$PermanentFemalesPage", CurrentPermanentFemalePage, "{0}", DisabledIf(MaxPermanentFemalePages < 2))
 			NPCModestyToggles[19] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
 			NPCModestyToggles[20] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, DisabledIf(DeletePermFemale == False || SelectedPermFemale == "---" || SelectedPermFemale == ""))
+		EndIf
+	ElseIf (page == "$TwoPartObjectsPage")
+		AddHeaderOption("$MakeTwoPartObjectHeader") ;0
+		TwoPartObjectMenu[0] = AddMenuOption("$ObjectAText", TwoPartObjectA, 0) ;2
+		TwoPartObjectMenu[1] = AddMenuOption("$ObjectBText", TwoPartObjectB, 0) ;4
+		TwoPartObjectMenu[2] = AddMenuOption("$ObjectTypeText", TwoPartObjectType, 0) ;6
+		
+		
+		SetCursorPosition(1)
+		TwoPartObjectToggles[0] = AddToggleOption("$CreateTwoPartObjectText", ConfirmSelection, DisabledIf(TwoPartObjectAIndex == TwoPartObjectBIndex || TwoPartObjectAIndex < 0 || TwoPartObjectBIndex < 0)) ;1
+		TwoPartObjectToggles[1] = AddToggleOption("$DeleteTwoPartObjectText", ConfirmSelection, DisabledIf(TwoPartObjectAIndex == TwoPartObjectBIndex || TwoPartObjectAIndex < 0 || TwoPartObjectBIndex < 0)) ;3
+		
+		AddEmptyOption() ;5
+		
+		AddHeaderOption("$TwoPartObjectPageSelectHeader") ;7
+		TwoPartObjectSliders[0] = AddSliderOption("$TwoPartObjectPageText", TwoPartObjectPage, "{0}", DisabledIf(MaxTwoPartObjectPages < 1)) ;9
+		
+		SetCursorPosition(7)
+		
+		If GetTwoPartObjectsAmount() > 0
+			Int[] ItemNumber = GetTwoPartObjectItemNumbers(TwoPartObjectPage)
+			String[] DisplayText = GetTwoPartObjectDisplayText(TwoPartObjectPage)
+			
+			Int ItemNumberIndex = 0
+			Int DisplayTextIndex = 0
+			
+			Int PageSlotIndex = 10
+			SetCursorPosition(PageSlotIndex)
+			
+			If ItemNumber.Length * 3 != DisplayText.Length
+				Debug.MessageBox("A.N.D. MCM ERROR - Two Part Object arrays are mismatched! (" + (ItemNumber.Length * 3) + " and " + DisplayText.Length + ") Cannot display Two Part Object List!")
+				return
+			EndIf
+			
+			While PageSlotIndex < 90 && ItemNumberIndex < ItemNumber.Length && DisplayTextIndex < DisplayText.Length
+				AddHeaderOption("$TwoPartObjectHeader " + ItemNumber[ItemNumberIndex])
+				
+				AddTextOption("$ObjectAText", DisplayText[DisplayTextIndex])
+				DisplayTextIndex += 1
+				AddTextOption("$ObjectBText", DisplayText[DisplayTextIndex])
+				DisplayTextIndex += 1
+				AddTextOption("$ObjectTypeText", DisplayText[DisplayTextIndex])
+				
+				ItemNumberIndex += 2
+				DisplayTextIndex += 4
+				PageSlotIndex += 8
+			EndWhile
+			
+			ItemNumberIndex = 1
+			DisplayTextIndex = 3
+			
+			PageSlotIndex = 11
+			SetCursorPosition(PageSlotIndex)
+			
+			While PageSlotIndex < 90 && ItemNumberIndex < ItemNumber.Length && DisplayTextIndex < DisplayText.Length
+				AddHeaderOption("$TwoPartItem " + ItemNumber[ItemNumberIndex])
+				
+				AddTextOption("$ObjectAText", DisplayText[DisplayTextIndex])
+				DisplayTextIndex += 1
+				AddTextOption("$ObjectBText", DisplayText[DisplayTextIndex])
+				DisplayTextIndex += 1
+				AddTextOption("$ObjectTypeText", DisplayText[DisplayTextIndex])
+				
+				ItemNumberIndex += 2
+				DisplayTextIndex += 4
+				PageSlotIndex += 8
+			EndWhile
 		EndIf
 	ElseIf (page == "$FlashKeys")
 		AddHeaderOption("$FlashKeysHeader")
@@ -2551,10 +2676,16 @@ Event OnOptionSliderOpen(Int Option)
 		RangeMax = MaxPermanentFemalePages
 		Interval = 1
 		DefaultValue = 1
+	ElseIf Option == TwoPartObjectSliders[0] ;Two Part Object Page
+		StartValue = TwoPartObjectPage
+		RangeMin = 1
+		RangeMax = MaxTwoPartObjectPages
+		Interval = 1
+		DefaultValue = 1
 	EndIf
 	
 	SetSliderDialogStartValue(StartValue)
-	SetSliderDialogDefaultValue(StartValue)
+	SetSliderDialogDefaultValue(DefaultValue)
 	SetSliderDialogRange(RangeMin, RangeMax)
 	SetSliderDialogInterval(Interval)
 EndEvent
@@ -2610,6 +2741,11 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		
 		SelectedPermFemale = PermanentFemaleNames[PermIndex]
 		ForcePageReset()
+	ElseIf Option == TwoPartObjectSliders[0] ;Two Part Object Page
+		TwoPartObjectPage = Value as Int
+		SetSliderOptionValue(Option, Value, "{0}", False)
+		
+		ForcePageReset()
 	EndIf
 EndEvent
 
@@ -2637,6 +2773,15 @@ Event OnOptionMenuOpen(Int Option)
 	ElseIf Option == NPCModestyMenus[3]
 		Texts = PermanentFemaleNames
 		StartIndex = PermIndex
+	ElseIf Option == TwoPartObjectMenu[0] ;Object A Selection
+		Texts = WornObjectNames
+		StartIndex = 0
+	ElseIf Option == TwoPartObjectMenu[1] ;Object B Selection
+		Texts = WornObjectNames
+		StartIndex = 0
+	ElseIf Option == TwoPartObjectMenu[2] ;Object Type Selection
+		Texts = TwoPartObjectTypes
+		StartIndex = 0
 	EndIf
 	SetMenuDialogOptions(Texts)
 	SetMenuDialogStartIndex(StartIndex)
@@ -2732,6 +2877,15 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 		EndIf
 		
 		SelectedPermFemale = PermanentFemaleNames[PermIndex]
+	ElseIf Option == TwoPartObjectMenu[0] ;Object A
+		TwoPartObjectA = WornObjectNames[Index]
+		TwoPartObjectAIndex = Index
+	ElseIf Option == TwoPartObjectMenu[1] ;Object B
+		TwoPartObjectB = WornObjectNames[Index]
+		TwoPartObjectBIndex = Index
+	ElseIf Option == TwoPartObjectMenu[2] ;Object Type
+		TwoPartObjectType = TwoPartObjectTypes[Index]
+		TwoPartObjectTypeIndex = Index
 	EndIf
 	ForcePageReset()
 EndEvent
@@ -3166,6 +3320,28 @@ Event OnOptionSelect(Int Option)
 		LogSettings[LogLevel_Error] = !LogSettings[LogLevel_Error]
 		AND_Logger.UpdateLoggingType(LogLevel_Error, LogSettings[LogLevel_Error])
 		SetToggleOptionValue(Option, LogSettings[LogLevel_Error])
+	ElseIf Option == TwoPartObjectToggles[0]
+		Int Result = CreateTwoPartObject(TwoPartObjectAIndex, TwoPartObjectBIndex, TwoPartObjectTypeIndex)
+		
+		If Result == -1
+			Debug.MessageBox("FAIL - Invalid Selections for Two Part Object")
+		ElseIf Result == 0
+			Debug.MessageBox("SUCCESS - Two Part Object Created")
+		ElseIf Result == 1
+			Debug.MessageBox("FAIL - This Two Part Object already exists")
+		ElseIf Result == 2
+			Debug.MessageBox("WARNING - Too Many Two Part Objects have been registered! You have exceeded the 65000 Object Limit!")
+		EndIf
+	ElseIf Option == TwoPartObjectToggles[1]
+		Int Result = DeleteTwoPartObject(TwoPartObjectAIndex, TwoPartObjectBIndex)
+		
+		If Result == -1
+			Debug.MessageBox("FAIL - Invalid Selections for Two Part Object")
+		ElseIf Result == 0
+			Debug.MessageBox("SUCCESS - Two Part Object Deleted")
+		ElseIf Result == 1
+			Debug.MessageBox("FAIL - This Two Part Object does not exist")
+		EndIf
 	EndIf
 EndEvent
 

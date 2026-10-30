@@ -13,9 +13,50 @@ enum FunctionEnd {
 	FailCritical
 };
 
+int FindInVector(std::vector<PermanentFemales> SearchVector, PermanentFemales SearchTarget) {
+	int SearchIndex = 0;
+	while (SearchIndex < SearchVector.size()) {
+		if (
+			SearchVector[SearchIndex].GetName() == SearchTarget.GetName()
+			&& SearchVector[SearchIndex].GetModIndex() == SearchTarget.GetModIndex()
+			&& SearchVector[SearchIndex].LocalID == SearchTarget.LocalID
+			) {
+			return SearchIndex;
+		}
+		SearchIndex++;
+	}
+	return -1;
+}
+
 void NPCDataOnRevertCallback() {
 	PermanentFemaleVector.clear();
 	RegisteredFemaleMap.clear();
+}
+
+PermanentFemales ConvertLegacyFemale(LegacyPermanentFemales LegacyFemale) {
+	PermanentFemales ConvertedFemale;
+
+	ConvertedFemale.LocalID = LegacyFemale.LocalID;
+
+	memcpy(ConvertedFemale.Name, LegacyFemale.Name, sizeof(ConvertedFemale.Name));
+	memcpy(ConvertedFemale.Plugin, LegacyFemale.Plugin, sizeof(ConvertedFemale.Plugin));
+
+	ConvertedFemale.DefaultRankBottom = (UINT8)LegacyFemale.DefaultRankBottom;
+	ConvertedFemale.DefaultRankTop = (UINT8)LegacyFemale.DefaultRankTop;
+	ConvertedFemale.DefaultRankStrict = (UINT8)LegacyFemale.DefaultRankStrict;
+
+	ConvertedFemale.MinimumRankBottom = (UINT8)LegacyFemale.MinimumRankBottom;
+	ConvertedFemale.MinimumRankTop = (UINT8)LegacyFemale.MinimumRankTop;
+	ConvertedFemale.MinimumRankStrict = (UINT8)LegacyFemale.MinimumRankStrict;
+
+	ConvertedFemale.SexualityScore = (UINT8)LegacyFemale.SexualityScore;
+	ConvertedFemale.ShynessMode = (UINT8)LegacyFemale.ShynessMode;
+
+	ConvertedFemale.AllowCorruption = LegacyFemale.AllowCorruption;
+	ConvertedFemale.AllowShameless = LegacyFemale.AllowShameless;
+	ConvertedFemale.StrictRules = LegacyFemale.StrictRules;
+
+	return ConvertedFemale;
 }
 
 int GetInternalPermanentFemaleID(RE::Actor* akFemale)
@@ -24,16 +65,16 @@ int GetInternalPermanentFemaleID(RE::Actor* akFemale)
 	
 	for(int Index = 0; Index < PermanentFemaleVector.size(); ++Index)
 	{
-		uint32_t ModIndex = PermanentFemaleVector[Index].GetModIndex();
+		UINT32 ModIndex = PermanentFemaleVector[Index].GetModIndex();
 
 		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Checking Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") ModIndex is: " + std::format("{:08X}", ModIndex), Logger::LogType::NPCData, Logger::LoggingLevel::info);
 		
-		if (PermanentFemaleVector[Index].LightPlugin) {
+		if (PermanentFemaleVector[Index].GetPluginFile()->IsLight()) {
 			ModIndex += 0xFE000000;
 		}
 
-		uint32_t akLocalID = PermanentFemaleVector[Index].LocalID;
+		UINT32 akLocalID = PermanentFemaleVector[Index].LocalID;
 		RE::FormID PermanentFemaleFormID = ModIndex + akLocalID;
 
 		Log("<C++ NPCData> [GetInternalPermanentFemaleID] Female " + std::string(akFemale->GetName()) + " (" + std::format("{:08X}", akFemale->GetFormID()) + ") LocalID is: " + std::format("{:08X}", akLocalID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
@@ -59,7 +100,7 @@ void ImportSinglePermanent(int InternalID) {
 	
 	uint32_t ModIndex = ThePermFemale.GetModIndex();
 
-	if (ThePermFemale.LightPlugin) {
+	if (ThePermFemale.GetPluginFile()->IsLight()) {
 		ModIndex += 0xFE000000;
 	}
 
@@ -97,7 +138,7 @@ void ImportSinglePermanent(int InternalID) {
 	RegisteredFemaleMap[PermanentFemaleFormID] = TheRegFemale;
 }
 
-void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualityScore) {
+void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, UINT8 SexualityScore) {
 	if (akFemale == nullptr) {
 		Log("<C++ NPCData> [RegisterFemale] Cannot register NULL actor!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 		return;
@@ -121,10 +162,10 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 		return;
 	}
 
-	int ShynessMode = ShySex::Men; //Default to Men (zero) if no shyness otherwise found
-	int StrictModesty = GetRandomizedModesty(akFemale, false);
-	int TopModesty = SimpleModestyLevel::Modest;
-	int BottomModesty = TopModesty;
+	UINT8 ShynessMode = ShySex::Men; //Default to Men (zero) if no shyness otherwise found
+	UINT8 StrictModesty = GetRandomizedModesty(akFemale, false);
+	UINT8 TopModesty = SimpleModestyLevel::Modest;
+	UINT8 BottomModesty = TopModesty;
 
 	switch (StrictModesty) {
 		case StrictModestyLevel::Reasonable:
@@ -156,9 +197,9 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 			break;
 	}
 
-	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictModesty));
-	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopModesty));
-	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomModesty));
+	SetActorFactionRank(akFemale, ModestyFaction, StrictModesty);
+	SetActorFactionRank(akFemale, TopModestyFaction, TopModesty);
+	SetActorFactionRank(akFemale, BottomModestyFaction, BottomModesty);
 
 	//Establish Shyness
 	if (InstalledMods::Sexlab && Configuration::DefaultNPCShyness == ShySex::Sexuality) {
@@ -182,7 +223,7 @@ void RegisterFemale(RE::Actor* akFemale, float CurrentGameTime, int SexualitySco
 		}
 	}
 	else if (Configuration::DefaultNPCShyness == ShySex::Random) {
-		int ShyRoll = Randomizer(0,2);
+		UINT8 ShyRoll = Randomizer(0,2);
 		if (ShyRoll == ShySex::Men) {
 			//Straight
 			SetActorFactionRank(akFemale, ShyWithMale, 1);
@@ -272,7 +313,7 @@ void DeleteAllFemales(RE::StaticFunctionTag*)
 			continue;
 		}
 
-		int index = 0;
+		UINT8 index = 0;
 		while (index < TotalFactions) {
 			if (akFemale->IsInFaction(AllFactions[index]) == false) {
 				akFemale->RemoveFromFaction(AllFactions[index]);
@@ -284,22 +325,22 @@ void DeleteAllFemales(RE::StaticFunctionTag*)
 	RegisteredFemaleMap.clear();
 }
 
-void RegisterRosa(float CurrentGameTime, int SexualityScore) {
-	int RosaForm = Rosa->GetFormID();
-	int RosaBaseForm = Rosa->GetActorBase()->GetFormID();
-	std::string RosaEditorID = Rosa->GetFormEditorID();
-	std::string RosaBaseEditorID = Rosa->GetActorBase()->GetFormEditorID();
-	std::string RosaName = Rosa->GetName();
-	std::string RosaBaseName = Rosa->GetActorBase()->GetFormEditorID();
+void RegisterRosa(float CurrentGameTime, UINT8 SexualityScore) {
+	RE::FormID RosaForm = Rosa->GetFormID();
+	RE::FormID RosaBaseForm = Rosa->GetActorBase()->GetFormID();
+	std::string RosaEditorID = static_cast<std::string>(Rosa->GetFormEditorID());
+	std::string RosaBaseEditorID = static_cast<std::string>(Rosa->GetActorBase()->GetFormEditorID());
+	std::string RosaName = static_cast<std::string>(Rosa->GetName());
+	std::string RosaBaseName = static_cast<std::string>(Rosa->GetActorBase()->GetFormEditorID());
 
 	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:08X}", RosaForm), Logger::LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + static_cast<std::string>(RosaEditorID), Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + static_cast<std::string>(RosaBaseEditorID), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + RosaEditorID, Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + RosaBaseEditorID, Logger::LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, Logger::LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, Logger::LogType::NPCData);
 
-	int ShynessMode;
+	UINT8 ShynessMode;
 
 	if (SexualityScore > 65) {
 		//Straight
@@ -327,23 +368,23 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 
 	ThisFemale.FemaleFormID = RosaForm;
 
-	ThisFemale.DefaultRankStrict = StrictModestyLevel::Immodest;
-	ThisFemale.CurrentRankStrict = StrictModestyLevel::Immodest;
-	ThisFemale.MinimumRankStrict = StrictModestyLevel::Immodest;
+	ThisFemale.DefaultRankStrict = StrictModestyLevel::Shameless;
+	ThisFemale.CurrentRankStrict = StrictModestyLevel::Shameless;
+	ThisFemale.MinimumRankStrict = StrictModestyLevel::Shameless;
 
-	ThisFemale.DefaultRankTop = SimpleModestyLevel::Immodest;
-	ThisFemale.CurrentRankTop = SimpleModestyLevel::Immodest;
-	ThisFemale.MinimumRankTop = SimpleModestyLevel::Immodest;
+	ThisFemale.DefaultRankTop = SimpleModestyLevel::Shameless;
+	ThisFemale.CurrentRankTop = SimpleModestyLevel::Shameless;
+	ThisFemale.MinimumRankTop = SimpleModestyLevel::Shameless;
 
-	ThisFemale.DefaultRankBottom = SimpleModestyLevel::Immodest;
-	ThisFemale.CurrentRankBottom = SimpleModestyLevel::Immodest;
-	ThisFemale.MinimumRankBottom = SimpleModestyLevel::Immodest;
+	ThisFemale.DefaultRankBottom = SimpleModestyLevel::Shameless;
+	ThisFemale.CurrentRankBottom = SimpleModestyLevel::Shameless;
+	ThisFemale.MinimumRankBottom = SimpleModestyLevel::Shameless;
 
 	ThisFemale.ShynessMode = ShynessMode;
 	ThisFemale.SexualityScore = SexualityScore;
 
-	ThisFemale.AllowShameless = Configuration::NPCShamelessByDefault;
-	ThisFemale.AllowCorruption = Configuration::NPCCorruptionByDefault;
+	ThisFemale.AllowShameless = true;
+	ThisFemale.AllowCorruption = false;
 	ThisFemale.StrictRules = Configuration::StrictModestyRules;
 	ThisFemale.UpgradeBlocked = false;
 
@@ -352,10 +393,7 @@ void RegisterRosa(float CurrentGameTime, int SexualityScore) {
 	RegisteredFemaleMap[RosaForm] = ThisFemale;
 }
 
-int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) 
-{
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
-
+int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale) {
 	std::string akName = akFemale->GetName();
 	RE::FormID FemaleFormID = akFemale->GetFormID();
 
@@ -366,10 +404,9 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 		return FunctionEnd::FailCritical;
 	}
 
-	PermanentFemales ThisFemale;
-	memset(&ThisFemale, 0, sizeof(ThisFemale)); //force all new data to blank/false
-
 	uint32_t pluginID;
+
+	const RE::TESFile* plugin = nullptr;
 
 	switch(FemaleFormID >> 24)
 	{
@@ -378,31 +415,25 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 		return FunctionEnd::FailError;
 
 		case 0xFE:
-			ThisFemale.LightPlugin = true;
 			pluginID = FemaleFormID >> 12;
+			plugin = GameDataHandler->LookupLoadedLightModByIndex((UINT16)pluginID);
+			plugin ? Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " was found in LIGHT plugin: " + (std::string)plugin->GetFilename(), Logger::LogType::NPCData, Logger::LoggingLevel::info) : Log("<C++ NPCData> [RegisterPermanent] ERROR: NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " was NOT found in a LIGHT plugin...", Logger::LogType::NPCData, Logger::LoggingLevel::error);
 		break;
 
-		default: pluginID = FemaleFormID >> 24; break;
-	}
-
-	const RE::TESFile* plugin;
-
-	if (ThisFemale.LightPlugin) {
-		Log("<C++ NPCData> [RegisterPermanent] LIGHT PLUGIN 12 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
-		pluginID -= 0xFE000;
-		Log("<C++ NPCData> [RegisterPermanent] Subtracted 0xFE000 Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
-		plugin = DataHandler->LookupLoadedLightModByIndex((uint16_t)pluginID);
-	}
-	else {
-		Log("<C++ NPCData> [RegisterPermanent] FULL PLUGIN 24 Bit-shifted Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::info);
-		plugin = DataHandler->LookupLoadedModByIndex((uint8_t)pluginID);
+		default: 
+			pluginID = FemaleFormID >> 24;
+			plugin = GameDataHandler->LookupLoadedModByIndex((UINT8)pluginID);
+			plugin ? Log("<C++ NPCData> [RegisterPermanent] NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " was found in FULL plugin: " + (std::string)plugin->GetFilename(), Logger::LogType::NPCData, Logger::LoggingLevel::info) : Log("<C++ NPCData> [RegisterPermanent] ERROR: NPC " + akName + " with Form ID " + std::format("{:08X}", FemaleFormID) + " was NOT found in a FULL plugin...", Logger::LogType::NPCData, Logger::LoggingLevel::error);
+			break;
 	}
 
 	if(!plugin)
 	{
-		Log("<C++ NPCData> [RegisterPermanent] Error: Failed to find Plugin Index! Plugin ID is: " + std::format("{:08X}", pluginID), Logger::LogType::NPCData, Logger::LoggingLevel::error);
+		//Log("<C++ NPCData> [RegisterPermanent] Error: Failed to find Plugin for Female " + std::string(akFemale->GetName()), Logger::NPCData, Logger::error);
 		return FunctionEnd::FailError; 
 	}
+
+	PermanentFemales ThisFemale;
 
 	RE::FormID localID = akFemale->GetLocalFormID();
 
@@ -414,21 +445,28 @@ int RegisterPermanent(RE::StaticFunctionTag*, RE::Actor* akFemale)
 	{
 		if(PermanentFemaleVector[i].LocalID == localID)
 		{
-			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + static_cast<std::string>(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:08X}", FemaleFormID) + ") (Local ID | " + std::format("{:08X}", localID) + ") already exists in Permanent Female list!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
+			Log("<C++ NPCData> [RegisterPermanent] Female " + akName + " from Plugin " + std::string(plugin->GetFilename()) + " with Form IDs: (Full ID | " + std::format("{:08X}", FemaleFormID) + ") (Local ID | " + std::format("{:08X}", localID) + ") already exists in Permanent Female list!", Logger::LogType::NPCData, Logger::LoggingLevel::warning);
 			return FunctionEnd::FailWarn;
 		}
 	}
 
 	Log("<C++ NPCData> [RegisterPermanent] Actor Form ID is: " + std::format("{:08X}", FemaleFormID), Logger::LogType::NPCData);
 	Log("<C++ NPCData> [RegisterPermanent] Actor Local Form ID is: " + std::format("{:08X}", localID), Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + static_cast<std::string>(plugin->GetFilename()), Logger::LogType::NPCData);
+	Log("<C++ NPCData> [RegisterPermanent] Actor Plugin Origin is: " + std::string(plugin->GetFilename()), Logger::LogType::NPCData);
+
+	memset(&ThisFemale, 0, sizeof(ThisFemale)); //force all new data to blank/false
 
 	ThisFemale.LocalID = localID;
 
 	const std::string_view plugin_name = plugin->GetFilename();
-	memset(ThisFemale.Plugin, 0, sizeof(ThisFemale.Plugin));
 	// if plugin_name.size() is larger than sizeof(ThisFemale.Plugin) we write over the buffer length.
-	// if plugin_name.size() if equal to 256 then the string will not be null terminated
+	// if plugin_name.size() is equal to 256 then the string will not be null terminated
+
+	if (plugin_name.size() > 255) {
+		Log("<C++ NPCData> [RegisterPermanent] Plugin Name (" + std::string(plugin->GetFilename()) + ") is too long", Logger::LogType::NPCData);
+		return FunctionEnd::FailCritical;
+	}
+
 	memcpy(ThisFemale.Plugin, plugin_name.data(), plugin_name.size());
 	strncpy_s(ThisFemale.Name, sizeof(ThisFemale.Name), akName.c_str(), sizeof(ThisFemale.Name));
 
@@ -486,6 +524,47 @@ void ExternalRemovePermanentAtIndex(RE::StaticFunctionTag*, int PermanentIndex) 
 	RemovePermanentAtIndex(PermanentIndex);
 }
 
+bool ValidatePermanentFemale(PermanentFemales ThisPermanentFemale) {
+	UINT32 ModIndex = ThisPermanentFemale.GetModIndex();
+
+	const RE::TESFile* PluginFile = ThisPermanentFemale.GetPluginFile();
+
+	if (!PluginFile) {
+		Log("<C++ NPCData> [ValidatePermanentFemale] Could not find plugin file " + std::string(ThisPermanentFemale.GetPluginName()) + " for Female " + std::string(ThisPermanentFemale.GetName()), Logger::NPCData, Logger::warning);
+		return false;
+	}
+
+	if (PluginFile->IsLight()) {
+		ModIndex += 0xFE000000;
+	}
+
+	if (ModIndex >= 0xFF000000) {
+		Log("<C++ NPCData> [ValidatePermanentFemale] Female " + std::string(ThisPermanentFemale.GetName()) + " is not valid. Mod Index is " + std::to_string(ModIndex), Logger::NPCData, Logger::warning);
+		return false;
+	}
+
+	RE::FormID PermanentFemaleFormID = ModIndex | ThisPermanentFemale.LocalID;
+
+	if (PermanentFemaleFormID >= 0xFF000000) {
+		Log("<C++ NPCData> [ValidatePermanentFemale] Female " + std::string(ThisPermanentFemale.GetName()) + " is not valid. Form ID is " + std::format("{:08X}", PermanentFemaleFormID), Logger::NPCData, Logger::warning);
+		return false;
+	}
+
+	RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
+	if (!ValidActor) {
+		Log("<C++ NPCData> [ValidatePermanentFemale] Female " + std::string(ThisPermanentFemale.GetName()) + " is not valid because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer when cast as an Actor!", Logger::NPCData, Logger::warning);
+		return false;
+	}
+
+	if (ThisPermanentFemale.DefaultRankBottom > 3 || ThisPermanentFemale.DefaultRankTop > 3 || ThisPermanentFemale.DefaultRankStrict > 6
+		|| ThisPermanentFemale.MinimumRankBottom > 3 || ThisPermanentFemale.MinimumRankTop > 3 || ThisPermanentFemale.MinimumRankStrict > 6) {
+		Log("<C++ NPCData> [ValidatePermanentFemale] Female " + std::string(ThisPermanentFemale.GetName()) + " is not valid because one of their modesty rank settings is out of range!", Logger::NPCData, Logger::warning);
+		return false;
+	}
+
+	return true;
+}
+
 void ImportPermanentFemales()
 {
 	Log("<C++ NPCData> [ImportPermanentFemales] - Function Triggered", Logger::LogType::NPCData);
@@ -500,18 +579,17 @@ void ImportPermanentFemales()
 
 	for (PermanentFemales& ThePermFemale : PermanentFemaleVector)
 	{
-		uint32_t ModIndex = ThePermFemale.GetModIndex();
+		UINT32 ModIndex = ThePermFemale.GetModIndex();
 
-		if (ThePermFemale.LightPlugin) {
+		if (ThePermFemale.GetPluginFile()->IsLight()) {
 			ModIndex += 0xFE000000;
 		}
 		
 		RE::FormID PermanentFemaleFormID = ModIndex | ThePermFemale.LocalID;
 
 		RE::Actor* ValidActor = RE::TESForm::LookupByID<RE::Actor>(PermanentFemaleFormID);
-		if (!ValidActor)
-		{
-			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThePermFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!");
+		if (!ValidActor) {
+			Log("<C++ NPCData> [ImportPermanents] Could not import Female " + std::string(ThePermFemale.GetName()) + " because their Form ID (" + std::format("{:08X}", PermanentFemaleFormID) + ") returns a null pointer!", Logger::NPCData, Logger::warning);
 
 			continue;
 		}
@@ -563,9 +641,9 @@ void ExternalImportPermanentFemales(RE::StaticFunctionTag*)
 
 	for(PermanentFemales& ThePermFemale : PermanentFemaleVector)
 	{
-		uint32_t ModIndex = ThePermFemale.GetModIndex();
+		UINT32 ModIndex = ThePermFemale.GetModIndex();
 
-		if (ThePermFemale.LightPlugin) {
+		if (ThePermFemale.GetPluginFile()->IsLight()) {
 			ModIndex += 0xFE000000;
 		}
 		
@@ -616,7 +694,7 @@ void TweakFemaleData
 (
 	RE::StaticFunctionTag*,
 	RE::Actor* akFemale, 
-	int StrictRank, int TopRank, int BottomRank, int MinimumStrict, int MinimumTop, int MinimumBottom, int ShynessMode, 
+	int StrictRank, int TopRank, int BottomRank, int MinimumStrict, int MinimumTop, int MinimumBottom, int ShynessMode,
 	bool EnableShameless, bool EnableCorrupt, bool MakeDefault, bool IsStrictRules, bool IsUpgradeBlocked
 ) {
 	RE::FormID id = akFemale->GetFormID();
@@ -630,9 +708,9 @@ void TweakFemaleData
 
 	float CurrentGameTime = GameCalendar->GetCurrentGameTime();
 
-	SetActorFactionRank(akFemale, ModestyFaction, HandleInteger(StrictRank));
-	SetActorFactionRank(akFemale, TopModestyFaction, HandleInteger(TopRank));
-	SetActorFactionRank(akFemale, BottomModestyFaction, HandleInteger(BottomRank));
+	SetActorFactionRank(akFemale, ModestyFaction, (INT8)StrictRank);
+	SetActorFactionRank(akFemale, TopModestyFaction, (INT8)TopRank);
+	SetActorFactionRank(akFemale, BottomModestyFaction, (INT8)BottomRank);
 
 	RegisteredFemales& ThisFemale = RegisteredFemaleMap[id];
 
@@ -654,19 +732,19 @@ void TweakFemaleData
 	ThisFemale.BottomModestyTimer2 = 0;
 	ThisFemale.BottomModestyTimer3 = 0;
 
-	ThisFemale.CurrentRankStrict = StrictRank;
-	ThisFemale.CurrentRankTop = TopRank;
-	ThisFemale.CurrentRankBottom = BottomRank;
+	ThisFemale.CurrentRankStrict = (UINT8)StrictRank;
+	ThisFemale.CurrentRankTop = (UINT8)TopRank;
+	ThisFemale.CurrentRankBottom = (UINT8)BottomRank;
 
-	ThisFemale.MinimumRankStrict = MinimumStrict;
-	ThisFemale.MinimumRankTop = MinimumTop;
-	ThisFemale.MinimumRankBottom = MinimumBottom;
+	ThisFemale.MinimumRankStrict = (UINT8)MinimumStrict;
+	ThisFemale.MinimumRankTop = (UINT8)MinimumTop;
+	ThisFemale.MinimumRankBottom = (UINT8)MinimumBottom;
 
 	if (MakeDefault)
 	{
-		ThisFemale.DefaultRankStrict = StrictRank;
-		ThisFemale.DefaultRankTop = TopRank;
-		ThisFemale.DefaultRankBottom = BottomRank;
+		ThisFemale.DefaultRankStrict = (UINT8)StrictRank;
+		ThisFemale.DefaultRankTop = (UINT8)TopRank;
+		ThisFemale.DefaultRankBottom = (UINT8)BottomRank;
 	}
 
 	ThisFemale.AllowShameless = EnableShameless;
@@ -674,22 +752,22 @@ void TweakFemaleData
 	ThisFemale.StrictRules = IsStrictRules;
 	ThisFemale.UpgradeBlocked = IsUpgradeBlocked;
 
-	ThisFemale.ShynessMode = ShynessMode;
+	ThisFemale.ShynessMode = (UINT8)ShynessMode;
 
 	ThisFemale.LastUpdateTime = CurrentGameTime;
 
 	int PermFemaleID = GetInternalPermanentFemaleID(akFemale);
 	if (PermFemaleID >= 0)
 	{
-		PermanentFemaleVector[PermFemaleID].MinimumRankStrict  = MinimumStrict;
-		PermanentFemaleVector[PermFemaleID].MinimumRankTop = MinimumTop;
-		PermanentFemaleVector[PermFemaleID].MinimumRankBottom = MinimumBottom;
+		PermanentFemaleVector[PermFemaleID].MinimumRankStrict  = (UINT8)MinimumStrict;
+		PermanentFemaleVector[PermFemaleID].MinimumRankTop = (UINT8)MinimumTop;
+		PermanentFemaleVector[PermFemaleID].MinimumRankBottom = (UINT8)MinimumBottom;
 
 		if (MakeDefault)
 		{
-			PermanentFemaleVector[PermFemaleID].DefaultRankStrict = StrictRank;
-			PermanentFemaleVector[PermFemaleID].DefaultRankTop = TopRank;
-			PermanentFemaleVector[PermFemaleID].DefaultRankBottom = BottomRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankStrict = (UINT8)StrictRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankTop = (UINT8)TopRank;
+			PermanentFemaleVector[PermFemaleID].DefaultRankBottom = (UINT8)BottomRank;
 		}
 
 		if (PermanentFemaleVector[PermFemaleID].MinimumRankStrict > PermanentFemaleVector[PermFemaleID].DefaultRankStrict) {
@@ -708,7 +786,7 @@ void TweakFemaleData
 		PermanentFemaleVector[PermFemaleID].AllowCorruption = EnableCorrupt;
 		PermanentFemaleVector[PermFemaleID].StrictRules = IsStrictRules;
 
-		PermanentFemaleVector[PermFemaleID].ShynessMode = ShynessMode;
+		PermanentFemaleVector[PermFemaleID].ShynessMode = (UINT8)ShynessMode;
 	}
 }
 

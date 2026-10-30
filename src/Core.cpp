@@ -54,7 +54,7 @@ int FindInVector(std::vector<std::string> SearchVector, std::string SearchTarget
 	return -1;
 }
 
-int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget) {
+int FindInVector(std::vector<UINT8> SearchVector, UINT8 SearchTarget) {
 	int SearchIndex = 0;
 	while (SearchIndex < SearchVector.size()) {
 		if (SearchVector[SearchIndex] == SearchTarget) {
@@ -65,7 +65,18 @@ int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget) {
 	return -1;
 }
 
-uint8_t HandleInteger(int iValue) {
+int FindInVector(std::vector<bool> SearchVector, bool SearchTarget) {
+	int SearchIndex = 0;
+	while (SearchIndex < SearchVector.size()) {
+		if (SearchVector[SearchIndex] == SearchTarget) {
+			return SearchIndex;
+		}
+		SearchIndex++;
+	}
+	return -1;
+}
+
+UINT8 HandleInteger(int iValue) {
 	if (iValue < 0) {
 		iValue = 0;
 	}
@@ -73,7 +84,7 @@ uint8_t HandleInteger(int iValue) {
 		iValue = 255;
 	}
 
-	return static_cast<uint8_t>(iValue);
+	return static_cast<UINT8>(iValue);
 }
 
 std::string BoolToString(bool True) {
@@ -83,7 +94,7 @@ std::string BoolToString(bool True) {
 	return "False";
 }
 
-std::string FlashRiskToString(int RiskLevel) {
+std::string FlashRiskToString(UINT8 RiskLevel) {
 	if (RiskLevel == FlashRiskLevel::Low) {
 		return "Low";
 	}
@@ -117,37 +128,40 @@ void InitializeCoreData() {
 
 	GameCalendar = RE::Calendar::GetSingleton();
 
+	//Game Data Handler
+	GameDataHandler = RE::TESDataHandler::GetSingleton();
+
 	//Races
 
-	VanillaRaces[0] = RE::TESForm::LookupByID<RE::TESRace>(0x13743); //Altmer
-	VanillaRaces[1] = RE::TESForm::LookupByID<RE::TESRace>(0x88840); //Altmer Vampire
+	VanillaRaces[Altmer] = RE::TESForm::LookupByID<RE::TESRace>(0x13743); //Altmer
+	VanillaRaces[AltmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88840); //Altmer Vampire
 
-	VanillaRaces[2] = RE::TESForm::LookupByID<RE::TESRace>(0x13740); //Argonian
-	VanillaRaces[3] = RE::TESForm::LookupByID<RE::TESRace>(0x8883A); //Argonian Vampire
+	VanillaRaces[Argonian] = RE::TESForm::LookupByID<RE::TESRace>(0x13740); //Argonian
+	VanillaRaces[ArgonianVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x8883A); //Argonian Vampire
 
-	VanillaRaces[4] = RE::TESForm::LookupByID<RE::TESRace>(0x13741); //Breton
-	VanillaRaces[5] = RE::TESForm::LookupByID<RE::TESRace>(0x8883C); //Breton Vampire
+	VanillaRaces[Bosmer] = RE::TESForm::LookupByID<RE::TESRace>(0x13749); //Bosmer
+	VanillaRaces[BosmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88884); //Bosmer Vampire
 
-	VanillaRaces[6] = RE::TESForm::LookupByID<RE::TESRace>(0x13749); //Bosmer
-	VanillaRaces[7] = RE::TESForm::LookupByID<RE::TESRace>(0x88884); //Bosmer Vampire
+	VanillaRaces[Breton] = RE::TESForm::LookupByID<RE::TESRace>(0x13741); //Breton
+	VanillaRaces[BretonVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x8883C); //Breton Vampire
 
-	VanillaRaces[8] = RE::TESForm::LookupByID<RE::TESRace>(0x13742); //Dunmer
-	VanillaRaces[9] = RE::TESForm::LookupByID<RE::TESRace>(0x8883D); //Dunmer Vampire
+	VanillaRaces[Dunmer] = RE::TESForm::LookupByID<RE::TESRace>(0x13742); //Dunmer
+	VanillaRaces[DunmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x8883D); //Dunmer Vampire
 
-	VanillaRaces[10] = RE::TESForm::LookupByID<RE::TESRace>(0x13744); //Imperial
-	VanillaRaces[11] = RE::TESForm::LookupByID<RE::TESRace>(0x88844); //Imperial Vampire
+	VanillaRaces[Imperial] = RE::TESForm::LookupByID<RE::TESRace>(0x13744); //Imperial
+	VanillaRaces[ImperialVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88844); //Imperial Vampire
 
-	VanillaRaces[12] = RE::TESForm::LookupByID<RE::TESRace>(0x13745); //Khajiit
-	VanillaRaces[13] = RE::TESForm::LookupByID<RE::TESRace>(0x88845); //Khajiit Vampire
+	VanillaRaces[Khajiit] = RE::TESForm::LookupByID<RE::TESRace>(0x13745); //Khajiit
+	VanillaRaces[KhajiitVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88845); //Khajiit Vampire
 
-	VanillaRaces[14] = RE::TESForm::LookupByID<RE::TESRace>(0x13746); //Nord
-	VanillaRaces[15] = RE::TESForm::LookupByID<RE::TESRace>(0x88794); //Nord Vampire
+	VanillaRaces[Nord] = RE::TESForm::LookupByID<RE::TESRace>(0x13746); //Nord
+	VanillaRaces[NordVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88794); //Nord Vampire
 
-	VanillaRaces[16] = RE::TESForm::LookupByID<RE::TESRace>(0x13747); //Orsimer
-	VanillaRaces[17] = RE::TESForm::LookupByID<RE::TESRace>(0xA82B9); //Orsimer Vampire
+	VanillaRaces[Orsimer] = RE::TESForm::LookupByID<RE::TESRace>(0x13747); //Orsimer
+	VanillaRaces[OrsimerVampire] = RE::TESForm::LookupByID<RE::TESRace>(0xA82B9); //Orsimer Vampire
 
-	VanillaRaces[18] = RE::TESForm::LookupByID<RE::TESRace>(0x13748); //Redguard
-	VanillaRaces[19] = RE::TESForm::LookupByID<RE::TESRace>(0x88846); //Redguard Vampire
+	VanillaRaces[Redguard] = RE::TESForm::LookupByID<RE::TESRace>(0x13748); //Redguard
+	VanillaRaces[RedguardVampire] = RE::TESForm::LookupByID<RE::TESRace>(0x88846); //Redguard Vampire
 
 	DefaultTransformations[0] = RE::TESForm::LookupByID<RE::TESRace>(0x0200283A); //Vampire Lord
 	DefaultTransformations[1] = RE::TESForm::LookupByID<RE::TESRace>(0x000CDD84); //Werewolf
@@ -169,8 +183,6 @@ void InitializeCoreData() {
 
 	ShyWithFemale = RE::TESForm::LookupByEditorID<RE::TESFaction>("AND_ShyWithFemales");
 	ShyWithMale = RE::TESForm::LookupByEditorID<RE::TESFaction>("AND_ShyWithMales");
-
-	//FollowerFaction = RE::TESForm::LookupByEditorID<RE::TESFaction>("CurrentFollowerFaction");
 
 	ArousalFaction = RE::TESForm::LookupByEditorID<RE::TESFaction>("AND_ArousalFaction");
 
@@ -204,181 +216,324 @@ void InitializeCoreData() {
 
 	//Universal Keywords
 
-	Ignore = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Ignore"); //Possibly Unneeded in C++?
+	UniversalKeywords[Ignore] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Ignore"); //Possibly Unneeded in C++?
 
-	//Female Keywords
+	/*=============
+	Female Keywords
+	=============*/
 
-	ArmorTop = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop");
-	ArmorTop_NoCover = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_NoCover");
-	ArmorTopT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low");
-	ArmorTopT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT");
-	ArmorTopT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High");
+	FemaleKeywords[ArmorTop] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop");
+	FemaleKeywords[ArmorTop_NoCover] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_NoCover");
+	FemaleKeywords[ArmorTopT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low");
+	FemaleKeywords[ArmorTopT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT");
+	FemaleKeywords[ArmorTopT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High");
 
-	ArmorBottom = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom");
-	ArmorBottom_NoCover = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_NoCover");
-	ArmorBottomT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low");
-	ArmorBottomT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT");
-	ArmorBottomT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High");
+	FemaleKeywords[ArmorBottom] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom");
+	FemaleKeywords[ArmorBottom_NoCover] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_NoCover");
+	FemaleKeywords[ArmorBottomT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low");
+	FemaleKeywords[ArmorBottomT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT");
+	FemaleKeywords[ArmorBottomT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High");
 
-	AssCurtain = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtain");
-	AssCurtainT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtainT");
+	FemaleKeywords[AssCurtain] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtain");
+	FemaleKeywords[AssCurtainT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtainT");
 
-	AssFlashRiskLow = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskLow");
-	AssFlashRisk = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRisk");
-	AssFlashRiskHigh = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskHigh");
-	AssFlashRiskExtreme = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskExtreme");
-	AssFlashRiskUltra = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskUltra");
+	FemaleKeywords[AssFlashRiskLow] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskLow");
+	FemaleKeywords[AssFlashRisk] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRisk");
+	FemaleKeywords[AssFlashRiskHigh] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskHigh");
+	FemaleKeywords[AssFlashRiskExtreme] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskExtreme");
+	FemaleKeywords[AssFlashRiskUltra] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskUltra");
 
-	Bra = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra");
-	Bra_NoCover = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_NoCover");
-	BraT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low");
-	BraT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT");
-	BraT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High");
+	FemaleKeywords[Bra] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra");
+	FemaleKeywords[Bra_NoCover] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_NoCover");
+	FemaleKeywords[BraT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low");
+	FemaleKeywords[BraT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT");
+	FemaleKeywords[BraT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High");
 
-	ChestCurtain = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtain");
-	ChestCurtainT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtainT");
+	FemaleKeywords[ChestCurtain] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtain");
+	FemaleKeywords[ChestCurtainT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtainT");
 
-	ChestFlashRiskLow = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskLow");
-	ChestFlashRisk = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRisk");
-	ChestFlashRiskHigh = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskHigh");
-	ChestFlashRiskExtreme = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskExtreme");
-	ChestFlashRiskUltra = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskUltra");
+	FemaleKeywords[ChestFlashRiskLow] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskLow");
+	FemaleKeywords[ChestFlashRisk] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRisk");
+	FemaleKeywords[ChestFlashRiskHigh] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskHigh");
+	FemaleKeywords[ChestFlashRiskExtreme] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskExtreme");
+	FemaleKeywords[ChestFlashRiskUltra] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskUltra");
 
-	CoversAll = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CoversAll");
+	FemaleKeywords[CoversAll] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CoversAll");
 
-	CString = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CString");
-	CStringT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT_Low");
-	CStringT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT");
-	CStringT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT_High");
+	FemaleKeywords[CString] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CString");
+	FemaleKeywords[CStringT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT_Low");
+	FemaleKeywords[CStringT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT");
+	FemaleKeywords[CStringT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CStringT_High");
 
-	EffectivelyNaked = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_EffectivelyNaked");
+	FemaleKeywords[EffectivelyNaked] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_EffectivelyNaked");
 
-	Hotpants = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Hotpants");
-	HotpantsT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Low");
-	HotpantsT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT");
-	HotpantsT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_High");
+	FemaleKeywords[Hotpants] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Hotpants");
+	FemaleKeywords[HotpantsT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Low");
+	FemaleKeywords[HotpantsT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT");
+	FemaleKeywords[HotpantsT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_High");
 
-	Microskirt = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Microskirt");
+	FemaleKeywords[Microskirt] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Microskirt");
 
-	Miniskirt = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Miniskirt");
-	MiniskirtT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_MiniskirtT");
+	FemaleKeywords[Miniskirt] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Miniskirt");
+	FemaleKeywords[MiniskirtT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_MiniskirtT");
 
-	NearlyNaked = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NearlyNaked");
-	NipplePasties = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NipplePasties");
+	FemaleKeywords[NearlyNaked] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NearlyNaked");
+	FemaleKeywords[NipplePasties] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NipplePasties");
 
-	PelvicCurtain = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtain");
-	PelvicCurtainT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtainT");
+	FemaleKeywords[PelvicCurtain] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtain");
+	FemaleKeywords[PelvicCurtainT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtainT");
 
-	PelvicFlashRiskLow = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskLow");
-	PelvicFlashRisk = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRisk");
-	PelvicFlashRiskHigh = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskHigh");
-	PelvicFlashRiskExtreme = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskExtreme");
-	PelvicFlashRiskUltra = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskUltra");
+	FemaleKeywords[PelvicFlashRiskLow] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskLow");
+	FemaleKeywords[PelvicFlashRisk] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRisk");
+	FemaleKeywords[PelvicFlashRiskHigh] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskHigh");
+	FemaleKeywords[PelvicFlashRiskExtreme] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskExtreme");
+	FemaleKeywords[PelvicFlashRiskUltra] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskUltra");
 
-	ShowgirlSkirt = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirt");
-	ShowgirlSkirtT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT_Low");
-	ShowgirlSkirtT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT");
-	ShowgirlSkirtT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT_High");
+	FemaleKeywords[ShowgirlSkirt] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirt");
+	FemaleKeywords[ShowgirlSkirtT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT_Low");
+	FemaleKeywords[ShowgirlSkirtT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT");
+	FemaleKeywords[ShowgirlSkirtT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ShowgirlSkirtT_High");
 
-	Thong = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong");
-	Thong_NoCover = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_NoCover");
-	ThongT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Low");
-	ThongT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT");
-	ThongT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_High");
+	FemaleKeywords[Thong] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong");
+	FemaleKeywords[Thong_NoCover] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_NoCover");
+	FemaleKeywords[ThongT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Low");
+	FemaleKeywords[ThongT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT");
+	FemaleKeywords[ThongT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_High");
 
-	Underwear = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear");
-	Underwear_NoCover = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_NoCover");
-	UnderwearT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Low");
-	UnderwearT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT");
-	UnderwearT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_High");
+	FemaleKeywords[Underwear] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear");
+	FemaleKeywords[Underwear_NoCover] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_NoCover");
+	FemaleKeywords[UnderwearT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Low");
+	FemaleKeywords[UnderwearT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT");
+	FemaleKeywords[UnderwearT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_High");
 
-	VaginaPasties = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_VaginaPasties");
+	FemaleKeywords[VaginaPasties] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_VaginaPasties");
 
-	//Male Keywords
+	//Multi-Part Objects
+	/*
+	TwoPart_ArmorTop = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTop");
+	TwoPart_ArmorTopT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT_Low");
+	TwoPart_ArmorTopT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT");
+	TwoPart_ArmorTopT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT_High");
 
-	ArmorTop_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Male");
-	ArmorTop_NoCover_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_NoCover_Male");
-	ArmorTopT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Male");
-	ArmorTopT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Male");
-	ArmorTopT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Male");
+	ArmorTop_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Part1");
+	ArmorTop_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Part2");
 
-	ArmorBottom_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Male");
-	ArmorBottom_NoCover_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_NoCover_Male");
-	ArmorBottomT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Male");
-	ArmorBottomT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Male");
-	ArmorBottomT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Male");
+	ArmorTopT_Low_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Part1");
+	ArmorTopT_Low_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Part2");
 
-	AssCurtain_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtain_Male");
-	AssCurtainT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtainT_Male");
+	ArmorTopT_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Part1");
+	ArmorTopT_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Part2");
 
-	AssFlashRiskLow_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskLow_Male");
-	AssFlashRisk_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRisk_Male");
-	AssFlashRiskHigh_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskHigh_Male");
-	AssFlashRiskExtreme_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskExtreme_Male");
-	AssFlashRiskUltra_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskUltra_Male");
+	ArmorTopT_High_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Part1");
+	ArmorTopT_High_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Part2");
 
-	Bra_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Male");
-	Bra_NoCover_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_NoCover_Male");
-	BraT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Male");
-	BraT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Male");
-	BraT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Male");
+	TwoPart_ArmorBottom = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottom");
+	TwoPart_ArmorBottomT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT_Low");
+	TwoPart_ArmorBottomT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT");
+	TwoPart_ArmorBottomT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT_High");
 
-	ChestCurtain_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtain_Male");
-	ChestCurtainT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtainT_Male");
+	ArmorBottom_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Part1");
+	ArmorBottom_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Part2");
 
-	ChestFlashRiskLow_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskLow_Male");
-	ChestFlashRisk_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRisk_Male");
-	ChestFlashRiskHigh_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskHigh_Male");
-	ChestFlashRiskExtreme_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskExtreme_Male");
-	ChestFlashRiskUltra_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskUltra_Male");
+	ArmorBottomT_Low_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Part1");
+	ArmorBottomT_Low_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Part2");
 
-	CoversAll_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CoversAll_Male");
+	ArmorBottomT_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Part1");
+	ArmorBottomT_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Part2");
 
-	BananaHammock = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammock");
-	BananaHammockT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT_Low");
-	BananaHammockT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT");
-	BananaHammockT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT_High");
+	ArmorBottomT_High_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Part1");
+	ArmorBottomT_High_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Part2");
 
-	EffectivelyNaked_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_EffectivelyNaked_Male");
+	TwoPart_Bra = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_Bra");
+	TwoPart_BraT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT_Low");
+	TwoPart_BraT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT");
+	TwoPart_BraT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT_High");
 
-	Hotpants_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Hotpants_Male");
-	HotpantsT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Low_Male");
-	HotpantsT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Male");
-	HotpantsT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_High_Male");
+	Bra_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Part1");
+	Bra_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Part2");
 
-	Microskirt_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Microskirt_Male");
+	BraT_Low_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Part1");
+	BraT_Low_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Part2");
 
-	Miniskirt_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Miniskirt_Male");
-	MiniskirtT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_MiniskirtT_Male");
+	BraT_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Part1");
+	BraT_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Part2");
 
-	NipplePasties_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NipplePasties_Male");
-	NearlyNaked_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NearlyNaked_Male");
+	BraT_High_Part1 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Part1");
+	BraT_High_Part2 = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Part2");
+	*/
 
-	PelvicCurtain_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtain_Male");
-	PelvicCurtainT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtainT_Male");
+	/*===========
+	Male Keywords
+	===========*/
 
-	PelvicFlashRiskLow_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskLow_Male");
-	PelvicFlashRisk_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRisk_Male");
-	PelvicFlashRiskHigh_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskHigh_Male");
-	PelvicFlashRiskExtreme_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskExtreme_Male");
-	PelvicFlashRiskUltra_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskUltra_Male");
+	MaleKeywords[ArmorTop_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Male");
+	MaleKeywords[ArmorTop_NoCover_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_NoCover_Male");
+	MaleKeywords[ArmorTopT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Male");
+	MaleKeywords[ArmorTopT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Male");
+	MaleKeywords[ArmorTopT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Male");
 
-	HimboSkirt = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirt");
-	HimboSkirtT_Low = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT_Low");
-	HimboSkirtT = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT");
-	HimboSkirtT_High = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT_High");
+	MaleKeywords[ArmorBottom_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Male");
+	MaleKeywords[ArmorBottom_NoCover_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_NoCover_Male");
+	MaleKeywords[ArmorBottomT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Male");
+	MaleKeywords[ArmorBottomT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Male");
+	MaleKeywords[ArmorBottomT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Male");
 
-	Thong_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_Male");
-	Thong_NoCover_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_NoCover_Male");
-	ThongT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Low_Male");
-	ThongT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Male");
-	ThongT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_High_Male");
+	MaleKeywords[AssCurtain_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtain_Male");
+	MaleKeywords[AssCurtainT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssCurtainT_Male");
 
-	Underwear_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_Male");
-	Underwear_NoCover_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_NoCover_Male");
-	UnderwearT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Low_Male");
-	UnderwearT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Male");
-	UnderwearT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_High_Male");
+	MaleKeywords[AssFlashRiskLow_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskLow_Male");
+	MaleKeywords[AssFlashRisk_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRisk_Male");
+	MaleKeywords[AssFlashRiskHigh_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskHigh_Male");
+	MaleKeywords[AssFlashRiskExtreme_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskExtreme_Male");
+	MaleKeywords[AssFlashRiskUltra_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_AssFlashRiskUltra_Male");
+
+	MaleKeywords[Bra_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Male");
+	MaleKeywords[Bra_NoCover_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_NoCover_Male");
+	MaleKeywords[BraT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Male");
+	MaleKeywords[BraT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Male");
+	MaleKeywords[BraT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Male");
+
+	MaleKeywords[ChestCurtain_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtain_Male");
+	MaleKeywords[ChestCurtainT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestCurtainT_Male");
+
+	MaleKeywords[ChestFlashRiskLow_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskLow_Male");
+	MaleKeywords[ChestFlashRisk_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRisk_Male");
+	MaleKeywords[ChestFlashRiskHigh_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskHigh_Male");
+	MaleKeywords[ChestFlashRiskExtreme_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskExtreme_Male");
+	MaleKeywords[ChestFlashRiskUltra_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ChestFlashRiskUltra_Male");
+
+	MaleKeywords[CoversAll_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_CoversAll_Male");
+
+	MaleKeywords[BananaHammock] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammock");
+	MaleKeywords[BananaHammockT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT_Low");
+	MaleKeywords[BananaHammockT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT");
+	MaleKeywords[BananaHammockT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BananaHammockT_High");
+
+	MaleKeywords[EffectivelyNaked_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_EffectivelyNaked_Male");
+
+	MaleKeywords[Hotpants_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Hotpants_Male");
+	MaleKeywords[HotpantsT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Low_Male");
+	MaleKeywords[HotpantsT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_Male");
+	MaleKeywords[HotpantsT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HotpantsT_High_Male");
+
+	MaleKeywords[Microskirt_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Microskirt_Male");
+
+	MaleKeywords[Miniskirt_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Miniskirt_Male");
+	MaleKeywords[MiniskirtT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_MiniskirtT_Male");
+
+	MaleKeywords[NipplePasties_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NipplePasties_Male");
+	MaleKeywords[NearlyNaked_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_NearlyNaked_Male");
+
+	MaleKeywords[PelvicCurtain_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtain_Male");
+	MaleKeywords[PelvicCurtainT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicCurtainT_Male");
+
+	MaleKeywords[PelvicFlashRiskLow_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskLow_Male");
+	MaleKeywords[PelvicFlashRisk_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRisk_Male");
+	MaleKeywords[PelvicFlashRiskHigh_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskHigh_Male");
+	MaleKeywords[PelvicFlashRiskExtreme_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskExtreme_Male");
+	MaleKeywords[PelvicFlashRiskUltra_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_PelvicFlashRiskUltra_Male");
+
+	MaleKeywords[HimboSkirt] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirt");
+	MaleKeywords[HimboSkirtT_Low] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT_Low");
+	MaleKeywords[HimboSkirtT] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT");
+	MaleKeywords[HimboSkirtT_High] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_HimboSkirtT_High");
+
+	MaleKeywords[Thong_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_Male");
+	MaleKeywords[Thong_NoCover_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Thong_NoCover_Male");
+	MaleKeywords[ThongT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Low_Male");
+	MaleKeywords[ThongT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_Male");
+	MaleKeywords[ThongT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ThongT_High_Male");
+
+	MaleKeywords[Underwear_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_Male");
+	MaleKeywords[Underwear_NoCover_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Underwear_NoCover_Male");
+	MaleKeywords[UnderwearT_Low_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Low_Male");
+	MaleKeywords[UnderwearT_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_Male");
+	MaleKeywords[UnderwearT_High_Male] = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_UnderwearT_High_Male");
+
+	//Multi-Part Objects
+	/*
+	TwoPart_ArmorTop_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTop_Male");
+	TwoPart_ArmorTopT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT_Low_Male");
+	TwoPart_ArmorTopT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT_Male");
+	TwoPart_ArmorTopT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorTopT_High_Male");
+
+	ArmorTop_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Part1_Male");
+	ArmorTop_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTop_Part2_Male");
+
+	ArmorTopT_Low_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Part1_Male");
+	ArmorTopT_Low_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Low_Part2_Male");
+
+	ArmorTopT_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Part1_Male");
+	ArmorTopT_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_Part2_Male");
+
+	ArmorTopT_High_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Part1_Male");
+	ArmorTopT_High_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorTopT_High_Part2_Male");
+
+	TwoPart_ArmorBottom_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottom_Male");
+	TwoPart_ArmorBottomT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT_Low_Male");
+	TwoPart_ArmorBottomT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT_Male");
+	TwoPart_ArmorBottomT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_ArmorBottomT_High_Male");
+
+	ArmorBottom_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Part1_Male");
+	ArmorBottom_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottom_Part2_Male");
+
+	ArmorBottomT_Low_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Part1_Male");
+	ArmorBottomT_Low_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Low_Part2_Male");
+
+	ArmorBottomT_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Part1_Male");
+	ArmorBottomT_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_Part2_Male");
+
+	ArmorBottomT_High_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Part1_Male");
+	ArmorBottomT_High_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_ArmorBottomT_High_Part2_Male");
+
+	TwoPart_Bra_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_Bra_Male");
+	TwoPart_BraT_Low_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT_Low_Male");
+	TwoPart_BraT_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT_Male");
+	TwoPart_BraT_High_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_TwoPart_BraT_High_Male");
+
+	Bra_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Part1_Male");
+	Bra_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_Bra_Part2_Male");
+
+	BraT_Low_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Part1_Male");
+	BraT_Low_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Low_Part2_Male");
+
+	BraT_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Part1_Male");
+	BraT_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_Part2_Male");
+
+	BraT_High_Part1_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Part1_Male");
+	BraT_High_Part2_Male = RE::TESForm::LookupByEditorID<RE::BGSKeyword>("AND_BraT_High_Part2_Male");
+	*/
+
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTop] = "ArmorTop";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT_High] = "ArmorTopT_High";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT] = "ArmorTopT";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT_Low] = "ArmorTopT_Low";
+
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottom] = "ArmorBottom";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT_High] = "ArmorBottomT_High";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT] = "ArmorBottomT";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT_Low] = "ArmorBottomT_Low";
+
+	TwoPartObject::TypeStrings[TwoPartObject::Bra] = "Bra";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT_High] = "BraT_High";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT] = "BraT";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT_Low] = "BraT_Low";
+
+	//Male Strings
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTop_Male] = "ArmorTop_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT_High_Male] = "ArmorTopT_High_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT_Male] = "ArmorTopT_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorTopT_Low_Male] = "ArmorTopT_Low_Male";
+
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottom_Male] = "ArmorBottom_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT_High_Male] = "ArmorBottomT_High_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT_Male] = "ArmorBottomT_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::ArmorBottomT_Low_Male] = "ArmorBottomT_Low_Male";
+
+	TwoPartObject::TypeStrings[TwoPartObject::Bra_Male] = "Bra_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT_High_Male] = "BraT_High_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT_Male] = "BraT_Male";
+	TwoPartObject::TypeStrings[TwoPartObject::BraT_Low_Male] = "BraT_Low_Male";
 
 	//Other Keywords
 	
@@ -420,6 +575,8 @@ void InitializeCoreData() {
 
 	Log("<C++ Core> [InitializeCoreData] COMPLETE");
 }
+
+//std::string Get
 
 void SetActorFactionRank(RE::Actor* akActor, RE::TESFaction* akFaction, int8_t factionRank) {
 	akActor->RemoveFromFaction(akFaction);
@@ -513,35 +670,572 @@ bool PlayerWornHasKeyword(RE::BGSKeyword* Keyword) {
 	return false;
 }
 
-int Randomizer(int MinRoll, int MaxRoll) {
+std::vector<UINT16> CollectTwoPartObjectIndices(bool ObjectListA, RE::TESBoundObject* akObject) {
+	std::vector<UINT16> IndexVector = {};
+	std::string_view ObjectEditorID = akObject->GetFormEditorID();
+
+	if (ObjectListA) {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartA.size(); ++Index) {
+			if (ObjectEditorID == TwoPart_Object_PartA[Index]) {
+				IndexVector.emplace_back(Index);
+			}
+		}
+	}
+	else {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartB.size(); ++Index) {
+			if (ObjectEditorID == TwoPart_Object_PartB[Index]) {
+				IndexVector.emplace_back(Index);
+			}
+		}
+	}
+
+	return IndexVector;
+}
+
+std::vector<UINT16> CollectTwoPartObjectIndices(bool ObjectListA, std::string_view ObjectEditorID) {
+	std::vector<UINT16> IndexVector = {};
+
+	if (ObjectListA) {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartA.size(); ++Index) {
+			if (ObjectEditorID == TwoPart_Object_PartA[Index]) {
+				IndexVector.emplace_back(Index);
+			}
+		}
+	}
+	else {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartB.size(); ++Index) {
+			if (ObjectEditorID == TwoPart_Object_PartB[Index]) {
+				IndexVector.emplace_back(Index);
+			}
+		}
+	}
+
+	return IndexVector;
+}
+
+UINT8 RegisterTwoPartObject(std::string_view ObjectA, std::string_view ObjectB, UINT8 ObjectType) {
+	enum ReturnCodes {
+		Success,
+		AlreadyExists,
+		TooManyObjects
+	};
+	
+	//Search For objects in lists
+	std::vector<UINT16> ObjectAIndices = CollectTwoPartObjectIndices(true, ObjectA);
+	std::vector<UINT16> ObjectBIndices = CollectTwoPartObjectIndices(false, ObjectB);
+	
+	if (ObjectAIndices.size() && ObjectBIndices.size()) {
+		for (UINT16 IndexA = 0; IndexA < ObjectAIndices.size(); ++IndexA) {
+			for (UINT16 IndexB = 0; IndexB < ObjectBIndices.size(); ++IndexB) {
+				if (ObjectAIndices[IndexA] == ObjectBIndices[IndexB]) {
+					Log("<C++ Core> [RegisterTwoPartObject] These items are already registered as a Two Part Object", Logger::Core, Logger::warning);
+					return AlreadyExists;
+				}
+			}
+		}
+	}
+
+	//Search for objects in lists (inverted list order)
+	ObjectAIndices = CollectTwoPartObjectIndices(false, ObjectA);
+	ObjectBIndices = CollectTwoPartObjectIndices(true, ObjectB);
+
+	if (ObjectAIndices.size() && ObjectBIndices.size()) {
+		for (UINT16 IndexA = 0; IndexA < ObjectAIndices.size(); ++IndexA) {
+			for (UINT16 IndexB = 0; IndexB < ObjectBIndices.size(); ++IndexB) {
+				if (ObjectAIndices[IndexA] == ObjectBIndices[IndexB]) {
+					Log("<C++ Core> [RegisterTwoPartObject] These items are already registered as a Two Part Object", Logger::Core, Logger::warning);
+					return AlreadyExists;
+				}
+			}
+		}
+	}
+	
+	if (TwoPart_Object_PartA.size() >= 65000) {
+		Log("<C++ Core> [RegisterTwoPartObject] Too many objects registered. 65000 Two-Part Objects reached. Further registration would risk 16-bit Integer overflow.", Logger::Core, Logger::warning);
+		return TooManyObjects;
+	}
+
+	TwoPart_Object_PartA.emplace_back(ObjectA);
+	TwoPart_Object_PartB.emplace_back(ObjectB);
+	TwoPart_Object_Type.emplace_back(ObjectType);
+
+	return Success;
+}
+
+UINT8 UnregisterTwoPartObject(std::string_view ObjectA, std::string_view ObjectB) {
+	enum ReturnCodes {
+		Success,
+		DoesNotExist
+	};
+
+	std::vector<UINT16> ObjectAIndices = CollectTwoPartObjectIndices(true, ObjectA);
+	std::vector<UINT16> ObjectBIndices = CollectTwoPartObjectIndices(false, ObjectB);
+
+	//Search For objects in lists
+	if (ObjectAIndices.size() && ObjectBIndices.size()) {
+		for (UINT16 IndexA = 0; IndexA < ObjectAIndices.size(); ++IndexA) {
+			for (UINT16 IndexB = 0; IndexB < ObjectBIndices.size(); ++IndexB) {
+				if (ObjectAIndices[IndexA] == ObjectBIndices[IndexB]) {
+					Log("<C++ Core> [UnregisterTwoPartObject] Original EditorIDs are " + (std::string)ObjectA + " and " + (std::string)ObjectB, Logger::Core, Logger::info);
+					Log("<C++ Core> [UnregisterTwoPartObject] Deleting Two Part Object at IndexA (" + std::to_string(ObjectAIndices[IndexA]) + ") and IndexB (" + std::to_string(ObjectBIndices[IndexB]) + ") with EditorIDs (" + (std::string)TwoPart_Object_PartA[ObjectAIndices[IndexA]] + ") and (" + (std::string)TwoPart_Object_PartB[ObjectBIndices[IndexB]] + ")", Logger::Core, Logger::info);
+					TwoPart_Object_PartA.erase(TwoPart_Object_PartA.begin() + ObjectAIndices[IndexA]);
+					TwoPart_Object_PartB.erase(TwoPart_Object_PartB.begin() + ObjectAIndices[IndexA]);
+					TwoPart_Object_Type.erase(TwoPart_Object_Type.begin() + ObjectAIndices[IndexA]);
+					return Success;
+				}
+			}
+		}
+	}
+
+	//Search For objects in lists (inverted)
+	ObjectAIndices = CollectTwoPartObjectIndices(false, ObjectA);
+	ObjectBIndices = CollectTwoPartObjectIndices(true, ObjectB);
+
+	if (ObjectAIndices.size() && ObjectBIndices.size()) {
+		for (UINT16 IndexA = 0; IndexA < ObjectAIndices.size(); ++IndexA) {
+			for (UINT16 IndexB = 0; IndexB < ObjectBIndices.size(); ++IndexB) {
+				if (ObjectAIndices[IndexA] == ObjectBIndices[IndexB]) {
+					Log("<C++ Core> [UnregisterTwoPartObject] Original EditorIDs are " + (std::string)ObjectA + " and " + (std::string)ObjectB, Logger::Core, Logger::info);
+					Log("<C++ Core> [UnregisterTwoPartObject] Deleting Two Part Object at IndexA (" + std::to_string(ObjectAIndices[IndexA]) + ") and IndexB (" + std::to_string(ObjectBIndices[IndexB]) + ") with EditorIDs (" + (std::string)TwoPart_Object_PartA[ObjectAIndices[IndexA]] + ") and (" + (std::string)TwoPart_Object_PartB[ObjectBIndices[IndexB]] + ")", Logger::Core, Logger::info);
+					TwoPart_Object_PartA.erase(TwoPart_Object_PartA.begin() + ObjectAIndices[IndexA]);
+					TwoPart_Object_PartB.erase(TwoPart_Object_PartB.begin() + ObjectAIndices[IndexA]);
+					TwoPart_Object_Type.erase(TwoPart_Object_Type.begin() + ObjectAIndices[IndexA]);
+					return Success;
+				}
+			}
+		}
+	}
+
+	Log("<C++ Core> [UnregisterTwoPartObject] Two Part Object consisting of " + (std::string)ObjectA + " and " + (std::string)ObjectB + " does not exist.", Logger::Core, Logger::info);
+	return DoesNotExist;
+}
+
+bool IsTwoPartObjectPiece(bool ObjectListA, RE::TESBoundObject* Item, UINT8 ObjectType) {
+	std::string_view ItemEditorID = Item->GetFormEditorID();
+	
+	if (ObjectListA) {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartA.size(); ++Index) {
+			if (ItemEditorID == TwoPart_Object_PartA[Index] && ObjectType == TwoPart_Object_Type[Index]) {
+				return true;
+			}
+		}
+	}
+	else {
+		for (UINT16 Index = 0; Index < TwoPart_Object_PartB.size(); ++Index) {
+			if (ItemEditorID == TwoPart_Object_PartB[Index] && ObjectType == TwoPart_Object_Type[Index]) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool IsWearingTwoPartObject(RE::Actor* akActor, UINT8 ObjectType) {
+	if (!akActor) {
+		Log("<C++ Core> [IsWearingTwoPartObject] ERROR - Actor is NULL!", Logger::Core, Logger::error);
+		return false;
+	}
+
+	const auto ActorInventory = akActor->GetInventory([](RE::TESBoundObject& BoundObject) {return BoundObject.IsArmor(); });
+
+	//RE::BGSKeywordForm* PartOneKeywordItem = nullptr;
+
+	std::vector<UINT16> PartOneObjectIndices = {};
+	std::vector<UINT16> PartTwoObjectIndices = {};
+
+	for (const auto& [ItemA, InventoryDataA] : ActorInventory) {
+		const auto& [CountA, EntryA] = InventoryDataA;
+		if (CountA <= 0 || !EntryA->IsWorn())
+			continue;
+		/*
+		const auto keywordItem = AsKeywordForm(item);
+		if (!keywordItem) {
+			continue;
+		}
+		*/
+
+		switch (ObjectType) {
+			//Female Object Types
+			case TwoPartObject::ArmorTop:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTop)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT_High:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT_High)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT_Low:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT_Low)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottom:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottom)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT_High:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT_High)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT_Low:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT_Low)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::Bra:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::Bra)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT_High:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT_High)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT_Low:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT_Low)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			
+			//Male Object Types
+			case TwoPartObject::ArmorTop_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTop_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT_High_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT_High_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorTopT_Low_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorTopT_Low_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottom_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottom_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT_High_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT_High_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::ArmorBottomT_Low_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::ArmorBottomT_Low_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::Bra_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::Bra_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT_High_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT_High_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			case TwoPartObject::BraT_Low_Male:
+				if (IsTwoPartObjectPiece(true, ItemA, TwoPartObject::BraT_Low_Male)) {
+					PartOneObjectIndices = CollectTwoPartObjectIndices(true, ItemA);
+				}
+				break;
+			default:
+				continue;
+		}
+
+		if (PartOneObjectIndices.size()) {
+			for (const auto& [ItemB, InventoryDataB] : ActorInventory) {
+				const auto& [CountB, EntryB] = InventoryDataB;
+				if (CountB <= 0 || !EntryB->IsWorn())
+					continue;
+				/*
+				const auto keywordItem = AsKeywordForm(item);
+				if (!keywordItem || keywordItem == PartOneKeywordItem) {
+					continue;
+				}
+				*/
+
+				switch (ObjectType) {
+					//Female Object Types
+					case TwoPartObject::ArmorTop:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTop)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT_High:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT_High)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT_Low:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT_Low)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottom:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottom)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT_High:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT_High)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT_Low:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT_Low)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::Bra:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::Bra)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT_High:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT_High)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT_Low:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT_Low)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+
+					//Male Object Types
+					case TwoPartObject::ArmorTop_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTop_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT_High_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT_High_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorTopT_Low_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorTopT_Low_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottom_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottom_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT_High_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT_High_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::ArmorBottomT_Low_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::ArmorBottomT_Low_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::Bra_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::Bra_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT_High_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT_High_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					case TwoPartObject::BraT_Low_Male:
+						if (IsTwoPartObjectPiece(false, ItemB, TwoPartObject::BraT_Low_Male)) {
+							PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+						}
+						break;
+					default:
+						continue;
+				}
+
+				if (PartTwoObjectIndices.size()) {
+					for (UINT16 Index = 0; Index < PartOneObjectIndices.size() && Index < PartTwoObjectIndices.size(); ++Index) {
+						if (PartOneObjectIndices[Index] == PartTwoObjectIndices[Index] && ObjectType == TwoPart_Object_Type[PartOneObjectIndices[Index]]) {
+							return true;
+						}
+					}
+
+					PartTwoObjectIndices.clear();
+				}
+			}
+
+			//PartOneKeywordItem = nullptr;
+			PartOneObjectIndices.clear();
+		}
+	}
+
+	return false;
+}
+
+std::vector<std::string> GetPlayerWornObjectNameList() {
+	const auto PlayerInventory = Player->GetInventory([](RE::TESBoundObject& BoundObject) {return BoundObject.IsArmor(); });
+
+	std::vector<std::string> StringVector;
+
+	for (const auto& [item, inventoryData] : PlayerInventory) {
+		
+		const auto& [count, entry] = inventoryData;
+		if (count <= 0 || !entry->IsWorn())
+			continue;
+		const auto keywordItem = AsKeywordForm(item);
+		if (!keywordItem) {
+			continue;
+		}
+
+		UINT8 UnnamedObjectNumber = 1;
+		if (item->GetName() == (std::string)"") {
+			StringVector.emplace_back("UnnamedObject" + std::to_string(UnnamedObjectNumber));
+			++UnnamedObjectNumber;
+		}
+		else {
+			StringVector.emplace_back(static_cast<std::string>(item->GetName()));
+		}
+	}
+
+	return StringVector;
+}
+
+std::vector<std::string_view> GetPlayerWornObjectEditorIDList() {
+	const auto PlayerInventory = Player->GetInventory([](RE::TESBoundObject& BoundObject) {return BoundObject.IsArmor(); });
+
+	std::vector<std::string_view> StringVector;
+
+	for (const auto& [item, inventoryData] : PlayerInventory) {
+		
+		const auto& [count, entry] = inventoryData;
+		if (count <= 0 || !entry->IsWorn())
+			continue;
+		const auto keywordItem = AsKeywordForm(item);
+		if (!keywordItem) {
+			continue;
+		}
+
+		StringVector.emplace_back(static_cast<std::string_view>(item->GetFormEditorID()));
+	}
+
+	return StringVector;
+}
+
+std::vector<RE::TESBoundObject*> GetPlayerWornObjectList() {
+	const auto PlayerInventory = Player->GetInventory([](RE::TESBoundObject& BoundObject) {return BoundObject.IsArmor(); });
+
+	std::vector<RE::TESBoundObject*> BoundObjectVector;
+
+	for (const auto& [item, inventoryData] : PlayerInventory) {
+
+		const auto& [count, entry] = inventoryData;
+		if (count <= 0 || !entry->IsWorn())
+			continue;
+		const RE::BGSKeywordForm* keywordItem = AsKeywordForm(item);
+		if (!keywordItem) {
+			continue;
+		}
+
+		BoundObjectVector.emplace_back(item);
+	}
+
+	return BoundObjectVector;
+}
+
+UINT8 Randomizer(INT8 MinRoll, INT8 MaxRoll) {
+	MinRoll = std::clamp(MinRoll, (INT8)0, (INT8)100);
+	MaxRoll = std::clamp(MaxRoll, (INT8)0, (INT8)100);
+	
 	std::random_device RandomEngine;
 	std::mt19937_64 gen(RandomEngine());
 	std::uniform_int_distribution<int> Result(MinRoll, MaxRoll);
-	return Result(gen);
+	
+	return (UINT8)Result(gen);
 }
 
-/*
-int GetCurtainOdds(float BaseRisk, float RiskModifier) {
-	//Base + ((100 - Base) * RiskModifier)
-	float RawOdds = BaseRisk + ((100 - BaseRisk) * (RiskModifier / 100));
-	int FinalOdds = std::round(RawOdds);
-	return FinalOdds;
-}
-*/
+UINT8 GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
+	UINT8 ModestyRoll = Randomizer(1, 100);
+	UINT8 Confidence = ConfidenceLevel::Average;
 
-int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
-	int ModestyRoll = Randomizer(1, 100);
-	int Confidence = ConfidenceLevel::Average;
-
-	int BaseModesty;
-	int FinalModesty;
+	UINT8 BaseModesty;
+	UINT8 FinalModesty;
 
 	RE::TESRace* akRace = akActor->GetRace();
 
 	//CONFIDENCE
 
 	if (!IsPlayer) {
-		Confidence = static_cast<int>(akActor->GetActorBase()->GetActorValue(RE::ActorValue::kConfidence));
+		Confidence = static_cast<INT8>(akActor->GetActorBase()->GetActorValue(RE::ActorValue::kConfidence));
 		Log("<C++ Core> [GetRandomizedModesty] Actor is NPC", Logger::LogType::Core);
 	} 
 	else if (Configuration::PlayerConfidenceLevel == ConfidenceLevel::Randomized) {
@@ -558,7 +1252,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 
 	//RACE
 
-	if (akRace == VanillaRaces[VanillaRaceIndex::Altmer] || akRace == VanillaRaces[VanillaRaceIndex::AltmerVampire]) {
+	if (
+		akRace == VanillaRaces[VanillaRaceIndex::Altmer] || akRace == VanillaRaces[VanillaRaceIndex::AltmerVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Altmer] || akRace == UBE::UBERaces[UBE::AltmerVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is an Altmer", Logger::LogType::Core);
 		if (ModestyRoll <= 35) {
 			BaseModesty = StrictModestyLevel::Modest;
@@ -591,7 +1288,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Tease;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Breton] || akRace == VanillaRaces[VanillaRaceIndex::BretonVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Breton] || akRace == VanillaRaces[VanillaRaceIndex::BretonVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Breton] || akRace == UBE::UBERaces[UBE::BretonVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is a Breton", Logger::LogType::Core);
 		if (ModestyRoll <= 5) {
 			BaseModesty = StrictModestyLevel::Reasonable;
@@ -609,7 +1309,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Brazen;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Bosmer] || akRace == VanillaRaces[VanillaRaceIndex::BosmerVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Bosmer] || akRace == VanillaRaces[VanillaRaceIndex::BosmerVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Bosmer] || akRace == UBE::UBERaces[UBE::BosmerVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is a Bosmer", Logger::LogType::Core);
 		if (ModestyRoll <= 35) {
 			BaseModesty = StrictModestyLevel::Comfortable;
@@ -621,7 +1324,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Brazen;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Dunmer] || akRace == VanillaRaces[VanillaRaceIndex::DunmerVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Dunmer] || akRace == VanillaRaces[VanillaRaceIndex::DunmerVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Dunmer] || akRace == UBE::UBERaces[UBE::DunmerVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is a Dunmer", Logger::LogType::Core);
 		if (ModestyRoll <= 30) {
 			BaseModesty = StrictModestyLevel::Modest;
@@ -636,7 +1342,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Comfortable;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Imperial] || akRace == VanillaRaces[VanillaRaceIndex::ImperialVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Imperial] || akRace == VanillaRaces[VanillaRaceIndex::ImperialVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Imperial] || akRace == UBE::UBERaces[UBE::ImperialVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is an Imperial", Logger::LogType::Core);
 		if (ModestyRoll <= 25) {
 			BaseModesty = StrictModestyLevel::Modest;
@@ -669,7 +1378,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Tease;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Nord] || akRace == VanillaRaces[VanillaRaceIndex::NordVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Nord] || akRace == VanillaRaces[VanillaRaceIndex::NordVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Nord] || akRace == UBE::UBERaces[UBE::NordVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is a Nord", Logger::LogType::Core);
 		if (ModestyRoll <= 45) {
 			BaseModesty = StrictModestyLevel::Modest;
@@ -684,7 +1396,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Comfortable;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Orsimer] || akRace == VanillaRaces[VanillaRaceIndex::OrsimerVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Orsimer] || akRace == VanillaRaces[VanillaRaceIndex::OrsimerVampire]
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Orsimer] || akRace == UBE::UBERaces[UBE::OrsimerVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is an Orsimer", Logger::LogType::Core);
 		if (ModestyRoll <= 10) {
 			BaseModesty = StrictModestyLevel::Modest;
@@ -702,7 +1417,10 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 			BaseModesty = StrictModestyLevel::Tease;
 		}
 	}
-	else if (akRace == VanillaRaces[VanillaRaceIndex::Redguard] || akRace == VanillaRaces[VanillaRaceIndex::RedguardVampire]) {
+	else if (
+		akRace == VanillaRaces[VanillaRaceIndex::Redguard] || akRace == VanillaRaces[VanillaRaceIndex::RedguardVampire] 
+		|| (InstalledMods::UBE && (akRace == UBE::UBERaces[UBE::Redguard] || akRace == UBE::UBERaces[UBE::RedguardVampire]))
+		) {
 		Log("<C++ Core> [GetRandomizedModesty] Actor is a Redguard", Logger::LogType::Core);
 		if (ModestyRoll <= 5) {
 			BaseModesty = StrictModestyLevel::Reasonable;
@@ -728,7 +1446,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 	else {
 		//Unrecognized Race - Maybe add system to add custom races?
 
-		Log("<C++ Core> [GetRandomizedModesty] Actor is a Non-Vanilla Race", Logger::LogType::Core);
+		Log("<C++ Core> [GetRandomizedModesty] Actor Race not recognized.", Logger::LogType::Core);
 
 		BaseModesty = StrictModestyLevel::Modest;
 	}
@@ -766,49 +1484,7 @@ int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer) {
 	return FinalModesty;
 }
 
-/*
-void NPCMotionDiceRoll(RE::StaticFunctionTag*, RE::Actor* akActor, bool IsSprinting) {
-	Log("<C++ Core> [MotionDiceRoll] START", info);
-
-	bool WearingChestCurtain = (PlayerWornHasKeyword(ChestCurtain) || PlayerWornHasKeyword(ChestCurtainT));
-	bool WearingPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(PelvicCurtainT));
-	bool WearingAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(AssCurtainT));
-
-	if (!WearingChestCurtain && !WearingPelvicCurtain && !WearingAssCurtain) {
-		Log("<C++ Core> [MotionDiceRoll] Not wearing any curtains. Check Skipepd.", info);
-		return;
-	}
-
-	int MaxRoll = 100;
-
-	if (IsSprinting) {
-		MaxRoll -= SprintingMod;
-	}
-	else {
-		MaxRoll -= RunningMod;
-	}
-
-	if (WearingChestCurtain) {
-		NPCChestCurtainRoll = Randomizer(1, MaxRoll);
-	}
-
-	if (WearingPelvicCurtain) {
-		NPCPelvicCurtainRoll = Randomizer(1, MaxRoll);
-	}
-
-	if (WearingAssCurtain) {
-		NPCAssCurtainRoll = Randomizer(1, MaxRoll);
-	}
-
-	if (PlayerBase->IsFemale()) {
-		FemaleAnalyze();
-	}
-
-	Log("<C++ Core> [MotionDiceRoll] END", info);
-}
-*/
-
-void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting) {
+void MotionDiceRoll(RE::StaticFunctionTag*) {
 	Log("<C++ Core> [MotionDiceRoll] START");
 
 	if (!IsWearingChestCurtain && !IsWearingPelvicCurtain && !IsWearingAssCurtain) {
@@ -816,9 +1492,9 @@ void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting) {
 		return;
 	}
 
-	int MaxRoll = 100;
+	INT8 MaxRoll = 100;
 
-	if (IsSprinting) {
+	if (Player->IsSprinting()) {
 		MaxRoll -= Configuration::SprintingMod;
 	}
 	else {
@@ -847,51 +1523,32 @@ void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting) {
 	Log("<C++ Core> [MotionDiceRoll] END");
 }
 
-void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
+void DiceRoll(RE::StaticFunctionTag*) {
 	Log("<C++ Core> [DiceRoll] START");
 
-	int MaxRoll = 100;
+	INT8 MaxRoll = 100;
 
 	if (Configuration::MotionFlashEnabled == true) {
-		if (IsSprinting == true) {
+		if (Player->IsSprinting()) {
 			MaxRoll -= Configuration::SprintingMod;
 		}
-		else if (IsRunning == true) {
+		else if (Player->IsRunning()) {
 			MaxRoll -= Configuration::RunningMod;
 		}
 	}
 
-	std::random_device RandomEngine;
-	std::mt19937_64 gen(RandomEngine());
-
-	std::uniform_int_distribution<int> FixedDistribute(1, 100);
-	std::uniform_int_distribution<int> DynamicDistribute(1, MaxRoll);
-
 	//Player Rolls
-	ChestCurtainRoll = DynamicDistribute(gen);
-	PelvicCurtainRoll = DynamicDistribute(gen);
-	AssCurtainRoll = DynamicDistribute(gen);
+	ChestCurtainRoll = Randomizer(1, MaxRoll);
+	PelvicCurtainRoll = Randomizer(1, MaxRoll);
+	AssCurtainRoll = Randomizer(1, MaxRoll);
 
-	CStringRoll = FixedDistribute(gen);
-	TopTransparentRoll = FixedDistribute(gen);
-	BottomTransparentRoll = FixedDistribute(gen);
-	BraTransparentRoll = FixedDistribute(gen);
-	UnderwearTransparentRoll = FixedDistribute(gen);
-	HotpantsTransparentRoll = FixedDistribute(gen);
-	ShowgirlTransparentRoll = FixedDistribute(gen);
-
-	//NPC Rolls
-	NPCChestCurtainRoll = FixedDistribute(gen);
-	NPCPelvicCurtainRoll = FixedDistribute(gen);
-	NPCAssCurtainRoll = FixedDistribute(gen);
-
-	NPCCStringRoll = FixedDistribute(gen);
-	NPCTopTransparentRoll = FixedDistribute(gen);
-	NPCBottomTransparentRoll = FixedDistribute(gen);
-	NPCBraTransparentRoll = FixedDistribute(gen);
-	NPCUnderwearTransparentRoll = FixedDistribute(gen);
-	NPCHotpantsTransparentRoll = FixedDistribute(gen);
-	NPCShowgirlTransparentRoll = FixedDistribute(gen);
+	CStringRoll = Randomizer(1, 100);
+	TopTransparentRoll = Randomizer(1, 100);
+	BottomTransparentRoll = Randomizer(1, 100);
+	BraTransparentRoll = Randomizer(1, 100);
+	UnderwearTransparentRoll = Randomizer(1, 100);
+	HotpantsTransparentRoll = Randomizer(1, 100);
+	ShowgirlTransparentRoll = Randomizer(1, 100);
 
 	Log("<C++ Core> [DiceRoll] ChestCurtainRoll " + std::to_string(ChestCurtainRoll), Logger::LogType::Core);
 	Log("<C++ Core> [DiceRoll] PelvicCurtainRoll " + std::to_string(PelvicCurtainRoll), Logger::LogType::Core);
@@ -924,14 +1581,14 @@ void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning) {
 		MaleArmorScan::MaleAnalyze();
 	}
 
-	ScanForNewActors(GetActorsInRadiusOfPlayer(2048));
+	ProcessActors(GetActorsInRadiusOfPlayer(2048));
 }
 
 int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor) {
 	return GetRandomizedModesty(akActor, akActor == Player);
 }
 
-void OverrideCurtainRoll(RE::StaticFunctionTag*, int CurtainType, int RollOverride) {
+void OverrideCurtainRoll(RE::StaticFunctionTag*, UINT8 CurtainType, INT8 RollOverride) {
 	enum CurtainEnum {
 		ChestCurtain,
 		PelvicCurtain,
@@ -965,14 +1622,9 @@ bool PlayerIsWearingAssCurtain(RE::StaticFunctionTag*) {
 	return IsWearingAssCurtain;
 }
 
-int NakedCommentChance(bool IsMCMRequest) {
-	int CommentChance = -1;
+INT8 NakedCommentChance(bool IsMCMRequest) {
+	INT8 CommentChance = -1;
 	bool UnderwearCounted = false;
-
-	if (IsMCMRequest) {
-		CommentChance = 0; 
-		//Start at 0 instead of -1 for MCM readability. WINakedCommentChance uses Roll >= Odds, and we are returning the Odds of a naked comment by NPCs
-	}
 
 	if (!Configuration::DisableNakedComments) {
 		if (Player->GetFactionRank(NudeFaction, true) == 1) {
@@ -1010,6 +1662,14 @@ int NakedCommentChance(bool IsMCMRequest) {
 		}
 	}
 
+	if (IsMCMRequest) {
+		CommentChance++; //Add 1 for MCM readability. WINakedCommentChance uses Roll (0 to 99) >= Odds, and we are returning the Odds of a naked comment by NPCs
+		CommentChance = std::clamp(CommentChance, (INT8)0, (INT8)100);
+	}
+	else {
+		CommentChance = std::clamp(CommentChance, (INT8)-1, (INT8)99);
+	}
+
 	return CommentChance;
 }
 
@@ -1033,8 +1693,24 @@ bool ValidatePlayerBaseRace(RE::StaticFunctionTag*) {
 	return PlayerBaseRace != nullptr;
 }
 
+void CleanTransformList() {
+	if (CustomTransformations.size() > 256) {
+		while (CustomTransformations.size() > 256) {
+			CustomTransformations.erase(CustomTransformations.begin() + 256);
+		}
+	}
+}
+
 void AddCustomTransform(RE::StaticFunctionTag*, RE::TESRace* NewTransform) {
-	CustomTransformations.emplace_back(NewTransform);
+	if (CustomTransformations.size() < 256) {
+		CustomTransformations.emplace_back(NewTransform);
+	}
+	else {
+		for (UINT8 ReplaceIndex = 0; ReplaceIndex < 255; ++ReplaceIndex) {
+			CustomTransformations[ReplaceIndex] = CustomTransformations[ReplaceIndex + 1];
+		}
+		CustomTransformations[255] = NewTransform;
+	}
 }
 
 void SetPlayerBaseRace(RE::TESRace* NewRace) {
@@ -1056,7 +1732,7 @@ bool PlayerRaceIsRecognized(RE::StaticFunctionTag*) {
 		return true;
 	}
 
-	for (int Index = 0; Index < 20; ++Index) {
+	for (UINT8 Index = 0; Index < 20; ++Index) {
 		if (VanillaRaces[Index] == arPlayer) {
 			return true;
 		}
@@ -1071,7 +1747,7 @@ bool IsPlayerTransformed() {
 		return true;
 	}
 
-	for (int Index = 0; Index < CustomTransformations.size(); ++Index) {
+	for (UINT8 Index = 0; Index < CustomTransformations.size(); ++Index) {
 		if (arPlayer == CustomTransformations[Index]) {
 			return true;
 		}

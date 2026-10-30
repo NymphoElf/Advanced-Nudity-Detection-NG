@@ -15,6 +15,7 @@
 #include "NPCData.h"
 #include "ModEventHandler.h"
 #include "ModIntegration.h"
+#include "SKSEConfig.h"
 
 /* KEEP! IMPORTANT!!!
 
@@ -120,6 +121,20 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 
 	papyrusVM->RegisterFunction("IsPlayerFemale", "AND_MCM", IsPlayerFemale);
 
+	papyrusVM->RegisterFunction("GetWornObjectList", "AND_MCM", GetWornObjectList);
+	papyrusVM->RegisterFunction("ClearWornObjectList", "AND_MCM", ClearWornObjectList);
+
+	papyrusVM->RegisterFunction("CreateTwoPartObject", "AND_MCM", CreateTwoPartObject);
+	papyrusVM->RegisterFunction("DeleteTwoPartObject", "AND_MCM", DeleteTwoPartObject);
+
+	papyrusVM->RegisterFunction("GetTwoPartObjectsAmount", "AND_MCM", GetTwoPartObjectsAmount);
+	papyrusVM->RegisterFunction("GetTwoPartObjectPages", "AND_MCM", GetTwoPartObjectPages);
+
+	papyrusVM->RegisterFunction("GetTwoPartObjectDisplayText", "AND_MCM", GetTwoPartObjectDisplayText);
+	papyrusVM->RegisterFunction("GetTwoPartObjectItemNumbers", "AND_MCM", GetTwoPartObjectItemNumbers);
+
+	papyrusVM->RegisterFunction("GetTwoPartObjectTypeStrings", "AND_MCM", GetTwoPartObjectTypeStrings);
+
 	//Modesty Script Binds
 	papyrusVM->RegisterFunction("SKSEStrictModesty", "AND_Modesty_Manager", ExternalStrictModesty);
 	papyrusVM->RegisterFunction("SKSESimpleModesty", "AND_Modesty_Manager", ExternalSimpleModesty);
@@ -184,11 +199,8 @@ void InitializeLog()
 		return;
 	}
 
-	//SKSE::detail::PluginInfo ThisPlugin;
-
 	std::filesystem::path path = log_directory.value();
 	path /= std::format("{}.log", SKSE::GetPluginName());
-	//path /= std::format("{}.log", ThisPlugin.name);
 
 	std::vector<spdlog::sink_ptr> sinks {
 		std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), 0x6400000, 4, true),
@@ -203,8 +215,6 @@ void InitializeLog()
 	spdlog::set_pattern("[%T.%e] [%=5t] [%L] %v");
 
 	logs::info("{} v{}", SKSE::GetPluginName(), SKSE::GetPluginVersion());
-
-	//logs::info("{} v{}", ThisPlugin.name, ThisPlugin.version);
 }
 
 void OnMessage(SKSE::MessagingInterface::Message* message) {
@@ -252,6 +262,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		logs::info("Post Load Game");
 
 		CleanFemaleList();
+		CleanTransformList();
 
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:
@@ -276,6 +287,8 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 	SKSE::GetPapyrusInterface()->Register(BindNativePapyrusFunctions);
 
 	RegisterCoSaveSerializer();
+
+	RegisterSKSEConfigMenu();
 
 	return true;
 }

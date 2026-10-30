@@ -1,9 +1,5 @@
 #pragma once
 
-//#include <windows.h>
-//#include <minwindef.h>
-//#include <libloaderapi.h>
-
 #include "APIs/SLSFR_API.h"
 #include "APIs/ArousalAPI.h"
 
@@ -16,6 +12,33 @@ namespace InstalledMods {
 	inline bool SLOAroused;
 
 	inline bool RosaRoundBottom;
+
+	inline bool UBE;
+}
+
+namespace UBE {
+	inline std::array<RE::TESRace*, 16> UBERaces;
+
+	enum UBERaceIndex {
+		Altmer,
+		AltmerVampire,
+		Bosmer,
+		BosmerVampire,
+		Breton,
+		BretonVampire,
+		Dunmer,
+		DunmerVampire,
+		Imperial,
+		ImperialVampire,
+		Nord,
+		NordVampire,
+		Orsimer,
+		OrsimerVampire,
+		Redguard,
+		RedguardVampire,
+
+		TotalUBERaces
+	};
 }
 
 std::vector<bool> GetInstalledMods(RE::StaticFunctionTag*);

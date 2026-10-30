@@ -3,18 +3,18 @@
 #include <vector>
 
 namespace RegisteredPlugins {
-	inline std::vector<uint8_t> DynamicModestyEnabled;
-	inline std::vector<uint8_t> HardcoreEnabled;
-	inline std::vector<uint8_t> CorruptionEnabled;
-	inline std::vector<uint8_t> ShamelessEnabled;
-	inline std::vector<uint8_t> UpgradeBlocked;
-	inline std::vector<uint8_t> UseStrictModesty;
+	inline std::vector<UINT8> DynamicModestyEnabled;
+	inline std::vector<UINT8> HardcoreEnabled;
+	inline std::vector<UINT8> CorruptionEnabled;
+	inline std::vector<UINT8> ShamelessEnabled;
+	inline std::vector<UINT8> UpgradeBlocked;
+	inline std::vector<UINT8> UseStrictModesty;
 
-	inline std::vector<int> MinimumStrictRank;
-	inline std::vector<int> MinimumTopRank;
-	inline std::vector<int> MinimumBottomRank;
+	inline std::vector<UINT8> MinimumStrictRank;
+	inline std::vector<UINT8> MinimumTopRank;
+	inline std::vector<UINT8> MinimumBottomRank;
 
-	inline std::vector<int> ImmodestyTimeRequired;
+	inline std::vector<UINT16> ImmodestyTimeRequired;
 
 	inline std::vector<std::string> Plugins;
 
@@ -43,13 +43,13 @@ bool OnGetIsDynamicModestyEnabled(RE::StaticFunctionTag*);
 void OnSetStrictModestyRules(RE::StaticFunctionTag*, std::string Plugin, bool StrictRules);
 bool OnGetStrictRulesEnabled(RE::StaticFunctionTag*);
 
-void OnSetMinimumStrictModestyRank(RE::StaticFunctionTag*, std::string Plugin, int ModestyRank);
+void OnSetMinimumStrictModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 ModestyRank);
 int OnGetMinimumStrictModestyRank(RE::StaticFunctionTag*);
 
-void OnSetMinimumTopModestyRank(RE::StaticFunctionTag*, std::string Plugin, int TopRank);
+void OnSetMinimumTopModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 TopRank);
 int OnGetMinimumTopModestyRank(RE::StaticFunctionTag*);
 
-void OnSetMinimumBottomModestyRank(RE::StaticFunctionTag*, std::string Plugin, int BottomRank);
+void OnSetMinimumBottomModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 BottomRank);
 int OnGetMinimumBottomModestyRank(RE::StaticFunctionTag*);
 
 void OnSetHardcore(RE::StaticFunctionTag*, std::string Plugin, bool HardcoreEnabled);
@@ -64,5 +64,5 @@ bool OnGetShameless(RE::StaticFunctionTag*);
 void OnSetModestyUpgradeBlocked(RE::StaticFunctionTag*, std::string Plugin, bool UpgradeBlocked);
 bool OnGetModestyUpgradeBlocked(RE::StaticFunctionTag*);
 
-void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, int ImmodestyTime);
+void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, UINT16 ImmodestyTime);
 int OnGetImmodestyTime(RE::StaticFunctionTag*);

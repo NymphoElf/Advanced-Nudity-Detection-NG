@@ -1,7 +1,7 @@
 ScriptName AND_Core extends Quest
 
-Function DiceRoll(Bool IsSprinting, Bool IsRunning) Global Native
-Function MovementDiceRoll(Bool IsSprinting) Global Native
+Function DiceRoll() Global Native
+Function MovementDiceRoll() Global Native
 
 Function FemaleAnalyze() Global Native
 Function MaleAnalyze() Global Native

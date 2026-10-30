@@ -287,13 +287,18 @@ void OnEnableDynamicModesty(RE::StaticFunctionTag*, std::string Plugin, bool Ena
 
 	RegisteredPlugins::DynamicModestyEnabled[PluginIndex] = Enabled;
 
-	uint8_t bValue = 1;
-
-	if (FindInVector(RegisteredPlugins::DynamicModestyEnabled, bValue) >= 0) {
+	if (FindInVector(RegisteredPlugins::DynamicModestyEnabled, true) >= 0) {
 		Configuration::DynamicModestyEnabled = true;
+		if (Configuration::StrictModestyRules) {
+			Configuration::DynamicModestyMode->value = 1;
+		}
+		else {
+			Configuration::DynamicModestyMode->value = 2;
+		}
 	}
 	else {
 		Configuration::DynamicModestyEnabled = false;
+		Configuration::DynamicModestyMode->value = 0;
 	}
 }
 
@@ -310,9 +315,7 @@ void OnSetStrictModestyRules(RE::StaticFunctionTag*, std::string Plugin, bool St
 
 	RegisteredPlugins::UseStrictModesty[PluginIndex] = StrictRules;
 
-	uint8_t bValue = 1;
-
-	if (FindInVector(RegisteredPlugins::UseStrictModesty, bValue) >= 0) {
+	if (FindInVector(RegisteredPlugins::UseStrictModesty, true) >= 0) {
 		StrictRules = true;
 	}
 
@@ -325,14 +328,14 @@ void OnSetStrictModestyRules(RE::StaticFunctionTag*, std::string Plugin, bool St
 		else {
 			Configuration::DynamicModestyMode->value = 2;
 		}
-	} 
+	}
 }
 
 bool OnGetStrictRulesEnabled(RE::StaticFunctionTag*) {
 	return Configuration::StrictModestyRules;
 }
 
-void OnSetMinimumStrictModestyRank(RE::StaticFunctionTag*, std::string Plugin, int StrictRank) {
+void OnSetMinimumStrictModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 StrictRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
 		Log("<C++ ModEventListener> [OnSetMinimumModestyRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
@@ -377,7 +380,7 @@ int OnGetMinimumStrictModestyRank(RE::StaticFunctionTag*) {
 	return Configuration::MinimumStrictModestyRank;
 }
 
-void OnSetMinimumTopModestyRank(RE::StaticFunctionTag*, std::string Plugin, int TopRank) {
+void OnSetMinimumTopModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 TopRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
 		Log("<C++ ModEventListener> [OnSetMinimumTopRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
@@ -413,7 +416,7 @@ int OnGetMinimumTopModestyRank(RE::StaticFunctionTag*) {
 	return Configuration::MinimumTopModestyRank;
 }
 
-void OnSetMinimumBottomModestyRank(RE::StaticFunctionTag*, std::string Plugin, int BottomRank) {
+void OnSetMinimumBottomModestyRank(RE::StaticFunctionTag*, std::string Plugin, UINT8 BottomRank) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
 		Log("<C++ ModEventListener> [OnSetMinimumBottomModestyRank] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
@@ -458,15 +461,11 @@ void OnSetHardcore(RE::StaticFunctionTag*, std::string Plugin, bool HardcoreEnab
 
 	RegisteredPlugins::HardcoreEnabled[PluginIndex] = HardcoreEnabled;
 
-	uint8_t bValue = 1;
-
-	if (HardcoreEnabled == true || FindInVector(RegisteredPlugins::HardcoreEnabled, bValue) >= 0) {
+	if (HardcoreEnabled == true || FindInVector(RegisteredPlugins::HardcoreEnabled, true) >= 0) {
 		Configuration::HardcoreModeEnabled = true;
-		//Configuration::HardcoreLockdown = true;
 	}
 	else {
 		Configuration::HardcoreModeEnabled = false;
-		//Configuration::HardcoreLockdown = false;
 	}
 }
 
@@ -483,9 +482,7 @@ void OnSetCorruption(RE::StaticFunctionTag*, std::string Plugin, bool Corruption
 
 	RegisteredPlugins::CorruptionEnabled[PluginIndex] = CorruptionEnabled;
 
-	uint8_t bValue = 1;
-
-	if (CorruptionEnabled == true || FindInVector(RegisteredPlugins::CorruptionEnabled, bValue) >= 0) {
+	if (CorruptionEnabled == true || FindInVector(RegisteredPlugins::CorruptionEnabled, true) >= 0) {
 		Configuration::AllowPlayerCorruption = true;
 	}
 	else {
@@ -506,9 +503,7 @@ void OnSetShameless(RE::StaticFunctionTag*, std::string Plugin, bool ShamelessEn
 
 	RegisteredPlugins::ShamelessEnabled[PluginIndex] = ShamelessEnabled;
 
-	uint8_t bValue = 1;
-
-	if (ShamelessEnabled == true || FindInVector(RegisteredPlugins::ShamelessEnabled, bValue) >= 0) {
+	if (ShamelessEnabled == true || FindInVector(RegisteredPlugins::ShamelessEnabled, true) >= 0) {
 		Configuration::AllowPlayerShameless = true;
 	}
 	else {
@@ -529,9 +524,7 @@ void OnSetModestyUpgradeBlocked(RE::StaticFunctionTag*, std::string Plugin, bool
 
 	RegisteredPlugins::UpgradeBlocked[PluginIndex] = UpgradeBlocked;
 
-	uint8_t bValue = 1;
-
-	if (UpgradeBlocked == true || FindInVector(RegisteredPlugins::UpgradeBlocked, bValue) >= 0) {
+	if (UpgradeBlocked == true || FindInVector(RegisteredPlugins::UpgradeBlocked, true) >= 0) {
 		Configuration::ModestyUpgradeBlocked = true;
 	}
 	else {
@@ -543,7 +536,7 @@ bool OnGetModestyUpgradeBlocked(RE::StaticFunctionTag*) {
 	return Configuration::ModestyUpgradeBlocked;
 }
 
-void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, int ImmodestyTime) {
+void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, UINT16 ImmodestyTime) {
 	int PluginIndex = FindInVector(RegisteredPlugins::Plugins, Plugin);
 	if (PluginIndex < 0) {
 		Log("<C++ ModEventListener> [OnSetImmodestyTime] Plugin " + Plugin + " is not registered!", Logger::LogType::Core, Logger::LoggingLevel::warning);
@@ -552,10 +545,10 @@ void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, int Immodest
 
 	RegisteredPlugins::ImmodestyTimeRequired[PluginIndex] = ImmodestyTime;
 
-	int ImmodestySum = 0;
-	int AlteredTimers = 0;
+	UINT32 ImmodestySum = 0;
+	UINT32 AlteredTimers = 0;
 
-	int Index = 0;
+	UINT16 Index = 0;
 	while (Index < RegisteredPlugins::TotalRegisteredPlugins) {
 		if (RegisteredPlugins::ImmodestyTimeRequired[Index] > 0) {
 			ImmodestySum += RegisteredPlugins::ImmodestyTimeRequired[Index];
@@ -565,7 +558,7 @@ void OnSetImmodestyTime(RE::StaticFunctionTag*, std::string Plugin, int Immodest
 	}
 
 	if (AlteredTimers > 0) {
-		Configuration::ImmodestyTimeNeeded = (ImmodestySum / AlteredTimers);
+		Configuration::ImmodestyTimeNeeded = (UINT16)(ImmodestySum / AlteredTimers);
 	}
 	else {
 		Configuration::ImmodestyTimeNeeded = 14;
