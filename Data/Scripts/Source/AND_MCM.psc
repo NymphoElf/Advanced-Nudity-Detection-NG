@@ -535,7 +535,7 @@ Function InstallMCM()
 	AND_Logger.FastLog("<MCM> [InstallMCM] - START", Logger.Config, Logger.CRITICAL)
 	
 	ModName = "Advanced Nudity"
-	Pages = New String[16]
+	Pages = New String[15]
 	Pages[0] = "$NudityStatesPage"
 	Pages[1] = "$FlashingStatesPage"
 	
@@ -552,8 +552,7 @@ Function InstallMCM()
 	Pages[11] = "$SimpleModestyPage"
 	Pages[12] = "$NPCModestyPage"
 	Pages[13] = "$FlashKeys"
-	Pages[14] = "$TwoPartObjectsPage"
-	Pages[15] = "$DebugPage"
+	Pages[14] = "$DebugPage"
 	
 	
 	DynamicModestyToggles = new Int[9]
@@ -2219,73 +2218,6 @@ Event OnPageReset(string page)
 			NPCModestySliders[8] = AddSliderOption("$PermanentFemalesPage", CurrentPermanentFemalePage, "{0}", DisabledIf(MaxPermanentFemalePages < 2))
 			NPCModestyToggles[19] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
 			NPCModestyToggles[20] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, DisabledIf(DeletePermFemale == False || SelectedPermFemale == "---" || SelectedPermFemale == ""))
-		EndIf
-	ElseIf (page == "$TwoPartObjectsPage")
-		AddHeaderOption("$MakeTwoPartObjectHeader") ;0
-		TwoPartObjectMenu[0] = AddMenuOption("$ObjectAText", TwoPartObjectA, 0) ;2
-		TwoPartObjectMenu[1] = AddMenuOption("$ObjectBText", TwoPartObjectB, 0) ;4
-		TwoPartObjectMenu[2] = AddMenuOption("$ObjectTypeText", TwoPartObjectType, 0) ;6
-		
-		
-		SetCursorPosition(1)
-		TwoPartObjectToggles[0] = AddToggleOption("$CreateTwoPartObjectText", ConfirmSelection, DisabledIf(TwoPartObjectAIndex == TwoPartObjectBIndex || TwoPartObjectAIndex < 0 || TwoPartObjectBIndex < 0)) ;1
-		TwoPartObjectToggles[1] = AddToggleOption("$DeleteTwoPartObjectText", ConfirmSelection, DisabledIf(TwoPartObjectAIndex == TwoPartObjectBIndex || TwoPartObjectAIndex < 0 || TwoPartObjectBIndex < 0)) ;3
-		
-		AddEmptyOption() ;5
-		
-		AddHeaderOption("$TwoPartObjectPageSelectHeader") ;7
-		TwoPartObjectSliders[0] = AddSliderOption("$TwoPartObjectPageText", TwoPartObjectPage, "{0}", DisabledIf(MaxTwoPartObjectPages < 1)) ;9
-		
-		SetCursorPosition(7)
-		
-		If GetTwoPartObjectsAmount() > 0
-			Int[] ItemNumber = GetTwoPartObjectItemNumbers(TwoPartObjectPage)
-			String[] DisplayText = GetTwoPartObjectDisplayText(TwoPartObjectPage)
-			
-			Int ItemNumberIndex = 0
-			Int DisplayTextIndex = 0
-			
-			Int PageSlotIndex = 10
-			SetCursorPosition(PageSlotIndex)
-			
-			If ItemNumber.Length * 3 != DisplayText.Length
-				Debug.MessageBox("A.N.D. MCM ERROR - Two Part Object arrays are mismatched! (" + (ItemNumber.Length * 3) + " and " + DisplayText.Length + ") Cannot display Two Part Object List!")
-				return
-			EndIf
-			
-			While PageSlotIndex < 90 && ItemNumberIndex < ItemNumber.Length && DisplayTextIndex < DisplayText.Length
-				AddHeaderOption("$TwoPartObjectHeader " + ItemNumber[ItemNumberIndex])
-				
-				AddTextOption("$ObjectAText", DisplayText[DisplayTextIndex])
-				DisplayTextIndex += 1
-				AddTextOption("$ObjectBText", DisplayText[DisplayTextIndex])
-				DisplayTextIndex += 1
-				AddTextOption("$ObjectTypeText", DisplayText[DisplayTextIndex])
-				
-				ItemNumberIndex += 2
-				DisplayTextIndex += 4
-				PageSlotIndex += 8
-			EndWhile
-			
-			ItemNumberIndex = 1
-			DisplayTextIndex = 3
-			
-			PageSlotIndex = 11
-			SetCursorPosition(PageSlotIndex)
-			
-			While PageSlotIndex < 90 && ItemNumberIndex < ItemNumber.Length && DisplayTextIndex < DisplayText.Length
-				AddHeaderOption("$TwoPartItem " + ItemNumber[ItemNumberIndex])
-				
-				AddTextOption("$ObjectAText", DisplayText[DisplayTextIndex])
-				DisplayTextIndex += 1
-				AddTextOption("$ObjectBText", DisplayText[DisplayTextIndex])
-				DisplayTextIndex += 1
-				AddTextOption("$ObjectTypeText", DisplayText[DisplayTextIndex])
-				
-				ItemNumberIndex += 2
-				DisplayTextIndex += 4
-				PageSlotIndex += 8
-			EndWhile
 		EndIf
 	ElseIf (page == "$FlashKeys")
 		AddHeaderOption("$FlashKeysHeader")

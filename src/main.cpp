@@ -121,20 +121,6 @@ bool BindNativePapyrusFunctions(RE::BSScript::IVirtualMachine* papyrusVM) {
 
 	papyrusVM->RegisterFunction("IsPlayerFemale", "AND_MCM", IsPlayerFemale);
 
-	papyrusVM->RegisterFunction("GetWornObjectList", "AND_MCM", GetWornObjectList);
-	papyrusVM->RegisterFunction("ClearWornObjectList", "AND_MCM", ClearWornObjectList);
-
-	papyrusVM->RegisterFunction("CreateTwoPartObject", "AND_MCM", CreateTwoPartObject);
-	papyrusVM->RegisterFunction("DeleteTwoPartObject", "AND_MCM", DeleteTwoPartObject);
-
-	papyrusVM->RegisterFunction("GetTwoPartObjectsAmount", "AND_MCM", GetTwoPartObjectsAmount);
-	papyrusVM->RegisterFunction("GetTwoPartObjectPages", "AND_MCM", GetTwoPartObjectPages);
-
-	papyrusVM->RegisterFunction("GetTwoPartObjectDisplayText", "AND_MCM", GetTwoPartObjectDisplayText);
-	papyrusVM->RegisterFunction("GetTwoPartObjectItemNumbers", "AND_MCM", GetTwoPartObjectItemNumbers);
-
-	papyrusVM->RegisterFunction("GetTwoPartObjectTypeStrings", "AND_MCM", GetTwoPartObjectTypeStrings);
-
 	//Modesty Script Binds
 	papyrusVM->RegisterFunction("SKSEStrictModesty", "AND_Modesty_Manager", ExternalStrictModesty);
 	papyrusVM->RegisterFunction("SKSESimpleModesty", "AND_Modesty_Manager", ExternalSimpleModesty);

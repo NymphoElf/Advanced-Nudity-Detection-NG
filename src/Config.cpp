@@ -430,89 +430,89 @@ std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
 std::vector<bool> MaleWornKeywordList(RE::StaticFunctionTag*) {
 	std::vector<bool> MaleKeywordList;
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTop_Male])); //0
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTop_NoCover_Male])); //1
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT_Low_Male])); //2
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT_Male])); //3
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT_High_Male])); // 4
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTop])); //0
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTop_NoCover])); //1
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT_Low])); //2
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT])); //3
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorTopT_High])); // 4
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottom_Male])); //5
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottom_NoCover_Male])); //6
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT_Low_Male])); //7
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT_Male])); //8
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT_High_Male])); //9
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottom])); //5
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottom_NoCover])); //6
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT_Low])); //7
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT])); //8
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ArmorBottomT_High])); //9
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssCurtain_Male])); //10
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssCurtainT_Male])); //11
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssCurtain])); //10
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssCurtainT])); //11
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskLow_Male])); //12
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRisk_Male])); //13
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskHigh_Male])); //14
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskExtreme_Male])); //15
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskUltra_Male])); //16
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskLow])); //12
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRisk])); //13
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskHigh])); //14
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskExtreme])); //15
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskUltra])); //16
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Bra_Male])); //17
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Bra_NoCover_Male])); //18
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT_Low_Male])); //19
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT_Male])); //20
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT_High_Male])); //21
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Bra])); //17
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Bra_NoCover])); //18
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT_Low])); //19
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT])); //20
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BraT_High])); //21
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestCurtain_Male])); //22
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestCurtainT_Male])); //23
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestCurtain])); //22
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestCurtainT])); //23
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskLow_Male])); //24
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRisk_Male])); //25
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskHigh_Male])); //26
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskExtreme_Male])); //27
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskUltra_Male])); //28
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskLow])); //24
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRisk])); //25
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskHigh])); //26
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskExtreme])); //27
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskUltra])); //28
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[CoversAll_Male])); //29
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[CoversAll])); //29
 
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BananaHammock])); //30
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BananaHammockT_Low])); //31
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BananaHammockT])); //32
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[BananaHammockT_High])); //33
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[EffectivelyNaked_Male])); //34
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[EffectivelyNaked])); //34
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Hotpants_Male])); //35
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT_Low_Male])); //36
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT_Male])); //37
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT_High_Male])); //38
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Hotpants])); //35
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT_Low])); //36
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT])); //37
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HotpantsT_High])); //38
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Microskirt_Male])); //39
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Microskirt])); //39
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male])); //40
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male])); //41
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Miniskirt])); //40
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[MiniskirtT])); //41
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[NearlyNaked_Male])); //42
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[NipplePasties_Male])); //43
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[NearlyNaked])); //42
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[NipplePasties])); //43
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicCurtain_Male])); //44
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT_Male])); //45
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicCurtain])); //44
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT])); //45
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskLow_Male])); //46
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRisk_Male])); //47
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskHigh_Male])); //48
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskExtreme_Male])); //49
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskUltra_Male])); //50
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskLow])); //46
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRisk])); //47
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskHigh])); //48
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskExtreme])); //49
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskUltra])); //50
 
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HimboSkirt])); //51
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HimboSkirtT_Low])); //52
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HimboSkirtT])); //53
 	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[HimboSkirtT_High])); //54
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Thong_Male])); //55
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Thong_NoCover_Male])); //56
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT_Low_Male])); //57
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT_Male])); //58
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT_High_Male])); //59
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Thong])); //55
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Thong_NoCover])); //56
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT_Low])); //57
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT])); //58
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ThongT_High])); //59
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Underwear_Male])); //60
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Underwear_NoCover_Male])); //61
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT_Low_Male])); //62
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT_Male])); //63
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT_High_Male])); //64
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Underwear])); //60
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[Underwear_NoCover])); //61
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT_Low])); //62
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT])); //63
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[UnderwearT_High])); //64
 
 	return MaleKeywordList;
 }
@@ -612,89 +612,89 @@ std::vector<bool> NPCFemaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* ak
 std::vector<bool> NPCMaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor) {
 	std::vector<bool> MaleKeywordList;
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTop_Male])); //0
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTop_NoCover_Male])); //1
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT_Low_Male])); //2
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT_Male])); //3
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT_High_Male])); // 4
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTop])); //0
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTop_NoCover])); //1
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT_Low])); //2
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT])); //3
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorTopT_High])); // 4
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottom_Male])); //5
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottom_NoCover_Male])); //6
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT_Low_Male])); //7
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT_Male])); //8
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT_High_Male])); //9
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottom])); //5
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottom_NoCover])); //6
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT_Low])); //7
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT])); //8
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ArmorBottomT_High])); //9
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssCurtain_Male])); //10
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssCurtainT_Male])); //11
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssCurtain])); //10
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssCurtainT])); //11
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskLow_Male])); //12
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRisk_Male])); //13
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskHigh_Male])); //14
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskExtreme_Male])); //15
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskUltra_Male])); //16
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskLow])); //12
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRisk])); //13
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskHigh])); //14
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskExtreme])); //15
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskUltra])); //16
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Bra_Male])); //17
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Bra_NoCover_Male])); //18
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT_Low_Male])); //19
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT_Male])); //20
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT_High_Male])); //21
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Bra])); //17
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Bra_NoCover])); //18
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT_Low])); //19
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT])); //20
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BraT_High])); //21
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestCurtain_Male])); //22
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestCurtainT_Male])); //23
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestCurtain])); //22
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestCurtainT])); //23
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskLow_Male])); //24
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRisk_Male])); //25
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskHigh_Male])); //26
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskExtreme_Male])); //27
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskUltra_Male])); //28
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskLow])); //24
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRisk])); //25
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskHigh])); //26
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskExtreme])); //27
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskUltra])); //28
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[CoversAll_Male])); //29
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[CoversAll])); //29
 
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BananaHammock])); //30
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BananaHammockT_Low])); //31
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BananaHammockT])); //32
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[BananaHammockT_High])); //33
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[EffectivelyNaked_Male])); //34
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[EffectivelyNaked])); //34
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Hotpants_Male])); //35
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT_Low_Male])); //36
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT_Male])); //37
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT_High_Male])); //38
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Hotpants])); //35
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT_Low])); //36
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT])); //37
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HotpantsT_High])); //38
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Microskirt_Male])); //39
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Microskirt])); //39
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Miniskirt_Male])); //40
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[MiniskirtT_Male])); //41
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Miniskirt])); //40
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[MiniskirtT])); //41
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[NearlyNaked_Male])); //42
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[NipplePasties_Male])); //43
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[NearlyNaked])); //42
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[NipplePasties])); //43
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicCurtain_Male])); //44
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicCurtainT_Male])); //45
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicCurtain])); //44
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicCurtainT])); //45
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskLow_Male])); //46
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRisk_Male])); //47
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskHigh_Male])); //48
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskExtreme_Male])); //49
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskUltra_Male])); //50
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskLow])); //46
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRisk])); //47
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskHigh])); //48
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskExtreme])); //49
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskUltra])); //50
 
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HimboSkirt])); //51
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HimboSkirtT_Low])); //52
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HimboSkirtT])); //53
 	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[HimboSkirtT_High])); //54
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Thong_Male])); //55
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Thong_NoCover_Male])); //56
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT_Low_Male])); //57
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT_Male])); //58
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT_High_Male])); //59
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Thong])); //55
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Thong_NoCover])); //56
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT_Low])); //57
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT])); //58
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ThongT_High])); //59
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Underwear_Male])); //60
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Underwear_NoCover_Male])); //61
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT_Low_Male])); //62
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT_Male])); //63
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT_High_Male])); //64
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Underwear])); //60
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[Underwear_NoCover])); //61
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT_Low])); //62
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT])); //63
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[UnderwearT_High])); //64
 
 	return MaleKeywordList;
 }
@@ -1046,109 +1046,4 @@ bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*) {
 
 bool IsPlayerFemale(RE::StaticFunctionTag*) {
 	return PlayerBase->IsFemale();
-}
-
-std::vector<std::string> GetWornObjectList(RE::StaticFunctionTag*) {
-	Configuration::WornObjectEditorIDs = GetPlayerWornObjectEditorIDList();
-
-	return GetPlayerWornObjectNameList();
-}
-
-void ClearWornObjectList(RE::StaticFunctionTag*) {
-	Configuration::WornObjectEditorIDs.clear();
-}
-
-int CreateTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB, int ObjectType) {
-	if (ObjectA >= 0 && ObjectB >= 0 && ObjectType >= 0) {
-		return RegisterTwoPartObject(Configuration::WornObjectEditorIDs[ObjectA], Configuration::WornObjectEditorIDs[ObjectB], (UINT8)ObjectType);
-	}
-
-	return -1;
-}
-
-int DeleteTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB) {
-	if (ObjectA >= 0 && ObjectB >= 0) {
-		return UnregisterTwoPartObject(Configuration::WornObjectEditorIDs[ObjectA], Configuration::WornObjectEditorIDs[ObjectB]);
-	}
-
-	return -1;
-}
-
-int GetTwoPartObjectsAmount(RE::StaticFunctionTag*) {
-	return (int)TwoPart_Object_PartA.size();
-}
-
-int GetTwoPartObjectPages(RE::StaticFunctionTag*) {
-	return 1 + (int)(TwoPart_Object_PartA.size() / 20);
-}
-
-std::vector<std::string> GetTwoPartObjectDisplayText(RE::StaticFunctionTag*, int PageNumber) {
-	std::vector<std::string> DisplayText;
-
-	RE::TESBoundObject* ItemA = nullptr;
-	RE::TESBoundObject* ItemB = nullptr;
-	std::string ItemType = "";
-
-	UINT16 MinIndex = (UINT16)(PageNumber - 1) * 20;
-	UINT16 MaxIndex = (UINT16)(PageNumber * 20);
-
-	for (UINT16 Index = MinIndex; Index < TwoPart_Object_PartA.size() && Index < MaxIndex; ++Index) {
-		ItemA = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(TwoPart_Object_PartA[Index]);
-		ItemB = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(TwoPart_Object_PartB[Index]);
-
-		ItemType = TwoPartObject::TypeStrings[TwoPart_Object_Type[Index]];
-
-		if (ItemA) {
-			DisplayText.emplace_back((std::string)ItemA->GetName());
-		}
-		else {
-			Log("<C++ Config> [GetTwoPartObjectDisplayText] Encountered NULL Object return in PartA Vector. Function cancelled!");
-			DisplayText.clear();
-			DisplayText = { "NULL", "NULL", "NULL" };
-			return DisplayText;
-		}
-
-		if (ItemB) {
-			DisplayText.emplace_back((std::string)ItemB->GetName());
-		}
-		else {
-			Log("<C++ Config> [GetTwoPartObjectDisplayText] Encountered NULL Object return in PartB Vector. Function cancelled!");
-			DisplayText.clear();
-			DisplayText = { "NULL", "NULL", "NULL" };
-			return DisplayText;
-		}
-
-		if (ItemType != "") {
-			DisplayText.emplace_back(ItemType);
-		}
-		else {
-			Log("<C++ Config> [GetTwoPartObjectDisplayText] Encountered NULL Object return in ItemType Vector. Function cancelled!");
-			DisplayText.clear();
-			DisplayText = { "NULL", "NULL", "NULL" };
-			return DisplayText;
-		}
-	}
-
-	return DisplayText;
-}
-
-std::vector<int> GetTwoPartObjectItemNumbers(RE::StaticFunctionTag*, int PageNumber) {
-	std::vector<int> ItemNumbers;
-
-	UINT16 MinimumIndex = (UINT16)(PageNumber - 1) * 30;
-	UINT16 MaximumIndex = (UINT16)(PageNumber * 30);
-
-	for (UINT16 CurrentIndex = MinimumIndex; CurrentIndex < MaximumIndex && CurrentIndex < TwoPart_Object_PartA.size(); ++CurrentIndex) {
-		ItemNumbers.emplace_back(CurrentIndex + 1);
-	}
-
-	return ItemNumbers;
-}
-
-std::vector<std::string> GetTwoPartObjectTypeStrings(RE::StaticFunctionTag*) {
-	std::vector<std::string> TypeStrings;
-	for (UINT8 Index = 0; Index < TwoPartObject::TotalObjectTypes; ++Index) {
-		TypeStrings.emplace_back(TwoPartObject::TypeStrings[Index]);
-	}
-	return TypeStrings;
 }

@@ -297,36 +297,20 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 	// --- MULTI PART OBJECT record ---
 	if (serializer->OpenRecord(kMultiPartObjectRecord, kVersion)) {
-		UINT16 Count = (UINT16)TwoPart_Object_PartA.size();
+		//UINT16 Count = (UINT16)TwoPartObjectA.size();
+		UINT16 Count = (UINT16)TwoPartObjects.size();
 		serializer->WriteRecordData(&Count, sizeof(UINT16));
 
 		std::string EditorID;
 		for (UINT16 Index = 0; Index < Count; ++Index) {
-			EditorID = static_cast<std::string>(TwoPart_Object_PartA[Index]);
+			EditorID = static_cast<std::string>(TwoPartObjects[Index].ObjectA->GetFormEditorID());
+			WriteString(serializer, EditorID);
+
+			EditorID = static_cast<std::string>(TwoPartObjects[Index].ObjectB->GetFormEditorID());
 			WriteString(serializer, EditorID);
 			
-			//serializer->WriteRecordData(&EditorID, sizeof(std::string_view));
-		}
-
-		//Shouldn't be needed - All should have same count
-		//Count = (UINT16)TwoPart_Object_PartB.size();
-
-		serializer->WriteRecordData(&Count, sizeof(UINT16));
-
-		for (UINT16 Index = 0; Index < Count; ++Index) {
-			EditorID = static_cast<std::string>(TwoPart_Object_PartB[Index]);
+			EditorID = static_cast<std::string>(TwoPartObjects[Index].Keyword->GetFormEditorID());
 			WriteString(serializer, EditorID);
-		}
-
-		//Shouldn't be needed - All should have same count
-		//Count = (UINT16)TwoPart_Object_Type.size();
-		
-		serializer->WriteRecordData(&Count, sizeof(UINT16));
-
-		UINT8 TypeIndex;
-		for (UINT16 Index = 0; Index < Count; ++Index) {
-			TypeIndex = TwoPart_Object_Type[Index];
-			serializer->WriteRecordData(&TypeIndex, sizeof(UINT8));
 		}
 	}
 }
@@ -535,34 +519,41 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 			}
 
 			case kMultiPartObjectRecord: {
-				std::string EditorID;
+				std::string EditorID_A;
+				std::string EditorID_B;
+				std::string EditorID_Keyword;
 				UINT16 Count;
+
+				TwoPartObject LoadedTwoPartObject = {nullptr, nullptr, nullptr};
 
 				serializer->ReadRecordData(&Count, sizeof(UINT16));
 
-				//Part A Reads
+				//ObjectReads
 				for (UINT16 Index = 0; Index < Count; ++Index) {
-					ReadString(serializer, EditorID);
-					//serializer->ReadRecordData(&EditorID, sizeof(std::string_view));
-					TwoPart_Object_PartA.emplace_back(EditorID);
-				}
+					ReadString(serializer, EditorID_A);
+					ReadString(serializer, EditorID_B);
+					ReadString(serializer, EditorID_Keyword);
 
-				//Part B Reads
-				//serializer->ReadRecordData(&Count, sizeof(UINT16));
+					LoadedTwoPartObject.ObjectA = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_A);
+					LoadedTwoPartObject.ObjectB = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_B);
+					LoadedTwoPartObject.Keyword = RE::TESForm::LookupByEditorID<RE::BGSKeyword>(EditorID_Keyword);
+					
+					if (LoadedTwoPartObject.ObjectA && LoadedTwoPartObject.ObjectB && LoadedTwoPartObject.Keyword) {
+						TwoPartObjects.emplace_back(LoadedTwoPartObject);
+					}
+					else if (!LoadedTwoPartObject.ObjectA) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject ObjectA (" + EditorID_A + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
+					else if (!LoadedTwoPartObject.ObjectB) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject ObjectB (" + EditorID_B + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
+					else if (!LoadedTwoPartObject.Keyword) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject Keyword (" + EditorID_Keyword + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
 
-				for (UINT16 Index = 0; Index < Count; ++Index) {
-					ReadString(serializer, EditorID);
-					//serializer->ReadRecordData(&EditorID, sizeof(std::string_view));
-					TwoPart_Object_PartB.emplace_back(EditorID);
-				}
-
-				//Object Type Reads
-				//serializer->ReadRecordData(&Count, sizeof(UINT16));
-
-				UINT8 ObjectType;
-				for (UINT16 Index = 0; Index < Count; ++Index) {
-					serializer->ReadRecordData(&ObjectType, sizeof(UINT8));
-					TwoPart_Object_Type.emplace_back(ObjectType);
+					LoadedTwoPartObject.ObjectA = nullptr;
+					LoadedTwoPartObject.ObjectB = nullptr;
+					LoadedTwoPartObject.Keyword = nullptr;
 				}
 
 				break;
@@ -611,9 +602,9 @@ inline void RevertCallback(SKSE::SerializationInterface*) {
 	CustomTransformations.clear();
 
 	//Clear Multi-Part Object Lists
-	TwoPart_Object_PartA.clear();
-	TwoPart_Object_PartB.clear();
-	TwoPart_Object_Type.clear();
+	TwoPartObjectA.clear();
+	TwoPartObjectB.clear();
+	TwoPartObjectKeyword.clear();
 }
 
 void RegisterCoSaveSerializer()

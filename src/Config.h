@@ -241,17 +241,3 @@ void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options);
 bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*);
 
 bool IsPlayerFemale(RE::StaticFunctionTag*);
-
-std::vector<std::string> GetWornObjectList(RE::StaticFunctionTag*);
-void ClearWornObjectList(RE::StaticFunctionTag*);
-
-int CreateTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB, int ObjectType);
-int DeleteTwoPartObject(RE::StaticFunctionTag*, int ObjectA, int ObjectB);
-
-int GetTwoPartObjectsAmount(RE::StaticFunctionTag*);
-int GetTwoPartObjectPages(RE::StaticFunctionTag*);
-
-std::vector<std::string> GetTwoPartObjectDisplayText(RE::StaticFunctionTag*, int PageNumber);
-std::vector<int> GetTwoPartObjectItemNumbers(RE::StaticFunctionTag*, int PageNumber);
-
-std::vector<std::string> GetTwoPartObjectTypeStrings(RE::StaticFunctionTag*);

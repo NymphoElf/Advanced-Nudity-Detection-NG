@@ -27,3 +27,5 @@ void UpdateLoggingType(RE::StaticFunctionTag*, int LogTypeIndex, bool Enabled);
 void UpdateLoggingLevel(RE::StaticFunctionTag*, int LogLevelIndex, bool Enabled);
 
 std::vector<bool> GetLogSettings(RE::StaticFunctionTag*);
+
+std::string GetFormLogData(RE::TESForm* akForm);

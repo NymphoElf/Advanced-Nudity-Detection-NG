@@ -13,8 +13,10 @@ void RegisterSKSEConfigMenu() {
     //Configuration::Example2::Buffer[0] = '\0';
     SKSEMenuFramework::SetSection(ModName);
 
-    SKSEMenuFramework::AddSectionItem("Register Two Part Object", RegisterTwoPartObject::Render);
-    SKSEMenuFramework::AddSectionItem("Two Part Object List", TwoPartObjectList::Render);
+    SKSEMenuFramework::AddEvent(RegisterTwoPartObjectMenu::OnMenuEvent, 0.0f);
+
+    SKSEMenuFramework::AddSectionItem("Register Two Part Object", RegisterTwoPartObjectMenu::Render);
+    SKSEMenuFramework::AddSectionItem("Two Part Object List", TwoPartObjectListMenu::Render);
 
     //RegisterTwoPartObject::filter = new ImGuiMCP::ImGuiTextFilter();
     //TwoPartObjectList::filter = new ImGuiMCP::ImGuiTextFilter();
@@ -38,7 +40,7 @@ void RegisterSKSEConfigMenu() {
     */
 }
 
-void __stdcall RegisterTwoPartObject::Render() {
+void __stdcall RegisterTwoPartObjectMenu::Render() {
     static ImGuiMCP::ImGuiTableFlags flags = ImGuiMCP::ImGuiTableFlags_Resizable | ImGuiMCP::ImGuiTableFlags_Reorderable | ImGuiMCP::ImGuiTableFlags_Hideable | ImGuiMCP::ImGuiTableFlags_RowBg | ImGuiMCP::ImGuiTableFlags_BordersOuter |
         ImGuiMCP::ImGuiTableFlags_BordersV | ImGuiMCP::ImGuiTableFlags_NoBordersInBody | ImGuiMCP::ImGuiTableFlags_ScrollY;
 
@@ -61,12 +63,7 @@ void __stdcall RegisterTwoPartObject::Render() {
                     SelectedObjects[ItemA] = WornObjects[Index];
                 }
                 
-                if (SelectedObjects[ItemA]) {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Item A is: " + std::string(SelectedObjects[ItemA]->GetName()), Logger::Core, Logger::info);
-                }
-                else {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Item A is: NULL", Logger::Core, Logger::info);
-                }
+                Log("<SKSE Config> [RegisterTwoPartObject] Selected Item A is: " + GetFormLogData(SelectedObjects[ItemA]), Logger::Core, Logger::info);
             }
         }
 
@@ -76,18 +73,12 @@ void __stdcall RegisterTwoPartObject::Render() {
     if (ImGuiMCP::BeginMenu("Select Item B")) {
         for (UINT32 Index = 0; Index < WornObjects.size(); ++Index) {
             if (ImGuiMCP::MenuItem(WornObjects[Index]->GetName())) {
-                SelectedObjects[ItemB] = WornObjects[Index];
-                
-                if (SelectedObjects[ItemB] == SelectedObjects[ItemA]) {
-                    SelectedObjects[ItemA] = nullptr;
+                if (WornObjects[Index] == SelectedObjects[ItemA]) {
+                    SelectedObjects[ItemA] = SelectedObjects[ItemB];
+                    SelectedObjects[ItemB] = WornObjects[Index];
                 }
                 
-                if (SelectedObjects[ItemB]) {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Item B is: " + std::string(SelectedObjects[ItemB]->GetName()), Logger::Core, Logger::info);
-                }
-                else {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Item B is: NULL", Logger::Core, Logger::info);
-                }
+                Log("<SKSE Config> [RegisterTwoPartObject] Selected Item B is: " + GetFormLogData(SelectedObjects[ItemB]), Logger::Core, Logger::info);
             }
         }
 
@@ -96,28 +87,18 @@ void __stdcall RegisterTwoPartObject::Render() {
 
     if (ImGuiMCP::BeginMenu("Select Keyword")) {
         for (UINT32 Index = 0; Index < FemaleKeywords.size(); ++Index) {
-            if (ImGuiMCP::MenuItem(FemaleKeywords[Index]->GetFormEditorID())) {
+            if (!IsFlashRiskKeyword(FemaleKeywords[Index]) && ImGuiMCP::MenuItem(FemaleKeywords[Index]->GetFormEditorID())) {
                 SelectedKeyword = FemaleKeywords[Index];
 
-                if (SelectedKeyword) {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: " + std::string(SelectedKeyword->GetFormEditorID()), Logger::Core, Logger::info);
-                }
-                else {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: NULL", Logger::Core, Logger::info);
-                }
+                Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: " + GetFormLogData(SelectedKeyword), Logger::Core, Logger::info);
             }
         }
 
         for (UINT32 Index = 0; Index < MaleKeywords.size(); ++Index) {
-            if (ImGuiMCP::MenuItem(MaleKeywords[Index]->GetFormEditorID())) {
+            if (!IsFlashRiskKeyword(MaleKeywords[Index]) && ImGuiMCP::MenuItem(MaleKeywords[Index]->GetFormEditorID())) {
                 SelectedKeyword = MaleKeywords[Index];
 
-                if (SelectedKeyword) {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: " + std::string(SelectedKeyword->GetFormEditorID()), Logger::Core, Logger::info);
-                }
-                else {
-                    Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: NULL", Logger::Core, Logger::info);
-                }
+                Log("<SKSE Config> [RegisterTwoPartObject] Selected Keyword is: " + GetFormLogData(SelectedKeyword), Logger::Core, Logger::info);
             }
         }
 
@@ -148,46 +129,36 @@ void __stdcall RegisterTwoPartObject::Render() {
         ImGuiMCP::Text("Selected Keyword: NONE");
     }
 
-    /*
-    if (ImGuiMCP::BeginTable("twopartobjectregister_table", 3, flags)) {
-        enum ColumnSlots {
-            Left,
-            Center,
-            Right
-        };
-
-        ImGuiMCP::TableSetupColumn("Item A");
-        ImGuiMCP::TableSetupColumn("Item B");
-        ImGuiMCP::TableSetupColumn("Act As Keyword");
-        ImGuiMCP::TableHeadersRow();
-
-        //Only One Row of Menus
-        ImGuiMCP::TableNextRow();
-
-        
-
-        ImGuiMCP::TableSetColumnIndex(Left);
-        
-
-        ImGuiMCP::TableSetColumnIndex(Center);
-        
-        
-        ImGuiMCP::TableSetColumnIndex(Right);
-        
-        ImGuiMCP::EndTable();
-    }
-    */
-
     if (ImGuiMCP::Button("Register")) {
-        Log("<SKSE Config> [RegisterTwoPartObject] DUMMY REGISTER START");
-        Log("<SKSE Config> [RegisterTwoPartObject] Item A is: " + std::string(SelectedObjects[ItemA]->GetName()) + " (" + std::format("{:08X}", SelectedObjects[ItemA]->GetFormID()) + ")");
-        Log("<SKSE Config> [RegisterTwoPartObject] Item B is: " + std::string(SelectedObjects[ItemB]->GetName()) + " (" + std::format("{:08X}", SelectedObjects[ItemB]->GetFormID()) + ")");
-        Log("<SKSE Config> [RegisterTwoPartObject] Keyword is: " + std::string(SelectedKeyword->GetFormEditorID()) + " (" + std::format("{:08X}", SelectedKeyword->GetFormID()) + ")");
-        Log("<SKSE Config> [RegisterTwoPartObject] DUMMY REGISTER END");
+        Log("<SKSE Config> [RegisterTwoPartObject] REGISTER START");
+        Log("<SKSE Config> [RegisterTwoPartObject] Item A is: " + GetFormLogData(SelectedObjects[ItemA]));
+        Log("<SKSE Config> [RegisterTwoPartObject] Item B is: " + GetFormLogData(SelectedObjects[ItemB]));
+        Log("<SKSE Config> [RegisterTwoPartObject] Keyword is: " + GetFormLogData(SelectedKeyword));
+        Log("<SKSE Config> [RegisterTwoPartObject] REGISTER END");
+
+        RegisterResult = RegisterTwoPartObject(SelectedObjects[ItemA], SelectedObjects[ItemB], SelectedKeyword);
+    }
+
+    switch (RegisterResult) {
+        case Success:
+            ImGuiMCP::Text("Registration Succeeded!");
+            break;
+        case AlreadyExists:
+            ImGuiMCP::Text("This combination already exists.");
+            break;
+        case TooManyObjects:
+            ImGuiMCP::Text("Too many objects registered! Registration Rejected!");
+            break;
+        case InvalidSelection:
+            ImGuiMCP::Text("Invalid Selection! Registration Rejected!");
+            break;
+        default:
+            ImGuiMCP::Text("Ready to Register...");
+            break;
     }
 }
 
-void __stdcall TwoPartObjectList::Render() {
+void __stdcall TwoPartObjectListMenu::Render() {
     static ImGuiMCP::ImGuiTableFlags flags = ImGuiMCP::ImGuiTableFlags_Resizable | ImGuiMCP::ImGuiTableFlags_Reorderable | ImGuiMCP::ImGuiTableFlags_Hideable | ImGuiMCP::ImGuiTableFlags_RowBg | ImGuiMCP::ImGuiTableFlags_BordersOuter |
         ImGuiMCP::ImGuiTableFlags_BordersV | ImGuiMCP::ImGuiTableFlags_NoBordersInBody | ImGuiMCP::ImGuiTableFlags_ScrollY;
 
@@ -205,9 +176,7 @@ void __stdcall TwoPartObjectList::Render() {
         ImGuiMCP::TableSetupColumn("Act As Keyword");
         ImGuiMCP::TableHeadersRow();
 
-        RE::TESBoundObject* CurrentObject;
-
-        for (UINT32 Row = 0; Row < TwoPart_ObjectA.size(); ++Row) {
+        for (UINT32 Row = 0; Row < TwoPartObjectA.size(); ++Row) {
             ImGuiMCP::TableNextRow();
             for (UINT32 Column = 0; Column < 3; ++Column) {
                 ImGuiMCP::TableSetColumnIndex(Column);
@@ -215,17 +184,13 @@ void __stdcall TwoPartObjectList::Render() {
                 char DisplayText[256];
 
                 if (Column == Left) {
-                    //CurrentObject = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(TwoPart_Object_PartA[Row]);
-                    CurrentObject = TwoPart_ObjectA[Row];
-                    strncpy_s(DisplayText, sizeof(DisplayText), CurrentObject->GetName(), sizeof(DisplayText));
+                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectA[Row]->GetName(), sizeof(DisplayText));
                 }
                 else if (Column == Center) {
-                    CurrentObject = TwoPart_ObjectB[Row];
-                    strncpy_s(DisplayText, sizeof(DisplayText), CurrentObject->GetName(), sizeof(DisplayText));
+                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectB[Row]->GetName(), sizeof(DisplayText));
                 }
                 else if (Column == Right) {
-                    RE::BGSKeyword* ThisKeyword = TwoPart_Object_Keyword[Row];
-                    strncpy_s(DisplayText, sizeof(DisplayText), ThisKeyword->GetFormEditorID(), sizeof(DisplayText));
+                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectKeyword[Row]->GetFormEditorID(), sizeof(DisplayText));
                 }
 
                 ImGuiMCP::TextUnformatted(DisplayText);
