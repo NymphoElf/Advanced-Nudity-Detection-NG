@@ -465,10 +465,6 @@ Int[] Property NPCModestyToggles Auto Hidden
 Int[] Property NPCModestySliders Auto Hidden
 Int[] Property NPCModestyMenus Auto Hidden
 
-Int[] Property TwoPartObjectMenu Auto Hidden
-Int[] Property TwoPartObjectToggles Auto Hidden
-Int[] Property TwoPartObjectSliders Auto Hidden
-
 Int[] Property FlashKeyToggles Auto Hidden
 Int[] Property FlashKeyMaps Auto Hidden
 
@@ -567,10 +563,6 @@ Function InstallMCM()
 	NPCModestySliders = new Int[7]
 	NPCModestyMenus = new Int[4]
 	
-	TwoPartObjectMenu = new Int[3]
-	TwoPartObjectToggles = new Int[2]
-	TwoPartObjectSliders = new Int[1]
-	
 	FlashKeyToggles = new Int[4]
 	FlashKeyMaps = new Int[6]
 	
@@ -615,18 +607,6 @@ Bool Function GetDynamicModestyEnabledByOtherMod() Global Native
 Bool[] Function GetInstalledMods() Global Native
 
 Bool Function IsPlayerFemale() Global Native
-
-String[] Function GetWornObjectList() Global Native
-Function ClearWornObjectList() Global Native
-
-Int Function CreateTwoPartObject(Int ObjectA, Int ObjectB, Int ObjectType) Global Native
-Int Function DeleteTwoPartObject(Int ObjectA, Int ObjectB) Global Native
-
-Int[] Function GetTwoPartObjectItemNumbers(Int Page) Global Native
-String[] Function GetTwoPartObjectDisplayText(Int Page) Global Native
-Int Function GetTwoPartObjectPages() Global Native
-Int Function GetTwoPartObjectsAmount() Global Native
-String[] Function GetTwoPartObjectTypeStrings() Global Native
 
 Event OnConfigOpen()
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - START")
@@ -2608,12 +2588,6 @@ Event OnOptionSliderOpen(Int Option)
 		RangeMax = MaxPermanentFemalePages
 		Interval = 1
 		DefaultValue = 1
-	ElseIf Option == TwoPartObjectSliders[0] ;Two Part Object Page
-		StartValue = TwoPartObjectPage
-		RangeMin = 1
-		RangeMax = MaxTwoPartObjectPages
-		Interval = 1
-		DefaultValue = 1
 	EndIf
 	
 	SetSliderDialogStartValue(StartValue)
@@ -2673,11 +2647,6 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		
 		SelectedPermFemale = PermanentFemaleNames[PermIndex]
 		ForcePageReset()
-	ElseIf Option == TwoPartObjectSliders[0] ;Two Part Object Page
-		TwoPartObjectPage = Value as Int
-		SetSliderOptionValue(Option, Value, "{0}", False)
-		
-		ForcePageReset()
 	EndIf
 EndEvent
 
@@ -2705,15 +2674,6 @@ Event OnOptionMenuOpen(Int Option)
 	ElseIf Option == NPCModestyMenus[3]
 		Texts = PermanentFemaleNames
 		StartIndex = PermIndex
-	ElseIf Option == TwoPartObjectMenu[0] ;Object A Selection
-		Texts = WornObjectNames
-		StartIndex = 0
-	ElseIf Option == TwoPartObjectMenu[1] ;Object B Selection
-		Texts = WornObjectNames
-		StartIndex = 0
-	ElseIf Option == TwoPartObjectMenu[2] ;Object Type Selection
-		Texts = TwoPartObjectTypes
-		StartIndex = 0
 	EndIf
 	SetMenuDialogOptions(Texts)
 	SetMenuDialogStartIndex(StartIndex)
@@ -2809,15 +2769,6 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 		EndIf
 		
 		SelectedPermFemale = PermanentFemaleNames[PermIndex]
-	ElseIf Option == TwoPartObjectMenu[0] ;Object A
-		TwoPartObjectA = WornObjectNames[Index]
-		TwoPartObjectAIndex = Index
-	ElseIf Option == TwoPartObjectMenu[1] ;Object B
-		TwoPartObjectB = WornObjectNames[Index]
-		TwoPartObjectBIndex = Index
-	ElseIf Option == TwoPartObjectMenu[2] ;Object Type
-		TwoPartObjectType = TwoPartObjectTypes[Index]
-		TwoPartObjectTypeIndex = Index
 	EndIf
 	ForcePageReset()
 EndEvent
@@ -3252,28 +3203,6 @@ Event OnOptionSelect(Int Option)
 		LogSettings[LogLevel_Error] = !LogSettings[LogLevel_Error]
 		AND_Logger.UpdateLoggingType(LogLevel_Error, LogSettings[LogLevel_Error])
 		SetToggleOptionValue(Option, LogSettings[LogLevel_Error])
-	ElseIf Option == TwoPartObjectToggles[0]
-		Int Result = CreateTwoPartObject(TwoPartObjectAIndex, TwoPartObjectBIndex, TwoPartObjectTypeIndex)
-		
-		If Result == -1
-			Debug.MessageBox("FAIL - Invalid Selections for Two Part Object")
-		ElseIf Result == 0
-			Debug.MessageBox("SUCCESS - Two Part Object Created")
-		ElseIf Result == 1
-			Debug.MessageBox("FAIL - This Two Part Object already exists")
-		ElseIf Result == 2
-			Debug.MessageBox("WARNING - Too Many Two Part Objects have been registered! You have exceeded the 65000 Object Limit!")
-		EndIf
-	ElseIf Option == TwoPartObjectToggles[1]
-		Int Result = DeleteTwoPartObject(TwoPartObjectAIndex, TwoPartObjectBIndex)
-		
-		If Result == -1
-			Debug.MessageBox("FAIL - Invalid Selections for Two Part Object")
-		ElseIf Result == 0
-			Debug.MessageBox("SUCCESS - Two Part Object Deleted")
-		ElseIf Result == 1
-			Debug.MessageBox("FAIL - This Two Part Object does not exist")
-		EndIf
 	EndIf
 EndEvent
 
