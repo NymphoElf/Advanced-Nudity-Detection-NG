@@ -337,12 +337,9 @@ bool IsFlashRiskKeyword(RE::BGSKeyword* Keyword);
 UINT8 RegisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* ObjectB, RE::BGSKeyword* ObjectType);
 UINT8 UnregisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* ObjectB);
 
-//std::vector<std::string> GetPlayerWornObjectNameList();
-//std::vector<std::string_view> GetPlayerWornObjectEditorIDList();
 std::vector<RE::TESBoundObject*> GetPlayerWornObjectList();
 
 bool IsWearingTwoPartObject(RE::Actor* akActor, RE::BGSKeyword* TreatedAs);
-//UINT8 TwoPartTransparentObjectRiskLevel(RE::Actor* akActor, UINT8 ObjectType, bool Female);
 
 bool PlayerWornHasKeyword(RE::BSFixedString keywordString);
 bool PlayerWornHasKeyword(RE::BGSKeyword* Keyword);

@@ -45,14 +45,14 @@ void InitializePlayerFactions() {
 
 void CheckWearingCurtains(RE::StaticFunctionTag*) {
 	if (PlayerBase->IsFemale()) {
-		IsWearingChestCurtain = (PlayerWornHasKeyword(FemaleKeywords[ChestCurtain]) || PlayerWornHasKeyword(FemaleKeywords[ChestCurtainT]));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(FemaleKeywords[PelvicCurtain]) || PlayerWornHasKeyword(FemaleKeywords[PelvicCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(FemaleKeywords[AssCurtain]) || PlayerWornHasKeyword(FemaleKeywords[AssCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
+		IsWearingChestCurtain = (PlayerIsWearing(FemaleKeywords[ChestCurtain]) || PlayerIsWearing(FemaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerIsWearing(FemaleKeywords[PelvicCurtain]) || PlayerIsWearing(FemaleKeywords[PelvicCurtainT]) || PlayerIsWearing(FemaleKeywords[Miniskirt]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerIsWearing(FemaleKeywords[AssCurtain]) || PlayerIsWearing(FemaleKeywords[AssCurtainT]) || PlayerIsWearing(FemaleKeywords[Miniskirt]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
 	}
 	else {
-		IsWearingChestCurtain = (PlayerWornHasKeyword(MaleKeywords[ChestCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[ChestCurtainT_Male]));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(MaleKeywords[PelvicCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(MaleKeywords[AssCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[AssCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
+		IsWearingChestCurtain = (PlayerIsWearing(MaleKeywords[ChestCurtain]) || PlayerIsWearing(MaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerIsWearing(MaleKeywords[PelvicCurtain]) || PlayerIsWearing(MaleKeywords[PelvicCurtainT]) || PlayerIsWearing(MaleKeywords[Miniskirt]) || PlayerIsWearing(MaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerIsWearing(MaleKeywords[AssCurtain]) || PlayerIsWearing(MaleKeywords[AssCurtainT]) || PlayerIsWearing(MaleKeywords[Miniskirt]) || PlayerIsWearing(MaleKeywords[MiniskirtT]));
 	}
 }
 
@@ -87,18 +87,18 @@ bool ProcessEquipmentChange(RE::StaticFunctionTag*, RE::TESForm* BaseObject, RE:
 	
 	if (PlayerBase->IsFemale()) {
 		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
-		IsWearingChestCurtain = (PlayerWornHasKeyword(FemaleKeywords[ChestCurtain]) || PlayerWornHasKeyword(FemaleKeywords[ChestCurtainT]));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(FemaleKeywords[PelvicCurtain]) || PlayerWornHasKeyword(FemaleKeywords[PelvicCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(FemaleKeywords[AssCurtain]) || PlayerWornHasKeyword(FemaleKeywords[AssCurtainT]) || PlayerWornHasKeyword(FemaleKeywords[Miniskirt]) || PlayerWornHasKeyword(FemaleKeywords[MiniskirtT]));
+		IsWearingChestCurtain = (PlayerIsWearing(FemaleKeywords[ChestCurtain]) || PlayerIsWearing(FemaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerIsWearing(FemaleKeywords[PelvicCurtain]) || PlayerIsWearing(FemaleKeywords[PelvicCurtainT]) || PlayerIsWearing(FemaleKeywords[Miniskirt]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerIsWearing(FemaleKeywords[AssCurtain]) || PlayerIsWearing(FemaleKeywords[AssCurtainT]) || PlayerIsWearing(FemaleKeywords[Miniskirt]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
 		
 		Log("<C++ Player> [ProcessEquipmentChange] Send Female Scan...");
 		FemaleArmorScan::FemaleAnalyze();
 	}
 	else {
 		Log("<C++ Player> [ProcessEquipmentChange] Checking Curtains...");
-		IsWearingChestCurtain = (PlayerWornHasKeyword(MaleKeywords[ChestCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[ChestCurtainT_Male]));
-		IsWearingPelvicCurtain = (PlayerWornHasKeyword(MaleKeywords[PelvicCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[PelvicCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
-		IsWearingAssCurtain = (PlayerWornHasKeyword(MaleKeywords[AssCurtain_Male]) || PlayerWornHasKeyword(MaleKeywords[AssCurtainT_Male]) || PlayerWornHasKeyword(MaleKeywords[Miniskirt_Male]) || PlayerWornHasKeyword(MaleKeywords[MiniskirtT_Male]));
+		IsWearingChestCurtain = (PlayerIsWearing(MaleKeywords[ChestCurtain]) || PlayerIsWearing(MaleKeywords[ChestCurtainT]));
+		IsWearingPelvicCurtain = (PlayerIsWearing(MaleKeywords[PelvicCurtain]) || PlayerIsWearing(MaleKeywords[PelvicCurtainT]) || PlayerIsWearing(MaleKeywords[Miniskirt]) || PlayerIsWearing(MaleKeywords[MiniskirtT]));
+		IsWearingAssCurtain = (PlayerIsWearing(MaleKeywords[AssCurtain]) || PlayerIsWearing(MaleKeywords[AssCurtainT]) || PlayerIsWearing(MaleKeywords[Miniskirt]) || PlayerIsWearing(MaleKeywords[MiniskirtT]));
 		
 		Log("<C++ Player> [ProcessEquipmentChange] Send Male Scan...");
 		MaleArmorScan::MaleAnalyze();

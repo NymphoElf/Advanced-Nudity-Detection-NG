@@ -1155,8 +1155,9 @@ namespace FemaleArmorScan {
 				}
 				break;
 			default:
-				return FlashRiskLevel::None;
+				break;
 		}
+		return FlashRiskLevel::None;
 	}
 
 	UINT8 GetArmorBottomRiskLevel() {
