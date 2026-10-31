@@ -7,6 +7,10 @@
 #include <locale>
 #include <string>
 
+#pragma warning(disable : 5054) //operator '|': deprecated between enumerations of different types
+#pragma warning(disable : 4996) //warning STL4017: std::wbuffer_convert, std::wstring_convert, and the <codecvt> header (containing std::codecvt_mode, std::codecvt_utf8, std::codecvt_utf16, and std::codecvt_utf8_utf16) are deprecated in C++17
+#pragma warning(disable : 4099) //'ImGuiMCP::ImGuiTextFilter': type name first seen using 'struct' now seen using 'class'
+
 inline HMODULE GetMenuFrameworkModule() {
     static HMODULE menuFramework = nullptr;
     if (!menuFramework) {
