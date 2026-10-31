@@ -487,17 +487,6 @@ Int Property MaxPermanentFemalePages = 1 Auto Hidden
 String Property SelectedPermFemale = "---" Auto Hidden
 Bool Property DeletePermFemale = False Auto Hidden
 
-String[] Property WornObjectNames Auto Hidden
-String Property TwoPartObjectA Auto Hidden
-Int Property TwoPartObjectAIndex Auto Hidden
-String Property TwoPartObjectB Auto Hidden
-Int Property TwoPartObjectBIndex Auto Hidden
-String Property TwoPartObjectType Auto Hidden
-Int Property TwoPartObjectTypeIndex Auto Hidden
-String[] Property TwoPartObjectTypes Auto Hidden
-Int Property TwoPartObjectPage Auto Hidden
-Int Property MaxTwoPartObjectPages Auto Hidden
-
 Event OnConfigInit()
 	Startup()
 EndEvent
@@ -638,8 +627,6 @@ Event OnConfigOpen()
 	
 	MaxRegisteredFemalePages = GetRegisteredFemalesPages()
 	MaxPermanentFemalePages = GetPermanentFemalesPages()
-	MaxTwoPartObjectPages = GetTwoPartObjectPages()
-	TwoPartObjectTypes = GetTwoPartObjectTypeStrings()
 	
 	If MaxRegisteredFemalePages < CurrentRegisteredFemalePage
 		CurrentRegisteredFemalePage = MaxRegisteredFemalePages
@@ -655,14 +642,6 @@ Event OnConfigOpen()
 	
 	If CurrentPermanentFemalePage < 1
 		CurrentPermanentFemalePage = 1
-	EndIf
-	
-	If MaxTwoPartObjectPages < TwoPartObjectPage
-		TwoPartObjectPage = MaxTwoPartObjectPages
-	EndIf
-	
-	If TwoPartObjectPage < 1
-		TwoPartObjectPage = 1
 	EndIf
 	
 	RegisteredFemaleNames = GetRegisteredFemaleNames(CurrentRegisteredFemalePage)
@@ -699,8 +678,6 @@ Event OnConfigOpen()
 	StrictModestyTimers = GetPlayerStrictModestyTimers()
 	SimpleModestyTimers = GetPlayerSimpleModestyTimers()
 	
-	WornObjectNames = GetWornObjectList()
-	
 	AND_Logger.FastLog("<MCM> [OnConfigOpen] - END")
 EndEvent
 
@@ -712,16 +689,6 @@ Function UpdateFlashingOdds(Int FlashOddsIndex, Int OddsValue) Global Native
 Event OnConfigClose()
 	UpdateConfigBoolOptions(ConfigBoolOptions)
 	UpdateConfigIntOptions(ConfigIntOptions)
-	
-	ClearWornObjectList()
-	
-	TwoPartObjectA = "-None-"
-	TwoPartObjectB = "-None-"
-	TwoPartObjectType = "-None-"
-	
-	TwoPartObjectAIndex = -1
-	TwoPartObjectBIndex = -1
-	TwoPartObjectTypeIndex = -1
 	
 	If TopRank1Jump == True
 		AND_Modesty_Manager.SKSETopRankJump(1)
