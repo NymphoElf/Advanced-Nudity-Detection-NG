@@ -27,6 +27,14 @@ namespace FlashRiskType {
 	};
 }
 
+namespace UnderwearType {
+	enum UnderwearTypes {
+		Underwear,
+		Thong,
+		CString
+	};
+}
+
 namespace StrictModestyLevel {
 	enum StrictModestyLevel {
 		Modest,
@@ -64,10 +72,10 @@ enum VanillaRaceIndex {
 	AltmerVampire,
 	Argonian,
 	ArgonianVampire,
-	Breton,
-	BretonVampire,
 	Bosmer,
 	BosmerVampire,
+	Breton,
+	BretonVampire,
 	Dunmer,
 	DunmerVampire,
 	Imperial,
@@ -93,6 +101,9 @@ inline RE::TESActorBase* PlayerBase;
 
 //Calendar
 inline RE::Calendar* GameCalendar;
+
+//Data Handler
+inline RE::TESDataHandler* GameDataHandler;
 
 //Races
 
@@ -120,8 +131,6 @@ inline RE::TESFaction* BottomModestyFaction;
 inline RE::TESFaction* ShyWithMale;
 inline RE::TESFaction* ShyWithFemale;
 
-//inline RE::TESFaction* FollowerFaction;
-
 inline RE::TESFaction* ArousalFaction;
 
 inline RE::TESFaction* FlashingChestCurtainFaction;
@@ -136,216 +145,159 @@ inline RE::TESFaction* FlashingCStringFaction;
 inline RE::TESFaction* FlashingHotpantsFaction;
 inline RE::TESFaction* FlashingShowgirlSkirtFaction;
 
-//Universal Keywords
+enum FlashRiskKeywords {
+	AssFlashRiskLow,
+	AssFlashRisk,
+	AssFlashRiskHigh,
+	AssFlashRiskExtreme,
+	AssFlashRiskUltra,
 
-inline RE::BGSKeyword* Ignore;
+	ChestFlashRiskLow,
+	ChestFlashRisk,
+	ChestFlashRiskHigh,
+	ChestFlashRiskExtreme,
+	ChestFlashRiskUltra,
 
-//Female Keywords
+	PelvicFlashRiskLow,
+	PelvicFlashRisk,
+	PelvicFlashRiskHigh,
+	PelvicFlashRiskExtreme,
+	PelvicFlashRiskUltra,
 
-inline RE::BGSKeyword* ArmorTop;
-inline RE::BGSKeyword* ArmorTop_NoCover;
-inline RE::BGSKeyword* ArmorTopT_Low;
-inline RE::BGSKeyword* ArmorTopT;
-inline RE::BGSKeyword* ArmorTopT_High;
+	TotalFlashRiskKeywords
+};
 
-inline RE::BGSKeyword* ArmorBottom;
-inline RE::BGSKeyword* ArmorBottom_NoCover;
-inline RE::BGSKeyword* ArmorBottomT_Low;
-inline RE::BGSKeyword* ArmorBottomT;
-inline RE::BGSKeyword* ArmorBottomT_High;
+enum RegularKeywords {
+	ArmorTop = TotalFlashRiskKeywords,
+	ArmorTop_NoCover,
+	ArmorTopT_Low,
+	ArmorTopT,
+	ArmorTopT_High,
 
-inline RE::BGSKeyword* AssCurtain;
-inline RE::BGSKeyword* AssCurtainT;
+	Bra,
+	Bra_NoCover,
+	BraT_Low,
+	BraT,
+	BraT_High,
 
-inline RE::BGSKeyword* AssFlashRiskLow;
-inline RE::BGSKeyword* AssFlashRisk;
-inline RE::BGSKeyword* AssFlashRiskHigh;
-inline RE::BGSKeyword* AssFlashRiskExtreme;
-inline RE::BGSKeyword* AssFlashRiskUltra;
+	ChestCurtain,
+	ChestCurtainT,
 
-inline RE::BGSKeyword* Bra;
-inline RE::BGSKeyword* Bra_NoCover;
-inline RE::BGSKeyword* BraT_Low;
-inline RE::BGSKeyword* BraT;
-inline RE::BGSKeyword* BraT_High;
+	NipplePasties,
+	ArmorBottom,
+	ArmorBottom_NoCover,
+	ArmorBottomT_Low,
+	ArmorBottomT,
+	ArmorBottomT_High,
 
-inline RE::BGSKeyword* ChestCurtain;
-inline RE::BGSKeyword* ChestCurtainT;
+	Hotpants,
+	HotpantsT_Low,
+	HotpantsT,
+	HotpantsT_High,
 
-inline RE::BGSKeyword* ChestFlashRiskLow;
-inline RE::BGSKeyword* ChestFlashRisk;
-inline RE::BGSKeyword* ChestFlashRiskHigh;
-inline RE::BGSKeyword* ChestFlashRiskExtreme;
-inline RE::BGSKeyword* ChestFlashRiskUltra;
+	ShowgirlSkirt,
+	ShowgirlSkirtT_Low,
+	ShowgirlSkirtT,
+	ShowgirlSkirtT_High,
 
-inline RE::BGSKeyword* CoversAll;
+	HimboSkirt = ShowgirlSkirt,
+	HimboSkirtT_Low = ShowgirlSkirtT_Low,
+	HimboSkirtT = ShowgirlSkirtT,
+	HimboSkirtT_High = ShowgirlSkirtT_High,
 
-inline RE::BGSKeyword* CString;
-inline RE::BGSKeyword* CStringT_Low;
-inline RE::BGSKeyword* CStringT;
-inline RE::BGSKeyword* CStringT_High;
+	AssCurtain,
+	AssCurtainT,
 
-inline RE::BGSKeyword* EffectivelyNaked;
+	PelvicCurtain,
+	PelvicCurtainT,
 
-inline RE::BGSKeyword* Hotpants;
-inline RE::BGSKeyword* HotpantsT_Low;
-inline RE::BGSKeyword* HotpantsT;
-inline RE::BGSKeyword* HotpantsT_High;
+	Miniskirt,
+	MiniskirtT,
 
-inline RE::BGSKeyword* Microskirt;
+	CString,
+	CStringT_Low,
+	CStringT,
+	CStringT_High,
 
-inline RE::BGSKeyword* Miniskirt;
-inline RE::BGSKeyword* MiniskirtT;
+	BananaHammock = CString,
+	BananaHammockT_Low = CStringT_Low,
+	BananaHammockT = CStringT,
+	BananaHammockT_High = CStringT_High,
 
-inline RE::BGSKeyword* NipplePasties;
-inline RE::BGSKeyword* NearlyNaked;
+	Thong,
+	Thong_NoCover,
+	ThongT_Low,
+	ThongT,
+	ThongT_High,
 
-inline RE::BGSKeyword* PelvicCurtain;
-inline RE::BGSKeyword* PelvicCurtainT;
+	Underwear,
+	Underwear_NoCover,
+	UnderwearT_Low,
+	UnderwearT,
+	UnderwearT_High,
 
-inline RE::BGSKeyword* PelvicFlashRiskLow;
-inline RE::BGSKeyword* PelvicFlashRisk;
-inline RE::BGSKeyword* PelvicFlashRiskHigh;
-inline RE::BGSKeyword* PelvicFlashRiskExtreme;
-inline RE::BGSKeyword* PelvicFlashRiskUltra;
+	Microskirt,
 
-inline RE::BGSKeyword* ShowgirlSkirt;
-inline RE::BGSKeyword* ShowgirlSkirtT_Low;
-inline RE::BGSKeyword* ShowgirlSkirtT;
-inline RE::BGSKeyword* ShowgirlSkirtT_High;
+	CoversAll,
 
-inline RE::BGSKeyword* Thong;
-inline RE::BGSKeyword* Thong_NoCover;
-inline RE::BGSKeyword* ThongT_Low;
-inline RE::BGSKeyword* ThongT;
-inline RE::BGSKeyword* ThongT_High;
+	NearlyNaked,
+	EffectivelyNaked,
 
-inline RE::BGSKeyword* Underwear;
-inline RE::BGSKeyword* Underwear_NoCover;
-inline RE::BGSKeyword* UnderwearT_Low;
-inline RE::BGSKeyword* UnderwearT;
-inline RE::BGSKeyword* UnderwearT_High;
+	//NEEDS TO BE LAST IN ENUM - FEMALE ONLY KEYWORD
+	VaginaPasties,
 
-inline RE::BGSKeyword* VaginaPasties;
+	TotalMaleKeywords = 65,
+	TotalFemaleKeywords,
+	TotalKeywords = TotalFemaleKeywords
+};
 
-//Male Keywords
+inline std::array<RE::BGSKeyword*, TotalFemaleKeywords> FemaleKeywords;
+inline std::array<RE::BGSKeyword*, TotalMaleKeywords> MaleKeywords;
 
-inline RE::BGSKeyword* ArmorTop_Male;
-inline RE::BGSKeyword* ArmorTop_NoCover_Male;
-inline RE::BGSKeyword* ArmorTopT_Low_Male;
-inline RE::BGSKeyword* ArmorTopT_Male;
-inline RE::BGSKeyword* ArmorTopT_High_Male;
-
-inline RE::BGSKeyword* ArmorBottom_Male;
-inline RE::BGSKeyword* ArmorBottom_NoCover_Male;
-inline RE::BGSKeyword* ArmorBottomT_Low_Male;
-inline RE::BGSKeyword* ArmorBottomT_Male;
-inline RE::BGSKeyword* ArmorBottomT_High_Male;
-
-inline RE::BGSKeyword* AssCurtain_Male;
-inline RE::BGSKeyword* AssCurtainT_Male;
-
-inline RE::BGSKeyword* AssFlashRiskLow_Male;
-inline RE::BGSKeyword* AssFlashRisk_Male;
-inline RE::BGSKeyword* AssFlashRiskHigh_Male;
-inline RE::BGSKeyword* AssFlashRiskExtreme_Male;
-inline RE::BGSKeyword* AssFlashRiskUltra_Male;
-
-inline RE::BGSKeyword* Bra_Male;
-inline RE::BGSKeyword* Bra_NoCover_Male;
-inline RE::BGSKeyword* BraT_Low_Male;
-inline RE::BGSKeyword* BraT_Male;
-inline RE::BGSKeyword* BraT_High_Male;
-
-inline RE::BGSKeyword* ChestCurtain_Male;
-inline RE::BGSKeyword* ChestCurtainT_Male;
-
-inline RE::BGSKeyword* ChestFlashRiskLow_Male;
-inline RE::BGSKeyword* ChestFlashRisk_Male;
-inline RE::BGSKeyword* ChestFlashRiskHigh_Male;
-inline RE::BGSKeyword* ChestFlashRiskExtreme_Male;
-inline RE::BGSKeyword* ChestFlashRiskUltra_Male;
-
-inline RE::BGSKeyword* CoversAll_Male;
-
-inline RE::BGSKeyword* BananaHammock;
-inline RE::BGSKeyword* BananaHammockT_Low;
-inline RE::BGSKeyword* BananaHammockT;
-inline RE::BGSKeyword* BananaHammockT_High;
-
-inline RE::BGSKeyword* EffectivelyNaked_Male;
-
-inline RE::BGSKeyword* Hotpants_Male;
-inline RE::BGSKeyword* HotpantsT_Low_Male;
-inline RE::BGSKeyword* HotpantsT_Male;
-inline RE::BGSKeyword* HotpantsT_High_Male;
-
-inline RE::BGSKeyword* Microskirt_Male;
-
-inline RE::BGSKeyword* Miniskirt_Male;
-inline RE::BGSKeyword* MiniskirtT_Male;
-
-inline RE::BGSKeyword* NipplePasties_Male;
-inline RE::BGSKeyword* NearlyNaked_Male;
-
-inline RE::BGSKeyword* PelvicCurtain_Male;
-inline RE::BGSKeyword* PelvicCurtainT_Male;
-
-inline RE::BGSKeyword* PelvicFlashRiskLow_Male;
-inline RE::BGSKeyword* PelvicFlashRisk_Male;
-inline RE::BGSKeyword* PelvicFlashRiskHigh_Male;
-inline RE::BGSKeyword* PelvicFlashRiskExtreme_Male;
-inline RE::BGSKeyword* PelvicFlashRiskUltra_Male;
-
-inline RE::BGSKeyword* HimboSkirt;
-inline RE::BGSKeyword* HimboSkirtT_Low;
-inline RE::BGSKeyword* HimboSkirtT;
-inline RE::BGSKeyword* HimboSkirtT_High;
-
-inline RE::BGSKeyword* Thong_Male;
-inline RE::BGSKeyword* Thong_NoCover_Male;
-inline RE::BGSKeyword* ThongT_Low_Male;
-inline RE::BGSKeyword* ThongT_Male;
-inline RE::BGSKeyword* ThongT_High_Male;
-
-inline RE::BGSKeyword* Underwear_Male;
-inline RE::BGSKeyword* Underwear_NoCover_Male;
-inline RE::BGSKeyword* UnderwearT_Low_Male;
-inline RE::BGSKeyword* UnderwearT_Male;
-inline RE::BGSKeyword* UnderwearT_High_Male;
+//Creature Type Keywords
 
 inline RE::BGSKeyword* ActorType_Creature;
+
+//Multi-Part Objects
+
+struct TwoPartObject {
+	RE::TESBoundObject* ObjectA;
+	RE::TESBoundObject* ObjectB;
+	RE::BGSKeyword* Keyword;
+};
+
+inline std::vector<TwoPartObject> TwoPartObjects;
 
 //Globals
 inline RE::TESGlobal* WINakedCommentChance;
 
 //Player Rolls
 
-inline int ChestCurtainRoll;
-inline int PelvicCurtainRoll;
-inline int AssCurtainRoll;
-inline int CStringRoll;
+inline INT8 ChestCurtainRoll;
+inline INT8 PelvicCurtainRoll;
+inline INT8 AssCurtainRoll;
+inline INT8 CStringRoll;
 
-inline int TopTransparentRoll;
-inline int BottomTransparentRoll;
-inline int BraTransparentRoll;
-inline int UnderwearTransparentRoll;
-inline int HotpantsTransparentRoll;
-inline int ShowgirlTransparentRoll;
+inline INT8 TopTransparentRoll;
+inline INT8 BottomTransparentRoll;
+inline INT8 BraTransparentRoll;
+inline INT8 UnderwearTransparentRoll;
+inline INT8 HotpantsTransparentRoll;
+inline INT8 ShowgirlTransparentRoll;
 
 //NPC Rolls
 
-inline int NPCChestCurtainRoll;
-inline int NPCPelvicCurtainRoll;
-inline int NPCAssCurtainRoll;
-inline int NPCCStringRoll;
+inline INT8 NPCChestCurtainRoll;
+inline INT8 NPCPelvicCurtainRoll;
+inline INT8 NPCAssCurtainRoll;
+inline INT8 NPCCStringRoll;
 
-inline int NPCTopTransparentRoll;
-inline int NPCBottomTransparentRoll;
-inline int NPCBraTransparentRoll;
-inline int NPCUnderwearTransparentRoll;
-inline int NPCHotpantsTransparentRoll;
-inline int NPCShowgirlTransparentRoll;
+inline INT8 NPCTopTransparentRoll;
+inline INT8 NPCBottomTransparentRoll;
+inline INT8 NPCBraTransparentRoll;
+inline INT8 NPCUnderwearTransparentRoll;
+inline INT8 NPCHotpantsTransparentRoll;
+inline INT8 NPCShowgirlTransparentRoll;
 
 //Convering States
 namespace PlayerCoverage {
@@ -364,6 +316,7 @@ namespace PlayerCoverage {
 }
 
 //Functions
+const RE::TESFile* GetModFileFromFormID(RE::FormID FormID);
 
 bool PlayerRaceIsRecognized(RE::StaticFunctionTag*);
 
@@ -377,22 +330,36 @@ bool IsPlayerTransformed();
 
 void InitializeCoreData();
 RE::BGSKeywordForm* AsKeywordForm(RE::TESForm* tesForm);
+
+bool IsFlashRiskKeyword(RE::BGSKeyword* Keyword);
+
+UINT8 RegisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* ObjectB, RE::BGSKeyword* ObjectType);
+UINT8 UnregisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* ObjectB);
+
+std::vector<RE::TESBoundObject*> GetPlayerWornObjectList();
+
+bool IsWearingTwoPartObject(RE::Actor* akActor, RE::BGSKeyword* TreatedAs);
+
 bool PlayerWornHasKeyword(RE::BSFixedString keywordString);
 bool PlayerWornHasKeyword(RE::BGSKeyword* Keyword);
+bool PlayerIsWearing(RE::BGSKeyword* Keyword);
 
 bool ActorWornHasKeyword(RE::Actor* akActor, RE::BSFixedString keywordString);
 bool ActorWornHasKeyword(RE::Actor* akActor, RE::BGSKeyword* Keyword);
+bool ActorIsWearing(RE::Actor* akActor, RE::BGSKeyword* Keyword);
 
 void SetActorFactionRank(RE::Actor* akActor, RE::TESFaction* akFaction, int8_t factionRank);
 void SetPlayerFactionRank(RE::TESFaction* akFaction, int8_t factionRank);
 
-int GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer);
+UINT8 GetRandomizedModesty(RE::Actor* akActor, bool IsPlayer);
 int ExternalGetRandomizedModesty(RE::StaticFunctionTag*, RE::Actor* akActor);
 
-int Randomizer(int MinRoll, int MaxRoll);
+UINT8 Randomizer(INT8 MinRoll, INT8 MaxRoll);
 
 int FindInVector(std::vector<int> SearchVector, int SearchTarget);
-int FindInVector(std::vector<uint8_t> SearchVector, uint8_t SearchTarget);
+int FindInVector(std::vector<UINT8> SearchVector, UINT8 SearchTarget);
+
+int FindInVector(std::vector<bool> SearchVector, bool SearchTarget);
 
 int FindInVector(std::vector<RE::FormID> SearchVector, RE::FormID SearchTarget);
 
@@ -402,19 +369,21 @@ int FindInVector(std::vector<std::string_view> SearchVector, std::string_view Se
 uint8_t HandleInteger(int iValue);
 
 std::string BoolToString(bool True);
-std::string FlashRiskToString(int RiskLevel);
+std::string FlashRiskToString(UINT8 RiskLevel);
 
 void CheckMods();
 
-int NakedCommentChance(bool IsMCMRequest);
+INT8 NakedCommentChance(bool IsMCMRequest);
 void SLSFRNakedCommentPrecheck();
+
+void CleanTransformList();
 
 //Static Functions (Papyrus calls)
 
-void DiceRoll(RE::StaticFunctionTag*, bool IsSprinting, bool IsRunning);
-void MotionDiceRoll(RE::StaticFunctionTag*, bool IsSprinting);
+void DiceRoll(RE::StaticFunctionTag*);
+void MotionDiceRoll(RE::StaticFunctionTag*);
 
-void OverrideCurtainRoll(RE::StaticFunctionTag*, int CurtainType, int RollOverride);
+void OverrideCurtainRoll(RE::StaticFunctionTag*, UINT8 CurtainType, INT8 RollOverride);
 
 bool PlayerIsWearingChestCurtain(RE::StaticFunctionTag*);
 bool PlayerIsWearingPelvicCurtain(RE::StaticFunctionTag*);

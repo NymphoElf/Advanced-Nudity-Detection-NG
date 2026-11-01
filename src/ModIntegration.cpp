@@ -4,13 +4,13 @@
 #include "APIs/ArousalAPI.h"
 
 void CheckMods() {
-	RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
+	//RE::TESDataHandler* DataHandler = RE::TESDataHandler::GetSingleton();
 
-	const RE::TESFile* RosaRoundBottom = DataHandler->LookupLoadedModByName("RosaFollower.esp");
-	const RE::TESFile* Sexlab = DataHandler->LookupLoadedModByName("SexLab.esm");
-	const RE::TESFile* SLSFR = DataHandler->LookupLoadedLightModByName("SLSF Reloaded.esp");
-	const RE::TESFile* DFFMA = DataHandler->LookupLoadedLightModByName("Modesty_Keyword.esp");
-	const RE::TESFile* OSLAroused = DataHandler->LookupLoadedLightModByName("OSLAroused.esp");
+	const RE::TESFile* RosaRoundBottom = GameDataHandler->LookupLoadedModByName("RosaFollower.esp");
+	const RE::TESFile* Sexlab = GameDataHandler->LookupLoadedModByName("SexLab.esm");
+	const RE::TESFile* SLSFR = GameDataHandler->LookupLoadedLightModByName("SLSF Reloaded.esp");
+	const RE::TESFile* DFFMA = GameDataHandler->LookupLoadedLightModByName("Modesty_Keyword.esp");
+	const RE::TESFile* OSLAroused = GameDataHandler->LookupLoadedLightModByName("OSLAroused.esp");
 
 	if (RosaRoundBottom) {
 		InstalledMods::RosaRoundBottom = true;
@@ -71,6 +71,32 @@ void CheckMods() {
 	if (InstalledMods::OSLAroused && InstalledMods::SLOAroused) {
 		Log("<C++ ModIntegration> [CheckMods] CRITIAL ERROR!!! OSL Aroused and SLO Aroused are both installed! These mods conflict!!!", Logger::LogType::Core, Logger::LoggingLevel::critical);
 	}
+
+	const RE::TESFile* UBE = GameDataHandler->LookupLoadedModByName("UBE_AllRace.esp");
+	InstalledMods::UBE = UBE;
+	if (UBE) {
+		Log("<C++ ModIntegration> [CheckMods] UBE_AllRace.esp FOUND", Logger::LogType::Core, Logger::LoggingLevel::critical);
+		
+		UBE::UBERaces[UBE::Altmer] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1A2));
+		UBE::UBERaces[UBE::AltmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1A3));
+		UBE::UBERaces[UBE::Bosmer] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1AC));
+		UBE::UBERaces[UBE::BosmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1AD));
+		UBE::UBERaces[UBE::Breton] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5734));
+		UBE::UBERaces[UBE::BretonVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5735));
+		UBE::UBERaces[UBE::Dunmer] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A198));
+		UBE::UBERaces[UBE::DunmerVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A199));
+		UBE::UBERaces[UBE::Imperial] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A179));
+		UBE::UBERaces[UBE::ImperialVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A17A));
+		UBE::UBERaces[UBE::Nord] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A184));
+		UBE::UBERaces[UBE::NordVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A185));
+		UBE::UBERaces[UBE::Orsimer] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1B0));
+		UBE::UBERaces[UBE::OrsimerVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A1B1));
+		UBE::UBERaces[UBE::Redguard] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A18E));
+		UBE::UBERaces[UBE::RedguardVampire] = RE::TESForm::LookupByID<RE::TESRace>(UBE->GetFormID(0x5A18F));
+	}
+	else {
+		Log("<C++ ModIntegration> [CheckMods] UBE_AllRace.esp MISSING", Logger::LogType::Core, Logger::LoggingLevel::critical);
+	}
 }
 
 std::vector<bool> GetInstalledMods(RE::StaticFunctionTag*) {
@@ -80,7 +106,8 @@ std::vector<bool> GetInstalledMods(RE::StaticFunctionTag*) {
 		InstalledMods::DFFMA, //2
 		InstalledMods::OSLAroused, //3
 		InstalledMods::SLSFR, //4
-		InstalledMods::SLOAroused //5
+		InstalledMods::SLOAroused, //5
+		InstalledMods::UBE //6
 	};
 
 	return ModVector;

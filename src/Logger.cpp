@@ -24,7 +24,7 @@ void ExternalLog(RE::StaticFunctionTag*, std::string logString, int loggingType,
 	};
 }
 
-void Log(std::string logString, int loggingType, int severity) {
+void Log(std::string logString, UINT8 loggingType, UINT8 severity) {
 	if (LogLevelEnabled[severity] == false || (LogTypeEnabled[loggingType] == false && severity < Logger::LoggingLevel::critical)) {
 		return;
 	}
@@ -73,4 +73,13 @@ std::vector<bool> GetLogSettings(RE::StaticFunctionTag*) {
 	LogSettings.emplace_back(LogLevelEnabled[Logger::LoggingLevel::error]); //10
 
 	return LogSettings;
+}
+
+std::string GetFormLogData(RE::TESForm* akForm) {
+	if (akForm) {
+		return std::string(akForm->GetName()) + " (" + static_cast<std::string>(akForm->GetFormEditorID()) + " | " + std::format("{:08X}", akForm->GetFormID()) + ")";
+	}
+	else {
+		return "NULL OBJECT (null | 0x00000000)";
+	}
 }

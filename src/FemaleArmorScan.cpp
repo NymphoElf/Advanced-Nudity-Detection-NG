@@ -19,9 +19,9 @@ namespace FemaleArmorScan {
 		SetPlayerFactionRank(FlashingShowgirlSkirtFaction, 0);
 	}
 	
-	bool CurtainCheck(int Type, bool IsTransparent, int Level) {
-		int Roll = 0;
-		int Odds = 0;
+	bool CurtainCheck(UINT8 Type, bool IsTransparent, UINT8 Level) {
+		INT8 Roll = 0;
+		INT8 Odds = 0;
 
 		std::string TypeString = "None";
 
@@ -201,9 +201,9 @@ namespace FemaleArmorScan {
 		return Result;
 	}
 
-	bool TransparentItemCheck(int Type, int Level) {
-		int Roll = 0;
-		int Odds = 0;
+	bool TransparentItemCheck(UINT8 Type, UINT8 Level) {
+		INT8 Roll = 0;
+		INT8 Odds = 0;
 
 		std::string TypeString = "None";
 
@@ -331,8 +331,8 @@ namespace FemaleArmorScan {
 		return Result;
 	}
 
-	bool CStringCheck(bool IsTransparent, int Level) {
-		int Odds = 0;
+	bool CStringCheck(bool IsTransparent, UINT8 Level) {
+		INT8 Odds = 0;
 
 		if (!IsTransparent) {
 			Odds = Configuration::FlashingOdds[CStringOdds];
@@ -362,7 +362,7 @@ namespace FemaleArmorScan {
 		return Result;
 	}
 
-	void AnalyzeBra(bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover) {
+	void AnalyzeBra(bool HasBra, bool HasBraT, UINT8 BraRiskLevel, bool HasBraNoCover) {
 		if (HasBra) {
 			PlayerCoverage::BraCover = false;
 			PlayerCoverage::ChestCover = true;
@@ -383,9 +383,9 @@ namespace FemaleArmorScan {
 
 	void AnalyzeTop
 	(
-		bool HasChestCurtain, bool HasChestCurtainT, int ChestRiskLevel, 
-		bool HasArmorTop, bool HasArmorTopT, int TopRiskLevel, 
-		bool HasBra, bool HasBraT, int BraRiskLevel, bool HasBraNoCover
+		bool HasChestCurtain, bool HasChestCurtainT, UINT8 ChestRiskLevel, 
+		bool HasArmorTop, bool HasArmorTopT, UINT8 TopRiskLevel, 
+		bool HasBra, bool HasBraT, UINT8 BraRiskLevel, bool HasBraNoCover
 	) {
 		if (HasChestCurtain || HasChestCurtainT) {
 			PlayerCoverage::ChestCurtainCoverage = CurtainCheck(FlashRiskType::Chest, HasChestCurtainT, ChestRiskLevel);
@@ -414,16 +414,16 @@ namespace FemaleArmorScan {
 		}
 	}
 
-	void AnalyzeCString(bool HasCStringT, int CStringRiskLevel) {
+	void AnalyzeCString(bool HasCStringT, UINT8 CStringRiskLevel) {
 		PlayerCoverage::GenitalCover = CStringCheck(HasCStringT, CStringRiskLevel);
 		PlayerCoverage::UnderwearCover = !PlayerCoverage::GenitalCover;
 	}
 
 	void AnalyzeUnderwear
 	(
-		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-		bool HasCString, bool HasCStringT, int CStringRiskLevel
+		bool HasUnderwear, bool HasUnderwearT, UINT8 UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, UINT8 ThongRiskLevel, bool HasThongNoCover,
+		bool HasCString, bool HasCStringT, UINT8 CStringRiskLevel
 	) {
 		if (HasUnderwear) {
 			PlayerCoverage::UnderwearCover = false;
@@ -463,11 +463,11 @@ namespace FemaleArmorScan {
 
 	void SubAnalyzeBottom
 	(
-		bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
-		bool HasShowgirl, bool HasShowgirlT, int ShowgirlRiskLevel,
-		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-		bool HasCString, bool HasCStringT, int CStringRiskLevel
+		bool HasHotpants, bool HasHotpantsT, UINT8 HotpantsRiskLevel,
+		bool HasShowgirl, bool HasShowgirlT, UINT8 ShowgirlRiskLevel,
+		bool HasUnderwear, bool HasUnderwearT, UINT8 UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, UINT8 ThongRiskLevel, bool HasThongNoCover,
+		bool HasCString, bool HasCStringT, UINT8 CStringRiskLevel
 	) {
 		if (HasHotpants && HasShowgirl) {
 			PlayerCoverage::AssCover = true;
@@ -728,14 +728,14 @@ namespace FemaleArmorScan {
 
 	void AnalyzeBottom
 	(
-		bool HasPelvicCurtain, bool HasPelvicCurtainT, int PelvicRiskLevel,
-		bool HasAsscurtain, bool HasAssCurtainT, int AssRiskLevel,
-		bool HasArmorBottom, bool HasArmorBottomT, int BottomRiskLevel,
-		bool HasHotpants, bool HasHotpantsT, int HotpantsRiskLevel,
-		bool HasShowgirl, bool HasShowgirlT, int ShowgirlRiskLevel,
-		bool HasUnderwear, bool HasUnderwearT, int UnderwearRiskLevel, bool HasUnderwearNoCover,
-		bool HasThong, bool HasThongT, int ThongRiskLevel, bool HasThongNoCover,
-		bool HasCString, bool HasCStringT, int CStringRiskLevel
+		bool HasPelvicCurtain, bool HasPelvicCurtainT, UINT8 PelvicRiskLevel,
+		bool HasAsscurtain, bool HasAssCurtainT, UINT8 AssRiskLevel,
+		bool HasArmorBottom, bool HasArmorBottomT, UINT8 BottomRiskLevel,
+		bool HasHotpants, bool HasHotpantsT, UINT8 HotpantsRiskLevel,
+		bool HasShowgirl, bool HasShowgirlT, UINT8 ShowgirlRiskLevel,
+		bool HasUnderwear, bool HasUnderwearT, UINT8 UnderwearRiskLevel, bool HasUnderwearNoCover,
+		bool HasThong, bool HasThongT, UINT8 ThongRiskLevel, bool HasThongNoCover,
+		bool HasCString, bool HasCStringT, UINT8 CStringRiskLevel
 	) {
 		if (HasPelvicCurtain || HasPelvicCurtainT) {
 			PlayerCoverage::PelvicCurtainCover = CurtainCheck(FlashRiskType::Pelvic, HasPelvicCurtainT, PelvicRiskLevel);
@@ -810,8 +810,8 @@ namespace FemaleArmorScan {
 				SetPlayerFactionRank(ShowingChestFaction, 1);
 			}
 			else if (PlayerCoverage::BraCover && !PlayerCoverage::ChestCover) {
-				if (PlayerWornHasKeyword(ArmorTopT_Low) || PlayerWornHasKeyword(ArmorTopT) || PlayerWornHasKeyword(ArmorTopT_High)
-					|| PlayerWornHasKeyword(ArmorTop_NoCover) || PlayerWornHasKeyword(NipplePasties)) {
+				if (PlayerIsWearing(FemaleKeywords[ArmorTopT_Low]) || PlayerIsWearing(FemaleKeywords[ArmorTopT]) || PlayerIsWearing(FemaleKeywords[ArmorTopT_High])
+					|| PlayerIsWearing(FemaleKeywords[ArmorTop_NoCover]) || PlayerIsWearing(FemaleKeywords[NipplePasties])) {
 					SetPlayerFactionRank(ToplessFaction, 0);
 					SetPlayerFactionRank(ShowingBraFaction, 0);
 					SetPlayerFactionRank(ShowingChestFaction, 1);
@@ -918,10 +918,10 @@ namespace FemaleArmorScan {
 			}
 			else if (PlayerCoverage::UnderwearCover && !PlayerCoverage::GenitalCover && !PlayerCoverage::AssCover) { //True False False
 				if (
-					PlayerWornHasKeyword(ArmorBottom_NoCover) ||
-					PlayerWornHasKeyword(HotpantsT_Low) || PlayerWornHasKeyword(HotpantsT) || PlayerWornHasKeyword(HotpantsT_High) ||
-					PlayerWornHasKeyword(ShowgirlSkirtT_Low) || PlayerWornHasKeyword(ShowgirlSkirtT) || PlayerWornHasKeyword(ShowgirlSkirtT_High) ||
-					PlayerWornHasKeyword(Microskirt) || PlayerWornHasKeyword(VaginaPasties)
+					PlayerIsWearing(FemaleKeywords[ArmorBottom_NoCover]) ||
+					PlayerIsWearing(FemaleKeywords[HotpantsT_Low]) || PlayerIsWearing(FemaleKeywords[HotpantsT]) || PlayerIsWearing(FemaleKeywords[HotpantsT_High]) ||
+					PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_Low]) || PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT]) || PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_High]) ||
+					PlayerIsWearing(FemaleKeywords[Microskirt]) || PlayerIsWearing(FemaleKeywords[VaginaPasties])
 					) {
 					SetPlayerFactionRank(BottomlessFaction, 0);
 					SetPlayerFactionRank(ShowingUnderwearFaction, 0);
@@ -937,7 +937,7 @@ namespace FemaleArmorScan {
 			}
 		}
 
-		if (Player->GetFactionRank(ToplessFaction, true) == 1 && Player->GetFactionRank(BottomlessFaction, true) == 1 && !PlayerWornHasKeyword(NearlyNaked)) {
+		if (Player->GetFactionRank(ToplessFaction, true) == 1 && Player->GetFactionRank(BottomlessFaction, true) == 1 && !PlayerIsWearing(FemaleKeywords[NearlyNaked])) {
 			SetPlayerFactionRank(NudeFaction, 1);
 		}
 		else {
@@ -966,69 +966,259 @@ namespace FemaleArmorScan {
 
 			bool HasCurtainKeyword =
 				(
-					BodyItem->HasKeyword(ChestCurtain) || BodyItem->HasKeyword(ChestCurtainT) ||
-					BodyItem->HasKeyword(PelvicCurtain) || BodyItem->HasKeyword(PelvicCurtainT) ||
-					BodyItem->HasKeyword(AssCurtain) || BodyItem->HasKeyword(AssCurtainT) ||
-					BodyItem->HasKeyword(Miniskirt) || BodyItem->HasKeyword(MiniskirtT)
+					BodyItem->HasKeyword(FemaleKeywords[ChestCurtain]) || BodyItem->HasKeyword(FemaleKeywords[ChestCurtainT]) ||
+					BodyItem->HasKeyword(FemaleKeywords[PelvicCurtain]) || BodyItem->HasKeyword(FemaleKeywords[PelvicCurtainT]) ||
+					BodyItem->HasKeyword(FemaleKeywords[AssCurtain]) || BodyItem->HasKeyword(FemaleKeywords[AssCurtainT]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Miniskirt]) || BodyItem->HasKeyword(FemaleKeywords[MiniskirtT])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasCurtainKeyword) {
+				return false;
+			}
 
 			bool HasTopKeyword =
 				(
-					BodyItem->HasKeyword(ArmorTop) ||
-					BodyItem->HasKeyword(ArmorTopT_Low) || BodyItem->HasKeyword(ArmorTopT) || BodyItem->HasKeyword(ArmorTopT_High) ||
-					BodyItem->HasKeyword(ArmorTop_NoCover)
+					BodyItem->HasKeyword(FemaleKeywords[ArmorTop]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ArmorTopT_Low]) || BodyItem->HasKeyword(FemaleKeywords[ArmorTopT]) || BodyItem->HasKeyword(FemaleKeywords[ArmorTopT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ArmorTop_NoCover])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasTopKeyword) {
+				return false;
+			}
 
 			bool HasBottomKeyword =
 				(
-					BodyItem->HasKeyword(ArmorBottom) ||
-					BodyItem->HasKeyword(ArmorBottomT_Low) || BodyItem->HasKeyword(ArmorBottomT) || BodyItem->HasKeyword(ArmorBottomT_High) ||
-					BodyItem->HasKeyword(ArmorBottom_NoCover) ||
-					BodyItem->HasKeyword(Hotpants) ||
-					BodyItem->HasKeyword(HotpantsT_Low) || BodyItem->HasKeyword(HotpantsT) || BodyItem->HasKeyword(HotpantsT_High) ||
-					BodyItem->HasKeyword(ShowgirlSkirt) ||
-					BodyItem->HasKeyword(ShowgirlSkirtT_Low) || BodyItem->HasKeyword(ShowgirlSkirtT) || BodyItem->HasKeyword(ShowgirlSkirtT_High)
+					BodyItem->HasKeyword(FemaleKeywords[ArmorBottom]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ArmorBottomT_Low]) || BodyItem->HasKeyword(FemaleKeywords[ArmorBottomT]) || BodyItem->HasKeyword(FemaleKeywords[ArmorBottomT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ArmorBottom_NoCover]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Hotpants]) ||
+					BodyItem->HasKeyword(FemaleKeywords[HotpantsT_Low]) || BodyItem->HasKeyword(FemaleKeywords[HotpantsT]) || BodyItem->HasKeyword(FemaleKeywords[HotpantsT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirt]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT_Low]) || BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT]) || BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT_High])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasBottomKeyword) {
+				return false;
+			}
 
 			bool HasBraKeyword =
 				(
-					BodyItem->HasKeyword(Bra) ||
-					BodyItem->HasKeyword(BraT_Low) || BodyItem->HasKeyword(BraT) || BodyItem->HasKeyword(BraT_High) ||
-					BodyItem->HasKeyword(Bra_NoCover)
+					BodyItem->HasKeyword(FemaleKeywords[Bra]) ||
+					BodyItem->HasKeyword(FemaleKeywords[BraT_Low]) || BodyItem->HasKeyword(FemaleKeywords[BraT]) || BodyItem->HasKeyword(FemaleKeywords[BraT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Bra_NoCover])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasBraKeyword) {
+				return false;
+			}
 
 			bool HasUnderwearKeyword =
 				(
-					BodyItem->HasKeyword(Underwear) ||
-					BodyItem->HasKeyword(UnderwearT_Low) || BodyItem->HasKeyword(UnderwearT) || BodyItem->HasKeyword(UnderwearT_High) ||
-					BodyItem->HasKeyword(Underwear_NoCover) ||
-					BodyItem->HasKeyword(Thong) ||
-					BodyItem->HasKeyword(ThongT_Low) || BodyItem->HasKeyword(ThongT) || BodyItem->HasKeyword(ThongT_High) ||
-					BodyItem->HasKeyword(Thong_NoCover) ||
-					BodyItem->HasKeyword(CString) ||
-					BodyItem->HasKeyword(CStringT_Low) || BodyItem->HasKeyword(CStringT) || BodyItem->HasKeyword(CStringT_High)
+					BodyItem->HasKeyword(FemaleKeywords[Underwear]) ||
+					BodyItem->HasKeyword(FemaleKeywords[UnderwearT_Low]) || BodyItem->HasKeyword(FemaleKeywords[UnderwearT]) || BodyItem->HasKeyword(FemaleKeywords[UnderwearT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Underwear_NoCover]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Thong]) ||
+					BodyItem->HasKeyword(FemaleKeywords[ThongT_Low]) || BodyItem->HasKeyword(FemaleKeywords[ThongT]) || BodyItem->HasKeyword(FemaleKeywords[ThongT_High]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Thong_NoCover]) ||
+					BodyItem->HasKeyword(FemaleKeywords[CString]) ||
+					BodyItem->HasKeyword(FemaleKeywords[CStringT_Low]) || BodyItem->HasKeyword(FemaleKeywords[CStringT]) || BodyItem->HasKeyword(FemaleKeywords[CStringT_High])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasUnderwearKeyword) {
+				return false;
+			}
 
 			bool HasExtraKeyword =
 				(
-					BodyItem->HasKeyword(NearlyNaked) ||
-					BodyItem->HasKeyword(NipplePasties) ||
-					BodyItem->HasKeyword(VaginaPasties) ||
-					BodyItem->HasKeyword(Microskirt) ||
-					BodyItem->HasKeyword(EffectivelyNaked)
+					BodyItem->HasKeyword(FemaleKeywords[NearlyNaked]) ||
+					BodyItem->HasKeyword(FemaleKeywords[NipplePasties]) ||
+					BodyItem->HasKeyword(FemaleKeywords[VaginaPasties]) ||
+					BodyItem->HasKeyword(FemaleKeywords[Microskirt]) ||
+					BodyItem->HasKeyword(FemaleKeywords[EffectivelyNaked])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasExtraKeyword) {
+				return false;
+			}
 
-			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), Logger::LogType::PlayerArmorScan);
-			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
+			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? True - No A.N.D. Keywords were found on the Body Armor", Logger::LogType::PlayerArmorScan);
+			return true;
 		}
-		Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? false", Logger::LogType::PlayerArmorScan);
+
+		Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False - Not Wearing Body Armor", Logger::LogType::PlayerArmorScan);
 		return false;
+	}
+
+	UINT8 GetChestCurtainRiskLevel() {
+		if (PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskLow])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[ChestFlashRisk])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskHigh])) {
+			return FlashRiskLevel::High;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskExtreme])) {
+			return FlashRiskLevel::Extreme;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskUltra])) {
+			return FlashRiskLevel::Ultra;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetPelvicCurtainRiskLevel() {
+		if (PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskLow])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRisk])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskHigh])) {
+			return FlashRiskLevel::High;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskExtreme])) {
+			return FlashRiskLevel::Extreme;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskUltra])) {
+			return FlashRiskLevel::Ultra;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetAssCurtainRiskLevel() {
+		if (PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskLow])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[AssFlashRisk])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskHigh])) {
+			return FlashRiskLevel::High;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskExtreme])) {
+			return FlashRiskLevel::Extreme;
+		}
+		else if (PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskUltra])) {
+			return FlashRiskLevel::Ultra;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetArmorTopRiskLevel() {
+		if (PlayerIsWearing(FemaleKeywords[ArmorTopT_Low])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ArmorTopT])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ArmorTopT_High])) {
+			return FlashRiskLevel::High;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetBraRiskLevel() {
+		if (PlayerIsWearing(FemaleKeywords[BraT_Low])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[BraT])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[BraT_High])) {
+			return FlashRiskLevel::High;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetUnderwearRiskLevel(UnderwearType::UnderwearTypes Type) {
+		switch (Type) {
+			case UnderwearType::Underwear:
+				if (PlayerIsWearing(FemaleKeywords[UnderwearT_Low])) {
+					return FlashRiskLevel::Low;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[UnderwearT])) {
+					return FlashRiskLevel::Normal;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[UnderwearT_High])) {
+					return FlashRiskLevel::High;
+				}
+				break;
+			case UnderwearType::Thong:
+				if (PlayerIsWearing(FemaleKeywords[ThongT_Low])) {
+					return FlashRiskLevel::Low;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[ThongT])) {
+					return FlashRiskLevel::Normal;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[ThongT_High])) {
+					return FlashRiskLevel::High;
+				}
+				break;
+			case UnderwearType::CString:
+				if (PlayerIsWearing(FemaleKeywords[CStringT_Low])) {
+					return FlashRiskLevel::Low;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[CStringT])) {
+					return FlashRiskLevel::Normal;
+				}
+				else if (PlayerIsWearing(FemaleKeywords[CStringT_High])) {
+					return FlashRiskLevel::High;
+				}
+				break;
+			default:
+				break;
+		}
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetArmorBottomRiskLevel() {
+		if (PlayerIsWearing(FemaleKeywords[ArmorBottomT_Low])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ArmorBottomT])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ArmorBottomT_High])) {
+			return FlashRiskLevel::High;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetHotpantsRiskLevel() {
+		if (PlayerIsWearing(FemaleKeywords[HotpantsT_Low])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[HotpantsT])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[HotpantsT_High])) {
+			return FlashRiskLevel::High;
+		}
+
+		return FlashRiskLevel::None;
+	}
+
+	UINT8 GetShowgirlRiskLevel() {
+		if (PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_Low])) {
+			return FlashRiskLevel::Low;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT])) {
+			return FlashRiskLevel::Normal;
+		}
+		else if (PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_High])) {
+			return FlashRiskLevel::High;
+		}
+
+		return FlashRiskLevel::None;
 	}
 
 	void FemaleAnalyze() {
@@ -1054,7 +1244,7 @@ namespace FemaleArmorScan {
 		}
 	
 		Log("<C++ FemaleArmorScan> [FemaleAnalyze] Start analysis...", Logger::LogType::PlayerArmorScan);
-		if (PlayerWornHasKeyword(CoversAll) || IsPlayerTransformed()) {
+		if (PlayerIsWearing(FemaleKeywords[CoversAll]) || IsPlayerTransformed()) {
 			Log("<C++ FemaleArmorScan> [FemaleAnalyze] Covers All keyword detected or player is transformed", Logger::LogType::PlayerArmorScan);
 
 			PlayerCoverage::ChestCurtainCoverage = true;
@@ -1068,65 +1258,20 @@ namespace FemaleArmorScan {
 			PlayerCoverage::UnderwearCover = true;
 		}
 		else {
-			bool HasChestCurtain = PlayerWornHasKeyword(ChestCurtain);
-			bool HasChestCurtainT = PlayerWornHasKeyword(ChestCurtainT);
+			bool HasChestCurtain = PlayerIsWearing(FemaleKeywords[ChestCurtain]);
+			bool HasChestCurtainT = PlayerIsWearing(FemaleKeywords[ChestCurtainT]);
 
-			int ChestRiskLevel = FlashRiskLevel::None;
-			if (PlayerWornHasKeyword(ChestFlashRiskLow)) {
-				ChestRiskLevel = FlashRiskLevel::Low;
-			}
-			else if (PlayerWornHasKeyword(ChestFlashRisk)) {
-				ChestRiskLevel = FlashRiskLevel::Normal;
-			}
-			else if (PlayerWornHasKeyword(ChestFlashRiskHigh)) {
-				ChestRiskLevel = FlashRiskLevel::High;
-			}
-			else if (PlayerWornHasKeyword(ChestFlashRiskExtreme)) {
-				ChestRiskLevel = FlashRiskLevel::Extreme;
-			}
-			else if (PlayerWornHasKeyword(ChestFlashRiskUltra)) {
-				ChestRiskLevel = FlashRiskLevel::Ultra;
-			}
+			UINT8 ChestRiskLevel = GetChestCurtainRiskLevel();
 
-			bool HasPelvicCurtain = (PlayerWornHasKeyword(PelvicCurtain) || PlayerWornHasKeyword(Miniskirt));
-			bool HasPelvicCurtainT = (PlayerWornHasKeyword(PelvicCurtainT) || PlayerWornHasKeyword(MiniskirtT));
+			bool HasPelvicCurtain = (PlayerIsWearing(FemaleKeywords[PelvicCurtain]) || PlayerIsWearing(FemaleKeywords[Miniskirt]));
+			bool HasPelvicCurtainT = (PlayerIsWearing(FemaleKeywords[PelvicCurtainT]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
 
-			int PelvicRiskLevel = FlashRiskLevel::None;
-			if (PlayerWornHasKeyword(PelvicFlashRiskLow)) {
-				PelvicRiskLevel = FlashRiskLevel::Low;
-			}
-			else if (PlayerWornHasKeyword(PelvicFlashRisk)) {
-				PelvicRiskLevel = FlashRiskLevel::Normal;
-			}
-			else if (PlayerWornHasKeyword(PelvicFlashRiskHigh)) {
-				PelvicRiskLevel = FlashRiskLevel::High;
-			}
-			else if (PlayerWornHasKeyword(PelvicFlashRiskExtreme)) {
-				PelvicRiskLevel = FlashRiskLevel::Extreme;
-			}
-			else if (PlayerWornHasKeyword(PelvicFlashRiskUltra)) {
-				PelvicRiskLevel = FlashRiskLevel::Ultra;
-			}
+			UINT8 PelvicRiskLevel = GetPelvicCurtainRiskLevel();
 
-			bool HasAssCurtain = (PlayerWornHasKeyword(AssCurtain) || PlayerWornHasKeyword(Miniskirt));
-			bool HasAssCurtainT = (PlayerWornHasKeyword(AssCurtainT) || PlayerWornHasKeyword(MiniskirtT));
+			bool HasAssCurtain = (PlayerIsWearing(FemaleKeywords[AssCurtain]) || PlayerIsWearing(FemaleKeywords[Miniskirt]));
+			bool HasAssCurtainT = (PlayerIsWearing(FemaleKeywords[AssCurtainT]) || PlayerIsWearing(FemaleKeywords[MiniskirtT]));
 
-			int AssRiskLevel = FlashRiskLevel::None;
-			if (PlayerWornHasKeyword(AssFlashRiskLow)) {
-				AssRiskLevel = FlashRiskLevel::Low;
-			}
-			else if (PlayerWornHasKeyword(AssFlashRisk)) {
-				AssRiskLevel = FlashRiskLevel::Normal;
-			}
-			else if (PlayerWornHasKeyword(AssFlashRiskHigh)) {
-				AssRiskLevel = FlashRiskLevel::High;
-			}
-			else if (PlayerWornHasKeyword(AssFlashRiskExtreme)) {
-				AssRiskLevel = FlashRiskLevel::Extreme;
-			}
-			else if (PlayerWornHasKeyword(AssFlashRiskUltra)) {
-				AssRiskLevel = FlashRiskLevel::Ultra;
-			}
+			UINT8 AssRiskLevel = GetAssCurtainRiskLevel();
 
 			Log("<C++ FemaleArmorScan> [FemaleAnalyze] HasChestCurtain = " + BoolToString(HasChestCurtain), Logger::LogType::PlayerArmorScan);
 			Log("<C++ FemaleArmorScan> [FemaleAnalyze] HasChestCurtainT = " + BoolToString(HasChestCurtainT), Logger::LogType::PlayerArmorScan);
@@ -1159,33 +1304,18 @@ namespace FemaleArmorScan {
 				*/
 
 				//Armor Top
-				bool HasArmorTop = PlayerWornHasKeyword(ArmorTop);
-				int TopRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(ArmorTopT_Low)) {
-					TopRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(ArmorTopT)) {
-					TopRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(ArmorTopT_High)) {
-					TopRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasArmorTopT = TopRiskLevel > FlashRiskLevel::None;
+				bool HasArmorTop = PlayerIsWearing(FemaleKeywords[ArmorTop]);
+
+				UINT8 TopRiskLevel = GetArmorTopRiskLevel();
+				bool HasArmorTopT = TopRiskLevel;
 
 				//Bra
-				bool HasBra = PlayerWornHasKeyword(Bra);
-				int BraRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(BraT_Low)) {
-					BraRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(BraT)) {
-					BraRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(BraT_High)) {
-					BraRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasBraT = BraRiskLevel > FlashRiskLevel::None;
-				bool HasBraNoCover = PlayerWornHasKeyword(Bra_NoCover);
+				bool HasBra = PlayerIsWearing(FemaleKeywords[Bra]);
+
+				UINT8 BraRiskLevel = GetBraRiskLevel();
+				bool HasBraT = BraRiskLevel;
+
+				bool HasBraNoCover = PlayerIsWearing(FemaleKeywords[Bra_NoCover]);
 
 				/*
 				================
@@ -1194,90 +1324,44 @@ namespace FemaleArmorScan {
 				*/
 
 				//Bottom Armor
-				bool HasArmorBottom = PlayerWornHasKeyword(ArmorBottom);
-				int BottomRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(ArmorBottomT_Low)) {
-					BottomRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(ArmorBottomT)) {
-					BottomRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(ArmorBottomT_High)) {
-					BottomRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasArmorBottomT = BottomRiskLevel > FlashRiskLevel::None;
+				bool HasArmorBottom = PlayerIsWearing(FemaleKeywords[ArmorBottom]);
+				
+				UINT8 BottomRiskLevel = GetArmorBottomRiskLevel();
+				bool HasArmorBottomT = BottomRiskLevel;
 
 				//Hotpants
-				bool HasHotpants = PlayerWornHasKeyword(Hotpants);
-				int HotpantsRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(HotpantsT_Low)) {
-					HotpantsRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(HotpantsT)) {
-					HotpantsRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(HotpantsT_High)) {
-					HotpantsRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasHotpantsT = HotpantsRiskLevel > FlashRiskLevel::None;
+				bool HasHotpants = PlayerIsWearing(FemaleKeywords[Hotpants]);
+				
+				UINT8 HotpantsRiskLevel = GetHotpantsRiskLevel();
+				bool HasHotpantsT = HotpantsRiskLevel;
 
 				//Showgirl Skirt
-				bool HasShowgirl = PlayerWornHasKeyword(ShowgirlSkirt);
-				int ShowgirlRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(ShowgirlSkirtT_Low)) {
-					ShowgirlRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(ShowgirlSkirtT)) {
-					ShowgirlRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(ShowgirlSkirtT_High)) {
-					ShowgirlRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasShowgirlT = ShowgirlRiskLevel > FlashRiskLevel::None;
+				bool HasShowgirl = PlayerIsWearing(FemaleKeywords[ShowgirlSkirt]);
+				
+				UINT8 ShowgirlRiskLevel = GetShowgirlRiskLevel();
+				bool HasShowgirlT = ShowgirlRiskLevel;
 
 				//Underwear
-				bool HasUnderwear = PlayerWornHasKeyword(Underwear);
-				int UnderwearRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(UnderwearT_Low)) {
-					UnderwearRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(UnderwearT)) {
-					UnderwearRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(UnderwearT_High)) {
-					UnderwearRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasUnderwearT = UnderwearRiskLevel > FlashRiskLevel::None;
-				bool HasUnderwearNoCover = PlayerWornHasKeyword(Underwear_NoCover);
+				bool HasUnderwear = PlayerIsWearing(FemaleKeywords[Underwear]);
+
+				UINT8 UnderwearRiskLevel = GetUnderwearRiskLevel(UnderwearType::Underwear);
+				bool HasUnderwearT = UnderwearRiskLevel;
+
+				bool HasUnderwearNoCover = PlayerIsWearing(FemaleKeywords[Underwear_NoCover]);
 
 				//Thong
-				bool HasThong = PlayerWornHasKeyword(Thong);
-				int ThongRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(ThongT_Low)) {
-					ThongRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(ThongT)) {
-					ThongRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(ThongT_High)) {
-					ThongRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasThongT = ThongRiskLevel > FlashRiskLevel::None;
-				bool HasThongNoCover = PlayerWornHasKeyword(Thong_NoCover);
+				bool HasThong = PlayerIsWearing(FemaleKeywords[Thong]);
+
+				UINT8 ThongRiskLevel = GetUnderwearRiskLevel(UnderwearType::Thong);
+				bool HasThongT = ThongRiskLevel;
+				
+				bool HasThongNoCover = PlayerIsWearing(FemaleKeywords[Thong_NoCover]);
 
 				//CString
-				bool HasCString = PlayerWornHasKeyword(CString);
-				int CStringRiskLevel = FlashRiskLevel::None;
-				if (PlayerWornHasKeyword(CStringT_Low)) {
-					CStringRiskLevel = FlashRiskLevel::Low;
-				}
-				else if (PlayerWornHasKeyword(CStringT)) {
-					CStringRiskLevel = FlashRiskLevel::Normal;
-				}
-				else if (PlayerWornHasKeyword(CStringT_High)) {
-					CStringRiskLevel = FlashRiskLevel::High;
-				}
-				bool HasCStringT = CStringRiskLevel > FlashRiskLevel::None;
+				bool HasCString = PlayerIsWearing(FemaleKeywords[CString]);
+
+				UINT8 CStringRiskLevel = GetUnderwearRiskLevel(UnderwearType::CString);
+				bool HasCStringT = CStringRiskLevel;
 			
 				//Debug Results
 				//Top

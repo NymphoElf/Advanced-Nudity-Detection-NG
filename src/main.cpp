@@ -15,6 +15,7 @@
 #include "NPCData.h"
 #include "ModEventHandler.h"
 #include "ModIntegration.h"
+#include "SKSEConfig.h"
 
 /* KEEP! IMPORTANT!!!
 
@@ -184,11 +185,8 @@ void InitializeLog()
 		return;
 	}
 
-	//SKSE::detail::PluginInfo ThisPlugin;
-
 	std::filesystem::path path = log_directory.value();
 	path /= std::format("{}.log", SKSE::GetPluginName());
-	//path /= std::format("{}.log", ThisPlugin.name);
 
 	std::vector<spdlog::sink_ptr> sinks {
 		std::make_shared<spdlog::sinks::rotating_file_sink_mt>(path.string(), 0x6400000, 4, true),
@@ -203,8 +201,6 @@ void InitializeLog()
 	spdlog::set_pattern("[%T.%e] [%=5t] [%L] %v");
 
 	logs::info("{} v{}", SKSE::GetPluginName(), SKSE::GetPluginVersion());
-
-	//logs::info("{} v{}", ThisPlugin.name, ThisPlugin.version);
 }
 
 void OnMessage(SKSE::MessagingInterface::Message* message) {
@@ -252,6 +248,7 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 		logs::info("Post Load Game");
 
 		CleanFemaleList();
+		CleanTransformList();
 
 		break;
 	case SKSE::MessagingInterface::kDeleteGame:
@@ -268,7 +265,11 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
-	SKSE::Init(a_skse, false);
+	//SKSE::Init(a_skse, false);
+
+	SKSE::InitInfo InitInfo = {false};
+	SKSE::Init(a_skse, InitInfo);
+
 	InitializeLog();
 	logs::critical("Advanced Nudity Detection DLL Initialized!");
 	SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
@@ -276,6 +277,8 @@ SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 	SKSE::GetPapyrusInterface()->Register(BindNativePapyrusFunctions);
 
 	RegisterCoSaveSerializer();
+
+	RegisterSKSEConfigMenu();
 
 	return true;
 }

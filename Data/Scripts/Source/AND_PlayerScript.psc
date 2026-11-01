@@ -81,7 +81,7 @@ Event OnMenuClose(String MenuName)
 			Int TransformedSelection = IsTransformedMessage.Show()
 			If TransformedSelection == 1 ;Custom Race
 				SetPlayerBaseRace(arPlayer)
-				Debug.MessageBox("A.N.D. MESSAGE - Your race is detected as: " + arPlayer + " " + arPlayer.GetName() + ". If this is not your NON-transformed race, use Racemenu to reset it to the correct race.")
+				Debug.MessageBox("A.N.D. MESSAGE - Your 'Base Race' is now detected as: " + arPlayer + " " + arPlayer.GetName() + ". If this race is your TRANSFORMED race, this could cause problems.")
 			Else
 				Int AddTransform = AddTransformRace.Show()
 				If AddTransform == 0
@@ -93,22 +93,10 @@ Event OnMenuClose(String MenuName)
 EndEvent
 
 Event OnAnimationEvent(ObjectReference akReference, String akEventName)
-	If Config.ConfigBoolOptions[Config.MotionFlashEnabled] == True
-		If akEventName == "FootLeft"
-			If MotionClock.CooldownActive == False
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootLeft' - Running Motion Flash Trigger")
-				AND_Core.MovementDiceRoll(False)
-				MotionClock.Cooldown()
-			EndIf
-		EndIf
-		
-		If akEventName == "FootSprintLeft"
-			If MotionClock.CooldownActive == False
-				AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Event is 'FootSprintLeft' - Sprinting Motion Flash Trigger")
-				AND_Core.MovementDiceRoll(True)
-				MotionClock.Cooldown()
-			EndIf
-		EndIf
+	If Config.ConfigBoolOptions[Config.MotionFlashEnabled] == True && MotionClock.CooldownActive == False
+		AND_Logger.FastLog("<PlayerScript> [OnAnimationEvent] Motion Flash Trigger")
+		AND_Core.MovementDiceRoll()
+		MotionClock.Cooldown()
 	EndIf
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
@@ -143,7 +131,7 @@ Event OnUpdateGameTime()
 	
 	AND_Logger.FastLog("<Player Script> [OnUpdateGameTime] Update Game Time Triggered.")
 	
-	AND_Core.DiceRoll(PlayerRef.IsSprinting(), PlayerRef.IsRunning())
+	AND_Core.DiceRoll()
 	
 	Int EventHandle = ModEvent.Create("AdvancedNudityDetectionUpdate")
 	ModEvent.Send(EventHandle)

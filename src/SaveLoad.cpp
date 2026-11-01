@@ -18,11 +18,12 @@ static constexpr std::uint32_t kMCMRecord = 'MCM0';
 static constexpr std::uint32_t kLogRecord = 'LOG0';
 static constexpr std::uint32_t kModEventHandlerRecord = 'MEH0';
 static constexpr std::uint32_t kPlayerRecord = 'PLY0';
+static constexpr std::uint32_t kMultiPartObjectRecord = 'MPOR';
 static constexpr std::uint32_t kVersion = 1;
 
 void SavePermanentNPCs() 
 {
-	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PersistentFemales.bin";
 	constexpr char FolderPath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/";
 
 	if (!std::filesystem::exists(FolderPath)) {
@@ -55,11 +56,47 @@ void LoadPermanentNPCs()
 {
 	Log("<C++ NPCData> [LoadPermanentNPCs] - Function Triggered", Logger::LogType::Core);
 	
-	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+	constexpr char FilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PersistentFemales.bin";
 
 	if (!std::filesystem::exists(FilePath))
 	{
-		Log("<C++ SaveLoad> [LoadPermanentNPCs] Permanent NPC File does not exist!", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		Log("<C++ SaveLoad> [LoadPermanentNPCs] 'PermanentFemales.bin' file does not exist in expected folder. Checking for Legacy file 'PermanentActors.bin'...", Logger::LogType::Core, Logger::LoggingLevel::warning);
+
+		constexpr char LegacyFilePath[] = "Data/SKSE/Plugins/NymphoElf/Advanced Nudity Detection/PermanentActors.bin";
+
+		if (!std::filesystem::exists(LegacyFilePath))
+		{
+			Log("<C++ SaveLoad> [LoadPermanentNPCs] Legacy file does not exist in expected directory. No Females imported...", Logger::LogType::Core, Logger::LoggingLevel::warning);
+		}
+		else {
+			std::ifstream LegacyActorFile(LegacyFilePath, std::ios::binary);
+
+			LegacyActorFile.seekg(0, std::ios::end);
+			size_t LegacyFileSize = LegacyActorFile.tellg();
+			LegacyActorFile.seekg(0, std::ios::beg);
+
+			LegacyPermanentFemales LegacyFemale;
+			PermanentFemales ConvertedFemale;
+
+			for (size_t Index = 0; Index < (LegacyFileSize / sizeof(LegacyPermanentFemales)); ++Index)
+			{
+
+				LegacyActorFile.read(reinterpret_cast<char*>(&LegacyFemale), sizeof(LegacyFemale));
+
+				ConvertedFemale = ConvertLegacyFemale(LegacyFemale);
+
+				if (FindInVector(PermanentFemaleVector, ConvertedFemale) >= 0) {
+					Log("<C++ SaveLoad> [LoadPermanentNPCs] This Female " + static_cast<std::string>(ConvertedFemale.Name) + " already exists in Permanent NPC list. Skipping...", Logger::Core, Logger::critical);
+					continue;
+				}
+
+				if (ValidatePermanentFemale(ConvertedFemale)) {
+					PermanentFemaleVector.emplace_back(ConvertedFemale);
+				}
+			}
+
+			LegacyActorFile.close();
+		}
 
 		return;
 	}
@@ -70,15 +107,86 @@ void LoadPermanentNPCs()
 	size_t FileSize = ActorFile.tellg();
 	ActorFile.seekg(0, std::ios::beg);
 
+	PermanentFemales Female;
+
 	for(size_t Index = 0; Index < (FileSize / sizeof(PermanentFemales)); ++Index)
 	{
-		PermanentFemales Female;
 		ActorFile.read(reinterpret_cast<char*>(&Female), sizeof(Female));
 
-		PermanentFemaleVector.emplace_back(Female);
+		if (FindInVector(PermanentFemaleVector, Female) >= 0) {
+			Log("<C++ SaveLoad> [LoadPermanentNPCs] This Female " + static_cast<std::string>(Female.Name) + " already exists in Permanent NPC list. Skipping...", Logger::Core, Logger::critical);
+			continue;
+		}
+
+		if (ValidatePermanentFemale(Female)) {
+			PermanentFemaleVector.emplace_back(Female);
+		}
 	}
 
 	ActorFile.close();
+}
+
+std::optional<TwoPartObject> RebuildTwoPartObject(RE::FormID LocalID_A, std::string Plugin_A, RE::FormID LocalID_B, std::string Plugin_B, std::string KeywordEditorID) {
+	const RE::TESFile* FullPluginFile_A = GameDataHandler->LookupLoadedModByName(Plugin_A);
+	const RE::TESFile* LightPluginFile_A = GameDataHandler->LookupLoadedLightModByName(Plugin_A);
+
+	const RE::TESFile* FullPluginFile_B = GameDataHandler->LookupLoadedModByName(Plugin_B);
+	const RE::TESFile* LightPluginFile_B = GameDataHandler->LookupLoadedLightModByName(Plugin_B);
+
+	RE::BGSKeyword* Keyword = RE::TESForm::LookupByEditorID<RE::BGSKeyword>(KeywordEditorID);
+
+	if (!FullPluginFile_A && !LightPluginFile_A) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] WARNING: Plugin (" + Plugin_A + ") no longer exists or is not loaded. Cannot rebuild this TwoPartObject.", Logger::Core, Logger::warning);
+		return std::nullopt;
+	}
+	else if (!FullPluginFile_B && !LightPluginFile_B) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] WARNING: Plugin (" + Plugin_B + ") no longer exists or is not loaded. Cannot rebuild this TwoPartObject.", Logger::Core, Logger::warning);
+		return std::nullopt;
+	}
+	else if (!Keyword) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] ERROR: Keyword (" + KeywordEditorID + ") not found! Cannot rebuild this TwoPartObject.", Logger::Core, Logger::error);
+		return std::nullopt;
+	}
+
+	TwoPartObject ThisTwoPartObject;
+
+	//REBUILD OBJECT A
+	if (FullPluginFile_A) {
+		if (FullPluginFile_A->GetFilename() == "Skyrim.esm") {
+			ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(LocalID_A);
+		}
+		else {
+			ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(
+				(GameDataHandler->GetLoadedModIndex(Plugin_A).value() << 24) + LocalID_A
+			);
+		}
+	}
+	else {
+		ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(
+			((0xFE << 24) + (GameDataHandler->GetLoadedLightModIndex(Plugin_A).value() << 12)) + LocalID_A
+		);
+	}
+
+	//REBUILD OBJECT B
+	if (FullPluginFile_B) {
+		if (FullPluginFile_B->GetFilename() == "Skyrim.esm") {
+			ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(LocalID_B);
+		}
+		else {
+			ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(
+				(GameDataHandler->GetLoadedModIndex(Plugin_B).value() << 24) + LocalID_B
+			);
+		}
+	}
+	else {
+		ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(
+			((0xFE << 24) + (GameDataHandler->GetLoadedLightModIndex(Plugin_B).value() << 12)) + LocalID_B
+		);
+	}
+
+	ThisTwoPartObject.Keyword = Keyword;
+
+	return ThisTwoPartObject;
 }
 
 // Helpers for variable-size types
@@ -98,29 +206,29 @@ inline bool ReadString(SKSE::SerializationInterface* serializer, std::string& st
 inline void SaveCallback(SKSE::SerializationInterface* serializer)
 {
 	if (serializer->OpenRecord(kCoreRecord, kVersion)) {
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&ChestCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&PelvicCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&AssCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&CStringRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&ChestCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&PelvicCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&AssCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&CStringRoll), sizeof(INT8));
 
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&TopTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&BottomTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&BraTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&UnderwearTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&HotpantsTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&ShowgirlTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&TopTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&BottomTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&BraTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&UnderwearTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&HotpantsTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&ShowgirlTransparentRoll), sizeof(INT8));
 
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCChestCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCPelvicCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCAssCurtainRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCCStringRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCChestCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCPelvicCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCAssCurtainRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCCStringRoll), sizeof(INT8));
 
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCTopTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBottomTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBraTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCUnderwearTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCHotpantsTransparentRoll), sizeof(int));
-		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCShowgirlTransparentRoll), sizeof(int));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCTopTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBottomTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCBraTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCUnderwearTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCHotpantsTransparentRoll), sizeof(INT8));
+		serializer->WriteRecordData(reinterpret_cast<const char*>(&NPCShowgirlTransparentRoll), sizeof(INT8));
 	}
 	
 	// --- NPC record ---
@@ -132,7 +240,7 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 		for (auto& [ID, Female] : RegisteredFemaleMap)
 		{
-			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(Female));
+			serializer->WriteRecordData(reinterpret_cast<const char*>(&Female), sizeof(RegisteredFemales));
 		}
 
 		SavePermanentNPCs();
@@ -143,27 +251,27 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 	// --- MCM record ---
 	if (serializer->OpenRecord(kMCMRecord, kVersion)) {
 		serializer->WriteRecordData(Configuration::FlashingOdds, sizeof(Configuration::FlashingOdds));
-		serializer->WriteRecordData(&Configuration::ImmodestyTimeNeeded, sizeof(int));
+		serializer->WriteRecordData(&Configuration::ImmodestyTimeNeeded, sizeof(UINT16));
 
-		serializer->WriteRecordData(&Configuration::MinimumStrictModestyRank, sizeof(int));
-		serializer->WriteRecordData(&Configuration::MinimumTopModestyRank, sizeof(int));
-		serializer->WriteRecordData(&Configuration::MinimumBottomModestyRank, sizeof(int));
+		serializer->WriteRecordData(&Configuration::MinimumStrictModestyRank, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::MinimumTopModestyRank, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::MinimumBottomModestyRank, sizeof(UINT8));
 
-		serializer->WriteRecordData(&Configuration::DefaultNPCShyness, sizeof(int));
+		serializer->WriteRecordData(&Configuration::DefaultNPCShyness, sizeof(UINT8));
 
-		serializer->WriteRecordData(&Configuration::SprintingMod, sizeof(int));
-		serializer->WriteRecordData(&Configuration::RunningMod, sizeof(int));
+		serializer->WriteRecordData(&Configuration::SprintingMod, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::RunningMod, sizeof(UINT8));
 
-		serializer->WriteRecordData(&Configuration::PlayerConfidenceLevel, sizeof(int));
+		serializer->WriteRecordData(&Configuration::PlayerConfidenceLevel, sizeof(UINT8));
 
-		serializer->WriteRecordData(&Configuration::NudeCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::ToplessCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::BottomlessCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::ChestCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::BraCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::AssCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::GenitalsCommentChance, sizeof(int));
-		serializer->WriteRecordData(&Configuration::UnderwearCommentChance, sizeof(int));
+		serializer->WriteRecordData(&Configuration::NudeCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::ToplessCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::BottomlessCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::ChestCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::BraCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::AssCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::GenitalsCommentChance, sizeof(UINT8));
+		serializer->WriteRecordData(&Configuration::UnderwearCommentChance, sizeof(UINT8));
 
 		serializer->WriteRecordData(&Configuration::MotionFlashEnabled, sizeof(bool));
 		serializer->WriteRecordData(&Configuration::DynamicModestyEnabled, sizeof(bool));
@@ -183,8 +291,8 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 		serializer->WriteRecordData(&Configuration::DisableNakedComments, sizeof(bool));
 
-		float DynamicModstyValue = Configuration::DynamicModestyMode->value;
-		serializer->WriteRecordData(&DynamicModstyValue, sizeof(float));
+		float DynamicModestyValue = Configuration::DynamicModestyMode->value;
+		serializer->WriteRecordData(&DynamicModestyValue, sizeof(float));
 	}
 
 	// --- LOG record ---
@@ -201,18 +309,18 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 		uint32_t Index = 0;
 		while (Index < count) {
-			serializer->WriteRecordData(&RegisteredPlugins::DynamicModestyEnabled[Index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredPlugins::HardcoreEnabled[Index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredPlugins::CorruptionEnabled[Index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredPlugins::ShamelessEnabled[Index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredPlugins::UpgradeBlocked[Index], sizeof(uint8_t));
-			serializer->WriteRecordData(&RegisteredPlugins::UseStrictModesty[Index], sizeof(uint8_t));
+			serializer->WriteRecordData(&RegisteredPlugins::DynamicModestyEnabled[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::HardcoreEnabled[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::CorruptionEnabled[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::ShamelessEnabled[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::UpgradeBlocked[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::UseStrictModesty[Index], sizeof(UINT8));
 
-			serializer->WriteRecordData(&RegisteredPlugins::MinimumStrictRank[Index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredPlugins::MinimumTopRank[Index], sizeof(int));
-			serializer->WriteRecordData(&RegisteredPlugins::MinimumBottomRank[Index], sizeof(int));
+			serializer->WriteRecordData(&RegisteredPlugins::MinimumStrictRank[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::MinimumTopRank[Index], sizeof(UINT8));
+			serializer->WriteRecordData(&RegisteredPlugins::MinimumBottomRank[Index], sizeof(UINT8));
 
-			serializer->WriteRecordData(&RegisteredPlugins::ImmodestyTimeRequired[Index], sizeof(int));
+			serializer->WriteRecordData(&RegisteredPlugins::ImmodestyTimeRequired[Index], sizeof(UINT16));
 
 			WriteString(serializer, RegisteredPlugins::Plugins[Index]);
 			Index++;
@@ -249,6 +357,47 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 			WriteString(serializer, raceEditorID);
 		}
 	}
+
+	// --- MULTI PART OBJECT record ---
+	if (serializer->OpenRecord(kMultiPartObjectRecord, kVersion)) {
+		UINT16 Count = (UINT16)TwoPartObjects.size();
+		serializer->WriteRecordData(&Count, sizeof(UINT16));
+
+		std::string EditorID;
+
+		const RE::TESFile* PluginFile;
+		std::string PluginName;
+		RE::FormID FullFormID;
+		RE::FormID LocalFormID;
+
+		for (UINT16 Index = 0; Index < Count; ++Index) {
+			//OBJECT A
+			FullFormID = TwoPartObjects[Index].ObjectA->GetFormID();
+			PluginFile = GetModFileFromFormID(FullFormID);
+			
+			PluginName = PluginFile->GetFilename();
+
+			PluginName == "Skyrim.esm" ? LocalFormID = FullFormID : LocalFormID = TwoPartObjects[Index].ObjectA->GetLocalFormID();
+
+			serializer->WriteRecordData(&LocalFormID, sizeof(RE::FormID));
+			WriteString(serializer, PluginName);
+
+			//OBJECT B
+			FullFormID = TwoPartObjects[Index].ObjectB->GetFormID();
+			PluginFile = GetModFileFromFormID(FullFormID);
+			
+			PluginName = PluginFile->GetFilename();
+
+			PluginName == "Skyrim.esm" ? LocalFormID = FullFormID : LocalFormID = TwoPartObjects[Index].ObjectB->GetLocalFormID();
+
+			serializer->WriteRecordData(&LocalFormID, sizeof(RE::FormID));
+			WriteString(serializer, PluginName);
+			
+			//KEYWORD
+			EditorID = static_cast<std::string>(TwoPartObjects[Index].Keyword->GetFormEditorID());
+			WriteString(serializer, EditorID);
+		}
+	}
 }
 
 inline void LoadCallback(SKSE::SerializationInterface* serializer)
@@ -261,29 +410,29 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 			case kCoreRecord:
 			{
-				serializer->ReadRecordData(&ChestCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&PelvicCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&AssCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&CStringRoll, sizeof(int));
+				serializer->ReadRecordData(&ChestCurtainRoll, sizeof(ChestCurtainRoll));
+				serializer->ReadRecordData(&PelvicCurtainRoll, sizeof(PelvicCurtainRoll));
+				serializer->ReadRecordData(&AssCurtainRoll, sizeof(AssCurtainRoll));
+				serializer->ReadRecordData(&CStringRoll, sizeof(CStringRoll));
 
-				serializer->ReadRecordData(&TopTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&BottomTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&BraTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&UnderwearTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&HotpantsTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&ShowgirlTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&TopTransparentRoll, sizeof(TopTransparentRoll));
+				serializer->ReadRecordData(&BottomTransparentRoll, sizeof(BottomTransparentRoll));
+				serializer->ReadRecordData(&BraTransparentRoll, sizeof(BraTransparentRoll));
+				serializer->ReadRecordData(&UnderwearTransparentRoll, sizeof(UnderwearTransparentRoll));
+				serializer->ReadRecordData(&HotpantsTransparentRoll, sizeof(HotpantsTransparentRoll));
+				serializer->ReadRecordData(&ShowgirlTransparentRoll, sizeof(ShowgirlTransparentRoll));
 
-				serializer->ReadRecordData(&NPCChestCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCPelvicCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCAssCurtainRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCCStringRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCChestCurtainRoll, sizeof(NPCChestCurtainRoll));
+				serializer->ReadRecordData(&NPCPelvicCurtainRoll, sizeof(NPCPelvicCurtainRoll));
+				serializer->ReadRecordData(&NPCAssCurtainRoll, sizeof(NPCAssCurtainRoll));
+				serializer->ReadRecordData(&NPCCStringRoll, sizeof(NPCCStringRoll));
 
-				serializer->ReadRecordData(&NPCTopTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCBottomTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCBraTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCUnderwearTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCHotpantsTransparentRoll, sizeof(int));
-				serializer->ReadRecordData(&NPCShowgirlTransparentRoll, sizeof(int));
+				serializer->ReadRecordData(&NPCTopTransparentRoll, sizeof(NPCTopTransparentRoll));
+				serializer->ReadRecordData(&NPCBottomTransparentRoll, sizeof(NPCBottomTransparentRoll));
+				serializer->ReadRecordData(&NPCBraTransparentRoll, sizeof(NPCBraTransparentRoll));
+				serializer->ReadRecordData(&NPCUnderwearTransparentRoll, sizeof(NPCUnderwearTransparentRoll));
+				serializer->ReadRecordData(&NPCHotpantsTransparentRoll, sizeof(NPCHotpantsTransparentRoll));
+				serializer->ReadRecordData(&NPCShowgirlTransparentRoll, sizeof(NPCShowgirlTransparentRoll));
 				break;
 			}
 
@@ -321,27 +470,27 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 			case kMCMRecord: {
 				serializer->ReadRecordData(Configuration::FlashingOdds, sizeof(Configuration::FlashingOdds));
 
-				serializer->ReadRecordData(&Configuration::ImmodestyTimeNeeded, sizeof(int));
+				serializer->ReadRecordData(&Configuration::ImmodestyTimeNeeded, sizeof(UINT16));
 
-				serializer->ReadRecordData(&Configuration::MinimumStrictModestyRank, sizeof(int));
-				serializer->ReadRecordData(&Configuration::MinimumTopModestyRank, sizeof(int));
-				serializer->ReadRecordData(&Configuration::MinimumBottomModestyRank, sizeof(int));
+				serializer->ReadRecordData(&Configuration::MinimumStrictModestyRank, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::MinimumTopModestyRank, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::MinimumBottomModestyRank, sizeof(UINT8));
 
-				serializer->ReadRecordData(&Configuration::DefaultNPCShyness, sizeof(int));
+				serializer->ReadRecordData(&Configuration::DefaultNPCShyness, sizeof(UINT8));
 
-				serializer->ReadRecordData(&Configuration::SprintingMod, sizeof(int));
-				serializer->ReadRecordData(&Configuration::RunningMod, sizeof(int));
+				serializer->ReadRecordData(&Configuration::SprintingMod, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::RunningMod, sizeof(UINT8));
 
-				serializer->ReadRecordData(&Configuration::PlayerConfidenceLevel, sizeof(int));
+				serializer->ReadRecordData(&Configuration::PlayerConfidenceLevel, sizeof(UINT8));
 
-				serializer->ReadRecordData(&Configuration::NudeCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::ToplessCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::BottomlessCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::ChestCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::BraCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::AssCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::GenitalsCommentChance, sizeof(int));
-				serializer->ReadRecordData(&Configuration::UnderwearCommentChance, sizeof(int));
+				serializer->ReadRecordData(&Configuration::NudeCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::ToplessCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::BottomlessCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::ChestCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::BraCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::AssCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::GenitalsCommentChance, sizeof(UINT8));
+				serializer->ReadRecordData(&Configuration::UnderwearCommentChance, sizeof(UINT8));
 
 				serializer->ReadRecordData(&Configuration::MotionFlashEnabled, sizeof(bool));
 				serializer->ReadRecordData(&Configuration::DynamicModestyEnabled, sizeof(bool));
@@ -379,9 +528,10 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 				std::uint32_t count = 0;
 				serializer->ReadRecordData(&count, sizeof(count));
 
-				uint8_t bValue;
+				UINT8 bValue;
 
-				int iValue;
+				UINT8 ui8Value;
+				UINT16 ui16Value;
 
 				std::string sValue;
 
@@ -405,17 +555,17 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 					serializer->ReadRecordData(&bValue, sizeof(bValue));
 					RegisteredPlugins::UseStrictModesty.emplace_back(bValue);
 
-					serializer->ReadRecordData(&iValue, sizeof(int));
-					RegisteredPlugins::MinimumStrictRank.emplace_back(iValue);
+					serializer->ReadRecordData(&ui8Value, sizeof(UINT8));
+					RegisteredPlugins::MinimumStrictRank.emplace_back(ui8Value);
 
-					serializer->ReadRecordData(&iValue, sizeof(int));
-					RegisteredPlugins::MinimumTopRank.emplace_back(iValue);
+					serializer->ReadRecordData(&ui8Value, sizeof(UINT8));
+					RegisteredPlugins::MinimumTopRank.emplace_back(ui8Value);
 
-					serializer->ReadRecordData(&iValue, sizeof(int));
-					RegisteredPlugins::MinimumBottomRank.emplace_back(iValue);
+					serializer->ReadRecordData(&ui8Value, sizeof(UINT8));
+					RegisteredPlugins::MinimumBottomRank.emplace_back(ui8Value);
 
-					serializer->ReadRecordData(&iValue, sizeof(int));
-					RegisteredPlugins::ImmodestyTimeRequired.emplace_back(iValue);
+					serializer->ReadRecordData(&ui16Value, sizeof(UINT16));
+					RegisteredPlugins::ImmodestyTimeRequired.emplace_back(ui16Value);
 
 					ReadString(serializer, sValue);
 					RegisteredPlugins::Plugins.emplace_back(sValue);
@@ -450,6 +600,57 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 					ReadString(serializer, raceEditorID);
 					CustomTransformations.emplace_back(RE::TESForm::LookupByEditorID<RE::TESRace>(raceEditorID));
 				}
+				break;
+			}
+
+			case kMultiPartObjectRecord: {
+				RE::FormID LocalID_A;
+				std::string Plugin_A;
+				RE::FormID LocalID_B;
+				std::string Plugin_B;
+				std::string EditorID_Keyword;
+				UINT16 Count;
+
+				//TwoPartObject LoadedTwoPartObject = {nullptr, nullptr, nullptr};
+
+				serializer->ReadRecordData(&Count, sizeof(UINT16));
+
+				//ObjectReads
+				for (UINT16 Index = 0; Index < Count; ++Index) {
+					serializer->ReadRecordData(&LocalID_A, sizeof(RE::FormID));
+					ReadString(serializer, Plugin_A);
+					serializer->ReadRecordData(&LocalID_B, sizeof(RE::FormID));
+					ReadString(serializer, Plugin_B);
+					ReadString(serializer, EditorID_Keyword);
+
+					std::optional<TwoPartObject> LoadedTwoPartObject = RebuildTwoPartObject(LocalID_A, Plugin_A, LocalID_B, Plugin_B, EditorID_Keyword);
+
+					if (LoadedTwoPartObject.has_value()) {
+						TwoPartObjects.emplace_back(LoadedTwoPartObject.value());
+					}
+
+					/*LoadedTwoPartObject.ObjectA = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_A);
+					LoadedTwoPartObject.ObjectB = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_B);
+					LoadedTwoPartObject.Keyword = RE::TESForm::LookupByEditorID<RE::BGSKeyword>(EditorID_Keyword);
+					
+					if (LoadedTwoPartObject.ObjectA && LoadedTwoPartObject.ObjectB && LoadedTwoPartObject.Keyword) {
+						TwoPartObjects.emplace_back(LoadedTwoPartObject);
+					}
+					else if (!LoadedTwoPartObject.ObjectA) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject ObjectA (" + EditorID_A + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
+					else if (!LoadedTwoPartObject.ObjectB) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject ObjectB (" + EditorID_B + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
+					else if (!LoadedTwoPartObject.Keyword) {
+						Log("<C++ SaveLoad> [LoadCallback | MultiPartObjectRecord] TwoPartObject Keyword (" + EditorID_Keyword + ") read failed. Skipping object load...", Logger::Core, Logger::critical);
+					}
+
+					LoadedTwoPartObject.ObjectA = nullptr;
+					LoadedTwoPartObject.ObjectB = nullptr;
+					LoadedTwoPartObject.Keyword = nullptr;*/
+				}
+
 				break;
 			}
 
@@ -494,6 +695,9 @@ inline void RevertCallback(SKSE::SerializationInterface*) {
 
 	//Clear Custom Transform List
 	CustomTransformations.clear();
+
+	//Clear Multi-Part Object Lists
+	TwoPartObjects.clear();
 }
 
 void RegisterCoSaveSerializer()

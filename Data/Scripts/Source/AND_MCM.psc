@@ -628,15 +628,19 @@ Event OnConfigOpen()
 	MaxRegisteredFemalePages = GetRegisteredFemalesPages()
 	MaxPermanentFemalePages = GetPermanentFemalesPages()
 	
-	If MaxRegisteredFemalePages > CurrentRegisteredFemalePage
+	If MaxRegisteredFemalePages < CurrentRegisteredFemalePage
 		CurrentRegisteredFemalePage = MaxRegisteredFemalePages
-	ElseIf CurrentRegisteredFemalePage < 1
+	EndIf
+	
+	If CurrentRegisteredFemalePage < 1
 		CurrentRegisteredFemalePage = 1
 	EndIf
 	
-	If MaxPermanentFemalePages > CurrentPermanentFemalePage
+	If MaxPermanentFemalePages < CurrentPermanentFemalePage
 		CurrentPermanentFemalePage = MaxPermanentFemalePages
-	ElseIf CurrentPermanentFemalePage < 1
+	EndIf
+	
+	If CurrentPermanentFemalePage < 1
 		CurrentPermanentFemalePage = 1
 	EndIf
 	
@@ -2131,7 +2135,7 @@ Event OnPageReset(string page)
 			AddHeaderOption("$TrackedFemalesHeader")
 			NPCModestyMenus[1] = AddMenuOption("$SelectedFemaleText", SelectedFemale, 0)
 			AddTextOption("$FemaleFormIDText", GetFemaleActorFormID(SelectedFemaleActor))
-			NPCModestySliders[7] = AddMenuOption("$RegisteredFemalesPage", CurrentRegisteredFemalePage, DisabledIf(MaxRegisteredFemalePages < 2))
+			NPCModestySliders[7] = AddSliderOption("$RegisteredFemalesPage", CurrentRegisteredFemalePage, "{0}",  DisabledIf(MaxRegisteredFemalePages < 2))
 			
 			NPCModestyToggles[7] = AddToggleOption("$PersistentFemale", MakeFemalePermanent, DisabledIf(SelectedFemale == "---" || SelectedFemale == "" || DeleteFemale == True || ResetFemaleModesty == True || PermanentFemaleNames.Find(SelectedFemale) >= 0))
 			NPCModestyToggles[8] = AddToggleOption("$PersistentFemaleConfirm", ConfirmSelection, DisabledIf(MakeFemalePermanent == False))
@@ -2158,7 +2162,7 @@ Event OnPageReset(string page)
 			
 			AddHeaderOption("$PersistentFemaleHeader")
 			NPCModestyMenus[3] = AddMenuOption("$SelectedFemaleText", SelectedPermFemale, 0)
-			NPCModestySliders[8] = AddMenuOption("$PermanentFemalesPage", CurrentPermanentFemalePage, DisabledIf(MaxPermanentFemalePages < 2))
+			NPCModestySliders[8] = AddSliderOption("$PermanentFemalesPage", CurrentPermanentFemalePage, "{0}", DisabledIf(MaxPermanentFemalePages < 2))
 			NPCModestyToggles[19] = AddToggleOption("$RemovePersistence", DeletePermFemale, DisabledIf(SelectedPermFemale == "---" || SelectedPermFemale == ""))
 			NPCModestyToggles[20] = AddToggleOption("$RemovePersistenceConfirm", ConfirmSelection, DisabledIf(DeletePermFemale == False || SelectedPermFemale == "---" || SelectedPermFemale == ""))
 		EndIf
@@ -2554,7 +2558,7 @@ Event OnOptionSliderOpen(Int Option)
 	EndIf
 	
 	SetSliderDialogStartValue(StartValue)
-	SetSliderDialogDefaultValue(StartValue)
+	SetSliderDialogDefaultValue(DefaultValue)
 	SetSliderDialogRange(RangeMin, RangeMax)
 	SetSliderDialogInterval(Interval)
 EndEvent

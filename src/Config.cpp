@@ -33,192 +33,194 @@ enum DefaultOdds {
 	DefaultTransparentItemOddsHigh = 70
 };
 
+using namespace Configuration;
+
 void InitializeConfigData() {
 	Log("<C++ Config> [InitializeConfigData] START");
 	
 	//Curtain Odds
 
-	Configuration::FlashingOdds[ChestCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[ChestCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[ChestCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[ChestCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[ChestCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[ChestCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[ChestCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[ChestCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[ChestCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[ChestCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[PelvicCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[PelvicCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[PelvicCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[PelvicCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[PelvicCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[PelvicCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[PelvicCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[PelvicCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[PelvicCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[PelvicCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[AssCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[AssCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[AssCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[AssCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[AssCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[AssCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[AssCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[AssCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[AssCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[AssCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentChestCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentChestCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentChestCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentChestCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentChestCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentChestCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentChestCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentPelvicCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentPelvicCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentPelvicCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentPelvicCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentPelvicCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentAssCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentAssCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentAssCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentAssCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentAssCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentAssCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentAssCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
 	//Armor Piece Odds
 
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentTopArmorOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentTopArmorOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentTopArmorOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentTopArmorOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBottomArmorOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBottomArmorOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBottomArmorOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBraOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBraOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBraOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBraOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBraOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBraOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentUnderwearOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentUnderwearOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentUnderwearOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentUnderwearOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHotpantsOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHotpantsOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHotpantsOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHotpantsOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentShowgirlOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentShowgirlOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentShowgirlOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentShowgirlOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentShowgirlOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentShowgirlOdds_High] = DefaultTransparentItemOddsHigh;
 
 	//CString Odds
 
-	Configuration::FlashingOdds[CStringOdds] = DefaultCStringOdds;
-	Configuration::FlashingOdds[TransparentCStringOdds_Low] = DefaultTransparentCStringOddsLow;
-	Configuration::FlashingOdds[TransparentCStringOdds] = DefaultTransparentCStringOdds;
-	Configuration::FlashingOdds[TransparentCStringOdds_High] = DefaultTransparentCStringOddsHigh;
+	FlashingOdds[CStringOdds] = DefaultCStringOdds;
+	FlashingOdds[TransparentCStringOdds_Low] = DefaultTransparentCStringOddsLow;
+	FlashingOdds[TransparentCStringOdds] = DefaultTransparentCStringOdds;
+	FlashingOdds[TransparentCStringOdds_High] = DefaultTransparentCStringOddsHigh;
 	
 	//Curtain Odds - MALE
 
-	Configuration::FlashingOdds[ChestCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[ChestCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[ChestCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[ChestCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[ChestCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[ChestCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[ChestCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[ChestCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[ChestCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[ChestCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[PelvicCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[PelvicCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[PelvicCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[PelvicCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[PelvicCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[PelvicCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[PelvicCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[PelvicCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[PelvicCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[PelvicCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[AssCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[AssCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[AssCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[AssCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[AssCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[AssCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[AssCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[AssCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[AssCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[AssCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentChestCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentChestCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentChestCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentChestCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentChestCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentChestCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentChestCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentPelvicCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentPelvicCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentPelvicCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentPelvicCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentPelvicCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentAssCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentAssCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentAssCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentAssCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentAssCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentAssCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentAssCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
 	//Armor Piece Odds - MALE
 
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentTopArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentTopArmorOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentTopArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBottomArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBottomArmorOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBottomArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBraOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBraOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBraOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBraOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBraOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBraOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentUnderwearOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentUnderwearOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentUnderwearOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHotpantsOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHotpantsOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHotpantsOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHimboOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHimboOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHimboOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHimboOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHimboOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHimboOdds_High] = DefaultTransparentItemOddsHigh;
 
 	//CString Odds - MALE
 
-	Configuration::FlashingOdds[BananaHammockOdds] = DefaultCStringOdds;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds_Low] = DefaultTransparentCStringOddsLow;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds] = DefaultTransparentCStringOdds;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds_High] = DefaultTransparentCStringOddsHigh;
+	FlashingOdds[BananaHammockOdds] = DefaultCStringOdds;
+	FlashingOdds[TransparentBananaHammockOdds_Low] = DefaultTransparentCStringOddsLow;
+	FlashingOdds[TransparentBananaHammockOdds] = DefaultTransparentCStringOdds;
+	FlashingOdds[TransparentBananaHammockOdds_High] = DefaultTransparentCStringOddsHigh;
 
 	//Integers
-	Configuration::ImmodestyTimeNeeded = 14;
+	ImmodestyTimeNeeded = 14;
 
-	Configuration::MinimumStrictModestyRank = 0;
-	Configuration::MinimumTopModestyRank = 0;
-	Configuration::MinimumBottomModestyRank = 0;
+	MinimumStrictModestyRank = 0;
+	MinimumTopModestyRank = 0;
+	MinimumBottomModestyRank = 0;
 
-	Configuration::DefaultNPCShyness = ShySex::Men;
+	DefaultNPCShyness = ShySex::Men;
 
-	Configuration::SprintingMod = 20;
-	Configuration::RunningMod = 10;
+	SprintingMod = 20;
+	RunningMod = 10;
 
-	Configuration::PlayerConfidenceLevel = ConfidenceLevel::Average;
+	PlayerConfidenceLevel = ConfidenceLevel::Average;
 
-	Configuration::NudeCommentChance = 10;
-	Configuration::ToplessCommentChance = 10;
-	Configuration::BottomlessCommentChance = 10;
-	Configuration::ChestCommentChance = 20;
-	Configuration::GenitalsCommentChance = 25;
-	Configuration::AssCommentChance = 15;
-	Configuration::BraCommentChance = 5;
-	Configuration::UnderwearCommentChance = 5;
+	NudeCommentChance = 10;
+	ToplessCommentChance = 10;
+	BottomlessCommentChance = 10;
+	ChestCommentChance = 20;
+	GenitalsCommentChance = 25;
+	AssCommentChance = 15;
+	BraCommentChance = 5;
+	UnderwearCommentChance = 5;
 
 	//Booleans
-	Configuration::MotionFlashEnabled = true;
-	Configuration::DynamicModestyEnabled = InstalledMods::DFFMA;
+	MotionFlashEnabled = true;
+	DynamicModestyEnabled = InstalledMods::DFFMA;
 
-	Configuration::AllowPlayerShameless = false;
-	Configuration::NPCShamelessByDefault = false;
+	AllowPlayerShameless = false;
+	NPCShamelessByDefault = false;
 
-	Configuration::AllowPlayerCorruption = false;
-	Configuration::NPCCorruptionByDefault = false;
+	AllowPlayerCorruption = false;
+	NPCCorruptionByDefault = false;
 
-	Configuration::StrictModestyRules = true;
-	Configuration::NPCStrictRulesByDefault = true;
+	StrictModestyRules = true;
+	NPCStrictRulesByDefault = true;
 
-	Configuration::HardcoreModeEnabled = false;
+	HardcoreModeEnabled = false;
 
-	Configuration::ModestyUpgradeBlocked = false;
+	ModestyUpgradeBlocked = false;
 
-	Configuration::DisableNakedComments = false;
+	DisableNakedComments = false;
 
 	Configuration::DynamicModestyMode->value = InstalledMods::DFFMA;
 
@@ -227,8 +229,8 @@ void InitializeConfigData() {
 
 void UpdateFlashingOdds(RE::StaticFunctionTag*, int FlashOddsIndex, int OddsValue) {
 	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " to value " + std::to_string(OddsValue), Logger::Config, Logger::info);
-	Configuration::FlashingOdds[FlashOddsIndex] = OddsValue;
-	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " value is now " + std::to_string(Configuration::FlashingOdds[FlashOddsIndex]), Logger::Config, Logger::info);
+	FlashingOdds[FlashOddsIndex] = (UINT8)OddsValue;
+	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " value is now " + std::to_string(FlashingOdds[FlashOddsIndex]), Logger::Config, Logger::info);
 }
 
 std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*) {
@@ -236,7 +238,7 @@ std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*) {
 	
 	int Index = 0;
 	while (Index < FlashingIndex::FlashingOddsLength) {
-		FlashArray.emplace_back(Configuration::FlashingOdds[Index]);
+		FlashArray.emplace_back(FlashingOdds[Index]);
 		Index++;
 	}
 
@@ -330,91 +332,91 @@ std::vector<int> GetCurtainCoverage(RE::StaticFunctionTag*) {
 std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
 	std::vector<bool> FemaleKeywordList;
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTop)); //0
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTop_NoCover)); //1
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT_Low)); //2
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT)); //3
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT_High)); // 4
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorTop])); //0
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorTop_NoCover])); //1
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorTopT_Low])); //2
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorTopT])); //3
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorTopT_High])); // 4
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottom)); //5
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottom_NoCover)); //6
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT_Low)); //7
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT)); //8
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT_High)); //9
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorBottom])); //5
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorBottom_NoCover])); //6
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorBottomT_Low])); //7
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorBottomT])); //8
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ArmorBottomT_High])); //9
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssCurtain)); //10
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssCurtainT)); //11
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[AssCurtain])); //10
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[AssCurtainT])); //11
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskLow)); //12
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRisk)); //13
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskHigh)); //14
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskExtreme)); //15
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskUltra)); //16
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskLow])); //12
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[AssFlashRisk])); //13
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskHigh])); //14
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskExtreme])); //15
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[AssFlashRiskUltra])); //16
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Bra)); //17
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Bra_NoCover)); //18
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT_Low)); //19
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT)); //20
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT_High)); //21
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Bra])); //17
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Bra_NoCover])); //18
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[BraT_Low])); //19
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[BraT])); //20
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[BraT_High])); //21
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestCurtain)); //22
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestCurtainT)); //23
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ChestCurtain])); //22
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ChestCurtainT])); //23
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskLow)); //24
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRisk)); //25
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskHigh)); //26
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskExtreme)); //27
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskUltra)); //28
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskLow])); //24
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[ChestFlashRisk])); //25
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskHigh])); //26
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskExtreme])); //27
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[ChestFlashRiskUltra])); //28
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(CoversAll)); //29
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[CoversAll])); //29
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(CString)); //30
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(CStringT_Low)); //31
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(CStringT)); //32
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(CStringT_High)); //33
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[CString])); //30
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[CStringT_Low])); //31
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[CStringT])); //32
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[CStringT_High])); //33
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(EffectivelyNaked)); //34
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[EffectivelyNaked])); //34
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Hotpants)); //35
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT_Low)); //36
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT)); //37
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT_High)); //38
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Hotpants])); //35
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[HotpantsT_Low])); //36
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[HotpantsT])); //37
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[HotpantsT_High])); //38
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Microskirt)); //39
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Microskirt])); //39
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Miniskirt)); //40
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(MiniskirtT)); //41
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Miniskirt])); //40
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[MiniskirtT])); //41
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(NearlyNaked)); //42
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(NipplePasties)); //43
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[NearlyNaked])); //42
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[NipplePasties])); //43
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicCurtain)); //44
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicCurtainT)); //45
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[PelvicCurtain])); //44
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[PelvicCurtainT])); //45
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskLow)); //46
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRisk)); //47
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskHigh)); //48
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskExtreme)); //49
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskUltra)); //50
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskLow])); //46
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRisk])); //47
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskHigh])); //48
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskExtreme])); //49
+	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(FemaleKeywords[PelvicFlashRiskUltra])); //50
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ShowgirlSkirt)); //51
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ShowgirlSkirtT_Low)); //52
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ShowgirlSkirtT)); //53
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ShowgirlSkirtT_High)); //54
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ShowgirlSkirt])); //51
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_Low])); //52
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT])); //53
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ShowgirlSkirtT_High])); //54
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Thong)); //55
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Thong_NoCover)); //56
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT_Low)); //57
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT)); //58
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT_High)); //59
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Thong])); //55
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Thong_NoCover])); //56
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ThongT_Low])); //57
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ThongT])); //58
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[ThongT_High])); //59
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Underwear)); //60
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(Underwear_NoCover)); //61
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT_Low)); //62
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT)); //63
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT_High)); //64
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Underwear])); //60
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[Underwear_NoCover])); //61
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[UnderwearT_Low])); //62
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[UnderwearT])); //63
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[UnderwearT_High])); //64
 
-	FemaleKeywordList.emplace_back(PlayerWornHasKeyword(VaginaPasties)); //65
+	FemaleKeywordList.emplace_back(PlayerIsWearing(FemaleKeywords[VaginaPasties])); //65
 
 	return FemaleKeywordList;
 }
@@ -422,89 +424,89 @@ std::vector<bool> FemaleWornKeywordList(RE::StaticFunctionTag*) {
 std::vector<bool> MaleWornKeywordList(RE::StaticFunctionTag*) {
 	std::vector<bool> MaleKeywordList;
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTop_Male)); //0
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTop_NoCover_Male)); //1
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT_Low_Male)); //2
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT_Male)); //3
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorTopT_High_Male)); // 4
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorTop])); //0
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorTop_NoCover])); //1
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorTopT_Low])); //2
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorTopT])); //3
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorTopT_High])); // 4
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottom_Male)); //5
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottom_NoCover_Male)); //6
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT_Low_Male)); //7
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT_Male)); //8
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ArmorBottomT_High_Male)); //9
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorBottom])); //5
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorBottom_NoCover])); //6
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorBottomT_Low])); //7
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorBottomT])); //8
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ArmorBottomT_High])); //9
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssCurtain_Male)); //10
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssCurtainT_Male)); //11
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[AssCurtain])); //10
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[AssCurtainT])); //11
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskLow_Male)); //12
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRisk_Male)); //13
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskHigh_Male)); //14
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskExtreme_Male)); //15
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(AssFlashRiskUltra_Male)); //16
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskLow])); //12
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRisk])); //13
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskHigh])); //14
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskExtreme])); //15
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[AssFlashRiskUltra])); //16
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Bra_Male)); //17
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Bra_NoCover_Male)); //18
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT_Low_Male)); //19
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT_Male)); //20
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BraT_High_Male)); //21
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Bra])); //17
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Bra_NoCover])); //18
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BraT_Low])); //19
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BraT])); //20
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BraT_High])); //21
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestCurtain_Male)); //22
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestCurtainT_Male)); //23
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ChestCurtain])); //22
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ChestCurtainT])); //23
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskLow_Male)); //24
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRisk_Male)); //25
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskHigh_Male)); //26
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskExtreme_Male)); //27
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ChestFlashRiskUltra_Male)); //28
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskLow])); //24
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRisk])); //25
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskHigh])); //26
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskExtreme])); //27
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[ChestFlashRiskUltra])); //28
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(CoversAll_Male)); //29
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[CoversAll])); //29
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BananaHammock)); //30
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BananaHammockT_Low)); //31
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BananaHammockT)); //32
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(BananaHammockT_High)); //33
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BananaHammock])); //30
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BananaHammockT_Low])); //31
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BananaHammockT])); //32
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[BananaHammockT_High])); //33
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(EffectivelyNaked_Male)); //34
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[EffectivelyNaked])); //34
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Hotpants_Male)); //35
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT_Low_Male)); //36
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT_Male)); //37
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HotpantsT_High_Male)); //38
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Hotpants])); //35
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HotpantsT_Low])); //36
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HotpantsT])); //37
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HotpantsT_High])); //38
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Microskirt_Male)); //39
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Microskirt])); //39
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Miniskirt_Male)); //40
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MiniskirtT_Male)); //41
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Miniskirt])); //40
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[MiniskirtT])); //41
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(NearlyNaked_Male)); //42
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(NipplePasties_Male)); //43
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[NearlyNaked])); //42
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[NipplePasties])); //43
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicCurtain_Male)); //44
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicCurtainT_Male)); //45
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[PelvicCurtain])); //44
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[PelvicCurtainT])); //45
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskLow_Male)); //46
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRisk_Male)); //47
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskHigh_Male)); //48
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskExtreme_Male)); //49
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(PelvicFlashRiskUltra_Male)); //50
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskLow])); //46
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRisk])); //47
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskHigh])); //48
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskExtreme])); //49
+	MaleKeywordList.emplace_back(PlayerWornHasKeyword(MaleKeywords[PelvicFlashRiskUltra])); //50
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HimboSkirt)); //51
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HimboSkirtT_Low)); //52
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HimboSkirtT)); //53
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(HimboSkirtT_High)); //54
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HimboSkirt])); //51
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HimboSkirtT_Low])); //52
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HimboSkirtT])); //53
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[HimboSkirtT_High])); //54
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Thong_Male)); //55
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Thong_NoCover_Male)); //56
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT_Low_Male)); //57
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT_Male)); //58
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(ThongT_High_Male)); //59
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Thong])); //55
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Thong_NoCover])); //56
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ThongT_Low])); //57
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ThongT])); //58
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[ThongT_High])); //59
 
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Underwear_Male)); //60
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(Underwear_NoCover_Male)); //61
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT_Low_Male)); //62
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT_Male)); //63
-	MaleKeywordList.emplace_back(PlayerWornHasKeyword(UnderwearT_High_Male)); //64
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Underwear])); //60
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[Underwear_NoCover])); //61
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[UnderwearT_Low])); //62
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[UnderwearT])); //63
+	MaleKeywordList.emplace_back(PlayerIsWearing(MaleKeywords[UnderwearT_High])); //64
 
 	return MaleKeywordList;
 }
@@ -512,91 +514,91 @@ std::vector<bool> MaleWornKeywordList(RE::StaticFunctionTag*) {
 std::vector<bool> NPCFemaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor) {
 	std::vector<bool> FemaleKeywordList;
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTop)); //0
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTop_NoCover)); //1
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT_Low)); //2
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT)); //3
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT_High)); // 4
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorTop])); //0
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorTop_NoCover])); //1
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorTopT_Low])); //2
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorTopT])); //3
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorTopT_High])); // 4
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottom)); //5
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottom_NoCover)); //6
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT_Low)); //7
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT)); //8
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT_High)); //9
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorBottom])); //5
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorBottom_NoCover])); //6
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorBottomT_Low])); //7
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorBottomT])); //8
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ArmorBottomT_High])); //9
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssCurtain)); //10
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssCurtainT)); //11
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[AssCurtain])); //10
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[AssCurtainT])); //11
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskLow)); //12
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRisk)); //13
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskHigh)); //14
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskExtreme)); //15
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskUltra)); //16
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[AssFlashRiskLow])); //12
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[AssFlashRisk])); //13
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[AssFlashRiskHigh])); //14
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[AssFlashRiskExtreme])); //15
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[AssFlashRiskUltra])); //16
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Bra)); //17
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Bra_NoCover)); //18
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT_Low)); //19
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT)); //20
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT_High)); //21
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Bra])); //17
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Bra_NoCover])); //18
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[BraT_Low])); //19
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[BraT])); //20
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[BraT_High])); //21
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestCurtain)); //22
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestCurtainT)); //23
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ChestCurtain])); //22
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ChestCurtainT])); //23
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskLow)); //24
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRisk)); //25
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskHigh)); //26
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskExtreme)); //27
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskUltra)); //28
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[ChestFlashRiskLow])); //24
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[ChestFlashRisk])); //25
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[ChestFlashRiskHigh])); //26
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[ChestFlashRiskExtreme])); //27
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[ChestFlashRiskUltra])); //28
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CoversAll)); //29
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[CoversAll])); //29
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CString)); //30
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CStringT_Low)); //31
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CStringT)); //32
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CStringT_High)); //33
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[CString])); //30
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[CStringT_Low])); //31
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[CStringT])); //32
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[CStringT_High])); //33
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, EffectivelyNaked)); //34
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[EffectivelyNaked])); //34
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Hotpants)); //35
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT_Low)); //36
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT)); //37
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT_High)); //38
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Hotpants])); //35
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[HotpantsT_Low])); //36
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[HotpantsT])); //37
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[HotpantsT_High])); //38
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Microskirt)); //39
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Microskirt])); //39
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Miniskirt)); //40
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MiniskirtT)); //41
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Miniskirt])); //40
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[MiniskirtT])); //41
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, NearlyNaked)); //42
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, NipplePasties)); //43
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[NearlyNaked])); //42
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[NipplePasties])); //43
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicCurtain)); //44
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicCurtainT)); //45
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[PelvicCurtain])); //44
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[PelvicCurtainT])); //45
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskLow)); //46
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRisk)); //47
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskHigh)); //48
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskExtreme)); //49
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskUltra)); //50
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[PelvicFlashRiskLow])); //46
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[PelvicFlashRisk])); //47
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[PelvicFlashRiskHigh])); //48
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[PelvicFlashRiskExtreme])); //49
+	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, FemaleKeywords[PelvicFlashRiskUltra])); //50
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ShowgirlSkirt)); //51
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ShowgirlSkirtT_Low)); //52
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ShowgirlSkirtT)); //53
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ShowgirlSkirtT_High)); //54
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ShowgirlSkirt])); //51
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ShowgirlSkirtT_Low])); //52
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ShowgirlSkirtT])); //53
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ShowgirlSkirtT_High])); //54
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Thong)); //55
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Thong_NoCover)); //56
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT_Low)); //57
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT)); //58
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT_High)); //59
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Thong])); //55
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Thong_NoCover])); //56
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ThongT_Low])); //57
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ThongT])); //58
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[ThongT_High])); //59
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Underwear)); //60
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Underwear_NoCover)); //61
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT_Low)); //62
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT)); //63
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT_High)); //64
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Underwear])); //60
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[Underwear_NoCover])); //61
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[UnderwearT_Low])); //62
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[UnderwearT])); //63
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[UnderwearT_High])); //64
 
-	FemaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, VaginaPasties)); //65
+	FemaleKeywordList.emplace_back(ActorIsWearing(akActor, FemaleKeywords[VaginaPasties])); //65
 
 	return FemaleKeywordList;
 }
@@ -604,89 +606,89 @@ std::vector<bool> NPCFemaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* ak
 std::vector<bool> NPCMaleWornKeywordList(RE::StaticFunctionTag*, RE::Actor* akActor) {
 	std::vector<bool> MaleKeywordList;
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTop_Male)); //0
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTop_NoCover_Male)); //1
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT_Low_Male)); //2
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT_Male)); //3
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorTopT_High_Male)); // 4
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorTop])); //0
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorTop_NoCover])); //1
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorTopT_Low])); //2
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorTopT])); //3
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorTopT_High])); // 4
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottom_Male)); //5
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottom_NoCover_Male)); //6
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT_Low_Male)); //7
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT_Male)); //8
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ArmorBottomT_High_Male)); //9
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorBottom])); //5
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorBottom_NoCover])); //6
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorBottomT_Low])); //7
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorBottomT])); //8
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ArmorBottomT_High])); //9
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssCurtain_Male)); //10
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssCurtainT_Male)); //11
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[AssCurtain])); //10
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[AssCurtainT])); //11
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskLow_Male)); //12
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRisk_Male)); //13
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskHigh_Male)); //14
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskExtreme_Male)); //15
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, AssFlashRiskUltra_Male)); //16
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskLow])); //12
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRisk])); //13
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskHigh])); //14
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskExtreme])); //15
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[AssFlashRiskUltra])); //16
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Bra_Male)); //17
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Bra_NoCover_Male)); //18
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT_Low_Male)); //19
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT_Male)); //20
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BraT_High_Male)); //21
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Bra])); //17
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Bra_NoCover])); //18
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BraT_Low])); //19
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BraT])); //20
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BraT_High])); //21
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestCurtain_Male)); //22
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestCurtainT_Male)); //23
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ChestCurtain])); //22
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ChestCurtainT])); //23
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskLow_Male)); //24
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRisk_Male)); //25
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskHigh_Male)); //26
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskExtreme_Male)); //27
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ChestFlashRiskUltra_Male)); //28
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskLow])); //24
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRisk])); //25
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskHigh])); //26
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskExtreme])); //27
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[ChestFlashRiskUltra])); //28
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, CoversAll_Male)); //29
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[CoversAll])); //29
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BananaHammock)); //30
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BananaHammockT_Low)); //31
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BananaHammockT)); //32
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, BananaHammockT_High)); //33
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BananaHammock])); //30
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BananaHammockT_Low])); //31
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BananaHammockT])); //32
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[BananaHammockT_High])); //33
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, EffectivelyNaked_Male)); //34
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[EffectivelyNaked])); //34
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Hotpants_Male)); //35
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT_Low_Male)); //36
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT_Male)); //37
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HotpantsT_High_Male)); //38
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Hotpants])); //35
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HotpantsT_Low])); //36
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HotpantsT])); //37
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HotpantsT_High])); //38
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Microskirt_Male)); //39
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Microskirt])); //39
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Miniskirt_Male)); //40
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MiniskirtT_Male)); //41
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Miniskirt])); //40
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[MiniskirtT])); //41
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, NearlyNaked_Male)); //42
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, NipplePasties_Male)); //43
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[NearlyNaked])); //42
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[NipplePasties])); //43
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicCurtain_Male)); //44
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicCurtainT_Male)); //45
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[PelvicCurtain])); //44
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[PelvicCurtainT])); //45
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskLow_Male)); //46
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRisk_Male)); //47
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskHigh_Male)); //48
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskExtreme_Male)); //49
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, PelvicFlashRiskUltra_Male)); //50
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskLow])); //46
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRisk])); //47
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskHigh])); //48
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskExtreme])); //49
+	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, MaleKeywords[PelvicFlashRiskUltra])); //50
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HimboSkirt)); //51
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HimboSkirtT_Low)); //52
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HimboSkirtT)); //53
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, HimboSkirtT_High)); //54
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HimboSkirt])); //51
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HimboSkirtT_Low])); //52
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HimboSkirtT])); //53
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[HimboSkirtT_High])); //54
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Thong_Male)); //55
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Thong_NoCover_Male)); //56
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT_Low_Male)); //57
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT_Male)); //58
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, ThongT_High_Male)); //59
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Thong])); //55
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Thong_NoCover])); //56
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ThongT_Low])); //57
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ThongT])); //58
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[ThongT_High])); //59
 
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Underwear_Male)); //60
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, Underwear_NoCover_Male)); //61
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT_Low_Male)); //62
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT_Male)); //63
-	MaleKeywordList.emplace_back(ActorWornHasKeyword(akActor, UnderwearT_High_Male)); //64
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Underwear])); //60
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[Underwear_NoCover])); //61
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[UnderwearT_Low])); //62
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[UnderwearT])); //63
+	MaleKeywordList.emplace_back(ActorIsWearing(akActor, MaleKeywords[UnderwearT_High])); //64
 
 	return MaleKeywordList;
 }
@@ -844,7 +846,7 @@ std::vector<RE::Actor*> GetPermanentFemaleActors(RE::StaticFunctionTag*, int Pag
 		uint32_t ModIndex = Female.GetModIndex();
 		Log("<C++ Config> [GetPermanentFemaleActors] Female " + static_cast<std::string>(Female.GetName()), Logger::LogType::Config, Logger::LoggingLevel::info);
 
-		if (Female.LightPlugin) {
+		if (Female.GetPluginFile()->IsLight()) {
 			ModIndex += 0xFE000000;
 			Log("<C++ Config> [GetPermanentFemaleActors] ModIndex " + std::format("{:08X}", ModIndex), Logger::LogType::Config, Logger::LoggingLevel::info);
 			Log("<C++ Config> [GetPermanentFemaleActors] LocalID " + std::format("{:08X}", Female.LocalID), Logger::LogType::Config, Logger::LoggingLevel::info);
@@ -934,91 +936,97 @@ std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
 std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*) {
 	std::vector<bool> Options;
 
-	Options.emplace_back(Configuration::MotionFlashEnabled); //0
-	Options.emplace_back(Configuration::DynamicModestyEnabled); //1
+	Options.emplace_back(MotionFlashEnabled); //0
+	Options.emplace_back(DynamicModestyEnabled); //1
 
-	Options.emplace_back(Configuration::AllowPlayerShameless); //2
-	Options.emplace_back(Configuration::NPCShamelessByDefault); //3
+	Options.emplace_back(AllowPlayerShameless); //2
+	Options.emplace_back(NPCShamelessByDefault); //3
 	
-	Options.emplace_back(Configuration::AllowPlayerCorruption); //4
-	Options.emplace_back(Configuration::NPCCorruptionByDefault); //5
+	Options.emplace_back(AllowPlayerCorruption); //4
+	Options.emplace_back(NPCCorruptionByDefault); //5
 	
-	Options.emplace_back(Configuration::StrictModestyRules); //6
-	Options.emplace_back(Configuration::NPCStrictRulesByDefault); //7
+	Options.emplace_back(StrictModestyRules); //6
+	Options.emplace_back(NPCStrictRulesByDefault); //7
 
-	Options.emplace_back(Configuration::HardcoreModeEnabled); //8
+	Options.emplace_back(HardcoreModeEnabled); //8
 
-	Options.emplace_back(Configuration::ModestyUpgradeBlocked); //9
-	Options.emplace_back(Configuration::DisableNakedComments); //10
+	Options.emplace_back(ModestyUpgradeBlocked); //9
+	Options.emplace_back(DisableNakedComments); //10
 
 	return Options;
 }
 
 void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options) {
-	Configuration::MotionFlashEnabled = Options[0];
-	Configuration::DynamicModestyEnabled = Options[1];
-	if (Configuration::DynamicModestyEnabled == false) {
-		Configuration::DynamicModestyMode->value = 0;
+	MotionFlashEnabled = Options[0];
+	DynamicModestyEnabled = Options[1];
+	if (!DynamicModestyEnabled) {
+		DynamicModestyMode->value = 0;
 	}
 
-	Configuration::AllowPlayerShameless = Options[2];
-	Configuration::NPCShamelessByDefault = Options[3];
+	AllowPlayerShameless = Options[2];
+	NPCShamelessByDefault = Options[3];
 	
-	Configuration::AllowPlayerCorruption = Options[4];
-	Configuration::NPCCorruptionByDefault = Options[5];
+	AllowPlayerCorruption = Options[4];
+	NPCCorruptionByDefault = Options[5];
 	
-	Configuration::StrictModestyRules = Options[6];
-	Configuration::NPCStrictRulesByDefault = Options[7];
+	StrictModestyRules = Options[6];
+	if (InstalledMods::DFFMA && DynamicModestyEnabled && StrictModestyRules) {
+		DynamicModestyMode->value = 1;
+	}
+	else if (InstalledMods::DFFMA && DynamicModestyEnabled && !StrictModestyRules) {
+		DynamicModestyMode->value = 2;
+	}
+	NPCStrictRulesByDefault = Options[7];
 
-	Configuration::HardcoreModeEnabled = Options[8];
-	Configuration::ModestyUpgradeBlocked = Options[9];
-	Configuration::DisableNakedComments = Options[10];
+	HardcoreModeEnabled = Options[8];
+	ModestyUpgradeBlocked = Options[9];
+	DisableNakedComments = Options[10];
 }
 
 std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*) {
 	std::vector<int> Options;
 
-	Options.emplace_back(Configuration::RunningMod); //0
-	Options.emplace_back(Configuration::SprintingMod); //1
+	Options.emplace_back(RunningMod); //0
+	Options.emplace_back(SprintingMod); //1
 
-	Options.emplace_back(Configuration::MinimumStrictModestyRank); //2
-	Options.emplace_back(Configuration::MinimumTopModestyRank); //3
-	Options.emplace_back(Configuration::MinimumBottomModestyRank); //4
+	Options.emplace_back(MinimumStrictModestyRank); //2
+	Options.emplace_back(MinimumTopModestyRank); //3
+	Options.emplace_back(MinimumBottomModestyRank); //4
 
-	Options.emplace_back(Configuration::ImmodestyTimeNeeded); //5
-	Options.emplace_back(Configuration::PlayerConfidenceLevel); //6
+	Options.emplace_back(ImmodestyTimeNeeded); //5
+	Options.emplace_back(PlayerConfidenceLevel); //6
 
-	Options.emplace_back(Configuration::NudeCommentChance); //7
-	Options.emplace_back(Configuration::ToplessCommentChance); //8
-	Options.emplace_back(Configuration::BottomlessCommentChance); //9
-	Options.emplace_back(Configuration::ChestCommentChance); //10
-	Options.emplace_back(Configuration::GenitalsCommentChance); //11
-	Options.emplace_back(Configuration::AssCommentChance); //12
-	Options.emplace_back(Configuration::BraCommentChance); //13
-	Options.emplace_back(Configuration::UnderwearCommentChance); //14
+	Options.emplace_back(NudeCommentChance); //7
+	Options.emplace_back(ToplessCommentChance); //8
+	Options.emplace_back(BottomlessCommentChance); //9
+	Options.emplace_back(ChestCommentChance); //10
+	Options.emplace_back(GenitalsCommentChance); //11
+	Options.emplace_back(AssCommentChance); //12
+	Options.emplace_back(BraCommentChance); //13
+	Options.emplace_back(UnderwearCommentChance); //14
 
 	return Options;
 }
 
 void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options) {
-	Configuration::RunningMod = Options[0];
-	Configuration::SprintingMod = Options[1];
+	RunningMod = (UINT8)Options[0];
+	SprintingMod = (UINT8)Options[1];
 
-	Configuration::MinimumStrictModestyRank = Options[2];
-	Configuration::MinimumTopModestyRank = Options[3];
-	Configuration::MinimumBottomModestyRank = Options[4];
+	MinimumStrictModestyRank = (UINT8)Options[2];
+	MinimumTopModestyRank = (UINT8)Options[3];
+	MinimumBottomModestyRank = (UINT8)Options[4];
 	
-	Configuration::ImmodestyTimeNeeded = Options[5];
-	Configuration::PlayerConfidenceLevel = Options[6];
+	ImmodestyTimeNeeded = (UINT16)Options[5];
+	PlayerConfidenceLevel = (UINT8)Options[6];
 
-	Configuration::NudeCommentChance = Options[7];
-	Configuration::ToplessCommentChance = Options[8];
-	Configuration::BottomlessCommentChance = Options[9];
-	Configuration::ChestCommentChance = Options[10];
-	Configuration::GenitalsCommentChance = Options[11];
-	Configuration::AssCommentChance = Options[12];
-	Configuration::BraCommentChance = Options[13];
-	Configuration::UnderwearCommentChance = Options[14];
+	NudeCommentChance = (UINT8)Options[7];
+	ToplessCommentChance = (UINT8)Options[8];
+	BottomlessCommentChance = (UINT8)Options[9];
+	ChestCommentChance = (UINT8)Options[10];
+	GenitalsCommentChance = (UINT8)Options[11];
+	AssCommentChance = (UINT8)Options[12];
+	BraCommentChance = (UINT8)Options[13];
+	UnderwearCommentChance = (UINT8)Options[14];
 }
 
 bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*) {
