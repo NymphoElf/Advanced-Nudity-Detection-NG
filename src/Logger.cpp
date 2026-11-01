@@ -77,7 +77,7 @@ std::vector<bool> GetLogSettings(RE::StaticFunctionTag*) {
 
 std::string GetFormLogData(RE::TESForm* akForm) {
 	if (akForm) {
-		return std::string(akForm->GetName()) + " (" + std::string(akForm->GetFormEditorID()) + " | " + std::format("{:08X}", akForm->GetFormID()) + ")";
+		return std::string(akForm->GetName()) + " (" + static_cast<std::string>(akForm->GetFormEditorID()) + " | " + std::format("{:08X}", akForm->GetFormID()) + ")";
 	}
 	else {
 		return "NULL OBJECT (null | 0x00000000)";

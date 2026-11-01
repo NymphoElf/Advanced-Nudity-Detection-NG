@@ -237,12 +237,14 @@ enum RegularKeywords {
 	UnderwearT_High,
 
 	Microskirt,
-	VaginaPasties,
 
 	CoversAll,
 
 	NearlyNaked,
 	EffectivelyNaked,
+
+	//NEEDS TO BE LAST IN ENUM - FEMALE ONLY KEYWORD
+	VaginaPasties,
 
 	TotalMaleKeywords = 65,
 	TotalFemaleKeywords,
@@ -266,9 +268,6 @@ struct TwoPartObject {
 
 inline std::vector<TwoPartObject> TwoPartObjects;
 
-inline std::vector<RE::TESBoundObject*> TwoPartObjectA;
-inline std::vector<RE::TESBoundObject*> TwoPartObjectB;
-inline std::vector<RE::BGSKeyword*> TwoPartObjectKeyword;
 
 //Globals
 inline RE::TESGlobal* WINakedCommentChance;

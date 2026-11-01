@@ -327,18 +327,18 @@ void DeleteAllFemales(RE::StaticFunctionTag*)
 
 void RegisterRosa(float CurrentGameTime, UINT8 SexualityScore) {
 	RE::FormID RosaForm = Rosa->GetFormID();
-	RE::FormID RosaBaseForm = Rosa->GetActorBase()->GetFormID();
-	std::string RosaEditorID = static_cast<std::string>(Rosa->GetFormEditorID());
-	std::string RosaBaseEditorID = static_cast<std::string>(Rosa->GetActorBase()->GetFormEditorID());
+	//RE::FormID RosaBaseForm = Rosa->GetActorBase()->GetFormID();
+	//std::string RosaEditorID = static_cast<std::string>(Rosa->GetFormEditorID());
+	//std::string RosaBaseEditorID = static_cast<std::string>(Rosa->GetActorBase()->GetFormEditorID());
 	std::string RosaName = static_cast<std::string>(Rosa->GetName());
-	std::string RosaBaseName = static_cast<std::string>(Rosa->GetActorBase()->GetFormEditorID());
+	//std::string RosaBaseName = static_cast<std::string>(Rosa->GetActorBase()->GetName());
 
 	Log("<C++ NPCData> [RegisterRosa] Rosa Form ID: " + std::format("{:08X}", RosaForm), Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + RosaEditorID, Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + RosaBaseEditorID, Logger::LogType::NPCData);
+	//Log("<C++ NPCData> [RegisterRosa] Rosa Base Form ID: " + std::format("{:08X}", RosaBaseForm), Logger::LogType::NPCData);
+	//Log("<C++ NPCData> [RegisterRosa] Rosa Editor ID: " + RosaEditorID, Logger::LogType::NPCData);
+	//Log("<C++ NPCData> [RegisterRosa] Rosa Base Editor ID: " + RosaBaseEditorID, Logger::LogType::NPCData);
 	Log("<C++ NPCData> [RegisterRosa] Rosa Name: " + RosaName, Logger::LogType::NPCData);
-	Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, Logger::LogType::NPCData);
+	//Log("<C++ NPCData> [RegisterRosa] Rosa Base Name: " + RosaBaseName, Logger::LogType::NPCData);
 
 	UINT8 ShynessMode;
 
