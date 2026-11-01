@@ -268,7 +268,8 @@ void OnMessage(SKSE::MessagingInterface::Message* message) {
 
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse)
 {
-	SKSE::Init(a_skse, false);
+	SKSE::InitInfo InitInfo = {false};
+	SKSE::Init(a_skse, InitInfo);
 	InitializeLog();
 	logs::critical("Advanced Nudity Detection DLL Initialized!");
 	SKSE::GetMessagingInterface()->RegisterListener(OnMessage);
