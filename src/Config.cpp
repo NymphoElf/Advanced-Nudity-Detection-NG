@@ -33,210 +33,204 @@ enum DefaultOdds {
 	DefaultTransparentItemOddsHigh = 70
 };
 
+using namespace Configuration;
+
 void InitializeConfigData() {
 	Log("<C++ Config> [InitializeConfigData] START");
 	
 	//Curtain Odds
 
-	Configuration::FlashingOdds[ChestCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[ChestCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[ChestCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[ChestCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[ChestCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[ChestCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[ChestCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[ChestCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[ChestCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[ChestCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[PelvicCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[PelvicCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[PelvicCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[PelvicCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[PelvicCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[PelvicCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[PelvicCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[PelvicCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[PelvicCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[PelvicCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[AssCurtainOddsLow] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[AssCurtainOdds] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[AssCurtainOddsHigh] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[AssCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[AssCurtainOddsUltra] = DefaultCurtainOddsUltra;
+	FlashingOdds[AssCurtainOddsLow] = DefaultCurtainOddsLow;
+	FlashingOdds[AssCurtainOdds] = DefaultCurtainOdds;
+	FlashingOdds[AssCurtainOddsHigh] = DefaultCurtainOddsHigh;
+	FlashingOdds[AssCurtainOddsExtreme] = DefaultCurtainOddsExtreme;
+	FlashingOdds[AssCurtainOddsUltra] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentChestCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentChestCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentChestCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentChestCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentChestCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentChestCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentChestCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentPelvicCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentPelvicCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentPelvicCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentPelvicCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentPelvicCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentAssCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentAssCurtainOdds] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentAssCurtainOddsLow] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentAssCurtainOdds] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentAssCurtainOddsHigh] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentAssCurtainOddsExtreme] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentAssCurtainOddsUltra] = DefaultTransparentCurtainOddsUltra;
 
 	//Armor Piece Odds
 
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentTopArmorOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentTopArmorOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentTopArmorOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentTopArmorOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBottomArmorOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBottomArmorOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBottomArmorOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBraOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBraOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBraOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBraOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBraOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBraOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentUnderwearOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentUnderwearOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentUnderwearOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentUnderwearOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHotpantsOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHotpantsOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHotpantsOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHotpantsOdds_High] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentShowgirlOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentShowgirlOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentShowgirlOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentShowgirlOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentShowgirlOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentShowgirlOdds_High] = DefaultTransparentItemOddsHigh;
 
 	//CString Odds
 
-	Configuration::FlashingOdds[CStringOdds] = DefaultCStringOdds;
-	Configuration::FlashingOdds[TransparentCStringOdds_Low] = DefaultTransparentCStringOddsLow;
-	Configuration::FlashingOdds[TransparentCStringOdds] = DefaultTransparentCStringOdds;
-	Configuration::FlashingOdds[TransparentCStringOdds_High] = DefaultTransparentCStringOddsHigh;
+	FlashingOdds[CStringOdds] = DefaultCStringOdds;
+	FlashingOdds[TransparentCStringOdds_Low] = DefaultTransparentCStringOddsLow;
+	FlashingOdds[TransparentCStringOdds] = DefaultTransparentCStringOdds;
+	FlashingOdds[TransparentCStringOdds_High] = DefaultTransparentCStringOddsHigh;
 	
 	//Curtain Odds - MALE
 
-	Configuration::FlashingOdds[ChestCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[ChestCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[ChestCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[ChestCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[ChestCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[ChestCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[ChestCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[ChestCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[ChestCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[ChestCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[PelvicCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[PelvicCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[PelvicCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[PelvicCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[PelvicCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[PelvicCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[PelvicCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[PelvicCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[PelvicCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[PelvicCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[AssCurtainOddsLow_Male] = DefaultCurtainOddsLow;
-	Configuration::FlashingOdds[AssCurtainOdds_Male] = DefaultCurtainOdds;
-	Configuration::FlashingOdds[AssCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
-	Configuration::FlashingOdds[AssCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
-	Configuration::FlashingOdds[AssCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
+	FlashingOdds[AssCurtainOddsLow_Male] = DefaultCurtainOddsLow;
+	FlashingOdds[AssCurtainOdds_Male] = DefaultCurtainOdds;
+	FlashingOdds[AssCurtainOddsHigh_Male] = DefaultCurtainOddsHigh;
+	FlashingOdds[AssCurtainOddsExtreme_Male] = DefaultCurtainOddsExtreme;
+	FlashingOdds[AssCurtainOddsUltra_Male] = DefaultCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentChestCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentChestCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentChestCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentChestCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentChestCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentChestCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentChestCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentChestCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentPelvicCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentPelvicCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentPelvicCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentPelvicCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentPelvicCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentPelvicCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
-	Configuration::FlashingOdds[TransparentAssCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
-	Configuration::FlashingOdds[TransparentAssCurtainOdds_Male] = DefaultTransparentCurtainOdds;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
-	Configuration::FlashingOdds[TransparentAssCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
+	FlashingOdds[TransparentAssCurtainOddsLow_Male] = DefaultTransparentCurtainOddsLow;
+	FlashingOdds[TransparentAssCurtainOdds_Male] = DefaultTransparentCurtainOdds;
+	FlashingOdds[TransparentAssCurtainOddsHigh_Male] = DefaultTransparentCurtainOddsHigh;
+	FlashingOdds[TransparentAssCurtainOddsExtreme_Male] = DefaultTransparentCurtainOddsExtreme;
+	FlashingOdds[TransparentAssCurtainOddsUltra_Male] = DefaultTransparentCurtainOddsUltra;
 
 	//Armor Piece Odds - MALE
 
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentTopArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentTopArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentTopArmorOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentTopArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBottomArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBottomArmorOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBottomArmorOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBottomArmorOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentBraOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentBraOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentBraOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentBraOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentBraOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentBraOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentUnderwearOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentUnderwearOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentUnderwearOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentUnderwearOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Low_Male] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_Male] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHotpantsOdds_High_Male] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHotpantsOdds_Low_Male] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHotpantsOdds_Male] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHotpantsOdds_High_Male] = DefaultTransparentItemOddsHigh;
 
-	Configuration::FlashingOdds[TransparentHimboOdds_Low] = DefaultTransparentItemOddsLow;
-	Configuration::FlashingOdds[TransparentHimboOdds] = DefaultTransparentItemOdds;
-	Configuration::FlashingOdds[TransparentHimboOdds_High] = DefaultTransparentItemOddsHigh;
+	FlashingOdds[TransparentHimboOdds_Low] = DefaultTransparentItemOddsLow;
+	FlashingOdds[TransparentHimboOdds] = DefaultTransparentItemOdds;
+	FlashingOdds[TransparentHimboOdds_High] = DefaultTransparentItemOddsHigh;
 
 	//CString Odds - MALE
 
-	Configuration::FlashingOdds[BananaHammockOdds] = DefaultCStringOdds;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds_Low] = DefaultTransparentCStringOddsLow;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds] = DefaultTransparentCStringOdds;
-	Configuration::FlashingOdds[TransparentBananaHammockOdds_High] = DefaultTransparentCStringOddsHigh;
+	FlashingOdds[BananaHammockOdds] = DefaultCStringOdds;
+	FlashingOdds[TransparentBananaHammockOdds_Low] = DefaultTransparentCStringOddsLow;
+	FlashingOdds[TransparentBananaHammockOdds] = DefaultTransparentCStringOdds;
+	FlashingOdds[TransparentBananaHammockOdds_High] = DefaultTransparentCStringOddsHigh;
 
 	//Integers
-	Configuration::ImmodestyTimeNeeded = 14;
+	ImmodestyTimeNeeded = 14;
 
-	Configuration::MinimumStrictModestyRank = 0;
-	Configuration::MinimumTopModestyRank = 0;
-	Configuration::MinimumBottomModestyRank = 0;
+	MinimumStrictModestyRank = 0;
+	MinimumTopModestyRank = 0;
+	MinimumBottomModestyRank = 0;
 
-	Configuration::DefaultNPCShyness = ShySex::Men;
+	DefaultNPCShyness = ShySex::Men;
 
-	Configuration::SprintingMod = 20;
-	Configuration::RunningMod = 10;
+	SprintingMod = 20;
+	RunningMod = 10;
 
-	Configuration::PlayerConfidenceLevel = ConfidenceLevel::Average;
+	PlayerConfidenceLevel = ConfidenceLevel::Average;
 
-	Configuration::NudeCommentChance = 10;
-	Configuration::ToplessCommentChance = 10;
-	Configuration::BottomlessCommentChance = 10;
-	Configuration::ChestCommentChance = 20;
-	Configuration::GenitalsCommentChance = 25;
-	Configuration::AssCommentChance = 15;
-	Configuration::BraCommentChance = 5;
-	Configuration::UnderwearCommentChance = 5;
+	NudeCommentChance = 10;
+	ToplessCommentChance = 10;
+	BottomlessCommentChance = 10;
+	ChestCommentChance = 20;
+	GenitalsCommentChance = 25;
+	AssCommentChance = 15;
+	BraCommentChance = 5;
+	UnderwearCommentChance = 5;
 
 	//Booleans
-	Configuration::MotionFlashEnabled = true;
-	Configuration::DynamicModestyEnabled = InstalledMods::DFFMA;
+	MotionFlashEnabled = true;
+	DynamicModestyEnabled = InstalledMods::DFFMA;
 
-	Configuration::AllowPlayerShameless = false;
-	Configuration::NPCShamelessByDefault = false;
+	AllowPlayerShameless = false;
+	NPCShamelessByDefault = false;
 
-	Configuration::AllowPlayerCorruption = false;
-	Configuration::NPCCorruptionByDefault = false;
+	AllowPlayerCorruption = false;
+	NPCCorruptionByDefault = false;
 
-	Configuration::StrictModestyRules = true;
-	Configuration::NPCStrictRulesByDefault = true;
+	StrictModestyRules = true;
+	NPCStrictRulesByDefault = true;
 
-	Configuration::HardcoreModeEnabled = false;
+	HardcoreModeEnabled = false;
 
-	Configuration::ModestyUpgradeBlocked = false;
+	ModestyUpgradeBlocked = false;
 
-	Configuration::DisableNakedComments = false;
+	DisableNakedComments = false;
 
-	if (InstalledMods::DFFMA && Configuration::StrictModestyRules) {
-		Configuration::DynamicModestyMode->value = 1;
-	}
-	else if (InstalledMods::DFFMA && !Configuration::StrictModestyRules) {
-		Configuration::DynamicModestyMode->value = 2;
-	}
-	else {
-		Configuration::DynamicModestyMode->value = 0;
-	}
+	Configuration::DynamicModestyMode->value = InstalledMods::DFFMA;
 
 	Log("<C++ Config> [InitializeConfigData] COMPLETE");
 }
 
 void UpdateFlashingOdds(RE::StaticFunctionTag*, int FlashOddsIndex, int OddsValue) {
 	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " to value " + std::to_string(OddsValue), Logger::Config, Logger::info);
-	Configuration::FlashingOdds[FlashOddsIndex] = (UINT8)OddsValue;
-	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " value is now " + std::to_string(Configuration::FlashingOdds[FlashOddsIndex]), Logger::Config, Logger::info);
+	FlashingOdds[FlashOddsIndex] = (UINT8)OddsValue;
+	//Log("<C++ Config> [UpdateFlashingOdds] Updating Flashing Odds Index " + std::to_string(FlashOddsIndex) + " value is now " + std::to_string(FlashingOdds[FlashOddsIndex]), Logger::Config, Logger::info);
 }
 
 std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*) {
@@ -244,7 +238,7 @@ std::vector<int> GetFlashOddsArray(RE::StaticFunctionTag*) {
 	
 	int Index = 0;
 	while (Index < FlashingIndex::FlashingOddsLength) {
-		FlashArray.emplace_back(Configuration::FlashingOdds[Index]);
+		FlashArray.emplace_back(FlashingOdds[Index]);
 		Index++;
 	}
 
@@ -942,97 +936,97 @@ std::vector<int> GetFemaleActorData(RE::StaticFunctionTag*, RE::Actor* akFemale)
 std::vector<bool> GetConfigBoolOptions(RE::StaticFunctionTag*) {
 	std::vector<bool> Options;
 
-	Options.emplace_back(Configuration::MotionFlashEnabled); //0
-	Options.emplace_back(Configuration::DynamicModestyEnabled); //1
+	Options.emplace_back(MotionFlashEnabled); //0
+	Options.emplace_back(DynamicModestyEnabled); //1
 
-	Options.emplace_back(Configuration::AllowPlayerShameless); //2
-	Options.emplace_back(Configuration::NPCShamelessByDefault); //3
+	Options.emplace_back(AllowPlayerShameless); //2
+	Options.emplace_back(NPCShamelessByDefault); //3
 	
-	Options.emplace_back(Configuration::AllowPlayerCorruption); //4
-	Options.emplace_back(Configuration::NPCCorruptionByDefault); //5
+	Options.emplace_back(AllowPlayerCorruption); //4
+	Options.emplace_back(NPCCorruptionByDefault); //5
 	
-	Options.emplace_back(Configuration::StrictModestyRules); //6
-	Options.emplace_back(Configuration::NPCStrictRulesByDefault); //7
+	Options.emplace_back(StrictModestyRules); //6
+	Options.emplace_back(NPCStrictRulesByDefault); //7
 
-	Options.emplace_back(Configuration::HardcoreModeEnabled); //8
+	Options.emplace_back(HardcoreModeEnabled); //8
 
-	Options.emplace_back(Configuration::ModestyUpgradeBlocked); //9
-	Options.emplace_back(Configuration::DisableNakedComments); //10
+	Options.emplace_back(ModestyUpgradeBlocked); //9
+	Options.emplace_back(DisableNakedComments); //10
 
 	return Options;
 }
 
 void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options) {
-	Configuration::MotionFlashEnabled = Options[0];
-	Configuration::DynamicModestyEnabled = Options[1];
-	if (Configuration::DynamicModestyEnabled == false) {
-		Configuration::DynamicModestyMode->value = 0;
+	MotionFlashEnabled = Options[0];
+	DynamicModestyEnabled = Options[1];
+	if (!DynamicModestyEnabled) {
+		DynamicModestyMode->value = 0;
 	}
 
-	Configuration::AllowPlayerShameless = Options[2];
-	Configuration::NPCShamelessByDefault = Options[3];
+	AllowPlayerShameless = Options[2];
+	NPCShamelessByDefault = Options[3];
 	
-	Configuration::AllowPlayerCorruption = Options[4];
-	Configuration::NPCCorruptionByDefault = Options[5];
+	AllowPlayerCorruption = Options[4];
+	NPCCorruptionByDefault = Options[5];
 	
-	Configuration::StrictModestyRules = Options[6];
-	if (InstalledMods::DFFMA && Configuration::StrictModestyRules) {
-		Configuration::DynamicModestyMode->value = 1;
+	StrictModestyRules = Options[6];
+	if (InstalledMods::DFFMA && DynamicModestyEnabled && StrictModestyRules) {
+		DynamicModestyMode->value = 1;
 	}
-	else if (InstalledMods::DFFMA && !Configuration::StrictModestyRules) {
-		Configuration::DynamicModestyMode->value = 2;
+	else if (InstalledMods::DFFMA && DynamicModestyEnabled && !StrictModestyRules) {
+		DynamicModestyMode->value = 2;
 	}
-	Configuration::NPCStrictRulesByDefault = Options[7];
+	NPCStrictRulesByDefault = Options[7];
 
-	Configuration::HardcoreModeEnabled = Options[8];
-	Configuration::ModestyUpgradeBlocked = Options[9];
-	Configuration::DisableNakedComments = Options[10];
+	HardcoreModeEnabled = Options[8];
+	ModestyUpgradeBlocked = Options[9];
+	DisableNakedComments = Options[10];
 }
 
 std::vector<int> GetConfigIntOptions(RE::StaticFunctionTag*) {
 	std::vector<int> Options;
 
-	Options.emplace_back(Configuration::RunningMod); //0
-	Options.emplace_back(Configuration::SprintingMod); //1
+	Options.emplace_back(RunningMod); //0
+	Options.emplace_back(SprintingMod); //1
 
-	Options.emplace_back(Configuration::MinimumStrictModestyRank); //2
-	Options.emplace_back(Configuration::MinimumTopModestyRank); //3
-	Options.emplace_back(Configuration::MinimumBottomModestyRank); //4
+	Options.emplace_back(MinimumStrictModestyRank); //2
+	Options.emplace_back(MinimumTopModestyRank); //3
+	Options.emplace_back(MinimumBottomModestyRank); //4
 
-	Options.emplace_back(Configuration::ImmodestyTimeNeeded); //5
-	Options.emplace_back(Configuration::PlayerConfidenceLevel); //6
+	Options.emplace_back(ImmodestyTimeNeeded); //5
+	Options.emplace_back(PlayerConfidenceLevel); //6
 
-	Options.emplace_back(Configuration::NudeCommentChance); //7
-	Options.emplace_back(Configuration::ToplessCommentChance); //8
-	Options.emplace_back(Configuration::BottomlessCommentChance); //9
-	Options.emplace_back(Configuration::ChestCommentChance); //10
-	Options.emplace_back(Configuration::GenitalsCommentChance); //11
-	Options.emplace_back(Configuration::AssCommentChance); //12
-	Options.emplace_back(Configuration::BraCommentChance); //13
-	Options.emplace_back(Configuration::UnderwearCommentChance); //14
+	Options.emplace_back(NudeCommentChance); //7
+	Options.emplace_back(ToplessCommentChance); //8
+	Options.emplace_back(BottomlessCommentChance); //9
+	Options.emplace_back(ChestCommentChance); //10
+	Options.emplace_back(GenitalsCommentChance); //11
+	Options.emplace_back(AssCommentChance); //12
+	Options.emplace_back(BraCommentChance); //13
+	Options.emplace_back(UnderwearCommentChance); //14
 
 	return Options;
 }
 
 void UpdateConfigIntOptions(RE::StaticFunctionTag*, std::vector<int> Options) {
-	Configuration::RunningMod = (UINT8)Options[0];
-	Configuration::SprintingMod = (UINT8)Options[1];
+	RunningMod = (UINT8)Options[0];
+	SprintingMod = (UINT8)Options[1];
 
-	Configuration::MinimumStrictModestyRank = (UINT8)Options[2];
-	Configuration::MinimumTopModestyRank = (UINT8)Options[3];
-	Configuration::MinimumBottomModestyRank = (UINT8)Options[4];
+	MinimumStrictModestyRank = (UINT8)Options[2];
+	MinimumTopModestyRank = (UINT8)Options[3];
+	MinimumBottomModestyRank = (UINT8)Options[4];
 	
-	Configuration::ImmodestyTimeNeeded = (UINT16)Options[5];
-	Configuration::PlayerConfidenceLevel = (UINT8)Options[6];
+	ImmodestyTimeNeeded = (UINT16)Options[5];
+	PlayerConfidenceLevel = (UINT8)Options[6];
 
-	Configuration::NudeCommentChance = (UINT8)Options[7];
-	Configuration::ToplessCommentChance = (UINT8)Options[8];
-	Configuration::BottomlessCommentChance = (UINT8)Options[9];
-	Configuration::ChestCommentChance = (UINT8)Options[10];
-	Configuration::GenitalsCommentChance = (UINT8)Options[11];
-	Configuration::AssCommentChance = (UINT8)Options[12];
-	Configuration::BraCommentChance = (UINT8)Options[13];
-	Configuration::UnderwearCommentChance = (UINT8)Options[14];
+	NudeCommentChance = (UINT8)Options[7];
+	ToplessCommentChance = (UINT8)Options[8];
+	BottomlessCommentChance = (UINT8)Options[9];
+	ChestCommentChance = (UINT8)Options[10];
+	GenitalsCommentChance = (UINT8)Options[11];
+	AssCommentChance = (UINT8)Options[12];
+	BraCommentChance = (UINT8)Options[13];
+	UnderwearCommentChance = (UINT8)Options[14];
 }
 
 bool GetDynamicModestyEnabledByOtherMod(RE::StaticFunctionTag*) {
