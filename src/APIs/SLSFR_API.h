@@ -3,7 +3,7 @@
 namespace SLSFR_API {
 	constexpr const char* PluginName = "SLSFReloaded";
 
-	inline std::array<uint8_t, 3> PluginVerison = { 4, 0, 0 }; //Major | Minor | Patch
+	inline std::array<uint8_t, 3> PluginVerison = { 4, 2, 0 }; //Major | Minor | Patch
 
 	enum class InterfaceVersion : std::uint8_t { V1 };
 
@@ -63,7 +63,7 @@ namespace SLSFR_API {
 	};
 
 	[[nodiscard]] inline void* RequestAPI(InterfaceVersion thisInterface = InterfaceVersion::V1) {
-		auto ModuleHandle = GetModuleHandle("sexlab-sexual-fame-reloaded.dll");
+		auto ModuleHandle = GetModuleHandle("SexlabSexualFameReloaded.dll");
 		if (!ModuleHandle) {
 			return nullptr;
 		}
