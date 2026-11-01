@@ -968,6 +968,15 @@ void UpdateConfigBoolOptions(RE::StaticFunctionTag*, std::vector<bool> Options) 
 	Configuration::NPCCorruptionByDefault = Options[5];
 	
 	Configuration::StrictModestyRules = Options[6];
+	if (InstalledMods::DFFMA && Configuration::StrictModestyRules) {
+		Configuration::DynamicModestyMode->value = 1;
+	}
+	else if (InstalledMods::DFFMA && !Configuration::StrictModestyRules) {
+		Configuration::DynamicModestyMode->value = 2;
+	}
+	else {
+		Configuration::DynamicModestyMode->value = 0;
+	}
 	Configuration::NPCStrictRulesByDefault = Options[7];
 
 	Configuration::HardcoreModeEnabled = Options[8];
