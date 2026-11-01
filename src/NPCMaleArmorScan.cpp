@@ -967,6 +967,9 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[Miniskirt]) || BodyItem->HasKeyword(MaleKeywords[MiniskirtT])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), Logger::LogType::NPCArmorScan);
+			if (HasCurtainKeyword) {
+				return false;
+			}
 
 			bool HasTopKeyword =
 				(
@@ -975,6 +978,9 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[ArmorTop_NoCover])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), Logger::LogType::NPCArmorScan);
+			if (HasTopKeyword) {
+				return false;
+			}
 
 			bool HasBottomKeyword =
 				(
@@ -987,6 +993,9 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[HimboSkirtT_Low]) || BodyItem->HasKeyword(MaleKeywords[HimboSkirtT]) || BodyItem->HasKeyword(MaleKeywords[HimboSkirtT_High])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), Logger::LogType::NPCArmorScan);
+			if (HasBottomKeyword) {
+				return false;
+			}
 
 			bool HasBraKeyword =
 				(
@@ -995,6 +1004,9 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[Bra_NoCover])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), Logger::LogType::NPCArmorScan);
+			if (HasBraKeyword) {
+				return false;
+			}
 
 			bool HasUnderwearKeyword =
 				(
@@ -1008,6 +1020,9 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[BananaHammockT_Low]) || BodyItem->HasKeyword(MaleKeywords[BananaHammockT]) || BodyItem->HasKeyword(MaleKeywords[BananaHammockT_High])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), Logger::LogType::NPCArmorScan);
+			if (HasUnderwearKeyword) {
+				return false;
+			}
 
 			bool HasExtraKeyword =
 				(
@@ -1017,11 +1032,14 @@ namespace NPCMaleScan {
 					BodyItem->HasKeyword(MaleKeywords[EffectivelyNaked])
 					);
 			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), Logger::LogType::NPCArmorScan);
+			if (HasExtraKeyword) {
+				return false;
+			}
 
-			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), Logger::LogType::NPCArmorScan);
-			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
+			Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? True - No A.N.D. Keywords were found on the Body Armor", Logger::LogType::NPCArmorScan);
+			return true;
 		}
-		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False", Logger::LogType::NPCArmorScan);
+		Log("<C++ NPCMaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False - Not Wearing Body Armor", Logger::LogType::NPCArmorScan);
 		return false;
 	}
 

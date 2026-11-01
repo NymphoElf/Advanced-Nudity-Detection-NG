@@ -972,6 +972,9 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[Miniskirt]) || BodyItem->HasKeyword(FemaleKeywords[MiniskirtT])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasCurtainKeyword: " + BoolToString(HasCurtainKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasCurtainKeyword) {
+				return false;
+			}
 
 			bool HasTopKeyword =
 				(
@@ -980,6 +983,9 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[ArmorTop_NoCover])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasTopKeyword: " + BoolToString(HasTopKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasTopKeyword) {
+				return false;
+			}
 
 			bool HasBottomKeyword =
 				(
@@ -992,6 +998,9 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT_Low]) || BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT]) || BodyItem->HasKeyword(FemaleKeywords[ShowgirlSkirtT_High])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasBottomKeyword: " + BoolToString(HasBottomKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasBottomKeyword) {
+				return false;
+			}
 
 			bool HasBraKeyword =
 				(
@@ -1000,6 +1009,9 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[Bra_NoCover])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasBraKeyword: " + BoolToString(HasBraKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasBraKeyword) {
+				return false;
+			}
 
 			bool HasUnderwearKeyword =
 				(
@@ -1013,6 +1025,9 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[CStringT_Low]) || BodyItem->HasKeyword(FemaleKeywords[CStringT]) || BodyItem->HasKeyword(FemaleKeywords[CStringT_High])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasUnderwearKeyword: " + BoolToString(HasUnderwearKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasUnderwearKeyword) {
+				return false;
+			}
 
 			bool HasExtraKeyword =
 				(
@@ -1023,11 +1038,15 @@ namespace FemaleArmorScan {
 					BodyItem->HasKeyword(FemaleKeywords[EffectivelyNaked])
 					);
 			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] Slot32 HasExtraKeyword: " + BoolToString(HasExtraKeyword), Logger::LogType::PlayerArmorScan);
+			if (HasExtraKeyword) {
+				return false;
+			}
 
-			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? " + BoolToString(!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword), Logger::LogType::PlayerArmorScan);
-			return (!HasCurtainKeyword && !HasTopKeyword && !HasBottomKeyword && !HasBraKeyword && !HasUnderwearKeyword && !HasExtraKeyword);
+			Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? True - No A.N.D. Keywords were found on the Body Armor", Logger::LogType::PlayerArmorScan);
+			return true;
 		}
-		Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? false", Logger::LogType::PlayerArmorScan);
+
+		Log("<C++ FemaleArmorScan> [VanillaArmorCheck] END - Armor is Vanilla? False - Not Wearing Body Armor", Logger::LogType::PlayerArmorScan);
 		return false;
 	}
 
