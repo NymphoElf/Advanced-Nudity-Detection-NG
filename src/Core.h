@@ -268,7 +268,6 @@ struct TwoPartObject {
 
 inline std::vector<TwoPartObject> TwoPartObjects;
 
-
 //Globals
 inline RE::TESGlobal* WINakedCommentChance;
 
@@ -317,6 +316,7 @@ namespace PlayerCoverage {
 }
 
 //Functions
+const RE::TESFile* GetModFileFromFormID(RE::FormID FormID);
 
 bool PlayerRaceIsRecognized(RE::StaticFunctionTag*);
 

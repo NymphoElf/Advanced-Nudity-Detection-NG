@@ -1,6 +1,8 @@
 #pragma once
 
 #include "APIs/SKSEMenuFramework.h"
+#include "Core.h"
+#include "Logger.h"
 
 namespace SKSEConfig {
 	inline const std::string ModName = "Advanced Nudity Detection";
@@ -8,8 +10,6 @@ namespace SKSEConfig {
 
 	namespace RegisterTwoPartObjectMenu {
 		void __stdcall Render();
-
-		//inline ImGuiMCP::ImGuiTextFilter* filter;
 
 		enum ReturnCodes {
 			Success,
@@ -28,11 +28,14 @@ namespace SKSEConfig {
 		inline void __stdcall OnMenuEvent(SKSEMenuFramework::Model::EventType eventType) {
 			switch (eventType) {
 				case SKSEMenuFramework::Model::kOpenMenu:
-					Log("<SKSE Config HEADER> Register Menu Opened");
+					//Log("<SKSE Config HEADER> Register Menu Opened");
 					WornObjects = GetPlayerWornObjectList();
 					break;
 				case SKSEMenuFramework::Model::kCloseMenu:
-					Log("<SKSE Config HEADER> Register Menu Closed");
+					//Log("<SKSE Config HEADER> Register Menu Closed");
+					SelectedObjects = { nullptr, nullptr };
+					SelectedKeyword = nullptr;
+					RegisterResult = Waiting;
 					break;
 				default:
 					break;
@@ -43,7 +46,10 @@ namespace SKSEConfig {
 	namespace TwoPartObjectListMenu {
 		void __stdcall Render();
 
-		//inline ImGuiMCP::ImGuiTextFilter* filter;
+		enum UnregisterResult {
+			Success,
+			DoesNotExist
+		};
 	}
 }
 

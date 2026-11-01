@@ -1,67 +1,35 @@
 #include "SKSEConfig.h"
 
-#include "Core.h"
-#include "Logger.h"
-
 using namespace SKSEConfig;
 
 void RegisterSKSEConfigMenu() {
     if (!SKSEMenuFramework::IsInstalled()) {
         return;
     }
-    //Example3::filter = new ImGuiMCP::ImGuiTextFilter();
-    //Configuration::Example2::Buffer[0] = '\0';
     SKSEMenuFramework::SetSection(ModName);
 
     SKSEMenuFramework::AddEvent(RegisterTwoPartObjectMenu::OnMenuEvent, 0.0f);
 
-    SKSEMenuFramework::AddSectionItem("Register Two Part Object", RegisterTwoPartObjectMenu::Render);
-    SKSEMenuFramework::AddSectionItem("Two Part Object List", TwoPartObjectListMenu::Render);
-
-    //RegisterTwoPartObject::filter = new ImGuiMCP::ImGuiTextFilter();
-    //TwoPartObjectList::filter = new ImGuiMCP::ImGuiTextFilter();
-
-    /*
-    SKSEMenuFramework::AddSectionItem("Font Awesome", Example4::Render);
-    SKSEMenuFramework::AddSectionItem("Add Item", Example1::Render);
-    SKSEMenuFramework::AddSectionItem("Folder Example/Example 2", Example2::Render);
-    UI::Example2::ExampleWindow = SKSEMenuFramework::AddWindow(Example2::RenderWindow, true);
-    SKSEMenuFramework::AddSectionItem("Folder Example/Example 3", Example3::Render);
-
-    SKSEMenuFramework::AddSectionItem("Example 5", Example5::Render);
-    SKSEMenuFramework::AddSectionItem("Example 6", Example6::Render);
-    SKSEMenuFramework::AddSectionItem("Example 7", Example7::Render);
-    SKSEMenuFramework::AddSectionItem("Example 8 \\/ Test", Example8::Render);
-    SKSEMenuFramework::AddHudElement(Example5::RenderOverlay);
-    SKSEMenuFramework::AddInputEvent(Example5::OnInput);
-    UI::Example5::NonPausingWindow = SKSEMenuFramework::AddWindow(Example5::RenderWindow, false);
-
-    SKSEMenuFramework::AddEvent(UI::Example6::OnEvent, 0);
-    */
+    SKSEMenuFramework::AddSectionItem("TwoPartObjects/Register Two Part Object", RegisterTwoPartObjectMenu::Render);
+    SKSEMenuFramework::AddSectionItem("TwoPartObjects/Two Part Object List", TwoPartObjectListMenu::Render);
 }
 
 void __stdcall RegisterTwoPartObjectMenu::Render() {
     static ImGuiMCP::ImGuiTableFlags flags = ImGuiMCP::ImGuiTableFlags_Resizable | ImGuiMCP::ImGuiTableFlags_Reorderable | ImGuiMCP::ImGuiTableFlags_Hideable | ImGuiMCP::ImGuiTableFlags_RowBg | ImGuiMCP::ImGuiTableFlags_BordersOuter |
         ImGuiMCP::ImGuiTableFlags_BordersV | ImGuiMCP::ImGuiTableFlags_NoBordersInBody | ImGuiMCP::ImGuiTableFlags_ScrollY;
 
-    //filter->Draw();
-
     enum Items {
         ItemA,
         ItemB
     };
-
-    if (ImGuiMCP::Button("Refresh Worn Objects")) {
-        WornObjects = GetPlayerWornObjectList();
-    }
 
     if (ImGuiMCP::BeginMenu("Select Item A")) {
         for (UINT32 Index = 0; Index < WornObjects.size(); ++Index) {
             if (ImGuiMCP::MenuItem(WornObjects[Index]->GetName())) {
                 if (WornObjects[Index] == SelectedObjects[ItemB]) {
                     SelectedObjects[ItemB] = SelectedObjects[ItemA];
-                    SelectedObjects[ItemA] = WornObjects[Index];
                 }
+                SelectedObjects[ItemA] = WornObjects[Index];
                 
                 Log("<SKSE Config> [RegisterTwoPartObject] Selected Item A is: " + GetFormLogData(SelectedObjects[ItemA]), Logger::Core, Logger::info);
             }
@@ -75,8 +43,8 @@ void __stdcall RegisterTwoPartObjectMenu::Render() {
             if (ImGuiMCP::MenuItem(WornObjects[Index]->GetName())) {
                 if (WornObjects[Index] == SelectedObjects[ItemA]) {
                     SelectedObjects[ItemA] = SelectedObjects[ItemB];
-                    SelectedObjects[ItemB] = WornObjects[Index];
                 }
+                SelectedObjects[ItemB] = WornObjects[Index];
                 
                 Log("<SKSE Config> [RegisterTwoPartObject] Selected Item B is: " + GetFormLogData(SelectedObjects[ItemB]), Logger::Core, Logger::info);
             }
@@ -130,11 +98,11 @@ void __stdcall RegisterTwoPartObjectMenu::Render() {
     }
 
     if (ImGuiMCP::Button("Register")) {
-        Log("<SKSE Config> [RegisterTwoPartObject] REGISTER START");
+        /*Log("<SKSE Config> [RegisterTwoPartObject] REGISTER START");
         Log("<SKSE Config> [RegisterTwoPartObject] Item A is: " + GetFormLogData(SelectedObjects[ItemA]));
         Log("<SKSE Config> [RegisterTwoPartObject] Item B is: " + GetFormLogData(SelectedObjects[ItemB]));
         Log("<SKSE Config> [RegisterTwoPartObject] Keyword is: " + GetFormLogData(SelectedKeyword));
-        Log("<SKSE Config> [RegisterTwoPartObject] REGISTER END");
+        Log("<SKSE Config> [RegisterTwoPartObject] REGISTER END");*/
 
         RegisterResult = RegisterTwoPartObject(SelectedObjects[ItemA], SelectedObjects[ItemB], SelectedKeyword);
     }
@@ -162,13 +130,12 @@ void __stdcall TwoPartObjectListMenu::Render() {
     static ImGuiMCP::ImGuiTableFlags flags = ImGuiMCP::ImGuiTableFlags_Resizable | ImGuiMCP::ImGuiTableFlags_Reorderable | ImGuiMCP::ImGuiTableFlags_Hideable | ImGuiMCP::ImGuiTableFlags_RowBg | ImGuiMCP::ImGuiTableFlags_BordersOuter |
         ImGuiMCP::ImGuiTableFlags_BordersV | ImGuiMCP::ImGuiTableFlags_NoBordersInBody | ImGuiMCP::ImGuiTableFlags_ScrollY;
 
-    //filter->Draw();
-
-    if (ImGuiMCP::BeginTable("twopartobjectlist_table", 3, flags)) {
+    if (ImGuiMCP::BeginTable("twopartobjectlist_table", 4, flags)) {
         enum ColumnSlots {
-            Left,
-            Center,
-            Right
+            FarLeft,
+            CenterLeft,
+            CenterRight,
+            FarRight
         };
         
         ImGuiMCP::TableSetupColumn("Item A");
@@ -176,25 +143,42 @@ void __stdcall TwoPartObjectListMenu::Render() {
         ImGuiMCP::TableSetupColumn("Act As Keyword");
         ImGuiMCP::TableHeadersRow();
 
-        for (UINT32 Row = 0; Row < TwoPartObjectA.size(); ++Row) {
+        for (UINT32 Row = 0; Row < TwoPartObjects.size(); ++Row) {
             ImGuiMCP::TableNextRow();
-            for (UINT32 Column = 0; Column < 3; ++Column) {
+            for (UINT32 Column = 0; Column < 4; ++Column) {
                 ImGuiMCP::TableSetColumnIndex(Column);
 
-                char DisplayText[256];
+                std::string DisplayText;
 
-                if (Column == Left) {
-                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectA[Row]->GetName(), sizeof(DisplayText));
+                if (Column == FarLeft) {
+                    DisplayText = std::string(TwoPartObjects[Row].ObjectA->GetName());
+                    ImGuiMCP::Text(DisplayText.c_str());
                 }
-                else if (Column == Center) {
-                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectB[Row]->GetName(), sizeof(DisplayText));
+                else if (Column == CenterLeft) {
+                    DisplayText = std::string(TwoPartObjects[Row].ObjectB->GetName());
+                    ImGuiMCP::Text(DisplayText.c_str());
                 }
-                else if (Column == Right) {
-                    strncpy_s(DisplayText, sizeof(DisplayText), TwoPartObjectKeyword[Row]->GetFormEditorID(), sizeof(DisplayText));
+                else if (Column == CenterRight) {
+                    DisplayText = std::string(TwoPartObjects[Row].Keyword->GetFormEditorID());
+                    ImGuiMCP::Text(DisplayText.c_str());
                 }
+                else if (Column == FarRight) {
+                    if (ImGuiMCP::Button("Unregister")) {
+                        /*Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] UNREGISTER START");
+                        Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] Item A is: " + GetFormLogData(TwoPartObjects[Row].ObjectA));
+                        Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] Item B is: " + GetFormLogData(TwoPartObjects[Row].ObjectB));
+                        Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] Keyword is: " + GetFormLogData(TwoPartObjects[Row].Keyword));
+                        Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] UNREGISTER END");*/
 
-                ImGuiMCP::TextUnformatted(DisplayText);
+                        UINT8 Result = UnregisterTwoPartObject(TwoPartObjects[Row].ObjectA, TwoPartObjects[Row].ObjectB);
+                        if (Result == DoesNotExist) {
+                            Log("<SKSE Config> [TwoPartObjectListMenu | UnregisterTwoPartObject] ERROR: Unregister failed! This should not be possible!", Logger::Core, Logger::error);
+                        }
+                    }
+                }
             }
         }
+        ImGuiMCP::EndTable();
     }
+    
 }

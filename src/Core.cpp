@@ -440,6 +440,21 @@ void SetPlayerFactionRank(RE::TESFaction* akFaction, int8_t factionRank) {
 	Player->AddToFaction(akFaction, factionRank);
 }
 
+bool IsFromLightPlugin(RE::FormID FormID) {
+	return FormID >> 24 == 0xFE ? true : false;
+}
+
+const RE::TESFile* GetModFileFromFormID(RE::FormID FormID) {
+	if (FormID >> 24 == 0xFF) {
+		return nullptr;
+	}
+	else if (FormID >> 24 == 0xFE) {
+		return GameDataHandler->LookupLoadedLightModByIndex((UINT16)((FormID >> 12) - 0xFE000));
+	}
+	
+	return GameDataHandler->LookupLoadedModByIndex((UINT8)(FormID >> 24));
+}
+
 RE::BGSKeywordForm* AsKeywordForm(RE::TESForm* tesForm)
 {
 	if (const auto arrowForm = tesForm->As<RE::TESAmmo>()) {
@@ -613,7 +628,7 @@ UINT8 RegisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* Obj
 		return AlreadyExists;
 	}
 	
-	if (TwoPartObjectA.size() >= 65000) {
+	if (TwoPartObjects.size() >= 65000) {
 		Log("<C++ Core> [RegisterTwoPartObject] Too many objects registered. 65000 Two-Part Objects reached. Further registration would risk 16-bit Integer overflow.", Logger::Core, Logger::warning);
 		return TooManyObjects;
 	}
@@ -623,10 +638,6 @@ UINT8 RegisterTwoPartObject(RE::TESBoundObject* ObjectA, RE::TESBoundObject* Obj
 	NewTwoPartObject.Keyword = TreatedAs;
 
 	TwoPartObjects.emplace_back(NewTwoPartObject);
-
-	//TwoPartObjectA.emplace_back(ObjectA);
-	//TwoPartObjectB.emplace_back(ObjectB);
-	//TwoPartObjectKeyword.emplace_back(TreatedAs);
 
 	return Success;
 }
@@ -698,12 +709,12 @@ bool IsWearingTwoPartObject(RE::Actor* akActor, RE::BGSKeyword* TreatedAs) {
 					continue;
 
 				if (IsTwoPartObjectPiece(false, ItemB, TreatedAs)) {
-					PartOneObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
+					PartTwoObjectIndices = CollectTwoPartObjectIndices(false, ItemB);
 				}
 
 				if (PartTwoObjectIndices.size()) {
 					for (UINT16 Index = 0; Index < PartOneObjectIndices.size() && Index < PartTwoObjectIndices.size(); ++Index) {
-						if (PartOneObjectIndices[Index] == PartTwoObjectIndices[Index] && TreatedAs == TwoPartObjectKeyword[PartOneObjectIndices[Index]]) {
+						if (PartOneObjectIndices[Index] == PartTwoObjectIndices[Index] && TreatedAs == TwoPartObjects[PartOneObjectIndices[Index]].Keyword) {
 							return true;
 						}
 					}

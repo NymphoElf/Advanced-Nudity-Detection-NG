@@ -126,6 +126,69 @@ void LoadPermanentNPCs()
 	ActorFile.close();
 }
 
+std::optional<TwoPartObject> RebuildTwoPartObject(RE::FormID LocalID_A, std::string Plugin_A, RE::FormID LocalID_B, std::string Plugin_B, std::string KeywordEditorID) {
+	const RE::TESFile* FullPluginFile_A = GameDataHandler->LookupLoadedModByName(Plugin_A);
+	const RE::TESFile* LightPluginFile_A = GameDataHandler->LookupLoadedLightModByName(Plugin_A);
+
+	const RE::TESFile* FullPluginFile_B = GameDataHandler->LookupLoadedModByName(Plugin_B);
+	const RE::TESFile* LightPluginFile_B = GameDataHandler->LookupLoadedLightModByName(Plugin_B);
+
+	RE::BGSKeyword* Keyword = RE::TESForm::LookupByEditorID<RE::BGSKeyword>(KeywordEditorID);
+
+	if (!FullPluginFile_A && !LightPluginFile_A) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] WARNING: Plugin (" + Plugin_A + ") no longer exists or is not loaded. Cannot rebuild this TwoPartObject.", Logger::Core, Logger::warning);
+		return std::nullopt;
+	}
+	else if (!FullPluginFile_B && !LightPluginFile_B) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] WARNING: Plugin (" + Plugin_B + ") no longer exists or is not loaded. Cannot rebuild this TwoPartObject.", Logger::Core, Logger::warning);
+		return std::nullopt;
+	}
+	else if (!Keyword) {
+		Log("<C++ SaveLoad> [RebuildTwoPartObject] ERROR: Keyword (" + KeywordEditorID + ") not found! Cannot rebuild this TwoPartObject.", Logger::Core, Logger::error);
+		return std::nullopt;
+	}
+
+	TwoPartObject ThisTwoPartObject;
+
+	//REBUILD OBJECT A
+	if (FullPluginFile_A) {
+		if (FullPluginFile_A->GetFilename() == "Skyrim.esm") {
+			ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(LocalID_A);
+		}
+		else {
+			ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(
+				(GameDataHandler->GetLoadedModIndex(Plugin_A).value() << 24) + LocalID_A
+			);
+		}
+	}
+	else {
+		ThisTwoPartObject.ObjectA = RE::TESForm::LookupByID<RE::TESBoundObject>(
+			((0xFE << 24) + (GameDataHandler->GetLoadedLightModIndex(Plugin_A).value() << 12)) + LocalID_A
+		);
+	}
+
+	//REBUILD OBJECT B
+	if (FullPluginFile_B) {
+		if (FullPluginFile_B->GetFilename() == "Skyrim.esm") {
+			ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(LocalID_B);
+		}
+		else {
+			ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(
+				(GameDataHandler->GetLoadedModIndex(Plugin_B).value() << 24) + LocalID_B
+			);
+		}
+	}
+	else {
+		ThisTwoPartObject.ObjectB = RE::TESForm::LookupByID<RE::TESBoundObject>(
+			((0xFE << 24) + (GameDataHandler->GetLoadedLightModIndex(Plugin_B).value() << 12)) + LocalID_B
+		);
+	}
+
+	ThisTwoPartObject.Keyword = Keyword;
+
+	return ThisTwoPartObject;
+}
+
 // Helpers for variable-size types
 inline bool WriteString(SKSE::SerializationInterface* serializer, const std::string& stringInput) {
 	const std::uint32_t len = static_cast<std::uint32_t>(stringInput.size());
@@ -297,18 +360,40 @@ inline void SaveCallback(SKSE::SerializationInterface* serializer)
 
 	// --- MULTI PART OBJECT record ---
 	if (serializer->OpenRecord(kMultiPartObjectRecord, kVersion)) {
-		//UINT16 Count = (UINT16)TwoPartObjectA.size();
 		UINT16 Count = (UINT16)TwoPartObjects.size();
 		serializer->WriteRecordData(&Count, sizeof(UINT16));
 
 		std::string EditorID;
-		for (UINT16 Index = 0; Index < Count; ++Index) {
-			EditorID = static_cast<std::string>(TwoPartObjects[Index].ObjectA->GetFormEditorID());
-			WriteString(serializer, EditorID);
 
-			EditorID = static_cast<std::string>(TwoPartObjects[Index].ObjectB->GetFormEditorID());
-			WriteString(serializer, EditorID);
+		const RE::TESFile* PluginFile;
+		std::string PluginName;
+		RE::FormID FullFormID;
+		RE::FormID LocalFormID;
+
+		for (UINT16 Index = 0; Index < Count; ++Index) {
+			//OBJECT A
+			FullFormID = TwoPartObjects[Index].ObjectA->GetFormID();
+			PluginFile = GetModFileFromFormID(FullFormID);
 			
+			PluginName = PluginFile->GetFilename();
+
+			PluginName == "Skyrim.esm" ? LocalFormID = FullFormID : LocalFormID = TwoPartObjects[Index].ObjectA->GetLocalFormID();
+
+			serializer->WriteRecordData(&LocalFormID, sizeof(RE::FormID));
+			WriteString(serializer, PluginName);
+
+			//OBJECT B
+			FullFormID = TwoPartObjects[Index].ObjectB->GetFormID();
+			PluginFile = GetModFileFromFormID(FullFormID);
+			
+			PluginName = PluginFile->GetFilename();
+
+			PluginName == "Skyrim.esm" ? LocalFormID = FullFormID : LocalFormID = TwoPartObjects[Index].ObjectB->GetLocalFormID();
+
+			serializer->WriteRecordData(&LocalFormID, sizeof(RE::FormID));
+			WriteString(serializer, PluginName);
+			
+			//KEYWORD
 			EditorID = static_cast<std::string>(TwoPartObjects[Index].Keyword->GetFormEditorID());
 			WriteString(serializer, EditorID);
 		}
@@ -519,22 +604,32 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 			}
 
 			case kMultiPartObjectRecord: {
-				std::string EditorID_A;
-				std::string EditorID_B;
+				RE::FormID LocalID_A;
+				std::string Plugin_A;
+				RE::FormID LocalID_B;
+				std::string Plugin_B;
 				std::string EditorID_Keyword;
 				UINT16 Count;
 
-				TwoPartObject LoadedTwoPartObject = {nullptr, nullptr, nullptr};
+				//TwoPartObject LoadedTwoPartObject = {nullptr, nullptr, nullptr};
 
 				serializer->ReadRecordData(&Count, sizeof(UINT16));
 
 				//ObjectReads
 				for (UINT16 Index = 0; Index < Count; ++Index) {
-					ReadString(serializer, EditorID_A);
-					ReadString(serializer, EditorID_B);
+					serializer->ReadRecordData(&LocalID_A, sizeof(RE::FormID));
+					ReadString(serializer, Plugin_A);
+					serializer->ReadRecordData(&LocalID_B, sizeof(RE::FormID));
+					ReadString(serializer, Plugin_B);
 					ReadString(serializer, EditorID_Keyword);
 
-					LoadedTwoPartObject.ObjectA = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_A);
+					std::optional<TwoPartObject> LoadedTwoPartObject = RebuildTwoPartObject(LocalID_A, Plugin_A, LocalID_B, Plugin_B, EditorID_Keyword);
+
+					if (LoadedTwoPartObject.has_value()) {
+						TwoPartObjects.emplace_back(LoadedTwoPartObject.value());
+					}
+
+					/*LoadedTwoPartObject.ObjectA = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_A);
 					LoadedTwoPartObject.ObjectB = RE::TESForm::LookupByEditorID<RE::TESBoundObject>(EditorID_B);
 					LoadedTwoPartObject.Keyword = RE::TESForm::LookupByEditorID<RE::BGSKeyword>(EditorID_Keyword);
 					
@@ -553,7 +648,7 @@ inline void LoadCallback(SKSE::SerializationInterface* serializer)
 
 					LoadedTwoPartObject.ObjectA = nullptr;
 					LoadedTwoPartObject.ObjectB = nullptr;
-					LoadedTwoPartObject.Keyword = nullptr;
+					LoadedTwoPartObject.Keyword = nullptr;*/
 				}
 
 				break;
@@ -602,9 +697,7 @@ inline void RevertCallback(SKSE::SerializationInterface*) {
 	CustomTransformations.clear();
 
 	//Clear Multi-Part Object Lists
-	TwoPartObjectA.clear();
-	TwoPartObjectB.clear();
-	TwoPartObjectKeyword.clear();
+	TwoPartObjects.clear();
 }
 
 void RegisterCoSaveSerializer()
