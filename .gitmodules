@@ -1,7 +1,0 @@
-[submodule "lib/commonlibsse-ng"]
-	path = lib/commonlibsse-ng
-	url = https://github.com/alandtse/CommonLibSSE-NG.git
-	branch = ng
-[submodule "openvr"]
-	path = extern/openvr
-	url = https://github.com/ValveSoftware/openvr.git
